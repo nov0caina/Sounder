@@ -1,0 +1,192 @@
+/*
+ * Copyright (c) 2024 Auxio Project
+ * Copyright (c) 2026 Sounder Project
+ * SounderPlaybackService.kt is part of Sounder.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+ 
+package org.nov0caina.sounder
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.os.IBinder
+import android.support.v4.media.MediaBrowserCompat.MediaItem
+import androidx.annotation.StringRes
+import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.ServiceCompat
+import androidx.media.MediaBrowserServiceCompat
+import androidx.media.utils.MediaConstants
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import org.nov0caina.sounder.music.service.MusicServiceFragment
+import org.nov0caina.sounder.playback.service.PlaybackServiceFragment
+import timber.log.Timber
+
+@AndroidEntryPoint
+class SounderPlaybackService :
+    MediaBrowserServiceCompat(), ForegroundListener, MusicServiceFragment.Invalidator {
+    @Inject lateinit var playbackFragmentFactory: PlaybackServiceFragment.Factory
+    private lateinit var playbackFragment: PlaybackServiceFragment
+
+    @Inject lateinit var musicFragmentFactory: MusicServiceFragment.Factory
+    private lateinit var musicFragment: MusicServiceFragment
+
+    @SuppressLint("WrongConstant")
+    override fun onCreate() {
+        super.onCreate()
+        playbackFragment = playbackFragmentFactory.create(this, this)
+        musicFragment = musicFragmentFactory.create(this, this, this)
+        sessionToken = playbackFragment.attach()
+        musicFragment.attach()
+        Timber.d("Service Created")
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
+        onHandleForeground(intent)
+        return START_NOT_STICKY
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        val binder = super.onBind(intent)
+        onHandleForeground(intent)
+        return binder
+    }
+
+    private fun onHandleForeground(intent: Intent?) {
+        musicFragment.start()
+        playbackFragment.start(intent)
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        playbackFragment.handleTaskRemoved()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        musicFragment.release()
+        playbackFragment.release()
+    }
+
+    override fun onGetRoot(
+        clientPackageName: String,
+        clientUid: Int,
+        rootHints: Bundle?,
+    ): BrowserRoot {
+        return musicFragment.getRoot()
+    }
+
+    override fun onLoadItem(itemId: String, result: Result<MediaItem>) {
+        musicFragment.getItem(itemId, result)
+    }
+
+    override fun onLoadChildren(parentId: String, result: Result<MutableList<MediaItem>>) {
+        val maximumRootChildLimit = getRootChildrenLimit()
+        musicFragment.getChildren(parentId, maximumRootChildLimit, result)
+    }
+
+    override fun onLoadChildren(
+        parentId: String,
+        result: Result<MutableList<MediaItem>>,
+        options: Bundle,
+    ) {
+        val maximumRootChildLimit = getRootChildrenLimit()
+        musicFragment.getChildren(parentId, maximumRootChildLimit, result)
+    }
+
+    override fun onSearch(query: String, extras: Bundle?, result: Result<MutableList<MediaItem>>) {
+        musicFragment.search(query, result)
+    }
+
+    private fun getRootChildrenLimit(): Int {
+        return browserRootHints?.getInt(
+            MediaConstants.BROWSER_ROOT_HINTS_KEY_ROOT_CHILDREN_LIMIT,
+            4,
+        ) ?: 4
+    }
+
+    override fun updateForeground(change: ForegroundListener.Change) {
+        val mediaNotification = playbackFragment.notification
+        if (mediaNotification != null) {
+            if (change == ForegroundListener.Change.MEDIA_SESSION) {
+                startForeground(mediaNotification.code, mediaNotification.build())
+            }
+            isForeground = true
+        } else {
+            musicFragment.createNotification {
+                if (it != null) {
+                    startForeground(it.code, it.build())
+                    isForeground = true
+                } else {
+                    ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+                    isForeground = false
+                }
+            }
+        }
+    }
+
+    override fun invalidateMusic(mediaId: String) {
+        notifyChildrenChanged(mediaId)
+    }
+
+    companion object {
+        const val ACTION_START = BuildConfig.APPLICATION_ID + ".service.START"
+
+        var isForeground = false
+            private set
+
+        const val INTENT_KEY_START_ID = BuildConfig.APPLICATION_ID + ".service.START_ID"
+    }
+}
+
+interface ForegroundListener {
+    fun updateForeground(change: Change)
+
+    enum class Change {
+        MEDIA_SESSION,
+        INDEXER,
+    }
+}
+
+/**
+ * Wrapper around [NotificationCompat.Builder] intended for use for [NotificationCompat]s that
+ * signal a Service's ongoing foreground state.
+ *
+ * @author Alexander Capehart (OxygenCobalt)
+ */
+abstract class ForegroundServiceNotification(context: Context, info: ChannelInfo) :
+    NotificationCompat.Builder(context, info.id) {
+    private val notificationManager = NotificationManagerCompat.from(context)
+
+    init {
+        val channel =
+            NotificationChannelCompat.Builder(info.id, NotificationManagerCompat.IMPORTANCE_LOW)
+                .setName(context.getString(info.nameRes))
+                .setLightsEnabled(false)
+                .setVibrationEnabled(false)
+                .setShowBadge(false)
+                .build()
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    abstract val code: Int
+
+    data class ChannelInfo(val id: String, @StringRes val nameRes: Int)
+}

@@ -4,15 +4,16 @@ plugins {
     id "com.android.application"
     id "androidx.navigation.safeargs.kotlin"
     id "kotlin-parcelize"
+    id "org.jetbrains.kotlin.plugin.serialization"
     id "dagger.hilt.android.plugin"
     id "com.google.devtools.ksp"
 }
 
 android {
-    // Auxio implicitly depends on the native modules, explicitly specify it
+    // Sounder implicitly depends on the native modules, explicitly specify it
     // here so the libraries are still stripped.
     ndkVersion ndk_version
-    namespace "org.oxycblt.auxio"
+    namespace "org.nov0caina.sounder"
 
     defaultConfig {
         applicationId namespace
@@ -26,6 +27,7 @@ android {
         targetSdk target_sdk
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     compileOptions {
@@ -156,6 +158,7 @@ dependencies {
 
     // Image loading
     implementation 'io.coil-kt.coil3:coil-core:3.6.0'
+    implementation 'io.coil-kt.coil3:coil:3.6.0'
 
     // Material
     // TODO: Exactly figure out the conditions that the 1.7.0 ripple bug occurred so you can just
@@ -179,4 +182,19 @@ dependencies {
 
     // Fuzzy search
     implementation 'org.apache.commons:commons-text:1.15.0'
+
+    // Networking & Serialization
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
+
+    // WorkManager (Background downloads)
+    implementation "androidx.work:work-runtime-ktx:2.10.0"
+
+    // Coil network support for remote artwork loading
+    implementation "io.coil-kt.coil3:coil-network-okhttp:3.6.0"
+
+    // Testing
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "org.json:json:20240303"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_coroutines_version"
 }
