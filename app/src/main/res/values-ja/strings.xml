@@ -470,4 +470,17 @@
     <string name="lbl_donate_paypal">PayPal で寄付する</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">アップデートを確認</string>
+    <string name="lbl_checking_updates">アップデートを確認中…</string>
+    <string name="lbl_update_available">アップデートが利用可能です</string>
+    <string name="lbl_update_available_msg">Sounder の新しいバージョン (%1$s) が利用可能です。</string>
+    <string name="lbl_update_view">アップデートを表示</string>
+    <string name="lbl_update_later">後で</string>
+    <string name="lbl_update_ignore">このバージョンを無視</string>
+    <string name="lbl_update_latest">最新バージョンの Sounder を使用しています。</string>
+    <string name="lbl_update_managed_by_fdroid">Sounder のアップデートは F-Droid クライアントによって管理されています。</string>
+    <string name="lbl_open_fdroid">F-Droid を開く</string>
+    <string name="err_update_check_failed">アップデートの確認に失敗しました。接続を確認してください。</string>
 </resources>

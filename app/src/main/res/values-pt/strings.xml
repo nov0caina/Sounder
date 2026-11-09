@@ -506,4 +506,17 @@
     <string name="lbl_donate_paypal">Doar com PayPal</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Verificar atualizações</string>
+    <string name="lbl_checking_updates">Verificando atualizações…</string>
+    <string name="lbl_update_available">Atualização disponível</string>
+    <string name="lbl_update_available_msg">Uma nova versão do Sounder (%1$s) está disponível.</string>
+    <string name="lbl_update_view">Ver atualização</string>
+    <string name="lbl_update_later">Mais tarde</string>
+    <string name="lbl_update_ignore">Ignorar esta versão</string>
+    <string name="lbl_update_latest">Você está usando a versão mais recente do Sounder.</string>
+    <string name="lbl_update_managed_by_fdroid">As atualizações do Sounder são gerenciadas pelo seu cliente F-Droid.</string>
+    <string name="lbl_open_fdroid">Abrir F-Droid</string>
+    <string name="err_update_check_failed">Não foi possível verificar atualizações. Verifique sua conexão.</string>
 </resources>

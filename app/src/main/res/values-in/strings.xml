@@ -498,4 +498,17 @@
     <string name="lbl_donate_paypal">Donasi dengan PayPal</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Periksa pembaruan</string>
+    <string name="lbl_checking_updates">Memeriksa pembaruan…</string>
+    <string name="lbl_update_available">Pembaruan tersedia</string>
+    <string name="lbl_update_available_msg">Versi baru Sounder (%1$s) telah tersedia.</string>
+    <string name="lbl_update_view">Lihat pembaruan</string>
+    <string name="lbl_update_later">Nanti</string>
+    <string name="lbl_update_ignore">Abaikan versi ini</string>
+    <string name="lbl_update_latest">Anda menggunakan versi terbaru Sounder.</string>
+    <string name="lbl_update_managed_by_fdroid">Pembaruan Sounder dikelola oleh klien F-Droid Anda.</string>
+    <string name="lbl_open_fdroid">Buka F-Droid</string>
+    <string name="err_update_check_failed">Gagal memeriksa pembaruan. Periksa koneksi Anda.</string>
 </resources>

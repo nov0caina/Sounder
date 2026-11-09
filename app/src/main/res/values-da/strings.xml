@@ -258,4 +258,17 @@
     <string name="lbl_donate_paypal">Donér med PayPal</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Søg efter opdateringer</string>
+    <string name="lbl_checking_updates">Søger efter opdateringer…</string>
+    <string name="lbl_update_available">Opdatering tilgængelig</string>
+    <string name="lbl_update_available_msg">En ny version af Sounder (%1$s) er tilgængelig.</string>
+    <string name="lbl_update_view">Vis opdatering</string>
+    <string name="lbl_update_later">Senere</string>
+    <string name="lbl_update_ignore">Ignorer denne version</string>
+    <string name="lbl_update_latest">Du bruger den nyeste version af Sounder.</string>
+    <string name="lbl_update_managed_by_fdroid">Sounder-opdateringer administreres af din F-Droid-klient.</string>
+    <string name="lbl_open_fdroid">Åbn F-Droid</string>
+    <string name="err_update_check_failed">Kunne ikke søge efter opdateringer. Tjek din forbindelse.</string>
 </resources>

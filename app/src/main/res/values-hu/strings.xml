@@ -475,4 +475,17 @@
     <string name="lbl_donate_paypal">Adományozás PayPal-lel</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Frissítések keresése</string>
+    <string name="lbl_checking_updates">Frissítések keresése…</string>
+    <string name="lbl_update_available">Frissítés elérhető</string>
+    <string name="lbl_update_available_msg">Elérhető a Sounder új verziója (%1$s).</string>
+    <string name="lbl_update_view">Frissítés megtekintése</string>
+    <string name="lbl_update_later">Később</string>
+    <string name="lbl_update_ignore">Verzió kihagyása</string>
+    <string name="lbl_update_latest">A Sounder legújabb verzióját használja.</string>
+    <string name="lbl_update_managed_by_fdroid">A Sounder frissítéseit az F-Droid kliens kezeli.</string>
+    <string name="lbl_open_fdroid">F-Droid megnyitása</string>
+    <string name="err_update_check_failed">Nem sikerült ellenőrizni a frissítéseket. Ellenőrizze a kapcsolatot.</string>
 </resources>

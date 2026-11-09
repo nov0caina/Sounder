@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId namespace
-        versionName "4.1.5"
+        versionName "1.0.0-sounder"
         versionCode 75
 
         minSdk min_sdk

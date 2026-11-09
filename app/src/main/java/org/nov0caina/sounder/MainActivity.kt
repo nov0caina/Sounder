@@ -34,13 +34,18 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 import org.nov0caina.sounder.databinding.ActivityMainBinding
 import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.state.DeferredPlayback
 import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.update.UpdateDialogHelper
+import org.nov0caina.sounder.update.UpdateManager
+import org.nov0caina.sounder.update.UpdateResult
 import org.nov0caina.sounder.util.isNight
 import org.nov0caina.sounder.util.systemBarInsetsCompat
 import timber.log.Timber as L
@@ -64,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     private val playbackModel: PlaybackViewModel by viewModels()
     private val musicModel: MusicViewModel by viewModels()
     @Inject lateinit var uiSettings: UISettings
+    @Inject lateinit var updateManager: UpdateManager
 
     private val storagePermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -103,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupEdgeToEdge(binding.root)
         checkStoragePermission()
+        checkAutomaticUpdate()
         L.d("Activity created")
     }
 
@@ -116,6 +123,21 @@ class MainActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             L.d("Requesting storage permission on initial launch: $permission")
             storagePermissionLauncher.launch(permission)
+        }
+    }
+
+    private fun checkAutomaticUpdate() {
+        lifecycleScope.launch {
+            val result = updateManager.checkForUpdate(isManual = false)
+            if (result is UpdateResult.NewUpdate && !isFinishing && !isDestroyed) {
+                UpdateDialogHelper.showUpdateAvailableDialog(
+                    activity = this@MainActivity,
+                    updateInfo = result.updateInfo,
+                    onIgnore = {
+                        updateManager.setIgnoredVersion(result.updateInfo.tagName)
+                    }
+                )
+            }
         }
     }
 

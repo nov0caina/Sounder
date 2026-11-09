@@ -661,4 +661,17 @@
     <string name="header_top_result">Top result</string>
     <string name="btn_explore_artist">Explore</string>
     <string name="header_more_by">More by %1$s</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Check for updates</string>
+    <string name="lbl_checking_updates">Checking for updates…</string>
+    <string name="lbl_update_available">Update available</string>
+    <string name="lbl_update_available_msg">A new version of Sounder (%1$s) is available.</string>
+    <string name="lbl_update_view">View update</string>
+    <string name="lbl_update_later">Later</string>
+    <string name="lbl_update_ignore">Ignore this version</string>
+    <string name="lbl_update_latest">You are using the latest version of Sounder.</string>
+    <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
+    <string name="lbl_open_fdroid">Open F-Droid</string>
+    <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
 </resources>

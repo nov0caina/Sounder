@@ -23,15 +23,21 @@ import android.text.format.Formatter
 import android.view.LayoutInflater
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 import org.nov0caina.sounder.BuildConfig
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentAboutBinding
 import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.playback.formatDurationMs
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.update.UpdateDialogHelper
+import org.nov0caina.sounder.update.UpdateManager
+import org.nov0caina.sounder.update.UpdateResult
 import org.nov0caina.sounder.util.collectImmediately
 import org.nov0caina.sounder.util.openInBrowser
 import org.nov0caina.sounder.util.systemBarInsetsCompat
@@ -44,6 +50,7 @@ import org.nov0caina.sounder.util.systemBarInsetsCompat
 @AndroidEntryPoint
 class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
     private val musicModel: MusicViewModel by activityViewModels()
+    @Inject lateinit var updateManager: UpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +70,7 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
             insets
         }
         binding.aboutVersion.text = BuildConfig.VERSION_NAME
+        binding.aboutCheckUpdates.setOnClickListener { performManualUpdateCheck() }
         binding.aboutCode.setOnClickListener { requireContext().openInBrowser(LINK_SOURCE) }
         binding.aboutWiki.setOnClickListener { requireContext().openInBrowser(LINK_WIKI) }
         binding.aboutLicenses.setOnClickListener { requireContext().openInBrowser(LINK_LICENSES) }
@@ -106,6 +114,33 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
                 R.string.fmt_lib_total_size,
                 Formatter.formatFileSize(context, statistics?.totalSizeBytes ?: 0L),
             )
+    }
+
+    private fun performManualUpdateCheck() {
+        val act = activity ?: return
+        UpdateDialogHelper.showCheckingToast(requireContext())
+        viewLifecycleOwner.lifecycleScope.launch {
+            when (val result = updateManager.checkForUpdate(isManual = true)) {
+                is UpdateResult.NewUpdate -> {
+                    UpdateDialogHelper.showUpdateAvailableDialog(
+                        activity = act,
+                        updateInfo = result.updateInfo,
+                        onIgnore = {
+                            updateManager.setIgnoredVersion(result.updateInfo.tagName)
+                        }
+                    )
+                }
+                is UpdateResult.ManagedByFDroid -> {
+                    UpdateDialogHelper.showFDroidInfoDialog(act)
+                }
+                is UpdateResult.UpToDate -> {
+                    UpdateDialogHelper.showUpToDateToast(requireContext())
+                }
+                is UpdateResult.Error -> {
+                    UpdateDialogHelper.showErrorToast(requireContext())
+                }
+            }
+        }
     }
 
     private companion object {

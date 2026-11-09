@@ -502,4 +502,17 @@
     <string name="lbl_donate_paypal">Lahjoita PayPalilla</string>
     <string name="lbl_donate_github">GitHub Sponsors</string>
     <string name="lbl_instagram">Instagram (@nov0caina)</string>
+
+    <!-- App update checker -->
+    <string name="lbl_check_updates">Tarkista päivitykset</string>
+    <string name="lbl_checking_updates">Tarkistetaan päivityksiä…</string>
+    <string name="lbl_update_available">Päivitys saatavilla</string>
+    <string name="lbl_update_available_msg">Uusi versio Sounderista (%1$s) on saatavilla.</string>
+    <string name="lbl_update_view">Näytä päivitys</string>
+    <string name="lbl_update_later">Myöhemmin</string>
+    <string name="lbl_update_ignore">Ohita tämä versio</string>
+    <string name="lbl_update_latest">Käytät Sounderin uusinta versiota.</string>
+    <string name="lbl_update_managed_by_fdroid">Sounderin päivityksiä hallinnoi F-Droid-sovelluksesi.</string>
+    <string name="lbl_open_fdroid">Avaa F-Droid</string>
+    <string name="err_update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista verkkoyhteys.</string>
 </resources>
