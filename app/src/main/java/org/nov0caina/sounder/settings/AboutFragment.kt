@@ -16,29 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings
+package org.nov0caina.sounder.settings
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.format.Formatter
 import android.view.LayoutInflater
-import androidx.core.net.toUri
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialFadeThrough
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentAboutBinding
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.formatDurationMs
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.openInBrowser
-import org.oxycblt.auxio.util.startIntent
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentAboutBinding
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.formatDurationMs
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.openInBrowser
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * A [ViewBindingFragment] that displays information about the app and the current music library.
@@ -71,23 +67,18 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
         binding.aboutWiki.setOnClickListener { requireContext().openInBrowser(LINK_WIKI) }
         binding.aboutLicenses.setOnClickListener { requireContext().openInBrowser(LINK_LICENSES) }
         binding.aboutProfile.setOnClickListener { requireContext().openInBrowser(LINK_PROFILE) }
-        binding.aboutDonate.setOnClickListener { requireContext().openInBrowser(LINK_DONATE) }
         binding.aboutFeedbackGithub.setOnClickListener {
             requireContext().openInBrowser(LINK_NEW_ISSUE)
         }
-        binding.aboutFeedbackEmail.setOnClickListener {
-            requireContext().sendEmail("feedback@auxio.app")
-        }
 
-        binding.aboutSupportersBkkellyh.setOnClickListener {
-            requireContext().openInBrowser(LINK_BKKELLYH)
+        binding.aboutDonateKofi.setOnClickListener {
+            requireContext().openInBrowser(LINK_KOFI)
         }
-        binding.aboutSupportersGruntstumper.setOnClickListener {
-            requireContext().openInBrowser(LINK_GRUNTSTUMPER)
+        binding.aboutDonatePaypal.setOnClickListener {
+            requireContext().openInBrowser(LINK_PAYPAL)
         }
-
-        binding.aboutSupportersPromo.setOnClickListener {
-            requireContext().openInBrowser(LINK_DONATE)
+        binding.aboutDonateGithub.setOnClickListener {
+            requireContext().openInBrowser(LINK_GITHUB_SPONSORS)
         }
 
         // VIEWMODEL SETUP
@@ -116,19 +107,14 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
             )
     }
 
-    private fun Context.sendEmail(recipient: String) {
-        val intent = Intent(Intent.ACTION_SENDTO).apply { data = "mailto:$recipient".toUri() }
-        startIntent(intent)
-    }
-
     private companion object {
-        const val LINK_SOURCE = "https://github.com/OxygenCobalt/Auxio"
+        const val LINK_SOURCE = "https://github.com/nov0caina/Sounder"
         const val LINK_WIKI = "$LINK_SOURCE/wiki"
         const val LINK_LICENSES = "$LINK_WIKI/Licenses"
         const val LINK_NEW_ISSUE = "$LINK_SOURCE/issues/new"
-        const val LINK_PROFILE = "https://github.com/OxygenCobalt"
-        const val LINK_BKKELLYH = "https://github.com/bkkellyh"
-        const val LINK_GRUNTSTUMPER = "https://github.com/gruntstumper"
-        const val LINK_DONATE = "https://github.com/sponsors/OxygenCobalt"
+        const val LINK_PROFILE = "https://github.com/nov0caina"
+        const val LINK_KOFI = "https://ko-fi.com/nov0caina"
+        const val LINK_PAYPAL = "https://www.paypal.com/paypalme/nov0caina"
+        const val LINK_GITHUB_SPONSORS = "https://github.com/sponsors/nov0caina"
     }
 }
