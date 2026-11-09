@@ -147,7 +147,7 @@
     <string name="lbl_copied">நகலெடுக்கப்பட்டது</string>
     <string name="lbl_report">அறிக்கை</string>
     <string name="lbl_author">நூலாசிரியர்</string>
-    <string name="lbl_author_name">அலெக்சாண்டர் கேப்ஆர்ட்</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="lbl_feedback">கருத்து</string>
     <string name="lbl_github">கிதுபில் ஒரு சிக்கலை உருவாக்குங்கள்</string>
     <string name="lbl_email">மின்னஞ்சல் அனுப்புங்கள்</string>
@@ -257,7 +257,7 @@
     <string name="desc_tab_handle">இந்த தாவலை நகர்த்தவும்</string>
     <string name="desc_clear_search">தேடல் வினவலை அழிக்கவும்</string>
     <string name="desc_music_location_delete">கோப்புறையை அகற்று</string>
-    <string name="desc_auxio_icon">ஆக்சியோ படவுரு</string>
+    <string name="desc_auxio_icon">சவுண்டர் படவுரு</string>
     <string name="desc_no_cover">ஆல்பம் கவர்</string>
     <string name="desc_album_cover">%s ஆல்பம் கவர்</string>
     <string name="desc_artist_image">%s க்கான கலைஞர் படம்</string>

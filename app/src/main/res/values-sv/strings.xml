@@ -102,7 +102,7 @@
     <string name="lbl_library_counts">Bibliotekstatistik</string>
     <string name="lng_playlist_renamed">Bytt namn på spellista</string>
     <string name="lng_playlist_deleted">Spellistan togs bort</string>
-    <string name="lbl_author_name">Alexander Capeheart</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="set_theme">Tema</string>
     <string name="set_theme_night">Mörkt</string>
     <string name="set_accent">Färgschema</string>
@@ -239,7 +239,7 @@
     <string name="set_pre_amp_with">Justering med etiketter</string>
     <string name="desc_exit">Stoppa uppspelning</string>
     <string name="desc_remove_song">Ta bort låt</string>
-    <string name="desc_auxio_icon">Auxio-ikon</string>
+    <string name="desc_auxio_icon">Sounder-ikon</string>
     <string name="desc_tab_handle">Flytta flik</string>
     <string name="desc_no_cover">Albumomslag</string>
     <string name="desc_selection_image">Urvalsbild</string>
@@ -309,7 +309,9 @@
     <string name="lbl_start_playback">Påbörja uppspelning</string>
     <string name="set_cover_mode_save_space">Spara utrymme</string>
     <string name="cnt_mp4">MPEG-4 innehållande %s</string>
-    <string name="lng_tasker_start">Påbörjar Auxio med det tidigare sparade tillståndet. Om inget sparad tillstånd är tillgängligt kommer alla låtar blandas. Uppspelning börjar omedelbart. \n\nOBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och sedan försöker använda den igen kommer du troligen få appen att krascha.</string>
+    <string name="lng_tasker_start">Påbörjar Sounder med det tidigare sparade tillståndet. Om inget sparad tillstånd är tillgängligt kommer alla låtar blandas. Uppspelning börjar omedelbart. 
+
+OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och sedan försöker använda den igen kommer du troligen få appen att krascha.</string>
     <string name="lbl_go_to_online_profile">Gå till onlineprofil</string>
     <string name="err_artist_not_found_online">Artistens onlineprofil hittades inte</string>
 

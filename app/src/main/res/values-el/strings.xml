@@ -290,4 +290,5 @@
     <string name="lbl_update_managed_by_fdroid">Οι ενημερώσεις του Sounder διαχειρίζονται από το F-Droid.</string>
     <string name="lbl_open_fdroid">Άνοιγμα F-Droid</string>
     <string name="err_update_check_failed">Αδυναμία ελέγχου για ενημερώσεις. Ελέγξτε τη σύνδεσή σας.</string>
+    <string name="lbl_author_name">nov0caina</string>
 </resources>

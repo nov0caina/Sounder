@@ -119,7 +119,7 @@
     <string name="lbl_ep_live">Концертний мініальбом</string>
     <string name="lbl_library_counts">Статистика бібліотеки</string>
     <string name="lng_indexing">Завантаження музичної бібліотеки…</string>
-    <string name="lbl_author_name">Розроблено Олександром Кейпхартом</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="fmt_lib_artist_count">Завантажено виконавців: %d</string>
     <string name="set_theme_auto">Автоматично</string>
     <string name="set_accent">Кольоровий акцент</string>
@@ -217,7 +217,7 @@
     <string name="desc_skip_prev">Перейти до попередньої пісні</string>
     <string name="clr_red">Червоний</string>
     <string name="cdc_mp4">Звук MPEG-4</string>
-    <string name="desc_auxio_icon">Іконка Auxio</string>
+    <string name="desc_auxio_icon">Іконка Sounder</string>
     <string name="clr_pink">Рожевий</string>
     <string name="clr_orange">Помаранчевий</string>
     <string name="clr_brown">Коричневий</string>
@@ -301,7 +301,9 @@
     <string name="set_remember_pause">Запам\'ятовувати паузу</string>
     <string name="set_replay_gain_mode_off">Вимкнено</string>
     <string name="lbl_start_playback">Почати відтворення</string>
-    <string name="lng_tasker_start">Запускати auxio, використовуючи раніше збережений стан. Якщо збережений стан недоступний, усі пісні будуть перетасовані. відтворення розпочнеться негайно. \n \nПопередження: будьте обережні при керуванні цією службою, якщо ви закриєте її, а потім спробуєте використовувати знову, ви, ймовірно, призведе до збою застосунка.</string>
+    <string name="lng_tasker_start">Запускати Sounder, використовуючи раніше збережений стан. Якщо збережений стан недоступний, усі пісні будуть перетасовані. відтворення розпочнеться негайно. 
+ 
+Попередження: будьте обережні при керуванні цією службою, якщо ви закриєте її, а потім спробуєте використовувати знову, ви, ймовірно, призведе до збою застосунка.</string>
     <string name="lbl_more">Більше</string>
     <string name="lbl_feedback">Зворотній зв\'язок</string>
     <string name="lbl_github">Зробіть випуск на GitHub</string>

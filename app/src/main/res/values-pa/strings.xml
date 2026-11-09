@@ -79,7 +79,7 @@
     <string name="lng_widget">ਸੰਗੀਤ ਪਲੇਬੈਕ ਵੇਖੋ ਅਤੇ ਕੰਟਰੋਲ ਕਰੋ</string>
     <string name="lng_indexing">ਤੁਹਾਡੀ ਸੰਗੀਤ ਲਾਇਬ੍ਰੇਰੀ ਨੂੰ ਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ…</string>
     <string name="lng_queue_added">ਕਤਾਰ ਵਿੱਚ ਸ਼ਾਮਿਲ ਕੀਤਾ</string>
-    <string name="lbl_author_name">ਅਲੈਗਜ਼ੈਂਡਰ ਕੇਪਹਾਰਟ ਦੁਆਰਾ ਵਿਕਸਿਤ</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="lng_search_library">ਆਪਣੀ ਲਾਇਬ੍ਰੇਰੀ ਖੋਜੋ…</string>
     <string name="set_root_title">ਸੈਟਿੰਗਾਂ</string>
     <string name="set_ui">ਦਿੱਖ ਅਤੇ ਛੋਹ</string>
@@ -246,7 +246,7 @@
     <string name="clr_grey">ਸਲੇਟੀ</string>
     <string name="fmt_lib_total_duration">ਕੁੱਲ ਮਿਆਦ: %s</string>
     <string name="desc_music_location_delete">ਫੋਲਡਰ ਹਟਾਓ</string>
-    <string name="desc_auxio_icon">Auxio ਆਈਕਾਨ</string>
+    <string name="desc_auxio_icon">Sounder ਆਈਕਾਨ</string>
     <string name="lbl_appears_on">ਉੱਤੇ ਵਿਖਾਈ ਦਿੰਦਾ ਹੈ</string>
     <string name="lbl_playlists">ਪਲੇਅ-ਲਿਸਟਾਂ</string>
     <string name="lbl_share">ਸਾਂਝਾ ਕਰੋ</string>
@@ -295,7 +295,9 @@
     <string name="set_remember_pause">ਵਿਰਾਮ ਯਾਦ ਰੱਖੋ</string>
     <string name="set_replay_gain_mode_off">ਬੰਦ</string>
     <string name="lbl_start_playback">ਪਲੇਬੈਕ ਸ਼ੁਰੂ ਕਰੋ</string>
-    <string name="lng_tasker_start">ਪਹਿਲਾਂ ਸੁਰੱਖਿਅਤ ਕੀਤੀ ਸਥਿਤੀ ਦੀ ਵਰਤੋਂ ਕਰਕੇ Auxio ਨੂੰ ਸ਼ੁਰੂ ਕਰਦਾ ਹੈ। ਜੇਕਰ ਕੋਈ ਰੱਖਿਅਤ ਸਥਿਤੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਤਾਂ ਸਾਰੇ ਗੀਤ ਸ਼ਫਲ ਤੇ ਚੱਲਣਗੇ ਅਤੇ ਪਲੇਬੈਕ ਤੁਰੰਤ ਸ਼ੁਰੂ ਹੋ ਜਾਵੇਗਾ। \n \nਚੇਤਾਵਨੀ: ਇਸ ਸੇਵਾ ਨੂੰ ਨਿਯੰਤਰਿਤ ਕਰਨ ਵਿੱਚ ਸਾਵਧਾਨ ਰਹੋ, ਜੇਕਰ ਤੁਸੀਂ ਇਸਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ ਅਤੇ ਫਿਰ ਇਸਨੂੰ ਦੁਬਾਰਾ ਵਰਤਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਸ਼ਾਇਦ ਐਪ ਨੂੰ ਕ੍ਰੈਸ਼ ਕਰ ਦਿਓਗੇ।</string>
+    <string name="lng_tasker_start">ਪਹਿਲਾਂ ਸੁਰੱਖਿਅਤ ਕੀਤੀ ਸਥਿਤੀ ਦੀ ਵਰਤੋਂ ਕਰਕੇ Sounder ਨੂੰ ਸ਼ੁਰੂ ਕਰਦਾ ਹੈ। ਜੇਕਰ ਕੋਈ ਰੱਖਿਅਤ ਸਥਿਤੀ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਤਾਂ ਸਾਰੇ ਗੀਤ ਸ਼ਫਲ ਤੇ ਚੱਲਣਗੇ ਅਤੇ ਪਲੇਬੈਕ ਤੁਰੰਤ ਸ਼ੁਰੂ ਹੋ ਜਾਵੇਗਾ। 
+ 
+ਚੇਤਾਵਨੀ: ਇਸ ਸੇਵਾ ਨੂੰ ਨਿਯੰਤਰਿਤ ਕਰਨ ਵਿੱਚ ਸਾਵਧਾਨ ਰਹੋ, ਜੇਕਰ ਤੁਸੀਂ ਇਸਨੂੰ ਬੰਦ ਕਰਦੇ ਹੋ ਅਤੇ ਫਿਰ ਇਸਨੂੰ ਦੁਬਾਰਾ ਵਰਤਣ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰਦੇ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਸ਼ਾਇਦ ਐਪ ਨੂੰ ਕ੍ਰੈਸ਼ ਕਰ ਦਿਓਗੇ।</string>
     <string name="lbl_go_to_online_profile">ਔਨਲਾਈਨ ਪ੍ਰੋਫਾਈਲ \'ਤੇ ਜਾਓ</string>
     <string name="err_artist_not_found_online">ਕਲਾਕਾਰ ਦਾ ਔਨਲਾਈਨ ਪ੍ਰੋਫਾਈਲ ਨਹੀਂ ਮਿਲਿਆ</string>
 

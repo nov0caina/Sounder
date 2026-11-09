@@ -112,7 +112,7 @@
     <string name="lbl_copied">Disalin</string>
     <string name="lbl_report">Laporkan</string>
     <string name="lbl_author">Pencipta</string>
-    <string name="lbl_author_name">Alexander Capehart</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="lbl_feedback">Maklum balas</string>
     <string name="lbl_github">Laporkan masalah di GitHub</string>
     <string name="lbl_email">Hantar emel</string>
@@ -131,7 +131,9 @@
     <string name="lng_playlist_added">Ditambah ke senarai main</string>
     <string name="lng_supporters_promo">Sumbang kepada projek ini untuk meletakkan nama anda di sini!</string>
     <string name="lng_search_library">Cari pustaka anda…</string>
-    <string name="lng_tasker_start">Memulakan Auxio menggunakan keadaan yang disimpan sebelum ini. Jika tiada keadaan yang disimpan, semua lagu akan dimainkan secara rawak. Main balik akan bermula serta-merta.\n\nAMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba menggunakannya semula, anda mungkin akan menyebabkan apl ini ranap.</string>
+    <string name="lng_tasker_start">Memulakan Sounder menggunakan keadaan yang disimpan sebelum ini. Jika tiada keadaan yang disimpan, semua lagu akan dimainkan secara rawak. Main balik akan bermula serta-merta.
+
+AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba menggunakannya semula, anda mungkin akan menyebabkan apl ini ranap.</string>
     <string name="lng_empty_songs">Lagu anda akan ditunjukkan di sini.</string>
     <string name="lng_empty_albums">Album anda akan ditunjukkan di sini.</string>
     <string name="lng_empty_artists">Artis anda akan ditunjukkan di sini.</string>
@@ -275,7 +277,7 @@
     <string name="desc_clear_search">Padam carian</string>
     <string name="desc_add_folder">Tambah folder</string>
     <string name="desc_music_location_delete">Alih keluar folder</string>
-    <string name="desc_auxio_icon">Ikon Auxio</string>
+    <string name="desc_auxio_icon">Ikon Sounder</string>
     <string name="desc_no_cover">Kulit album</string>
     <string name="desc_album_cover">Kulit album untuk %s</string>
     <string name="desc_artist_image">Imej artis untuk %s</string>

@@ -170,7 +170,7 @@
     <string name="lbl_share">साझा करें</string>
     <string name="lbl_shuffle_shortcut_short">शफल करें</string>
     <string name="lng_playlist_renamed">प्लेलिस्ट का नाम बदला गया</string>
-    <string name="lbl_author_name">अलेक्जेंडर कैपहार्ट द्वारा विकसित</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="set_separators_desc">एकाधिक टैग मानों को निरूपित करने वाले वर्ण कॉन्फ़िगर करें</string>
     <string name="set_separators_comma">अल्पविराम (,)</string>
     <string name="set_separators_slash">स्लैश (/)</string>
@@ -261,7 +261,7 @@
     <string name="set_headset_autoplay_desc">हेडसेट कनेक्ट होने पर हमेशा चलाना शुरू करें (सभी उपकरणों पर काम नहीं करेगा)</string>
     <string name="desc_track_number">ट्रैक %d</string>
     <string name="desc_skip_next">अगले गाने पर जाएं</string>
-    <string name="desc_auxio_icon">ऑक्सियो आइकन</string>
+    <string name="desc_auxio_icon">साउंडर आइकन</string>
     <string name="cdc_ogg">Ogg ऑडियो</string>
     <string name="clr_pink">गुलाबी</string>
     <string name="set_intelligent_sorting">बुद्धिमान छंटाई</string>
@@ -302,7 +302,9 @@
     <string name="set_remember_pause_desc">कतार छोड़ते या संपादित करते समय चलता/रोका रखिए</string>
     <string name="set_replay_gain_mode_off">बंद</string>
     <string name="lbl_start_playback">प्लेबैक शुरू करें</string>
-    <string name="lng_tasker_start">पहले से सहेजे गए स्टेट का उपयोग करके Auxio को शुरू करता है। यदि कोई सहेजा हुआ स्टेट उपलब्ध नहीं है, तो सभी गाने शफल पर चलेंगे और प्लेबैक तुरंत शुरू हो जाएगा। \n \nचेतावनी: इस सेवा को नियंत्रित करते समय सावधान रहें, यदि आप इसे बंद करके फिर से उपयोग करने का प्रयास करते हैं, तो संभवतः ऐप क्रैश हो जाएगा।</string>
+    <string name="lng_tasker_start">पहले से सहेजे गए स्टेट का उपयोग करके Sounder को शुरू करता है। यदि कोई सहेजा हुआ स्टेट उपलब्ध नहीं है, तो सभी गाने शफल पर चलेंगे और प्लेबैक तुरंत शुरू हो जाएगा। 
+ 
+चेतावनी: इस सेवा को नियंत्रित करते समय सावधान रहें, यदि आप इसे बंद करके फिर से उपयोग करने का प्रयास करते हैं, तो संभवतः ऐप क्रैश हो जाएगा।</string>
     <string name="lbl_go_to_online_profile">ऑनलाइन प्रोफ़ाइल पर जाएं</string>
     <string name="err_artist_not_found_online">कलाकार का ऑनलाइन प्रोफ़ाइल नहीं मिला</string>
 

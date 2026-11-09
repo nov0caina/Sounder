@@ -112,7 +112,7 @@
     <string name="lbl_copied">S\'ha copiat</string>
     <string name="lbl_report">Informa de l\'error</string>
     <string name="lbl_author">Autor</string>
-    <string name="lbl_author_name">Alexander Capehart</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="lbl_feedback">Comentaris</string>
     <string name="lbl_github">Crea una incidència al GitHub</string>
     <string name="lbl_email">Envia un correu electrònic</string>
@@ -132,7 +132,9 @@
     <string name="desc_shuffle">Activa o desactiva el mode aleatori</string>
     <string name="lng_supporters_promo">Feu una donació al projecte perquè el vostre nom aparegui aquí!</string>
     <string name="lng_search_library">Cerqueu a la fonoteca…</string>
-    <string name="lng_tasker_start">Inicia l\'Auxio amb l\'estat desat anteriorment. Si no n\'hi ha cap, es reproduiran totes les cançons aleatòriament. La reproducció començarà immediatament.\n\nAVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després proveu de tornar-lo a utilitzar, probablement fareu fallar l\'aplicació.</string>
+    <string name="lng_tasker_start">Inicia Sounder amb l\'estat desat anteriorment. Si no n\'hi ha cap, es reproduiran totes les cançons aleatòriament. La reproducció començarà immediatament.
+
+AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després proveu de tornar-lo a utilitzar, probablement fareu fallar l\'aplicació.</string>
     <string name="lng_empty_songs">Aquí apareixeran les cançons.</string>
     <string name="lng_empty_albums">Aquí apareixeran els àlbums.</string>
     <string name="lng_empty_artists">Aquí apareixeran els artistes.</string>
@@ -275,7 +277,7 @@
     <string name="desc_clear_search">Neteja la consulta de cerca</string>
     <string name="desc_add_folder">Afegeix una carpeta</string>
     <string name="desc_music_location_delete">Treu la carpeta de la llista</string>
-    <string name="desc_auxio_icon">Icona de l\'Auxio</string>
+    <string name="desc_auxio_icon">Icona de Sounder</string>
     <string name="desc_no_cover">Caràtula de l\'àlbum</string>
     <string name="desc_album_cover">Caràtula de l\'àlbum %s</string>
     <string name="desc_artist_image">Imatge de l\'artista %s</string>

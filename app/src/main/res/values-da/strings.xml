@@ -271,4 +271,5 @@
     <string name="lbl_update_managed_by_fdroid">Sounder-opdateringer administreres af din F-Droid-klient.</string>
     <string name="lbl_open_fdroid">Åbn F-Droid</string>
     <string name="err_update_check_failed">Kunne ikke søge efter opdateringer. Tjek din forbindelse.</string>
+    <string name="lbl_author_name">nov0caina</string>
 </resources>

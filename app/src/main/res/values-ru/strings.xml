@@ -34,7 +34,7 @@
     <string name="lbl_version">Версия</string>
     <string name="lbl_code">Исходный код</string>
     <string name="lbl_licenses">Лицензии</string>
-    <string name="lbl_author_name">Разработано Александром Кейпхартом</string>
+    <string name="lbl_author_name">nov0caina</string>
     <string name="set_root_title">Настройки</string>
     <string name="set_ui">Внешний вид</string>
     <string name="set_theme">Тема</string>
@@ -82,7 +82,7 @@
     <string name="desc_tab_handle">Переместить вкладку</string>
     <string name="desc_clear_search">Очистить поисковый запрос</string>
     <string name="desc_music_location_delete">Удалить папку</string>
-    <string name="desc_auxio_icon">Иконка Auxio</string>
+    <string name="desc_auxio_icon">Иконка Sounder</string>
     <string name="desc_no_cover">Обложка альбома</string>
     <string name="desc_album_cover">Обложка альбома %s</string>
     <string name="desc_artist_image">Фото исполнителя %s</string>
@@ -300,7 +300,9 @@
     <string name="set_remember_pause_desc">Оставлять воспроизведение/паузу во время пропуска или редактирования очереди</string>
     <string name="set_remember_pause">Запоминать паузу</string>
     <string name="set_replay_gain_mode_off">Откл.</string>
-    <string name="lng_tasker_start">Запускать Auxio, используя ранее сохранённое состояние. если сохранённое состояние недоступно, все песни будут перетасованы. Воспроизведение начнётся немедленно. \n \nПредупреждение: будьте осторожны при управлении этой службой, если вы закроете её, а затем попытаетесь использовать снова, вы, вероятно, приведёте к сбою приложения.</string>
+    <string name="lng_tasker_start">Запускать Sounder, используя ранее сохранённое состояние. если сохранённое состояние недоступно, все песни будут перетасованы. Воспроизведение начнётся немедленно. 
+ 
+Предупреждение: будьте осторожны при управлении этой службой, если вы закроете её, а затем попытаетесь использовать снова, вы, вероятно, приведёте к сбою приложения.</string>
     <string name="lbl_start_playback">Начать воспроизведение</string>
     <string name="lbl_more">Больше</string>
     <string name="lbl_feedback">Отзывы</string>

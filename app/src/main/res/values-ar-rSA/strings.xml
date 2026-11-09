@@ -171,4 +171,5 @@
     <string name="lbl_update_managed_by_fdroid">تتم إدارة تحديثات Sounder بواسطة عميل F-Droid الخاص بك.</string>
     <string name="lbl_open_fdroid">فتح F-Droid</string>
     <string name="err_update_check_failed">تعذر التحقق من التحديثات. تحقق من اتصالك.</string>
+    <string name="lbl_author_name">nov0caina</string>
 </resources>
