@@ -17,8 +17,8 @@ android {
 
     defaultConfig {
         applicationId namespace
-        versionName "1.0.0-sounder"
-        versionCode 75
+        versionName "1.0.1-sounder"
+        versionCode 76
 
         minSdk min_sdk
         // randomly flickers between deprecated and required depending on what mood my gradle is in
