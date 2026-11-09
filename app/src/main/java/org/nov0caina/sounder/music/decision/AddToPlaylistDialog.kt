@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.decision
+package org.nov0caina.sounder.music.decision
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,14 +28,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogMusicChoicesBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.navigateSafe
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogMusicChoicesBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.navigateSafe
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 
@@ -97,6 +97,7 @@ class AddToPlaylistDialog :
         //  I could also roll some kind of new playlist textbox into the dialog, but that's
         //  a lot harder.
         val songs = pickerModel.currentSongsToAdd.value ?: return
+        PlaylistPickerViewModel.pendingOnlineSongs = songs
         findNavController()
             .navigateSafe(
                 AddToPlaylistDialogDirections.newPlaylist(

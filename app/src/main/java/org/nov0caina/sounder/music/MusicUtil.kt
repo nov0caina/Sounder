@@ -16,15 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music
+package org.nov0caina.sounder.music
 
 import android.content.Context
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import kotlin.math.max
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.concatLocalized
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.concatLocalized
 import org.oxycblt.musikr.Music
+import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.fs.Format
 import org.oxycblt.musikr.tag.Date
 import org.oxycblt.musikr.tag.Disc
@@ -44,6 +45,9 @@ fun Name.resolve(context: Context) =
                 Placeholder.GENRE -> context.getString(R.string.def_genre)
             }
     }
+
+fun Playlist.resolveName(context: Context): String =
+    MusicViewModel.resolvePlaylistDisplayName(context, name.resolve(context))
 
 /**
  * Run [Name.resolve] on each instance in the given list and concatenate them into a [String] in a

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -35,23 +35,23 @@ import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.allowHardware
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.ForegroundListener
-import org.oxycblt.auxio.ForegroundServiceNotification
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.image.BitmapProvider
-import org.oxycblt.auxio.image.ImageSettings
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.music.service.MediaSessionUID
-import org.oxycblt.auxio.music.service.toMediaDescription
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.Progression
-import org.oxycblt.auxio.playback.state.QueueChange
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.util.newBroadcastPendingIntent
-import org.oxycblt.auxio.util.newMainPendingIntent
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.ForegroundListener
+import org.nov0caina.sounder.ForegroundServiceNotification
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.BitmapProvider
+import org.nov0caina.sounder.image.ImageSettings
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.music.service.MediaSessionUID
+import org.nov0caina.sounder.music.service.toMediaDescription
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.Progression
+import org.nov0caina.sounder.playback.state.QueueChange
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.util.newBroadcastPendingIntent
+import org.nov0caina.sounder.util.newMainPendingIntent
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -395,7 +395,7 @@ private class PlaybackNotification(
     sessionToken: MediaSessionCompat.Token,
 ) : ForegroundServiceNotification(context, CHANNEL_INFO) {
     init {
-        setSmallIcon(R.drawable.ic_auxio_24)
+        setSmallIcon(R.drawable.ic_sounder_24)
         setCategory(NotificationCompat.CATEGORY_TRANSPORT)
         setShowWhen(false)
         setSilent(true)

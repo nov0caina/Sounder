@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.locations
+package org.nov0caina.sounder.music.locations
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemMusicLocationBinding
-import org.oxycblt.auxio.databinding.ItemNoLocationsBinding
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemMusicLocationBinding
+import org.nov0caina.sounder.databinding.ItemNoLocationsBinding
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.fs.Location
 import timber.log.Timber as L
 

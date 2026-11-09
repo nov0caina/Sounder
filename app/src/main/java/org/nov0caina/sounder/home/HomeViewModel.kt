@@ -16,22 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.oxycblt.auxio.home.tabs.Tab
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.playback.PlaySong
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
+import org.nov0caina.sounder.home.tabs.Tab
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

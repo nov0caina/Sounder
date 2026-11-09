@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.menu
+package org.nov0caina.sounder.list.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -27,12 +27,12 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.core.view.children
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.DialogMenuBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.ui.ViewBindingBottomSheetDialogFragment
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.databinding.DialogMenuBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.ui.ViewBindingBottomSheetDialogFragment
+import org.nov0caina.sounder.util.collectImmediately
 import timber.log.Timber as L
 
 /**
@@ -73,6 +73,12 @@ abstract class MenuDialogFragment<M : Menu> :
      * @param menu The currently-shown menu [M].
      */
     abstract fun onClick(item: MenuItem, menu: M)
+
+    /**
+     * Optional hook to customize menu items (icon, title, visibility) before display.
+     */
+    @SuppressLint("RestrictedApi")
+    open fun customizeMenu(builder: MenuBuilder, menu: M) {}
 
     override fun onCreateBinding(inflater: LayoutInflater) = DialogMenuBinding.inflate(inflater)
 
@@ -117,11 +123,12 @@ abstract class MenuDialogFragment<M : Menu> :
         // depend on the AndroidX Toolbar internal API and hope for the best.
         @SuppressLint("RestrictedApi") val builder = MenuBuilder(requireContext())
         SupportMenuInflater(requireContext()).inflate(casted.res, builder)
+        customizeMenu(builder, casted)
 
         // Disable any menu options as specified by the impl
         val disabledIds = getDisabledItemIds(casted)
         val visible =
-            builder.children.mapTo(mutableListOf()) {
+            builder.children.filter { it.isVisible }.mapTo(mutableListOf()) {
                 it.isEnabled = !disabledIds.contains(it.itemId)
                 it
             }

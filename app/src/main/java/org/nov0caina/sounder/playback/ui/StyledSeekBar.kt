@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui
+package org.nov0caina.sounder.playback.ui
 
 import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.slider.Slider
 import kotlin.math.max
-import org.oxycblt.auxio.databinding.ViewSeekBarBinding
-import org.oxycblt.auxio.playback.formatDurationDs
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ViewSeekBarBinding
+import org.nov0caina.sounder.playback.formatDurationDs
+import org.nov0caina.sounder.util.inflater
 import timber.log.Timber as L
 
 /**

@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.replaygain
+package org.nov0caina.sounder.playback.replaygain
 
 import android.content.Context
 import kotlin.math.abs
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.R
 
 /**
  * Format a decibel value in a human-readable format.

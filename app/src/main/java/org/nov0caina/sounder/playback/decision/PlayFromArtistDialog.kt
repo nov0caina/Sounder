@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.decision
+package org.nov0caina.sounder.playback.decision
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,14 +27,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogMusicChoicesBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogMusicChoicesBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
 import android.content.Context
 import android.graphics.drawable.LayerDrawable
@@ -28,13 +28,13 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.R as MR
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.ui.BaseBottomSheetBehavior
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.replaceSystemBarInsetsCompat
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.ui.BaseBottomSheetBehavior
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.replaceSystemBarInsetsCompat
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * The [BaseBottomSheetBehavior] for the playback bottom sheet. This bottom sheet

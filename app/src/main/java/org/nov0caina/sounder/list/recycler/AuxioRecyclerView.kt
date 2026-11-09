@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.content.Context
 import android.os.Parcelable
@@ -25,7 +25,7 @@ import android.view.WindowInsets
 import androidx.annotation.AttrRes
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * A [RecyclerView] with a few QoL extensions, such as:

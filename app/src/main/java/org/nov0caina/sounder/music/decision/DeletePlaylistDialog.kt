@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.decision
+package org.nov0caina.sounder.music.decision
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,13 +26,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogDeletePlaylistBinding
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogDeletePlaylistBinding
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import org.oxycblt.musikr.Playlist
 import timber.log.Timber as L
 
@@ -88,6 +89,6 @@ class DeletePlaylistDialog : ViewBindingMaterialDialogFragment<DialogDeletePlayl
         }
 
         requireBinding().deletionInfo.text =
-            getString(R.string.fmt_deletion_info, playlist.name.resolve(requireContext()))
+            getString(R.string.fmt_deletion_info, playlist.resolveName(requireContext()))
     }
 }

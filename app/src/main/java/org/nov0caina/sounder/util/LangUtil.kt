@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.util
+package org.nov0caina.sounder.util
 
 import kotlin.reflect.KClass
-import org.oxycblt.auxio.BuildConfig
+import org.nov0caina.sounder.BuildConfig
 
 /**
  * Sanitizes a value that is unlikely to be null. On debug builds, this aliases to [requireNotNull],

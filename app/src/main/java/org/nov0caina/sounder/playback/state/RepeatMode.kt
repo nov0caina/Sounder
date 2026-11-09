@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.state
+package org.nov0caina.sounder.playback.state
 
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
 
 /**
  * Represents the current repeat mode of the player.

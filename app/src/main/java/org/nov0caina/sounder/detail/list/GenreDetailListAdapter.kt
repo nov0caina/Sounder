@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.list.recycler.ArtistViewHolder
-import org.oxycblt.auxio.list.recycler.SongViewHolder
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.list.recycler.ArtistViewHolder
+import org.nov0caina.sounder.list.recycler.SongViewHolder
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
 import org.oxycblt.musikr.Music

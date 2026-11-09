@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.decision
+package org.nov0caina.sounder.music.decision
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -24,11 +24,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.music.resolve
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.music.resolve
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
@@ -87,7 +87,9 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
                 currentPendingNewPlaylist.value?.let { pendingPlaylist ->
                     PendingNewPlaylist(
                         pendingPlaylist.preferredName,
-                        pendingPlaylist.songs.mapNotNull { library.findSong(it.uid) },
+                        pendingPlaylist.songs.mapNotNull { song ->
+                            library.findSong(song.uid) ?: pendingOnlineSongs.firstOrNull { it.uid == song.uid }
+                        },
                         pendingPlaylist.template,
                         pendingPlaylist.reason,
                     )
@@ -97,7 +99,9 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
             currentSongsToAdd.value =
                 currentSongsToAdd.value?.let { pendingSongs ->
                     pendingSongs
-                        .mapNotNull { library.findSong(it.uid) }
+                        .mapNotNull { song ->
+                            library.findSong(song.uid) ?: pendingOnlineSongs.firstOrNull { it.uid == song.uid }
+                        }
                         .ifEmpty { null }
                         .also { refreshChoicesWith = it }
                 }
@@ -148,9 +152,9 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
         L.d("Opening ${songUids.size} songs to create a playlist from")
         val library = musicRepository.library ?: return
         val songs =
-            musicRepository.library
-                ?.let { songUids.mapNotNull(it::findSong) }
-                ?.also(::refreshPlaylistChoices)
+            songUids.mapNotNull { uid ->
+                library.findSong(uid) ?: pendingOnlineSongs.firstOrNull { it.uid == uid }
+            }.also(::refreshPlaylistChoices)
 
         val possibleName =
             musicRepository.library?.let {
@@ -167,7 +171,7 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
             }
 
         currentPendingNewPlaylist.value =
-            if (possibleName != null && songs != null) {
+            if (possibleName != null && songs.isNotEmpty()) {
                 PendingNewPlaylist(possibleName, songs, template, reason)
             } else {
                 L.w("Given song UIDs to create were invalid")
@@ -277,10 +281,11 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
      */
     fun setSongsToAdd(songUids: Array<Music.UID>) {
         L.d("Opening ${songUids.size} songs to add to a playlist")
-        currentSongsToAdd.value =
-            musicRepository.library
-                ?.let { songUids.mapNotNull(it::findSong).ifEmpty { null } }
-                ?.also(::refreshPlaylistChoices)
+        val library = musicRepository.library
+        val resolvedSongs = songUids.mapNotNull { uid ->
+            library?.findSong(uid) ?: pendingOnlineSongs.firstOrNull { it.uid == uid }
+        }
+        currentSongsToAdd.value = resolvedSongs.ifEmpty { null }?.also(::refreshPlaylistChoices)
         if (currentSongsToAdd.value == null || songUids.size != currentSongsToAdd.value?.size) {
             L.w("Given song UIDs to add were (partially) invalid")
         }
@@ -296,8 +301,9 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
             }
     }
 
-    private companion object {
+    companion object {
         private val DEFAULT_EXPORT_CONFIG = ExportConfig(absolute = false, windowsPaths = false)
+        var pendingOnlineSongs: List<Song> = emptyList()
     }
 }
 

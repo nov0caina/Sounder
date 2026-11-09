@@ -22,7 +22,7 @@
         android:textAppearance="?attr/textAppearanceBodyLarge"
         tools:text="primary:path/to/music" />
 
-    <org.oxycblt.auxio.ui.RippleFixMaterialButton
+    <org.nov0caina.sounder.ui.RippleFixMaterialButton
         android:id="@+id/location_delete"
         style="@style/Widget.Auxio.Button.Icon.Small"
         android:layout_width="wrap_content"

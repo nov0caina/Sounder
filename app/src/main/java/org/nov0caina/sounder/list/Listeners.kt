@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list
+package org.nov0caina.sounder.list
 
 import android.view.MotionEvent
 import android.view.View
@@ -126,6 +126,13 @@ interface SelectableListListener<in T> : ClickableListListener<T> {
     fun onSelect(item: T)
 
     /**
+     * Called when an item in the list is long-clicked. Returns true if handled, false to fall back to onSelect.
+     *
+     * @param item The [T] item that was long-clicked.
+     */
+    fun onItemLongClick(item: T): Boolean = false
+
+    /**
      * Binds this instance to a list item.
      *
      * @param item The [T] to bind this item to.
@@ -141,9 +148,11 @@ interface SelectableListListener<in T> : ClickableListListener<T> {
         menuButton: View,
     ) {
         bind(item, viewHolder, bodyView)
-        // Map long clicks to the selection listener.
+        // Map long clicks: check if custom long-click handler consumed it, otherwise fall back to selection.
         bodyView.setOnLongClickListener {
-            onSelect(item)
+            if (!onItemLongClick(item)) {
+                onSelect(item)
+            }
             true
         }
         // Map the menu button to the menu opening listener.

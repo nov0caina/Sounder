@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.search
+package org.nov0caina.sounder.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,32 +31,35 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentSearchBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.detail.Show
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.PlainHeader
-import org.oxycblt.auxio.list.menu.Menu
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.music.PlaylistMessage
-import org.oxycblt.auxio.playback.PlaybackDecision
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.ui.FadingToolbarOffsetListener
-import org.oxycblt.auxio.util.collect
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getSystemServiceCompat
-import org.oxycblt.auxio.util.navigateSafe
-import org.oxycblt.auxio.util.setFullWidthLookup
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentSearchBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.detail.Show
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.PlainHeader
+import org.nov0caina.sounder.list.recycler.SwipeToQueueHelper
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.music.PlaylistMessage
+import org.nov0caina.sounder.playback.PlaybackDecision
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.ui.FadingToolbarOffsetListener
+import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getSystemServiceCompat
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.setFullWidthLookup
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -82,6 +85,7 @@ class SearchFragment : ListFragment<Music, FragmentSearchBinding>() {
     override val playbackModel: PlaybackViewModel by activityViewModels()
     override val musicModel: MusicViewModel by activityViewModels()
     private val searchAdapter = SearchAdapter(this)
+    private var touchHelper: ItemTouchHelper? = null
     private var getContentLauncher: ActivityResultLauncher<String>? = null
     private var pendingImportTarget: Playlist? = null
     private var imm: InputMethodManager? = null
@@ -181,6 +185,29 @@ class SearchFragment : ListFragment<Music, FragmentSearchBinding>() {
             }
         }
 
+        touchHelper =
+            ItemTouchHelper(
+                SwipeToQueueHelper(
+                    canSwipe = { viewHolder ->
+                        val pos = viewHolder.bindingAdapterPosition
+                        if (pos == RecyclerView.NO_POSITION) return@SwipeToQueueHelper false
+                        listModel.selected.value.isEmpty() && searchAdapter.currentList.getOrNull(pos) is Song
+                    },
+                    onEnqueue = { viewHolder ->
+                        val pos = viewHolder.bindingAdapterPosition
+                        if (pos != RecyclerView.NO_POSITION) {
+                            val song = searchAdapter.currentList.getOrNull(pos) as? Song
+                            if (song != null) {
+                                playbackModel.addToQueue(song)
+                                requireContext().showToast(R.string.lng_queue_added)
+                            }
+                        }
+                    },
+                )
+            ).also {
+                it.attachToRecyclerView(binding.searchRecycler)
+            }
+
         // --- VIEWMODEL SETUP ---
 
         collectImmediately(searchModel.searchResults, ::updateSearchResults)
@@ -200,6 +227,8 @@ class SearchFragment : ListFragment<Music, FragmentSearchBinding>() {
 
     override fun onDestroyBinding(binding: FragmentSearchBinding) {
         super.onDestroyBinding(binding)
+        touchHelper?.attachToRecyclerView(null)
+        touchHelper = null
         binding.searchNormalToolbar.setOnMenuItemClickListener(null)
         binding.searchRecycler.adapter = null
     }

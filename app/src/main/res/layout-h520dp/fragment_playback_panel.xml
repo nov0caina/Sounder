@@ -3,12 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <org.oxycblt.auxio.ui.AuxioToolbar
+    <!-- Dynamic Ambient Artwork Glow Layer behind album cover -->
+    <org.nov0caina.sounder.playback.ui.AmbientGlowView
+        android:id="@+id/playback_ambient_glow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <org.nov0caina.sounder.ui.AuxioToolbar
         android:id="@+id/playback_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:translationZ="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/toolbar_playback"
@@ -24,7 +37,10 @@
         android:id="@+id/playback_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/spacing_medium"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintDimensionRatio="1"
@@ -34,16 +50,17 @@
         app:layout_constraintTop_toBottomOf="@+id/playback_toolbar"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <!-- Song Metadata Container (Generous width to prevent early marquee clipping) -->
     <LinearLayout
         android:id="@+id/playback_info_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_medium"
-        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="8dp"
+        android:translationZ="2dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/playback_seek_bar"
-        app:layout_constraintEnd_toStartOf="@+id/playback_more"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/playback_actions_container"
+        app:layout_constraintEnd_toStartOf="@+id/playback_favorite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playback_toolbar"
         app:layout_constraintVertical_bias="1.0"
@@ -55,6 +72,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fallbackLineSpacing="false"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
             tools:text="Song Name" />
 
         <TextView
@@ -62,7 +83,12 @@
             style="@style/Widget.Auxio.TextView.Secondary.Marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:fallbackLineSpacing="false"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"
             tools:text="Artist Name" />
 
         <TextView
@@ -70,52 +96,108 @@
             style="@style/Widget.Auxio.TextView.Secondary.Marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:fallbackLineSpacing="false"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textSize="13sp"
+            android:textColor="?attr/colorOnSurfaceVariant"
             tools:text="Album Name" />
 
     </LinearLayout>
 
-    <org.oxycblt.auxio.ui.RippleFixMaterialButton
-        android:id="@+id/playback_more"
+    <!-- Solitary Favorite Toggle adjacent to metadata -->
+    <org.nov0caina.sounder.ui.RippleFixMaterialButton
+        android:id="@+id/playback_favorite"
         style="@style/Widget.Auxio.Button.Playback.More"
-        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small"
+        app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_medium"
-        app:icon="@drawable/ic_more_24"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/lbl_favorite"
+        app:icon="@drawable/ic_favorite_border_24"
         app:layout_constraintBottom_toBottomOf="@+id/playback_info_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/playback_info_container" />
 
-    <org.oxycblt.auxio.playback.ui.StyledSeekBar
+    <!-- Dedicated Secondary Actions Bar -->
+    <LinearLayout
+        android:id="@+id/playback_actions_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="6dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/playback_info_container"
+        app:layout_constraintBottom_toTopOf="@+id/playback_seek_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <org.nov0caina.sounder.ui.RippleFixMaterialButton
+            android:id="@+id/playback_lyrics"
+            style="@style/Widget.Auxio.Button.Playback.More"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/lyrics_title"
+            app:icon="@drawable/ic_lyrics_24" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <org.nov0caina.sounder.ui.RippleFixMaterialButton
+            android:id="@+id/playback_download"
+            style="@style/Widget.Auxio.Button.Playback.More"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/btn_download"
+            app:icon="@drawable/ic_download_24" />
+
+        <org.nov0caina.sounder.ui.RippleFixMaterialButton
+            android:id="@+id/playback_more"
+            style="@style/Widget.Auxio.Button.Playback.More"
+            app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:icon="@drawable/ic_more_24" />
+
+    </LinearLayout>
+
+    <org.nov0caina.sounder.playback.ui.StyledSeekBar
         android:id="@+id/playback_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toTopOf="@+id/playback_controls_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/playback_info_container" />
+        app:layout_constraintTop_toBottomOf="@+id/playback_actions_container" />
 
-    <org.oxycblt.auxio.playback.ui.ForcedLTRFrameLayout
+    <!-- Symmetrical Material 3 Expressive Playback Controls -->
+    <org.nov0caina.sounder.playback.ui.ForcedLTRFrameLayout
         android:id="@+id/playback_controls_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_medium"
         android:layout_marginEnd="@dimen/spacing_medium"
-        android:layout_marginBottom="@dimen/spacing_medium"
+        android:layout_marginBottom="36dp"
         app:layout_constraintTop_toBottomOf="@+id/playback_seek_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_max="400dp">
 
-        <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButtonGroup
+        <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButtonGroup
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:spacing="@dimen/spacing_small">
 
-            <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButton
+            <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButton
                 android:id="@+id/playback_repeat"
                 style="@style/Widget.Auxio.Button.Playback.Toggle"
                 android:layout_width="wrap_content"
@@ -124,16 +206,16 @@
                 app:icon="@drawable/ic_repeat_off_24"
                 app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium" />
 
-            <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButton
+            <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButton
                 android:id="@+id/playback_skip_prev"
                 style="@style/Widget.Auxio.Button.Playback.Skip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/desc_skip_prev"
                 app:icon="@drawable/ic_skip_prev_24"
-                app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Large.Narrow" />
+                app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium" />
 
-            <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButton
+            <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButton
                 android:id="@+id/playback_play_pause"
                 style="@style/Widget.Auxio.Button.Playback.PlayPause"
                 android:layout_width="wrap_content"
@@ -143,16 +225,16 @@
                 app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Large"
                 tools:icon="@drawable/ic_play_24" />
 
-            <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButton
+            <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButton
                 android:id="@+id/playback_skip_next"
                 style="@style/Widget.Auxio.Button.Playback.Skip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/desc_skip_next"
                 app:icon="@drawable/ic_skip_next_24"
-                app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Large.Narrow" />
+                app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium" />
 
-            <org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButton
+            <org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButton
                 android:id="@+id/playback_shuffle"
                 style="@style/Widget.Auxio.Button.Playback.Toggle"
                 android:layout_width="wrap_content"
@@ -162,7 +244,7 @@
                 app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium"
                 app:tint="@color/sel_activatable_icon" />
 
-        </org.oxycblt.auxio.playback.ui.button.ScaledPlaybackButtonGroup>
-    </org.oxycblt.auxio.playback.ui.ForcedLTRFrameLayout>
+        </org.nov0caina.sounder.playback.ui.button.ScaledPlaybackButtonGroup>
+    </org.nov0caina.sounder.playback.ui.ForcedLTRFrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

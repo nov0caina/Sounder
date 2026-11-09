@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list
+package org.nov0caina.sounder.list
 
 import androidx.annotation.MenuRes
 import androidx.lifecycle.ViewModel
@@ -24,11 +24,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.oxycblt.auxio.list.menu.Menu
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.playback.PlaySong
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -152,6 +152,7 @@ constructor(private val listSettings: ListSettings, private val musicRepository:
      */
     fun openMenu(@MenuRes menuRes: Int, song: Song, playWith: PlaySong) {
         L.d("Opening menu for $song")
+        org.nov0caina.sounder.list.menu.MenuViewModel.pendingSong = song
         openImpl(Menu.ForSong(menuRes, song, playWith))
     }
 

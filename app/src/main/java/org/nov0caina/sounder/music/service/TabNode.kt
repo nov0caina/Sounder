@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.MusicType
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.MusicType
 
 sealed class TabNode {
     abstract val id: String

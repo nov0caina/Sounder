@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.playback.replaygain.ReplayGainMode
-import org.oxycblt.auxio.playback.replaygain.ReplayGainPreAmp
-import org.oxycblt.auxio.settings.Settings
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.playback.replaygain.ReplayGainMode
+import org.nov0caina.sounder.playback.replaygain.ReplayGainPreAmp
+import org.nov0caina.sounder.settings.Settings
 import timber.log.Timber as L
 
 /**

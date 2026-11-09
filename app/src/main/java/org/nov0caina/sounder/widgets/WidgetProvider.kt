@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.widgets
+package org.nov0caina.sounder.widgets
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
@@ -28,15 +28,15 @@ import android.os.Bundle
 import android.util.SizeF
 import android.view.View
 import android.widget.RemoteViews
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.service.PlaybackActions
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.ui.UISettingsImpl
-import org.oxycblt.auxio.util.newBroadcastPendingIntent
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.service.PlaybackActions
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.ui.UISettingsImpl
+import org.nov0caina.sounder.util.newBroadcastPendingIntent
 import timber.log.Timber as L
 
 /**

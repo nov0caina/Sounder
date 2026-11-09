@@ -84,8 +84,11 @@ dependencies {
 
 tasks.register("assembleTaglib", Exec, {
     def jniDir = "$projectDir/src/main/cpp"
-    def libs = new File("$jniDir/taglib/pkg")
-    if (libs.exists()) {
+    def arm64 = new File("$jniDir/taglib/pkg/arm64-v8a/lib/libtag.a")
+    def armv7 = new File("$jniDir/taglib/pkg/armeabi-v7a/lib/libtag.a")
+    def x86 = new File("$jniDir/taglib/pkg/x86/lib/libtag.a")
+    def x86_64 = new File("$jniDir/taglib/pkg/x86_64/lib/libtag.a")
+    if (arm64.exists() && armv7.exists() && x86.exists() && x86_64.exists()) {
         commandLine "true"
         return
     }
@@ -96,6 +99,9 @@ tasks.register("assembleTaglib", Exec, {
 afterEvaluate {
     preDebugBuild.dependsOn assembleTaglib
     preReleaseBuild.dependsOn assembleTaglib
+    tasks.matching { it.name.startsWith("buildCMake") || it.name.startsWith("configureCMake") }.configureEach {
+        dependsOn assembleTaglib
+    }
 }
 
 clean {

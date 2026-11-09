@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -29,22 +29,22 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R as MR
 import com.google.android.material.shape.MaterialShapeDrawable
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.databinding.ItemEditHeaderBinding
-import org.oxycblt.auxio.databinding.ItemEditableSongBinding
-import org.oxycblt.auxio.list.EditableListListener
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.PlainHeader
-import org.oxycblt.auxio.list.adapter.PlayingIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.list.recycler.MaterialDragCallback
-import org.oxycblt.auxio.list.recycler.SongViewHolder
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.databinding.ItemEditHeaderBinding
+import org.nov0caina.sounder.databinding.ItemEditableSongBinding
+import org.nov0caina.sounder.list.EditableListListener
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.PlainHeader
+import org.nov0caina.sounder.list.adapter.PlayingIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.list.recycler.MaterialDragCallback
+import org.nov0caina.sounder.list.recycler.SongViewHolder
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -107,6 +107,12 @@ class PlaylistDetailListAdapter(private val listener: Listener) :
     interface Listener : DetailListAdapter.Listener<Song>, EditableListListener {
         /** Called when the "edit" option is selected in the edit header. */
         fun onStartEdit()
+
+        /** Whether the song is unavailable offline and should appear dimmed and disabled. */
+        fun isSongDisabledOffline(song: Song): Boolean = false
+
+        /** Called when a song that is disabled offline is clicked. */
+        fun onDisabledOfflineSongClick(song: Song) {}
     }
 
     /**
@@ -259,7 +265,6 @@ private constructor(private val binding: ItemEditableSongBinding) :
      */
     @SuppressLint("ClickableViewAccessibility")
     fun bind(song: Song, listener: PlaylistDetailListAdapter.Listener) {
-        listener.bind(song, this, binding.interactBody, menuButton = binding.songMenu)
         listener.bind(this, binding.songDragHandle)
         binding.songAlbumCover.bind(song)
         binding.songName.text = song.name.resolve(binding.context)
@@ -267,6 +272,17 @@ private constructor(private val binding: ItemEditableSongBinding) :
         // Not swiping this ViewHolder if it's being re-bound, ensure that the background is
         // not visible. See MaterialDragCallback for why this is done.
         binding.background.isInvisible = true
+
+        val isDisabledOffline = listener.isSongDisabledOffline(song)
+        if (isDisabledOffline) {
+            binding.body.alpha = 0.38f
+            binding.interactBody.setOnClickListener { listener.onDisabledOfflineSongClick(song) }
+            binding.interactBody.setOnLongClickListener(null)
+            binding.songMenu.setOnClickListener { listener.onOpenMenu(song) }
+        } else {
+            binding.body.alpha = 1.0f
+            listener.bind(song, this, binding.interactBody, menuButton = binding.songMenu)
+        }
     }
 
     override fun updateSelectionIndicator(isSelected: Boolean) {

@@ -1,69 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Note: The old way of naming keys was to prefix them with KEY_. Now it's to prefix them with auxio_. -->
-    <string name="set_key_ui" translatable="false">auxio_ui</string>
-    <string name="set_key_personalize" translatable="false">auxio_personalize</string>
-    <string name="set_key_music" translatable="false">auxio_music</string>
-    <string name="set_key_audio" translatable="false">auxio_audio</string>
+    <string name="set_key_ui" translatable="false">sounder_ui</string>
+    <string name="set_key_personalize" translatable="false">sounder_personalize</string>
+    <string name="set_key_music" translatable="false">sounder_music</string>
+    <string name="set_key_audio" translatable="false">sounder_audio</string>
 
     <string name="set_key_theme" translatable="false">KEY_THEME2</string>
     <string name="set_key_black_theme" translatable="false">KEY_BLACK_THEME</string>
-    <string name="set_key_accent" translatable="false">auxio_accent2</string>
+    <string name="set_key_accent" translatable="false">sounder_accent2</string>
 
-    <string name="set_key_reindex" translatable="false">auxio_reindex</string>
-    <string name="set_key_rescan" translatable="false">auxio_rescan</string>
-    <string name="set_key_observing" translatable="false">auxio_observing</string>
-    <string name="set_key_music_dirs" translatable="false">auxio_music_dirs</string>
-    <string name="set_key_excluded_dirs" translatable="false">auxio_excluded_dirs</string>
-    <string name="set_key_fs_cache" translatable="false">auxio_fs_cache</string>
-    <string name="set_key_cover_mode" translatable="false">auxio_cover_mode2</string>
-    <string name="set_key_square_covers" translatable="false">auxio_square_covers</string>
-    <string name="set_key_exclude_non_music" translatable="false">auxio_exclude_non_music</string>
-    <string name="set_key_with_hidden" translatable="false">auxio_with_hidden</string>
-    <string name="set_key_saf_multithread" translatable="false">auxio_saf_multithread</string>
-    <string name="set_key_music_locations" translatable="false">auxio_music_locations2</string>
-    <string name="set_key_excluded_locations" translatable="false">auxio_excluded_locations</string>
-    <string name="set_key_filter_mode" translatable="false">auxio_filter_mode</string>
-    <string name="set_key_filtered_locations" translatable="false">auxio_filtered_locations</string>
-    <string name="set_key_separators" translatable="false">auxio_separators</string>
-    <string name="set_key_auto_sort_names" translatable="false">auxio_auto_sort_names</string>
-    <string name="set_key_locations_mode" translatable="false">auxio_locations_mode</string>
+    <string name="set_key_reindex" translatable="false">sounder_reindex</string>
+    <string name="set_key_rescan" translatable="false">sounder_rescan</string>
+    <string name="set_key_observing" translatable="false">sounder_observing</string>
+    <string name="set_key_music_dirs" translatable="false">sounder_music_dirs</string>
+    <string name="set_key_excluded_dirs" translatable="false">sounder_excluded_dirs</string>
+    <string name="set_key_fs_cache" translatable="false">sounder_fs_cache</string>
+    <string name="set_key_cover_mode" translatable="false">sounder_cover_mode2</string>
+    <string name="set_key_square_covers" translatable="false">sounder_square_covers</string>
+    <string name="set_key_exclude_non_music" translatable="false">sounder_exclude_non_music</string>
+    <string name="set_key_with_hidden" translatable="false">sounder_with_hidden</string>
+    <string name="set_key_saf_multithread" translatable="false">sounder_saf_multithread</string>
+    <string name="set_key_music_locations" translatable="false">sounder_music_locations2</string>
+    <string name="set_key_excluded_locations" translatable="false">sounder_excluded_locations</string>
+    <string name="set_key_filter_mode" translatable="false">sounder_filter_mode</string>
+    <string name="set_key_filtered_locations" translatable="false">sounder_filtered_locations</string>
+    <string name="set_key_separators" translatable="false">sounder_separators</string>
+    <string name="set_key_auto_sort_names" translatable="false">sounder_auto_sort_names</string>
+    <string name="set_key_locations_mode" translatable="false">sounder_locations_mode</string>
 
-    <string name="set_key_headset_autoplay" translatable="false">auxio_headset_autoplay</string>
-    <string name="set_key_replay_gain" translatable="false">auxio_replay_gain</string>
-    <string name="set_key_pre_amp" translatable="false">auxio_pre_amp</string>
-    <string name="set_key_pre_amp_with" translatable="false">auxio_pre_amp_with</string>
-    <string name="set_key_pre_amp_without" translatable="false">auxio_pre_amp_without</string>
+    <string name="set_key_headset_autoplay" translatable="false">sounder_headset_autoplay</string>
+    <string name="set_key_replay_gain" translatable="false">sounder_replay_gain</string>
+    <string name="set_key_pre_amp" translatable="false">sounder_pre_amp</string>
+    <string name="set_key_pre_amp_with" translatable="false">sounder_pre_amp_with</string>
+    <string name="set_key_pre_amp_without" translatable="false">sounder_pre_amp_without</string>
 
-    <string name="set_key_play_in_list_with" translatable="false">auxio_play_in_list_with</string>
-    <string name="set_key_play_in_parent_with" translatable="false">auxio_play_in_parent_with</string>
+    <string name="set_key_play_in_list_with" translatable="false">sounder_play_in_list_with</string>
+    <string name="set_key_play_in_parent_with" translatable="false">sounder_play_in_parent_with</string>
     <string name="set_key_keep_shuffle" translatable="false">KEY_KEEP_SHUFFLE</string>
     <string name="set_key_rewind_prev" translatable="false">KEY_PREV_REWIND</string>
     <string name="set_key_repeat_pause" translatable="false">KEY_LOOP_PAUSE</string>
-    <string name="set_key_remember_pause" translatable="false">auxio_remember_pause</string>
+    <string name="set_key_remember_pause" translatable="false">sounder_remember_pause</string>
 
-    <string name="set_key_home_tabs" translatable="false">auxio_home_tabs</string>
-    <string name="set_key_hide_collaborators" translatable="false">auxio_hide_collaborators</string>
-    <string name="set_key_round_mode" translatable="false">auxio_round_covers</string>
-    <string name="set_key_bar_action" translatable="false">auxio_bar_action</string>
+    <string name="set_key_home_tabs" translatable="false">sounder_home_tabs</string>
+    <string name="set_key_hide_collaborators" translatable="false">sounder_hide_collaborators</string>
+    <string name="set_key_round_mode" translatable="false">sounder_round_covers</string>
+    <string name="set_key_bar_action" translatable="false">sounder_bar_action</string>
 
-    <string name="set_key_search_filters" translatable="false">auxio_search_filters</string>
+    <string name="set_key_search_filters" translatable="false">sounder_search_filters</string>
 
-    <string name="set_key_task_exit" translatable="false">auxio_task_exit</string>
+    <string name="set_key_task_exit" translatable="false">sounder_task_exit</string>
 
-    <string name="set_key_songs_sort" translatable="false">auxio_songs_sort</string>
-    <string name="set_key_albums_sort" translatable="false">auxio_albums_sort</string>
-    <string name="set_key_artists_sort" translatable="false">auxio_artists_sort</string>
-    <string name="set_key_genres_sort" translatable="false">auxio_genres_sort</string>
-    <string name="set_key_playlists_sort" translatable="false">auxio_playlists_sort</string>
+    <string name="set_key_songs_sort" translatable="false">sounder_songs_sort</string>
+    <string name="set_key_albums_sort" translatable="false">sounder_albums_sort</string>
+    <string name="set_key_artists_sort" translatable="false">sounder_artists_sort</string>
+    <string name="set_key_genres_sort" translatable="false">sounder_genres_sort</string>
+    <string name="set_key_playlists_sort" translatable="false">sounder_playlists_sort</string>
 
-    <string name="set_key_album_songs_sort" translatable="false">auxio_album_sort</string>
-    <string name="set_key_artist_songs_sort" translatable="false">auxio_artist_sort</string>
-    <string name="set_key_genre_songs_sort" translatable="false">auxio_genre_sort</string>
+    <string name="set_key_album_songs_sort" translatable="false">sounder_album_sort</string>
+    <string name="set_key_artist_songs_sort" translatable="false">sounder_artist_sort</string>
+    <string name="set_key_genre_songs_sort" translatable="false">sounder_genre_sort</string>
 
-    <string name="set_key_library_revision" translatable="false">auxio_library_revision</string>
+    <string name="set_key_library_revision" translatable="false">sounder_library_revision</string>
 
-    <string name="set_key_force_reload_workaround" translatable="false">auxio_force_reload</string>
+    <string name="set_key_force_reload_workaround" translatable="false">sounder_force_reload</string>
+
+    <string name="set_key_online_quality" translatable="false">sounder_online_quality</string>
+    <string name="set_key_wifi_only_downloads" translatable="false">sounder_wifi_only_downloads</string>
+    <string name="set_key_auto_download_favorites" translatable="false">sounder_auto_download_favorites</string>
+    <string name="set_key_prefer_studio_audio" translatable="false">sounder_prefer_studio_audio</string>
+    <string name="set_key_download_storage" translatable="false">sounder_download_storage</string>
+    <string name="set_key_migrate_library" translatable="false">sounder_migrate_library</string>
+    <string name="set_key_direct_deletion" translatable="false">sounder_direct_deletion</string>
+
+    <string-array name="entries_online_quality">
+        <item>@string/set_quality_high</item>
+        <item>@string/set_quality_saver</item>
+    </string-array>
+
+    <string-array name="entries_download_storage">
+        <item>@string/set_download_storage_internal</item>
+        <item>@string/set_download_storage_sd</item>
+    </string-array>
+
+    <string-array name="values_download_storage">
+        <item>INTERNAL</item>
+        <item>SD_CARD</item>
+    </string-array>
+
+    <string-array name="values_online_quality" translatable="false">
+        <item>HIGH_QUALITY</item>
+        <item>DATA_SAVER</item>
+    </string-array>
 
     <string-array name="entries_theme">
         <item>@string/set_theme_auto</item>

@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.menu
+package org.nov0caina.sounder.list.menu
 
 import android.os.Parcelable
 import androidx.annotation.MenuRes
 import kotlinx.parcelize.Parcelize
-import org.oxycblt.auxio.playback.PlaySong
+import org.nov0caina.sounder.playback.PlaySong
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

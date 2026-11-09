@@ -16,11 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio
+package org.nov0caina.sounder
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowInsets
 import androidx.activity.BackEventCompat
@@ -36,6 +37,7 @@ import com.google.android.material.bottomsheet.BackportBottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
@@ -44,31 +46,31 @@ import java.lang.reflect.Method
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
-import org.oxycblt.auxio.databinding.FragmentMainBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.detail.Show
-import org.oxycblt.auxio.home.HomeViewModel
-import org.oxycblt.auxio.home.Outer
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.OpenPanel
-import org.oxycblt.auxio.playback.PlaybackBottomSheetBehavior
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.playback.queue.QueueBottomSheetBehavior
-import org.oxycblt.auxio.ui.DialogAwareNavigationListener
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.collect
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.coordinatorLayoutBehavior
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getDimen
-import org.oxycblt.auxio.util.lazyReflectedMethod
-import org.oxycblt.auxio.util.navigateSafe
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.databinding.FragmentMainBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.detail.Show
+import org.nov0caina.sounder.home.HomeViewModel
+import org.nov0caina.sounder.home.Outer
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.OpenPanel
+import org.nov0caina.sounder.playback.PlaybackBottomSheetBehavior
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.playback.queue.QueueBottomSheetBehavior
+import org.nov0caina.sounder.ui.DialogAwareNavigationListener
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.coordinatorLayoutBehavior
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getDimen
+import org.nov0caina.sounder.util.lazyReflectedMethod
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -93,6 +95,7 @@ class MainFragment :
     private var selectionBackCallback: SelectionBackPressedCallback? = null
     private var speedDialBackCallback: SpeedDialBackPressedCallback? = null
     private var navigationListener: DialogAwareNavigationListener? = null
+    private var isUpdatingBottomNav = false
     private var lastInsets: WindowInsets? = null
     private var elevationNormal = 0f
     private var normalCornerSize = 0f
@@ -196,6 +199,75 @@ class MainFragment :
             setChangeListener(::updateSpeedDial)
         }
 
+        binding.mainBottomNav?.post {
+            val navHeight = binding.mainBottomNav?.height ?: 0
+            playbackSheetBehavior.additionalBottomOffset = navHeight
+            binding.playbackSheet.requestApplyInsets()
+
+            val fabLp = binding.mainFabContainer.layoutParams as? ViewGroup.MarginLayoutParams
+            if (fabLp != null) {
+                fabLp.bottomMargin = navHeight
+                binding.mainFabContainer.layoutParams = fabLp
+            }
+        }
+
+        binding.mainBottomNav?.setOnItemSelectedListener { item ->
+            if (isUpdatingBottomNav) return@setOnItemSelectedListener true
+            val navController = binding.exploreNavHost.findNavController()
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    if (navController.currentDestination?.id != R.id.home_feed_fragment) {
+                        navController.navigateSafe(InnerDirections.actionGlobalHomeFeed())
+                    }
+                    true
+                }
+                R.id.nav_search -> {
+                    if (navController.currentDestination?.id != R.id.discover_fragment) {
+                        navController.navigateSafe(InnerDirections.actionGlobalDiscover())
+                    }
+                    true
+                }
+                R.id.nav_library -> {
+                    if (navController.currentDestination?.id != R.id.home_fragment) {
+                        navController.navigateSafe(InnerDirections.actionGlobalLibrary())
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.mainBottomNav?.setOnItemReselectedListener { item ->
+            val navController = binding.exploreNavHost.findNavController()
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    if (navController.currentDestination?.id != R.id.home_feed_fragment) {
+                        if (!navController.popBackStack(R.id.home_feed_fragment, false)) {
+                            navController.navigateSafe(InnerDirections.actionGlobalHomeFeed())
+                        }
+                    }
+                }
+                R.id.nav_search -> {
+                    if (navController.currentDestination?.id != R.id.discover_fragment) {
+                        if (!navController.popBackStack(R.id.discover_fragment, false)) {
+                            navController.navigateSafe(InnerDirections.actionGlobalDiscover())
+                        }
+                    }
+                }
+                R.id.nav_library -> {
+                    if (navController.currentDestination?.id != R.id.home_fragment) {
+                        if (!navController.popBackStack(R.id.home_fragment, false)) {
+                            navController.navigateSafe(InnerDirections.actionGlobalLibrary())
+                        }
+                    }
+                }
+            }
+        }
+
+        binding.exploreNavHost.findNavController().addOnDestinationChangedListener { _, destination, _ ->
+            updateBottomNavSelection(destination.id)
+        }
+
         forceHideAllFabs()
         updateSpeedDial(false)
         updateFabVisibility(
@@ -219,6 +291,12 @@ class MainFragment :
         collectImmediately(listModel.selected, selectionBackCallback::invalidateEnabled)
         collectImmediately(playbackModel.song, ::updateSong)
         collectImmediately(playbackModel.openPanel.flow, ::handlePanel)
+        collect(playbackModel.offlinePlaybackWarning.flow) {
+            if (it != null) {
+                playbackModel.offlinePlaybackWarning.consume()
+                showOfflinePlaybackSnackbar()
+            }
+        }
     }
 
     override fun onStart() {
@@ -303,6 +381,11 @@ class MainFragment :
             max(1 - ((1 - binding.playbackSheet.scaleX) / playbackMaxXScaleDelta), 0f)
         val playbackLastStretchRatio = min(playbackEdgeRatio * playbackBackRatio, 1f)
         binding.mainSheetScrim.alpha = playbackLastStretchRatio
+        val bottomNav = binding.mainBottomNav
+        if (bottomNav != null) {
+            bottomNav.alpha = 1f - min(playbackRatio * 2f, 1f)
+            bottomNav.isInvisible = bottomNav.alpha == 0f
+        }
 
         playbackSheetBehavior.sheetBackgroundDrawable.setCornerSize(
             normalCornerSize * (1 - playbackLastStretchRatio)
@@ -404,13 +487,40 @@ class MainFragment :
     }
 
     private fun onExploreNavigate() {
+        val binding = requireBinding()
         listModel.dropSelection()
         updateFabVisibility(
-            requireBinding(),
+            binding,
             homeModel.songList.value,
             homeModel.isFastScrolling.value,
             homeModel.currentTabType.value,
         )
+        val currentDestId = binding.exploreNavHost.findNavController().currentDestination?.id
+        updateBottomNavSelection(currentDestId)
+    }
+
+    private fun updateBottomNavSelection(destinationId: Int?) {
+        val targetTabId = when (destinationId) {
+            R.id.home_feed_fragment -> R.id.nav_home
+            R.id.discover_fragment,
+            R.id.online_artist_fragment,
+            R.id.online_album_fragment,
+            R.id.downloads_fragment -> R.id.nav_search
+            R.id.home_fragment,
+            R.id.search_fragment,
+            R.id.album_detail_fragment,
+            R.id.artist_detail_fragment,
+            R.id.genre_detail_fragment,
+            R.id.playlist_detail_fragment -> R.id.nav_library
+            else -> null
+        } ?: return
+
+        val nav = binding?.mainBottomNav ?: return
+        if (nav.selectedItemId != targetTabId) {
+            isUpdatingBottomNav = true
+            nav.selectedItemId = targetTabId
+            isUpdatingBottomNav = false
+        }
     }
 
     private fun updateCurrentTab(tabType: MusicType) {
@@ -454,62 +564,69 @@ class MainFragment :
             L.d("Hiding fab: [empty: ${songs.isEmpty()} scrolling: $isFastScrolling]")
             forceHideAllFabs()
         } else {
-            if (tabType != MusicType.PLAYLISTS) {
-                if (binding.homeShuffleFab.isOrWillBeShown) {
-                    return
-                }
+            when (tabType) {
+                MusicType.SONGS -> {
+                    if (binding.homeShuffleFab.isOrWillBeShown) {
+                        return
+                    }
 
-                if (binding.homeNewPlaylistFab.mainFab.isOrWillBeShown) {
-                    L.d("Animating transition")
-                    binding.homeNewPlaylistFab.hide(
-                        object : FloatingActionButton.OnVisibilityChangedListener() {
-                            override fun onHidden(fab: FloatingActionButton) {
-                                super.onHidden(fab)
-                                if (
-                                    shouldHideAllFabs(
-                                        binding,
-                                        homeModel.songList.value,
-                                        homeModel.isFastScrolling.value,
-                                    )
-                                ) {
-                                    return
+                    if (binding.homeNewPlaylistFab.mainFab.isOrWillBeShown) {
+                        L.d("Animating transition to shuffle fab")
+                        binding.homeNewPlaylistFab.hide(
+                            object : FloatingActionButton.OnVisibilityChangedListener() {
+                                override fun onHidden(fab: FloatingActionButton) {
+                                    super.onHidden(fab)
+                                    if (
+                                        shouldHideAllFabs(
+                                            binding,
+                                            homeModel.songList.value,
+                                            homeModel.isFastScrolling.value,
+                                        ) || homeModel.currentTabType.value != MusicType.SONGS
+                                    ) {
+                                        return
+                                    }
+                                    binding.homeShuffleFab.show()
                                 }
-                                binding.homeShuffleFab.show()
                             }
-                        }
-                    )
-                } else {
-                    L.d("Showing immediately")
-                    binding.homeShuffleFab.show()
+                        )
+                    } else {
+                        L.d("Showing shuffle fab immediately")
+                        binding.homeShuffleFab.show()
+                    }
                 }
-            } else {
-                L.d("Showing playlist button")
-                if (binding.homeNewPlaylistFab.mainFab.isOrWillBeShown) {
-                    return
-                }
+                MusicType.PLAYLISTS -> {
+                    L.d("Showing playlist button")
+                    if (binding.homeNewPlaylistFab.mainFab.isOrWillBeShown) {
+                        return
+                    }
 
-                if (binding.homeShuffleFab.isOrWillBeShown) {
-                    L.d("Animating transition")
-                    binding.homeShuffleFab.hide(
-                        object : FloatingActionButton.OnVisibilityChangedListener() {
-                            override fun onHidden(fab: FloatingActionButton) {
-                                super.onHidden(fab)
-                                if (
-                                    shouldHideAllFabs(
-                                        binding,
-                                        homeModel.songList.value,
-                                        homeModel.isFastScrolling.value,
-                                    )
-                                ) {
-                                    return
+                    if (binding.homeShuffleFab.isOrWillBeShown) {
+                        L.d("Animating transition to new playlist fab")
+                        binding.homeShuffleFab.hide(
+                            object : FloatingActionButton.OnVisibilityChangedListener() {
+                                override fun onHidden(fab: FloatingActionButton) {
+                                    super.onHidden(fab)
+                                    if (
+                                        shouldHideAllFabs(
+                                            binding,
+                                            homeModel.songList.value,
+                                            homeModel.isFastScrolling.value,
+                                        ) || homeModel.currentTabType.value != MusicType.PLAYLISTS
+                                    ) {
+                                        return
+                                    }
+                                    binding.homeNewPlaylistFab.show()
                                 }
-                                binding.homeNewPlaylistFab.show()
                             }
-                        }
-                    )
-                } else {
-                    L.d("Showing immediately")
-                    binding.homeNewPlaylistFab.show()
+                        )
+                    } else {
+                        L.d("Showing new playlist fab immediately")
+                        binding.homeNewPlaylistFab.show()
+                    }
+                }
+                else -> {
+                    // On Albums, Artists, Genres tabs: do not show any FAB
+                    forceHideAllFabs()
                 }
             }
         }
@@ -547,16 +664,35 @@ class MainFragment :
     }
 
     private fun handleShow(show: Show?) {
+        if (show == null) return
+        playbackModel.openMain()
+        detailModel.toShow.consume()
+        val exploreNav = binding?.exploreNavHost?.findNavController() ?: return
         when (show) {
-            is Show.SongAlbumDetails,
-            is Show.ArtistDetails,
-            is Show.AlbumDetails -> playbackModel.openMain()
-            is Show.SongDetails,
-            is Show.SongArtistDecision,
-            is Show.AlbumArtistDecision,
-            is Show.GenreDetails,
-            is Show.PlaylistDetails,
-            null -> {}
+            is Show.SongAlbumDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalAlbumDetail(show.song.album.uid))
+            }
+            is Show.AlbumDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalAlbumDetail(show.album.uid))
+            }
+            is Show.ArtistDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalArtistDetail(show.artist.uid))
+            }
+            is Show.GenreDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalGenreDetail(show.genre.uid))
+            }
+            is Show.PlaylistDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalPlaylistDetail(show.playlist.uid))
+            }
+            is Show.SongDetails -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalSongDetail(show.song.uid))
+            }
+            is Show.SongArtistDecision -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalArtistChoices(show.song.uid))
+            }
+            is Show.AlbumArtistDecision -> {
+                exploreNav.navigateSafe(InnerDirections.actionGlobalArtistChoices(show.album.uid))
+            }
         }
     }
 
@@ -588,6 +724,26 @@ class MainFragment :
             OpenPanel.QUEUE -> tryOpenQueuePanel()
         }
         playbackModel.openPanel.consume()
+    }
+
+    private fun showOfflinePlaybackSnackbar() {
+        val binding = binding ?: return
+        val snackbar = Snackbar.make(
+            binding.root,
+            R.string.error_offline_track_requires_connection,
+            Snackbar.LENGTH_LONG
+        )
+        if (binding.mainBottomNav.isVisible) {
+            snackbar.anchorView = binding.mainBottomNav
+        }
+        snackbar.setAction(R.string.title_downloads) {
+            try {
+                binding.exploreNavHost.findNavController().navigate(R.id.downloads_fragment)
+            } catch (_: Exception) {
+                binding.mainBottomNav.selectedItemId = R.id.nav_library
+            }
+        }
+        snackbar.show()
     }
 
     private fun tryOpenPlaybackPanel() {

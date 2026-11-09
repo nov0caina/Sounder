@@ -16,21 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemParentBinding
-import org.oxycblt.auxio.databinding.ItemSongBinding
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemParentBinding
+import org.nov0caina.sounder.databinding.ItemSongBinding
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Music

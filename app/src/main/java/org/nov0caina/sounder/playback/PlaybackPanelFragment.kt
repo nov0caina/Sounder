@@ -16,11 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.media.audiofx.AudioEffect
 import android.os.Build
 import android.os.Bundle
@@ -34,29 +37,45 @@ import androidx.core.view.updatePadding
 import androidx.dynamicanimation.animation.SpringForce
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import coil3.ImageLoader
+import com.google.android.material.R as MR
+import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.math.abs
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentPlaybackPanelBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.queue.QueueViewModel
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.playback.ui.StyledSeekBar
-import org.oxycblt.auxio.playback.ui.stepper.Direction
-import org.oxycblt.auxio.playback.ui.stepper.StepperOverlay
-import org.oxycblt.auxio.playback.ui.swiper.CarouselTransformer
-import org.oxycblt.auxio.playback.ui.swiper.CoverPagerAdapter
-import org.oxycblt.auxio.playback.ui.swiper.UserAwarePagerCallback
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.dampen
-import org.oxycblt.auxio.util.recycler
-import org.oxycblt.auxio.util.showToast
-import org.oxycblt.auxio.util.smoothScrollByPageTo
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.InnerDirections
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentPlaybackPanelBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.list.menu.MenuViewModel
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.lyrics.LyricsBottomSheetDialogFragment
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.playback.queue.QueueViewModel
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.playback.ui.StyledSeekBar
+import org.nov0caina.sounder.playback.ui.stepper.Direction
+import org.nov0caina.sounder.playback.ui.stepper.StepperOverlay
+import org.nov0caina.sounder.playback.ui.swiper.CarouselTransformer
+import org.nov0caina.sounder.playback.ui.swiper.CoverPagerAdapter
+import org.nov0caina.sounder.playback.ui.swiper.UserAwarePagerCallback
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.dampen
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.recycler
+import org.nov0caina.sounder.util.showToast
+import org.nov0caina.sounder.util.smoothScrollByPageTo
+import org.nov0caina.sounder.util.systemBarInsetsCompat
+import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -79,9 +98,14 @@ class PlaybackPanelFragment :
     private val playbackModel: PlaybackViewModel by activityViewModels()
     private val detailModel: DetailViewModel by activityViewModels()
     private val listModel: ListViewModel by activityViewModels()
+    private val musicModel: MusicViewModel by activityViewModels()
     private val queueModel: QueueViewModel by viewModels()
     private var equalizerLauncher: ActivityResultLauncher<Intent>? = null
     private var userAwarePagerCallback: UserAwarePagerCallback? = null
+
+    @Inject lateinit var downloadManager: DownloadManager
+    @Inject lateinit var musicRepository: MusicRepository
+    @Inject lateinit var imageLoader: ImageLoader
 
     override fun onCreateBinding(inflater: LayoutInflater) =
         FragmentPlaybackPanelBinding.inflate(inflater)
@@ -163,14 +187,47 @@ class PlaybackPanelFragment :
                     dampingRatio = 0.9f
                 }
             )
+            val isPlaying = playbackModel.isPlaying.value
+            isChecked = isPlaying
+            setIconResource(if (isPlaying) R.drawable.ic_pause_24 else R.drawable.ic_play_24)
             setOnClickListener { playbackModel.togglePlaying() }
         }
         binding.playbackSkipNext.setOnClickListener { playbackModel.next() }
         binding.playbackShuffle.setOnClickListener { playbackModel.toggleShuffled() }
-        binding.playbackMore?.setOnClickListener {
-            playbackModel.song.value?.let {
-                listModel.openMenu(R.menu.playback_song, it, PlaySong.ByItself)
+        binding.playbackFavorite?.setOnClickListener {
+            playbackModel.song.value?.let { song ->
+                musicModel.toggleFavorite(song) { isFav ->
+                    requireContext().showToast(if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite)
+                }
             }
+        }
+        binding.playbackDownload?.setOnClickListener {
+            val song = playbackModel.song.value
+            if (song is OnlineSong) {
+                if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
+                    requireContext().showToast(R.string.msg_storage_permission_required)
+                    return@setOnClickListener
+                }
+                downloadManager.enqueue(song.onlineTrack)
+                requireContext().showToast(getString(R.string.download_queued, song.onlineTrack.title))
+                binding.playbackDownload?.isEnabled = false
+                binding.playbackDownload?.alpha = 0.5f
+            }
+        }
+        binding.playbackMore?.setOnClickListener {
+            val currentSong = playbackModel.song.value ?: return@setOnClickListener
+            MenuViewModel.pendingSong = currentSong
+            val playWith = PlaySong.ByItself
+            val parcel = Menu.ForSong(R.menu.playback_song, currentSong, playWith).parcel
+            try {
+                requireActivity().findNavController(R.id.explore_nav_host)
+                    .navigateSafe(InnerDirections.actionGlobalSongMenu(parcel))
+            } catch (t: Throwable) {
+                L.e(t, "Failed to navigate to global song menu")
+            }
+        }
+        binding.playbackLyrics?.setOnClickListener {
+            LyricsBottomSheetDialogFragment().show(childFragmentManager, "lyrics_dialog")
         }
 
         // --- VIEWMODEL SETUP --
@@ -181,6 +238,15 @@ class PlaybackPanelFragment :
         collectImmediately(playbackModel.isPlaying, ::updatePlaying)
         collectImmediately(playbackModel.isShuffled, ::updateShuffled)
         collectImmediately(playbackModel.pagerQueue, ::updatePager)
+        collectImmediately(musicModel.favoriteSongUids) { uids ->
+            updateFavorite(playbackModel.song.value, uids)
+        }
+        collectImmediately(downloadManager.downloads) {
+            updateDownload(playbackModel.song.value)
+        }
+        collectImmediately(musicModel.indexingState) {
+            updateDownload(playbackModel.song.value)
+        }
     }
 
     // FIXME: Old code!! Maybe not necessary anymore?
@@ -270,6 +336,64 @@ class PlaybackPanelFragment :
         binding.playbackArtist.text = song.artists.resolveNames(context)
         binding.playbackAlbum?.text = song.album.name.resolve(context)
         binding.playbackSeekBar?.durationDs = song.durationMs.msToDs()
+        binding.playbackAmbientGlow?.bind(song, imageLoader)
+        updateFavorite(song, musicModel.favoriteSongUids.value)
+        updateDownload(song)
+    }
+
+    private fun updateFavorite(song: Song?, favoriteUids: Set<Music.UID>) {
+        val isFav = song != null && favoriteUids.contains(song.uid)
+        val iconRes = if (isFav) R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24
+        binding?.playbackFavorite?.apply {
+            setIconResource(iconRes)
+            iconTint = if (isFav) {
+                context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary)
+            } else {
+                context.getAttrColorCompat(com.google.android.material.R.attr.colorOnSurfaceVariant)
+            }
+        }
+    }
+
+    private fun isSongDownloadedOrInLibrary(song: Song?): Boolean {
+        if (song == null) return false
+        if (song !is OnlineSong) return true
+        return downloadManager.isDownloaded(song.onlineTrack)
+    }
+
+    private fun updateDownload(song: Song?) {
+        val downloadButton = binding?.playbackDownload ?: return
+        if (song == null) {
+            downloadButton.isEnabled = false
+            return
+        }
+
+        if (isSongDownloadedOrInLibrary(song)) {
+            downloadButton.setIconResource(R.drawable.ic_check_24)
+            downloadButton.isEnabled = false
+            downloadButton.alpha = 0.5f
+            downloadButton.contentDescription = getString(R.string.btn_downloaded)
+            return
+        }
+
+        if (song is OnlineSong) {
+            val isDownloading = downloadManager.isEnqueuedOrDownloading(song.onlineTrack)
+            if (isDownloading) {
+                downloadButton.setIconResource(R.drawable.ic_download_24)
+                downloadButton.isEnabled = false
+                downloadButton.alpha = 0.4f
+                downloadButton.contentDescription = getString(R.string.btn_downloading)
+            } else {
+                downloadButton.setIconResource(R.drawable.ic_download_24)
+                downloadButton.isEnabled = true
+                downloadButton.alpha = 1.0f
+                downloadButton.contentDescription = getString(R.string.btn_download)
+            }
+        } else {
+            downloadButton.setIconResource(R.drawable.ic_check_24)
+            downloadButton.isEnabled = false
+            downloadButton.alpha = 0.5f
+            downloadButton.contentDescription = getString(R.string.btn_downloaded)
+        }
     }
 
     private fun updateParent(parent: MusicParent?) {
@@ -280,7 +404,15 @@ class PlaybackPanelFragment :
     }
 
     private fun updatePosition(positionDs: Long) {
-        requireBinding().playbackSeekBar?.positionDs = positionDs
+        val seekBar = requireBinding().playbackSeekBar ?: return
+        val currentSong = playbackModel.song.value
+        if (currentSong != null && currentSong.durationMs > 0) {
+            val expectedDurationDs = currentSong.durationMs.msToDs()
+            if (seekBar.durationDs != expectedDurationDs) {
+                seekBar.durationDs = expectedDurationDs
+            }
+        }
+        seekBar.positionDs = positionDs
     }
 
     private fun updateRepeat(repeatMode: RepeatMode) {
@@ -290,7 +422,11 @@ class PlaybackPanelFragment :
     }
 
     private fun updatePlaying(isPlaying: Boolean) {
-        requireBinding().playbackPlayPause.isChecked = isPlaying
+        val playPauseButton = requireBinding().playbackPlayPause
+        playPauseButton.isChecked = isPlaying
+        playPauseButton.setIconResource(
+            if (isPlaying) R.drawable.ic_pause_24 else R.drawable.ic_play_24
+        )
         requireBinding().playbackSeekBar?.setWaveEnabled(isPlaying)
     }
 
@@ -380,15 +516,57 @@ class PlaybackPanelFragment :
     }
 
     private fun navigateToCurrentSong() {
-        playbackModel.song.value?.let(detailModel::showAlbum)
+        val song = playbackModel.song.value ?: return
+        playbackModel.openMain()
+        if (song is OnlineSong) {
+            val track = song.onlineTrack
+            val albumId = track.albumId.orEmpty()
+            val albumTitle = track.album?.takeIf { it.isNotBlank() } ?: track.title
+            val artistName = track.artist
+            if (albumId.isNotEmpty()) {
+                requireActivity().findNavController(R.id.explore_nav_host)
+                    .navigateSafe(InnerDirections.actionGlobalOnlineAlbum(albumId, albumTitle, artistName))
+            } else {
+                requireActivity().findNavController(R.id.explore_nav_host)
+                    .navigateSafe(InnerDirections.actionGlobalOnlineArtist(track.artistId.orEmpty(), artistName))
+            }
+        } else {
+            detailModel.showAlbum(song)
+        }
     }
 
     private fun navigateToCurrentArtist() {
-        playbackModel.song.value?.let(detailModel::showArtist)
+        val song = playbackModel.song.value ?: return
+        playbackModel.openMain()
+        if (song is OnlineSong) {
+            val track = song.onlineTrack
+            val artistId = track.artistId.orEmpty()
+            val artistName = song.artists.firstOrNull()?.name?.resolve(requireContext()) ?: track.artist
+            requireActivity().findNavController(R.id.explore_nav_host)
+                .navigateSafe(InnerDirections.actionGlobalOnlineArtist(artistId, artistName))
+        } else {
+            detailModel.showArtist(song)
+        }
     }
 
     private fun navigateToCurrentAlbum() {
-        playbackModel.song.value?.let { detailModel.showAlbum(it.album) }
+        val song = playbackModel.song.value ?: return
+        playbackModel.openMain()
+        if (song is OnlineSong) {
+            val track = song.onlineTrack
+            val albumId = track.albumId.orEmpty()
+            val albumTitle = track.album?.takeIf { it.isNotBlank() } ?: track.title
+            val artistName = track.artist
+            if (albumId.isNotEmpty()) {
+                requireActivity().findNavController(R.id.explore_nav_host)
+                    .navigateSafe(InnerDirections.actionGlobalOnlineAlbum(albumId, albumTitle, artistName))
+            } else {
+                requireActivity().findNavController(R.id.explore_nav_host)
+                    .navigateSafe(InnerDirections.actionGlobalOnlineArtist(track.artistId.orEmpty(), artistName))
+            }
+        } else {
+            detailModel.showAlbum(song.album)
+        }
     }
 
     override fun seek(direction: Direction) {

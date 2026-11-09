@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.queue
+package org.nov0caina.sounder.playback.queue
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Drawable
@@ -26,17 +26,17 @@ import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R as MR
 import com.google.android.material.shape.MaterialShapeDrawable
-import org.oxycblt.auxio.databinding.ItemEditableSongBinding
-import org.oxycblt.auxio.list.EditClickListListener
-import org.oxycblt.auxio.list.adapter.FlexibleListAdapter
-import org.oxycblt.auxio.list.adapter.PlayingIndicatorAdapter
-import org.oxycblt.auxio.list.recycler.MaterialDragCallback
-import org.oxycblt.auxio.list.recycler.SongViewHolder
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemEditableSongBinding
+import org.nov0caina.sounder.list.EditClickListListener
+import org.nov0caina.sounder.list.adapter.FlexibleListAdapter
+import org.nov0caina.sounder.list.adapter.PlayingIndicatorAdapter
+import org.nov0caina.sounder.list.recycler.MaterialDragCallback
+import org.nov0caina.sounder.list.recycler.SongViewHolder
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 

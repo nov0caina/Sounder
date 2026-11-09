@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import androidx.annotation.OptIn
 import androidx.media3.common.C

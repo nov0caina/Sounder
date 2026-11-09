@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.widgets
+package org.nov0caina.sounder.widgets
 
 import android.content.res.Resources
 import android.graphics.Bitmap

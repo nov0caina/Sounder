@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.content.Context
 import android.util.AttributeSet
@@ -26,8 +26,8 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDivider
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.getDimenPixels
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.getDimenPixels
 
 /**
  * A [RecyclerView] intended for use in dialogs, with NestedScrollView-style scroll indicators.

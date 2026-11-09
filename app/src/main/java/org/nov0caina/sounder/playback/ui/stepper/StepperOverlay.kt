@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui.stepper
+package org.nov0caina.sounder.playback.ui.stepper
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -32,9 +32,9 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.ui.Effect
-import org.oxycblt.auxio.ui.UISettings
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.ui.Effect
+import org.nov0caina.sounder.ui.UISettings
 
 enum class Direction {
     FORWARDS,

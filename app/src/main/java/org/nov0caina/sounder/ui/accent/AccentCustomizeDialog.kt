@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui.accent
+package org.nov0caina.sounder.ui.accent
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,13 +24,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogAccentBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogAccentBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import timber.log.Timber as L
 
 /**

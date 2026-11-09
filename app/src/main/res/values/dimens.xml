@@ -45,8 +45,8 @@
     <dimen name="progress_wavelength">40dp</dimen>
     <dimen name="progress_wave_speed">20dp</dimen>
 
-    <dimen name="recycler_fab_space_normal">88dp</dimen>
-    <dimen name="recycler_fab_space_large">128dp</dimen>
+    <dimen name="recycler_fab_space_normal">176dp</dimen>
+    <dimen name="recycler_fab_space_large">216dp</dimen>
 
     <dimen name="widget_def_width">180dp</dimen>
     <dimen name="widget_def_height">100dp</dimen>

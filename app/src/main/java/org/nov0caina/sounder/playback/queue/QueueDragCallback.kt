@@ -15,20 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
- 
-package org.oxycblt.auxio.playback.queue
+
+package org.nov0caina.sounder.playback.queue
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.list.recycler.MaterialDragCallback
+import org.nov0caina.sounder.list.recycler.MaterialDragCallback
 
 /**
- * A highly customized [ItemTouchHelper.Callback] that enables some extra eye candy in the queue UI,
- * such as an animation when lifting items.
+ * A highly customized [ItemTouchHelper.Callback] that enables reordering and swipe-to-dismiss
+ * in the queue UI. Only upcoming tracks (`position > currentIndex`) can be swiped to dismiss,
+ * keeping the currently playing track securely locked in place.
  *
  * @author Alexander Capehart (OxygenCobalt)
  */
 class QueueDragCallback(private val queueModel: QueueViewModel) : MaterialDragCallback() {
+
+    override fun getMovementFlags(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+    ): Int {
+        if (viewHolder !is ViewHolder || !viewHolder.enabled) {
+            return 0
+        }
+        val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+        val position = viewHolder.bindingAdapterPosition
+        val currentIndex = queueModel.index.value
+        // Only upcoming tracks (position > currentIndex) can be swiped to dismiss.
+        // The currently playing track (position == currentIndex) and past tracks cannot be dismissed.
+        val swipeFlags = if (position != RecyclerView.NO_POSITION && position > currentIndex) {
+            ItemTouchHelper.START
+        } else {
+            0
+        }
+        return makeMovementFlags(dragFlags, swipeFlags)
+    }
+
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,

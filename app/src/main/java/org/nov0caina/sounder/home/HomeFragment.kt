@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -38,33 +38,33 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentHomeBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.detail.Show
-import org.oxycblt.auxio.home.list.AlbumListFragment
-import org.oxycblt.auxio.home.list.ArtistListFragment
-import org.oxycblt.auxio.home.list.GenreListFragment
-import org.oxycblt.auxio.home.list.PlaylistListFragment
-import org.oxycblt.auxio.home.list.SongListFragment
-import org.oxycblt.auxio.home.tabs.NamedTabStrategy
-import org.oxycblt.auxio.home.tabs.Tab
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.SelectionFragment
-import org.oxycblt.auxio.list.menu.Menu
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.music.PlaylistMessage
-import org.oxycblt.auxio.playback.PlaybackDecision
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.ui.FadingToolbarOffsetListener
-import org.oxycblt.auxio.util.collect
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.dampen
-import org.oxycblt.auxio.util.navigateSafe
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentHomeBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.detail.Show
+import org.nov0caina.sounder.home.list.AlbumListFragment
+import org.nov0caina.sounder.home.list.ArtistListFragment
+import org.nov0caina.sounder.home.list.GenreListFragment
+import org.nov0caina.sounder.home.list.PlaylistListFragment
+import org.nov0caina.sounder.home.list.SongListFragment
+import org.nov0caina.sounder.home.tabs.NamedTabStrategy
+import org.nov0caina.sounder.home.tabs.Tab
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.SelectionFragment
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.music.PlaylistMessage
+import org.nov0caina.sounder.playback.PlaybackDecision
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.ui.FadingToolbarOffsetListener
+import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.dampen
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.IndexingProgress
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.Playlist
@@ -83,7 +83,6 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
     override val musicModel: MusicViewModel by activityViewModels()
     override val playbackModel: PlaybackViewModel by activityViewModels()
     private val homeModel: HomeViewModel by activityViewModels()
-    private val detailModel: DetailViewModel by activityViewModels()
     private var storagePermissionLauncher: ActivityResultLauncher<String>? = null
     private var getContentLauncher: ActivityResultLauncher<String>? = null
     private var pendingImportTarget: Playlist? = null
@@ -166,7 +165,6 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         collect(homeModel.recreateTabs.flow, ::handleRecreate)
         collect(homeModel.chooseMusicLocations.flow, ::handleChooseFolders)
         collectImmediately(homeModel.currentTabType, ::updateCurrentTab)
-        collect(detailModel.toShow.flow, ::handleShow)
         collect(listModel.menu.flow, ::handleMenu)
         collectImmediately(listModel.selected, ::updateSelection)
         collectImmediately(musicModel.indexingState, ::updateIndexerState)
@@ -187,7 +185,12 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         }
 
         return when (item.itemId) {
-            // Handle main actions (Search, Settings, About)
+            // Handle main actions (Downloads, Search, Settings, About)
+            R.id.action_downloads -> {
+                L.d("Navigating to downloads")
+                findNavController().navigateSafe(HomeFragmentDirections.downloads())
+                true
+            }
             R.id.action_search -> {
                 L.d("Navigating to search")
                 findNavController().navigateSafe(HomeFragmentDirections.search())
@@ -391,48 +394,6 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
             is PlaybackDecision.PlayFromGenre -> {
                 findNavController()
                     .navigateSafe(HomeFragmentDirections.playFromGenre(decision.song.uid))
-            }
-            null -> {}
-        }
-    }
-
-    private fun handleShow(show: Show?) {
-        when (show) {
-            is Show.SongDetails -> {
-                L.d("Navigating to ${show.song}")
-                findNavController().navigateSafe(HomeFragmentDirections.showSong(show.song.uid))
-            }
-            is Show.SongAlbumDetails -> {
-                L.d("Navigating to the album of ${show.song}")
-                findNavController()
-                    .navigateSafe(HomeFragmentDirections.showAlbum(show.song.album.uid))
-            }
-            is Show.AlbumDetails -> {
-                L.d("Navigating to ${show.album}")
-                findNavController().navigateSafe(HomeFragmentDirections.showAlbum(show.album.uid))
-            }
-            is Show.ArtistDetails -> {
-                L.d("Navigating to ${show.artist}")
-                findNavController().navigateSafe(HomeFragmentDirections.showArtist(show.artist.uid))
-            }
-            is Show.SongArtistDecision -> {
-                L.d("Navigating to artist choices for ${show.song}")
-                findNavController()
-                    .navigateSafe(HomeFragmentDirections.showArtistChoices(show.song.uid))
-            }
-            is Show.AlbumArtistDecision -> {
-                L.d("Navigating to artist choices for ${show.album}")
-                findNavController()
-                    .navigateSafe(HomeFragmentDirections.showArtistChoices(show.album.uid))
-            }
-            is Show.GenreDetails -> {
-                L.d("Navigating to ${show.genre}")
-                findNavController().navigateSafe(HomeFragmentDirections.showGenre(show.genre.uid))
-            }
-            is Show.PlaylistDetails -> {
-                L.d("Navigating to ${show.playlist}")
-                findNavController()
-                    .navigateSafe(HomeFragmentDirections.showPlaylist(show.playlist.uid))
             }
             null -> {}
         }

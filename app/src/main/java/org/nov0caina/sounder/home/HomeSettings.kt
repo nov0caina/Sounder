@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.home.tabs.Tab
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.settings.Settings
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.home.tabs.Tab
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.settings.Settings
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import timber.log.Timber as L
 
 /**

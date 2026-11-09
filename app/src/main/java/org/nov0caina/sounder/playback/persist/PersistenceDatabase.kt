@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.persist
+package org.nov0caina.sounder.playback.persist
 
 import androidx.room.Dao
 import androidx.room.Database
@@ -28,7 +28,7 @@ import androidx.room.Query
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
-import org.oxycblt.auxio.playback.state.RepeatMode
+import org.nov0caina.sounder.playback.state.RepeatMode
 import org.oxycblt.musikr.Music
 
 /**

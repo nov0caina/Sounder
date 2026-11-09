@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail
+package org.nov0caina.sounder.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,26 +26,26 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.detail.list.DiscDivider
-import org.oxycblt.auxio.detail.list.DiscHeader
-import org.oxycblt.auxio.detail.list.EditHeader
-import org.oxycblt.auxio.detail.list.SongProperty
-import org.oxycblt.auxio.detail.list.SortHeader
-import org.oxycblt.auxio.list.BasicHeader
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.PlainHeader
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.playback.PlaySong
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.detail.list.DiscDivider
+import org.nov0caina.sounder.detail.list.DiscHeader
+import org.nov0caina.sounder.detail.list.EditHeader
+import org.nov0caina.sounder.detail.list.SongProperty
+import org.nov0caina.sounder.detail.list.SortHeader
+import org.nov0caina.sounder.list.BasicHeader
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.PlainHeader
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -219,12 +219,18 @@ constructor(
         }
     }
 
+    var pendingSong: Song? = null
+        private set
+
     /**
      * Navigate to the details (properties) of a [Song].
      *
      * @param song The [Song] to navigate with.
      */
-    fun showSong(song: Song) = showImpl(Show.SongDetails(song))
+    fun showSong(song: Song) {
+        pendingSong = song
+        showImpl(Show.SongDetails(song))
+    }
 
     /**
      * Navigate to the [Album] details of the given [Song], scrolling to the given [Song] as well.
@@ -308,7 +314,10 @@ constructor(
      */
     fun setSong(uid: Music.UID) {
         L.d("Opening song $uid")
-        currentSong.value = musicRepository.library?.findSong(uid)?.also(::refreshAudioInfo)
+        val song = musicRepository.library?.findSong(uid)
+            ?: pendingSong?.takeIf { it.uid == uid }
+            ?: (toShow.flow.value as? Show.SongDetails)?.takeIf { it.song.uid == uid }?.song
+        currentSong.value = song?.also(::refreshAudioInfo)
         if (currentSong.value == null) {
             L.w("Given song UID was invalid")
         }

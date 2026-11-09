@@ -17,6 +17,18 @@
         android:icon="@drawable/ic_queue_add_24"
         android:title="@string/lbl_queue_add" />
     <item
+        android:id="@+id/action_favorite"
+        android:icon="@drawable/ic_favorite_border_24"
+        android:title="@string/lbl_add_favorite" />
+    <item
+        android:id="@+id/action_download"
+        android:icon="@drawable/ic_download_24"
+        android:title="@string/lbl_download_track" />
+    <item
+        android:id="@+id/action_remove_from_playlist"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/lbl_remove_from_playlist" />
+    <item
         android:id="@+id/action_playlist_add"
         android:icon="@drawable/ic_playlist_add_24"
         android:title="@string/lbl_playlist_add" />
@@ -32,6 +44,10 @@
         android:id="@+id/action_detail"
         android:icon="@drawable/ic_details_24"
         android:title="@string/lbl_song_detail" />
+    <item
+        android:id="@+id/action_delete_download"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/lbl_delete_download" />
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share_24"

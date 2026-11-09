@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.BroadcastReceiver
 import android.content.ComponentName
@@ -25,9 +25,9 @@ import android.content.Intent
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.AuxioService
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.SounderPlaybackService
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
 import timber.log.Timber as L
 
 /**
@@ -51,8 +51,8 @@ class MediaButtonReceiver : BroadcastReceiver() {
             // TODO: Think I finally have an alternative with the changes I made to accomodate
             //  tasker
             L.d("Delivering media button intent $intent")
-            intent.component = ComponentName(context, AuxioService::class.java)
-            intent.putExtra(AuxioService.INTENT_KEY_START_ID, IntegerTable.START_ID_MEDIA_BUTTON)
+            intent.component = ComponentName(context, SounderPlaybackService::class.java)
+            intent.putExtra(SounderPlaybackService.INTENT_KEY_START_ID, IntegerTable.START_ID_MEDIA_BUTTON)
             ContextCompat.startForegroundService(context, intent)
         }
     }

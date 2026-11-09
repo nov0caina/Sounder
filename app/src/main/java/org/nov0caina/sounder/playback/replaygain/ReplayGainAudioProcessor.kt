@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.replaygain
+package org.nov0caina.sounder.playback.replaygain
 
 import androidx.media3.common.C
 import androidx.media3.common.Format
@@ -27,9 +27,9 @@ import androidx.media3.common.util.UnstableApi
 import java.nio.ByteBuffer
 import javax.inject.Inject
 import kotlin.math.pow
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.QueueChange
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.QueueChange
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song

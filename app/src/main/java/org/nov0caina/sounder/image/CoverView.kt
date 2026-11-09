@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.image
+package org.nov0caina.sounder.image
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -55,19 +55,20 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.min
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.image.coil.GalleryCoverCollection
-import org.oxycblt.auxio.image.coil.RoundedRectTransformation
-import org.oxycblt.auxio.image.coil.SmatteringCoverComposition
-import org.oxycblt.auxio.image.coil.SquareCropTransformation
-import org.oxycblt.auxio.image.coil.StackCoverComposition
-import org.oxycblt.auxio.ui.Effect
-import org.oxycblt.auxio.ui.Spatial
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getColorCompat
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.getDrawableCompat
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.coil.GalleryCoverCollection
+import org.nov0caina.sounder.image.coil.RoundedRectTransformation
+import org.nov0caina.sounder.image.coil.SmatteringCoverComposition
+import org.nov0caina.sounder.image.coil.SquareCropTransformation
+import org.nov0caina.sounder.image.coil.StackCoverComposition
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.ui.Effect
+import org.nov0caina.sounder.ui.Spatial
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getColorCompat
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.getDrawableCompat
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -439,7 +440,7 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
                     backgroundColor(),
                 )
             },
-            context.getString(R.string.desc_playlist_image, playlist.name),
+            context.getString(R.string.desc_playlist_image, playlist.resolveName(context)),
             R.drawable.ic_playlist_24,
             squareishShapeAppearance,
         )

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music
+package org.nov0caina.sounder.music
 
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
 
 /**
  * General configuration enum to control what kind of music is being worked with.

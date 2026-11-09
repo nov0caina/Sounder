@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.list
+package org.nov0caina.sounder.home.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,23 +25,23 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentHomeListBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.home.HomeViewModel
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.recycler.ArtistViewHolder
-import org.oxycblt.auxio.list.recycler.FastScrollRecyclerView
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.playback.formatDurationMsPopup
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.positiveOrNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentHomeListBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.home.HomeViewModel
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.recycler.ArtistViewHolder
+import org.nov0caina.sounder.list.recycler.FastScrollRecyclerView
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.playback.formatDurationMsPopup
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.positiveOrNull
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent

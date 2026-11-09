@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.image.covers
+package org.nov0caina.sounder.image.covers
 
 import android.content.Context
 import android.graphics.Bitmap
 import java.util.UUID
 import javax.inject.Inject
-import org.oxycblt.auxio.image.CoverMode
-import org.oxycblt.auxio.image.ImageSettings
+import org.nov0caina.sounder.image.CoverMode
+import org.nov0caina.sounder.image.ImageSettings
 import org.oxycblt.musikr.covers.Cover
 import org.oxycblt.musikr.covers.Covers
 import org.oxycblt.musikr.covers.FDCover

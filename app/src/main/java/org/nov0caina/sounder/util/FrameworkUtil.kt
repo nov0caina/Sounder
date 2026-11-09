@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.util
+package org.nov0caina.sounder.util
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -41,7 +41,7 @@ import androidx.viewbinding.ViewBinding
 import androidx.viewpager2.widget.ViewPager2
 import java.lang.IllegalArgumentException
 import java.lang.reflect.Field
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.R
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

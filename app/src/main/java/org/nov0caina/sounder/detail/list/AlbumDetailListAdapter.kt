@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.view.ViewGroup
 import androidx.core.view.isGone
@@ -24,26 +24,26 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDivider
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemAlbumSongBinding
-import org.oxycblt.auxio.databinding.ItemDiscHeaderBinding
-import org.oxycblt.auxio.detail.list.AlbumSongViewHolder.Companion.from
-import org.oxycblt.auxio.detail.list.DiscDividerViewHolder.Companion.from
-import org.oxycblt.auxio.detail.list.DiscHeaderViewHolder.Companion.from
-import org.oxycblt.auxio.list.Divider
-import org.oxycblt.auxio.list.Header
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.music.areNamesTheSame
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.formatDurationMs
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemAlbumSongBinding
+import org.nov0caina.sounder.databinding.ItemDiscHeaderBinding
+import org.nov0caina.sounder.detail.list.AlbumSongViewHolder.Companion.from
+import org.nov0caina.sounder.detail.list.DiscDividerViewHolder.Companion.from
+import org.nov0caina.sounder.detail.list.DiscHeaderViewHolder.Companion.from
+import org.nov0caina.sounder.list.Divider
+import org.nov0caina.sounder.list.Header
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.music.areNamesTheSame
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.formatDurationMs
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Song
 import org.oxycblt.musikr.tag.Disc

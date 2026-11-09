@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
 import android.content.Context
 import android.os.Bundle
@@ -28,9 +28,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.ForegroundListener
-import org.oxycblt.auxio.ForegroundServiceNotification
-import org.oxycblt.auxio.music.MusicRepository
+import org.nov0caina.sounder.ForegroundListener
+import org.nov0caina.sounder.ForegroundServiceNotification
+import org.nov0caina.sounder.music.MusicRepository
 import timber.log.Timber as L
 
 class MusicServiceFragment

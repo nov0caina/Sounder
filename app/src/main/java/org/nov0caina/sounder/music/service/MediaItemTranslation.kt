@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -26,13 +26,14 @@ import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.support.v4.media.MediaDescriptionCompat
 import androidx.annotation.StringRes
 import androidx.media.utils.MediaConstants
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.image.CoverProvider
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.formatDurationDs
-import org.oxycblt.auxio.util.getPlural
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.CoverProvider
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.formatDurationDs
+import org.nov0caina.sounder.util.getPlural
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -233,7 +234,7 @@ fun Playlist.toMediaItem(context: Context, vararg sugar: Sugar): MediaItem {
     val description =
         MediaDescriptionCompat.Builder()
             .setMediaId(mediaSessionUID.toString())
-            .setTitle(name.resolve(context))
+            .setTitle(resolveName(context))
             .setSubtitle(counts)
             .setDescription(durationMs.formatDurationDs(true))
             .setIconUri(

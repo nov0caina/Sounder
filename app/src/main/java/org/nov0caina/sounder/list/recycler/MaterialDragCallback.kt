@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.annotation.SuppressLint
 import android.graphics.Canvas
@@ -32,11 +32,11 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sign
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.ui.Effect
-import org.oxycblt.auxio.ui.Spatial
-import org.oxycblt.auxio.util.getDimen
-import org.oxycblt.auxio.util.getDimenPixels
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.ui.Effect
+import org.nov0caina.sounder.ui.Spatial
+import org.nov0caina.sounder.util.getDimen
+import org.nov0caina.sounder.util.getDimenPixels
 import timber.log.Timber as L
 
 /**
@@ -72,7 +72,7 @@ abstract class MaterialDragCallback : ItemTouchHelper.Callback() {
     private val itemTranslateZString = Spatial.DEFAULT
     private val itemAnims = mutableMapOf<View, AnimBundle>()
 
-    final override fun getMovementFlags(
+    open override fun getMovementFlags(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
     ) =
@@ -113,7 +113,7 @@ abstract class MaterialDragCallback : ItemTouchHelper.Callback() {
     }
 
     @SuppressLint("PrivateResource")
-    final override fun onChildDraw(
+    open override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -154,7 +154,7 @@ abstract class MaterialDragCallback : ItemTouchHelper.Callback() {
         // not being swiped. This issue is also the reason why the background is not merged with
         // the FrameLayout within the item.
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            holder.delete.isInvisible = dX == 0f
+            holder.delete.isInvisible = dX >= 0f
         }
 
         // Update other translations. We do not call the default implementation, so we must do
@@ -168,7 +168,7 @@ abstract class MaterialDragCallback : ItemTouchHelper.Callback() {
         bg.setCornerSize(progressiveCornerSize)
     }
 
-    final override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+    open override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         // When an elevated item is cleared, we reset the elevation using another animation.
         val holder = viewHolder as ViewHolder
 

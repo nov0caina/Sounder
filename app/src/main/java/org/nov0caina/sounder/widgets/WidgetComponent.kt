@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.widgets
+package org.nov0caina.sounder.widgets
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -25,17 +25,17 @@ import coil3.request.ImageRequest
 import coil3.request.transformations
 import coil3.size.Size
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.image.BitmapProvider
-import org.oxycblt.auxio.image.ImageSettings
-import org.oxycblt.auxio.image.coil.RoundedRectTransformation
-import org.oxycblt.auxio.image.coil.SquareCropTransformation
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.Progression
-import org.oxycblt.auxio.playback.state.QueueChange
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.util.getDimenPixels
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.BitmapProvider
+import org.nov0caina.sounder.image.ImageSettings
+import org.nov0caina.sounder.image.coil.RoundedRectTransformation
+import org.nov0caina.sounder.image.coil.SquareCropTransformation
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.Progression
+import org.nov0caina.sounder.playback.state.QueueChange
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.util.getDimenPixels
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

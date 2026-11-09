@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.content.Context
 import android.util.AttributeSet

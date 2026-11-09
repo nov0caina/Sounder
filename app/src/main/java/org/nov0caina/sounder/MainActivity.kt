@@ -16,24 +16,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio
+package org.nov0caina.sounder
 
+import android.Manifest
+import android.app.Activity
 import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.updatePadding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.databinding.ActivityMainBinding
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.playback.state.DeferredPlayback
-import org.oxycblt.auxio.ui.UISettings
-import org.oxycblt.auxio.util.isNight
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.databinding.ActivityMainBinding
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.playback.state.DeferredPlayback
+import org.nov0caina.sounder.ui.UISettings
+import org.nov0caina.sounder.util.isNight
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 import timber.log.Timber as L
 
 /**
@@ -53,7 +62,38 @@ import timber.log.Timber as L
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val playbackModel: PlaybackViewModel by viewModels()
+    private val musicModel: MusicViewModel by viewModels()
     @Inject lateinit var uiSettings: UISettings
+
+    private val storagePermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                L.d("Storage permission granted on launch, refreshing library index")
+                musicModel.refresh()
+            } else {
+                L.w("Storage permission denied on launch")
+            }
+        }
+
+    private var pendingMediaDeletionCallback: ((Boolean) -> Unit)? = null
+    private val mediaDeletionLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            val granted = result.resultCode == Activity.RESULT_OK
+            val callback = pendingMediaDeletionCallback
+            pendingMediaDeletionCallback = null
+            callback?.invoke(granted)
+        }
+
+    fun requestMediaDeletion(intentSender: IntentSender, onResult: (Boolean) -> Unit) {
+        pendingMediaDeletionCallback = onResult
+        try {
+            mediaDeletionLauncher.launch(IntentSenderRequest.Builder(intentSender).build())
+        } catch (t: Throwable) {
+            L.e(t, "Failed to launch media deletion intent sender")
+            pendingMediaDeletionCallback = null
+            onResult(false)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,16 +102,30 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupEdgeToEdge(binding.root)
+        checkStoragePermission()
         L.d("Activity created")
+    }
+
+    private fun checkStoragePermission() {
+        val permission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_AUDIO
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            L.d("Requesting storage permission on initial launch: $permission")
+            storagePermissionLauncher.launch(permission)
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
         startService(
-            Intent(this, AuxioService::class.java)
-                .setAction(AuxioService.ACTION_START)
-                .putExtra(AuxioService.INTENT_KEY_START_ID, IntegerTable.START_ID_ACTIVITY)
+            Intent(this, SounderPlaybackService::class.java)
+                .setAction(SounderPlaybackService.ACTION_START)
+                .putExtra(SounderPlaybackService.INTENT_KEY_START_ID, IntegerTable.START_ID_ACTIVITY)
         )
 
         if (!startIntentAction(intent)) {
@@ -138,7 +192,7 @@ class MainActivity : AppCompatActivity() {
         val action =
             when (intent.action) {
                 Intent.ACTION_VIEW -> DeferredPlayback.Open(intent.data ?: return false)
-                Auxio.INTENT_KEY_SHORTCUT_SHUFFLE -> DeferredPlayback.ShuffleAll
+                SounderApplication.INTENT_KEY_SHORTCUT_SHUFFLE -> DeferredPlayback.ShuffleAll
                 else -> {
                     L.w("Unexpected intent ${intent.action}")
                     return false

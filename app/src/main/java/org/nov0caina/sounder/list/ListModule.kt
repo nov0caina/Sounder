@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list
+package org.nov0caina.sounder.list
 
 import dagger.Binds
 import dagger.Module

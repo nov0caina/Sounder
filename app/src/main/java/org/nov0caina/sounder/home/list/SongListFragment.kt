@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.list
+package org.nov0caina.sounder.home.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,23 +24,27 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentHomeListBinding
-import org.oxycblt.auxio.home.HomeViewModel
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.recycler.FastScrollRecyclerView
-import org.oxycblt.auxio.list.recycler.SongViewHolder
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.playback.formatDurationMsPopup
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentHomeListBinding
+import org.nov0caina.sounder.home.HomeViewModel
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.recycler.FastScrollRecyclerView
+import org.nov0caina.sounder.list.recycler.SongViewHolder
+import org.nov0caina.sounder.list.recycler.SwipeToQueueHelper
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.playback.formatDurationMsPopup
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
@@ -60,6 +64,7 @@ class SongListFragment :
     override val musicModel: MusicViewModel by activityViewModels()
     override val playbackModel: PlaybackViewModel by activityViewModels()
     private val songAdapter = SongAdapter(this)
+    private var touchHelper: ItemTouchHelper? = null
 
     override fun onCreateBinding(inflater: LayoutInflater) =
         FragmentHomeListBinding.inflate(inflater)
@@ -73,6 +78,27 @@ class SongListFragment :
             popupProvider = this@SongListFragment
             listener = this@SongListFragment
         }
+
+        touchHelper =
+            ItemTouchHelper(
+                SwipeToQueueHelper(
+                    canSwipe = { viewHolder ->
+                        listModel.selected.value.isEmpty() && viewHolder is SongViewHolder
+                    },
+                    onEnqueue = { viewHolder ->
+                        val pos = viewHolder.bindingAdapterPosition
+                        if (pos != RecyclerView.NO_POSITION) {
+                            val song = songAdapter.currentList.getOrNull(pos)
+                            if (song != null) {
+                                playbackModel.addToQueue(song)
+                                requireContext().showToast(R.string.lng_queue_added)
+                            }
+                        }
+                    },
+                )
+            ).also {
+                it.attachToRecyclerView(binding.homeRecycler)
+            }
 
         binding.homeNoMusicPlaceholder.apply {
             setImageResource(R.drawable.ic_song_48)
@@ -95,6 +121,8 @@ class SongListFragment :
 
     override fun onDestroyBinding(binding: FragmentHomeListBinding) {
         super.onDestroyBinding(binding)
+        touchHelper?.attachToRecyclerView(null)
+        touchHelper = null
         binding.homeRecycler.apply {
             adapter = null
             popupProvider = null
@@ -154,6 +182,14 @@ class SongListFragment :
 
     override fun onRealClick(item: Song) {
         playbackModel.play(item, homeModel.playWith)
+    }
+
+    override fun onItemLongClick(item: Song): Boolean {
+        if (listModel.selected.value.isNotEmpty()) {
+            return false
+        }
+        onOpenMenu(item)
+        return true
     }
 
     override fun onOpenMenu(item: Song) {

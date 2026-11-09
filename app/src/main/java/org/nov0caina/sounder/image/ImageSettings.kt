@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.image
+package org.nov0caina.sounder.image
 
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.settings.Settings
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.settings.Settings
 import timber.log.Timber as L
 
 /**

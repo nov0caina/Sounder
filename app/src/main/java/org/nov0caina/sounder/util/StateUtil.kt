@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.util
+package org.nov0caina.sounder.util
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle

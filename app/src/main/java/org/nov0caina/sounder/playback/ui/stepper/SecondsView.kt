@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui.stepper
+package org.nov0caina.sounder.playback.ui.stepper
 
 import android.content.Context
 import android.provider.Settings
@@ -25,9 +25,9 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringAnimation
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.PlayerFastSeekSecondsViewBinding
-import org.oxycblt.auxio.ui.Effect
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.PlayerFastSeekSecondsViewBinding
+import org.nov0caina.sounder.ui.Effect
 
 class SecondsView(context: Context, attrs: AttributeSet?) : LinearLayout(context, attrs) {
 

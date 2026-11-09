@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings.categories
+package org.nov0caina.sounder.settings.categories
 
 import androidx.navigation.fragment.findNavController
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.settings.BasePreferenceFragment
-import org.oxycblt.auxio.settings.ui.WrappedDialogPreference
-import org.oxycblt.auxio.util.navigateSafe
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.settings.BasePreferenceFragment
+import org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+import org.nov0caina.sounder.util.navigateSafe
 import timber.log.Timber as L
 
 /**

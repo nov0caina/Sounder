@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings
+package org.nov0caina.sounder.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -31,13 +31,13 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.children
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialSharedAxis
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.settings.ui.IntListPreference
-import org.oxycblt.auxio.settings.ui.IntListPreferenceDialog
-import org.oxycblt.auxio.settings.ui.PreferenceHeaderItemDecoration
-import org.oxycblt.auxio.settings.ui.WrappedDialogPreference
-import org.oxycblt.auxio.ui.AuxioToolbar
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.settings.ui.IntListPreference
+import org.nov0caina.sounder.settings.ui.IntListPreferenceDialog
+import org.nov0caina.sounder.settings.ui.PreferenceHeaderItemDecoration
+import org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+import org.nov0caina.sounder.ui.AuxioToolbar
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 import timber.log.Timber as L
 
 /**

@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Electronic / Waveform Waves Icon -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillAlpha="0.85"
+        android:pathData="M2,12C3.5,12 4.2,7 6,7C7.8,7 8.5,17 10,17C11.5,17 12.2,4 14,4C15.8,4 16.5,20 18,20C19.5,20 20.2,12 22,12"
+        android:strokeColor="@android:color/white"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

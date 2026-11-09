@@ -16,20 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentPlaybackBarBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentPlaybackBarBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 
@@ -103,10 +103,21 @@ class PlaybackBarFragment : ViewBindingFragment<FragmentPlaybackBarBinding>() {
     }
 
     private fun updatePlaying(isPlaying: Boolean) {
-        requireBinding().playbackPlayPause.isChecked = isPlaying
+        val playPauseButton = requireBinding().playbackPlayPause
+        playPauseButton.isChecked = isPlaying
+        playPauseButton.setIconResource(
+            if (isPlaying) R.drawable.ic_pause_24 else R.drawable.ic_play_24
+        )
     }
 
     private fun updatePosition(positionDs: Long) {
+        val currentSong = playbackModel.song.value
+        if (currentSong != null && currentSong.durationMs > 0) {
+            val maxDs = currentSong.durationMs.msToDs().toInt()
+            if (binding?.playbackProgressBar?.max != maxDs) {
+                binding?.playbackProgressBar?.max = maxDs
+            }
+        }
         requireBinding().playbackProgressBar.progress = positionDs.toInt()
     }
 

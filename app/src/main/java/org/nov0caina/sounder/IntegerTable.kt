@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio
+package org.nov0caina.sounder
 
 /**
  * A table containing all of the magic integer codes that the codebase has currently reserved. May
@@ -61,11 +61,11 @@ object IntegerTable {
     const val INDEXER_NOTIFICATION_CODE = 0xA0A1
     /** MainActivity Intent request code */
     const val REQUEST_CODE = 0xA0C0
-    /** Activity AuxioService Start ID */
+    /** Activity SounderPlaybackService Start ID */
     const val START_ID_ACTIVITY = 0xA050
-    /** Tasker AuxioService Start ID */
+    /** Tasker SounderPlaybackService Start ID */
     const val START_ID_TASKER = 0xA051
-    /** MediaButtonReceiver AuxioService Start ID */
+    /** MediaButtonReceiver SounderPlaybackService Start ID */
     const val START_ID_MEDIA_BUTTON = 0xA052
     /** RepeatMode.NONE */
     const val REPEAT_MODE_NONE = 0xA100

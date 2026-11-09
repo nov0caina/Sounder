@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.state
+package org.nov0caina.sounder.playback.state
 
 import android.net.Uri
 import android.os.SystemClock
 import android.support.v4.media.session.PlaybackStateCompat
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 

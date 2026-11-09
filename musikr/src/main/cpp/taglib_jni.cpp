@@ -26,10 +26,17 @@
 
 #include "taglib/fileref.h"
 #include "taglib/flacfile.h"
+#include "taglib/flacpicture.h"
 #include "taglib/mp4file.h"
 #include "taglib/mp4properties.h"
+#include "taglib/mp4tag.h"
+#include "taglib/mp4coverart.h"
+#include "taglib/mp4item.h"
 #include "taglib/mpegfile.h"
+#include "taglib/id3v2tag.h"
+#include "taglib/attachedpictureframe.h"
 #include "taglib/opusfile.h"
+#include "taglib/xiphcomment.h"
 #include "taglib/vorbisfile.h"
 #include "taglib/wavfile.h"
 
@@ -320,4 +327,121 @@ Java_org_oxycblt_musikr_metadata_TagLibJNI_openNative(JNIEnv *env,
         delete overriddenFile;
         return metadataResultProviderFailed(env);
     }
+}
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_org_oxycblt_musikr_metadata_TagLibJNI_writeTagsNative(JNIEnv *env,
+        jobject /* this */,
+        jstring jpath,
+        jstring jtitle,
+        jstring jartist,
+        jstring jalbum,
+        jstring jgenre,
+        jbyteArray jcoverData,
+        jint jtrack,
+        jint jyear) {
+    if (jpath == nullptr) return JNI_FALSE;
+    const char *pathChars = env->GetStringUTFChars(jpath, nullptr);
+    if (pathChars == nullptr) return JNI_FALSE;
+
+    const char *coverBytes = nullptr;
+    jsize coverLen = 0;
+    if (jcoverData != nullptr) {
+        coverLen = env->GetArrayLength(jcoverData);
+        if (coverLen > 0) {
+            coverBytes = reinterpret_cast<const char*>(env->GetByteArrayElements(jcoverData, nullptr));
+        }
+    }
+
+    bool success = false;
+    try {
+        TagLib::FileRef fileRef(pathChars, false);
+        if (!fileRef.isNull() && fileRef.tag() != nullptr) {
+            auto *tag = fileRef.tag();
+            if (jtitle != nullptr) {
+                const char *titleChars = env->GetStringUTFChars(jtitle, nullptr);
+                tag->setTitle(TagLib::String(titleChars, TagLib::String::UTF8));
+                env->ReleaseStringUTFChars(jtitle, titleChars);
+            }
+            if (jartist != nullptr) {
+                const char *artistChars = env->GetStringUTFChars(jartist, nullptr);
+                tag->setArtist(TagLib::String(artistChars, TagLib::String::UTF8));
+                env->ReleaseStringUTFChars(jartist, artistChars);
+            }
+            if (jalbum != nullptr) {
+                const char *albumChars = env->GetStringUTFChars(jalbum, nullptr);
+                tag->setAlbum(TagLib::String(albumChars, TagLib::String::UTF8));
+                env->ReleaseStringUTFChars(jalbum, albumChars);
+            }
+            if (jgenre != nullptr) {
+                const char *genreChars = env->GetStringUTFChars(jgenre, nullptr);
+                tag->setGenre(TagLib::String(genreChars, TagLib::String::UTF8));
+                env->ReleaseStringUTFChars(jgenre, genreChars);
+            }
+            if (jtrack > 0) {
+                tag->setTrack(static_cast<unsigned int>(jtrack));
+            }
+            if (jyear > 0) {
+                tag->setYear(static_cast<unsigned int>(jyear));
+            }
+
+            if (coverBytes != nullptr && coverLen > 0) {
+                TagLib::ByteVector byteVector(coverBytes, static_cast<unsigned int>(coverLen));
+                bool isPng = (coverLen >= 4 &&
+                              static_cast<unsigned char>(coverBytes[0]) == 0x89 &&
+                              static_cast<unsigned char>(coverBytes[1]) == 0x50);
+
+                if (auto *mp4File = dynamic_cast<TagLib::MP4::File*>(fileRef.file())) {
+                    if (auto *mp4Tag = mp4File->tag()) {
+                        TagLib::MP4::CoverArt::Format fmt = isPng ? TagLib::MP4::CoverArt::PNG : TagLib::MP4::CoverArt::JPEG;
+                        TagLib::MP4::CoverArt art(fmt, byteVector);
+                        TagLib::MP4::CoverArtList list;
+                        list.append(art);
+                        mp4Tag->setItem("covr", TagLib::MP4::Item(list));
+                    }
+                } else if (auto *mpegFile = dynamic_cast<TagLib::MPEG::File*>(fileRef.file())) {
+                    if (auto *id3v2Tag = mpegFile->ID3v2Tag(true)) {
+                        auto frames = id3v2Tag->frameList("APIC");
+                        for (auto *f : frames) {
+                            id3v2Tag->removeFrame(f);
+                        }
+                        auto *frame = new TagLib::ID3v2::AttachedPictureFrame();
+                        frame->setPicture(byteVector);
+                        frame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
+                        frame->setMimeType(isPng ? "image/png" : "image/jpeg");
+                        id3v2Tag->addFrame(frame);
+                    }
+                } else if (auto *flacFile = dynamic_cast<TagLib::FLAC::File*>(fileRef.file())) {
+                    flacFile->removePictures();
+                    auto *pic = new TagLib::FLAC::Picture();
+                    pic->setData(byteVector);
+                    pic->setType(TagLib::FLAC::Picture::FrontCover);
+                    pic->setMimeType(isPng ? "image/png" : "image/jpeg");
+                    flacFile->addPicture(pic);
+                } else if (auto *opusFile = dynamic_cast<TagLib::Ogg::Opus::File*>(fileRef.file())) {
+                    if (auto *opusTag = opusFile->tag()) {
+                        opusTag->removeAllPictures();
+                        auto *pic = new TagLib::FLAC::Picture();
+                        pic->setData(byteVector);
+                        pic->setType(TagLib::FLAC::Picture::FrontCover);
+                        pic->setMimeType(isPng ? "image/png" : "image/jpeg");
+                        opusTag->addPicture(pic);
+                    }
+                }
+            }
+
+            success = fileRef.save();
+            LOGD("writeTagsNative for %s: success=%d", pathChars, success);
+        } else {
+            LOGE("writeTagsNative: fileRef isNull or tag is null for %s", pathChars);
+        }
+    } catch (std::exception &e) {
+        LOGE("writeTagsNative exception for %s: %s", pathChars, e.what());
+    }
+
+    if (coverBytes != nullptr) {
+        env->ReleaseByteArrayElements(jcoverData, reinterpret_cast<jbyte*>(const_cast<char*>(coverBytes)), JNI_ABORT);
+    }
+    env->ReleaseStringUTFChars(jpath, pathChars);
+    return success ? JNI_TRUE : JNI_FALSE;
 }

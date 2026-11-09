@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.Context
 import android.content.Intent
@@ -28,15 +28,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.AuxioService.Companion.INTENT_KEY_START_ID
-import org.oxycblt.auxio.ForegroundListener
-import org.oxycblt.auxio.ForegroundServiceNotification
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.playback.state.DeferredPlayback
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.Progression
-import org.oxycblt.auxio.widgets.WidgetComponent
+import org.nov0caina.sounder.ForegroundListener
+import org.nov0caina.sounder.ForegroundServiceNotification
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.SounderPlaybackService.Companion.INTENT_KEY_START_ID
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.playback.state.DeferredPlayback
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.Progression
+import org.nov0caina.sounder.widgets.WidgetComponent
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

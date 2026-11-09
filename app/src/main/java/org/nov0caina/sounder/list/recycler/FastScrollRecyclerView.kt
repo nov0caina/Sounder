@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -56,18 +56,18 @@ import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.ui.Effect
-import org.oxycblt.auxio.ui.ExpressiveShapes
-import org.oxycblt.auxio.ui.Spatial
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getAttrResourceId
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.inflater
-import org.oxycblt.auxio.util.isRtl
-import org.oxycblt.auxio.util.isUnder
-import org.oxycblt.auxio.util.scale
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.ui.Effect
+import org.nov0caina.sounder.ui.ExpressiveShapes
+import org.nov0caina.sounder.ui.Spatial
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getAttrResourceId
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.inflater
+import org.nov0caina.sounder.util.isRtl
+import org.nov0caina.sounder.util.isUnder
+import org.nov0caina.sounder.util.scale
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * A [RecyclerView] that enables better fast-scrolling. This is fundamentally a implementation of

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.Context
 import android.content.Intent
@@ -28,15 +28,15 @@ import android.support.v4.media.session.PlaybackStateCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import org.apache.commons.text.similarity.JaroWinklerSimilarity
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.service.MediaSessionUID
-import org.oxycblt.auxio.music.service.MusicBrowser
-import org.oxycblt.auxio.playback.state.PlaybackCommand
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.playback.state.ShuffleMode
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.service.MediaSessionUID
+import org.nov0caina.sounder.music.service.MusicBrowser
+import org.nov0caina.sounder.playback.state.PlaybackCommand
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.playback.state.ShuffleMode
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

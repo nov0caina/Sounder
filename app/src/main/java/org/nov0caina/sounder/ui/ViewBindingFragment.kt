@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,7 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import timber.log.Timber as L
 
 /**

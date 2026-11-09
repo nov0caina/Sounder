@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.state
+package org.nov0caina.sounder.playback.state
 
 import javax.inject.Inject
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.playback.PlaybackSettings
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.playback.PlaybackSettings
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -61,9 +61,18 @@ interface PlaybackCommand {
 
         fun songFromPlaylist(song: Song, playlist: Playlist, shuffle: ShuffleMode): PlaybackCommand?
 
+        fun songFromPlaylist(
+            song: Song,
+            playlist: Playlist,
+            queue: List<Song>,
+            shuffle: ShuffleMode,
+        ): PlaybackCommand?
+
         fun all(shuffle: ShuffleMode): PlaybackCommand?
 
         fun songs(songs: List<Song>, shuffle: ShuffleMode): PlaybackCommand?
+
+        fun songFromQueue(song: Song?, queue: List<Song>, shuffle: ShuffleMode): PlaybackCommand?
 
         fun album(album: Album, shuffle: ShuffleMode): PlaybackCommand?
 
@@ -117,10 +126,20 @@ constructor(
     override fun songFromPlaylist(song: Song, playlist: Playlist, shuffle: ShuffleMode) =
         newCommand(song, playlist, playlist.songs, shuffle)
 
+    override fun songFromPlaylist(
+        song: Song,
+        playlist: Playlist,
+        queue: List<Song>,
+        shuffle: ShuffleMode,
+    ) = newCommand(song, playlist, queue, shuffle)
+
     override fun all(shuffle: ShuffleMode) = newCommand(null, shuffle)
 
     override fun songs(songs: List<Song>, shuffle: ShuffleMode) =
         newCommand(null, null, songs, shuffle)
+
+    override fun songFromQueue(song: Song?, queue: List<Song>, shuffle: ShuffleMode) =
+        newCommand(song, null, queue, shuffle)
 
     override fun album(album: Album, shuffle: ShuffleMode) =
         newCommand(null, album, listSettings.albumSongSort, shuffle)

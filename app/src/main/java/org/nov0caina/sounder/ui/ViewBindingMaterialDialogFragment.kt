@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,8 +27,8 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.oxycblt.auxio.util.fixDoubleRipple
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.util.fixDoubleRipple
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import timber.log.Timber as L
 
 /**

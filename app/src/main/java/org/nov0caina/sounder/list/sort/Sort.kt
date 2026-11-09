@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.sort
+package org.nov0caina.sounder.list.sort
 
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

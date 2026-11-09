@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list
+package org.nov0caina.sounder.list
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
 import androidx.viewbinding.ViewBinding
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.ui.AuxioToolbar
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.ui.AuxioToolbar
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.showToast
 
 /**
  * A subset of ListFragment that implements aspects of the selection UI.

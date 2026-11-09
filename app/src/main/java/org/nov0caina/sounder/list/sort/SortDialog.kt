@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.sort
+package org.nov0caina.sounder.list.sort
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.DialogSortBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.ui.ViewBindingBottomSheetDialogFragment
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.databinding.DialogSortBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.ui.ViewBindingBottomSheetDialogFragment
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 abstract class SortDialog :
     ViewBindingBottomSheetDialogFragment<DialogSortBinding>(), ClickableListListener<Sort.Mode> {

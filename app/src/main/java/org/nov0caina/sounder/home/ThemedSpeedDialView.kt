@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import android.animation.ArgbEvaluator
 import android.annotation.SuppressLint
@@ -50,11 +50,11 @@ import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlin.math.roundToInt
 import kotlinx.parcelize.Parcelize
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getAttrResourceId
-import org.oxycblt.auxio.util.getDimen
-import org.oxycblt.auxio.util.getDimenPixels
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getAttrResourceId
+import org.nov0caina.sounder.util.getDimen
+import org.nov0caina.sounder.util.getDimenPixels
 
 /**
  * Customized Speed Dial view with some bug fixes and Material 3 theming.

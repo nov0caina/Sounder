@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui.swiper
+package org.nov0caina.sounder.playback.ui.swiper
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.ItemCoverBinding
-import org.oxycblt.auxio.list.adapter.FlexibleListAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.playback.ui.stepper.StepperOverlay
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemCoverBinding
+import org.nov0caina.sounder.list.adapter.FlexibleListAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.playback.ui.stepper.StepperOverlay
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Song
 
 /**

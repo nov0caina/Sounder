@@ -16,22 +16,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.text.format.Formatter
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemSongPropertyBinding
-import org.oxycblt.auxio.list.adapter.FlexibleListAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.formatDurationMs
-import org.oxycblt.auxio.playback.replaygain.formatDb
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemSongPropertyBinding
+import org.nov0caina.sounder.list.adapter.FlexibleListAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.formatDurationMs
+import org.nov0caina.sounder.playback.replaygain.formatDb
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.fs.Format
 import org.oxycblt.musikr.fs.Path

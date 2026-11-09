@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail
+package org.nov0caina.sounder.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,23 +25,28 @@ import android.view.View
 import androidx.core.view.updatePadding
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentDetailBinding
-import org.oxycblt.auxio.detail.list.DetailListAdapter
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentDetailBinding
+import org.nov0caina.sounder.detail.list.DetailListAdapter
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.recycler.SwipeToQueueHelper
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.showToast
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
+import org.oxycblt.musikr.Song
 
 abstract class DetailFragment<P : MusicParent, C : Music> :
     ListFragment<C, FragmentDetailBinding>(),
@@ -52,6 +57,7 @@ abstract class DetailFragment<P : MusicParent, C : Music> :
     override val musicModel: MusicViewModel by activityViewModels()
     override val playbackModel: PlaybackViewModel by activityViewModels()
 
+    protected var touchHelper: ItemTouchHelper? = null
     private var spacingSmall = 0
     private var lastHadDualPane = false
     private var lastWasScrolled = false
@@ -121,14 +127,46 @@ abstract class DetailFragment<P : MusicParent, C : Music> :
         }
 
         binding.detailRecycler.apply { adapter = getDetailListAdapter() }
+        setupItemTouchHelper(binding)
 
         spacingSmall = requireContext().getDimenPixels(R.dimen.spacing_small)
+    }
+
+    protected open fun setupItemTouchHelper(binding: FragmentDetailBinding) {
+        touchHelper =
+            ItemTouchHelper(
+                SwipeToQueueHelper(
+                    canSwipe = { viewHolder ->
+                        listModel.selected.value.isEmpty() && canSwipeItemToQueue(viewHolder)
+                    },
+                    onEnqueue = { viewHolder ->
+                        val pos = viewHolder.bindingAdapterPosition
+                        if (pos != RecyclerView.NO_POSITION) {
+                            val item = getDetailListAdapter().currentList.getOrNull(pos)
+                            if (item is Song) {
+                                playbackModel.addToQueue(item)
+                                requireContext().showToast(R.string.lng_queue_added)
+                            }
+                        }
+                    },
+                )
+            ).also {
+                it.attachToRecyclerView(binding.detailRecycler)
+            }
+    }
+
+    protected open fun canSwipeItemToQueue(viewHolder: RecyclerView.ViewHolder): Boolean {
+        val pos = viewHolder.bindingAdapterPosition
+        if (pos == RecyclerView.NO_POSITION) return false
+        return getDetailListAdapter().currentList.getOrNull(pos) is Song
     }
 
     override fun onDestroyBinding(binding: FragmentDetailBinding) {
         // see onBindingCreated
         saveStateInMemory(binding)
         super.onDestroyBinding(binding)
+        touchHelper?.attachToRecyclerView(null)
+        touchHelper = null
         binding.detailAppbar?.removeOnOffsetChangedListener(this)
         binding.detailNormalToolbar.setOnMenuItemClickListener(null)
         binding.detailRecycler.adapter = null

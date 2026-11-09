@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -29,7 +29,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import org.oxycblt.auxio.util.coordinatorLayoutBehavior
+import org.nov0caina.sounder.util.coordinatorLayoutBehavior
 import timber.log.Timber as L
 
 /**

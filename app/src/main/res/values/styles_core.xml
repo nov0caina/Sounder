@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Master parent theme -->
-    <style name="Theme.Auxio" parent="Theme.Material3Expressive.DynamicColors.DayNight" />
+    <style name="Theme.Auxio" parent="Theme.Material3Expressive.DayNight" />
     <!-- Adds nicer selector attributes not supported on lollipop -->
     <style name="Theme.Auxio.V23" parent="Theme.Auxio" />
     <!-- Handles edge-to-edge on other styles variants -->

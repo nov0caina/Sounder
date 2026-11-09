@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.queue
+package org.nov0caina.sounder.playback.queue
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.QueueChange
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.QueueChange
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

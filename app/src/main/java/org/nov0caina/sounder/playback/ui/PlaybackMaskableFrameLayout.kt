@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui
+package org.nov0caina.sounder.playback.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -25,7 +25,7 @@ import com.google.android.material.carousel.MaskableFrameLayout
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.ui.UISettings
+import org.nov0caina.sounder.ui.UISettings
 
 @AndroidEntryPoint
 class PlaybackMaskableFrameLayout

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -31,7 +31,7 @@ import androidx.dynamicanimation.animation.SpringAnimation
 import com.google.android.material.R as MR
 import com.google.android.material.motion.MotionUtils
 import com.google.android.material.shape.MaterialShapeDrawable
-import org.oxycblt.auxio.util.scale
+import org.nov0caina.sounder.util.scale
 
 private const val MIN_VISIBLE_CHANGE_DRAWABLE_ALPHA = 1f
 

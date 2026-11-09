@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.os.Bundle
 import androidx.navigation.NavController

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer ambient container ring -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorSurfaceContainer" />
+        </shape>
+    </item>
+    <!-- Inner elevated surface with subtle boundary -->
+    <item
+        android:bottom="4dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp">
+        <shape android:shape="oval">
+            <solid android:color="?attr/colorSurfaceContainerHigh" />
+            <stroke
+                android:width="1.5dp"
+                android:color="?attr/colorOutlineVariant" />
+        </shape>
+    </item>
+</layer-list>

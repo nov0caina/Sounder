@@ -1,0 +1,130 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Headphone headband -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M 21,46 C 21,24 33,14 48,14 C 63,14 75,24 75,46" />
+
+    <!-- Left ear cup -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 17,38 C 13,38 11,41 11,47 L 11,61 C 11,67 13,70 17,70 C 21,70 23,67 23,61 L 23,47 C 23,41 21,38 17,38 Z" />
+
+    <!-- Right ear cup -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 79,38 C 75,38 73,41 73,47 L 73,61 C 73,67 75,70 79,70 C 83,70 85,67 85,61 L 85,47 C 85,41 83,38 79,38 Z" />
+
+    <!-- Left sleepy eye (closed curved arc) -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 34,48 Q 40,54 46,48" />
+
+    <!-- Right sleepy eye (closed curved arc) -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3.5"
+        android:strokeLineCap="round"
+        android:pathData="M 50,48 Q 56,54 62,48" />
+
+    <!-- Little smile -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 44,58 Q 48,63 52,58" />
+
+    <!-- Cute blush spots -->
+    <path
+        android:fillColor="#E11D48"
+        android:pathData="M 32,54 A 3,3 0 1,1 32.1,54 Z" />
+    <path
+        android:fillColor="#E11D48"
+        android:pathData="M 64,54 A 3,3 0 1,1 64.1,54 Z" />
+
+    <!-- Disconnected curly cord dangling -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M 17,70 C 17,82 25,86 32,80 C 37,75 35,68 30,68 C 24,68 25,80 32,87 C 36,91 42,92 48,90" />
+
+    <!-- Disconnected jack plug with Sounder gradient -->
+    <path
+        android:pathData="M 48,88 L 56,86 L 57,90 L 49,92 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="48"
+                android:startY="88"
+                android:endX="57"
+                android:endY="92">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M 57,86 L 62,85 L 63,89 L 58,90 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="57"
+                android:startY="86"
+                android:endX="63"
+                android:endY="90">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Small Zzz symbol with Sounder gradient -->
+    <path
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 68,22 L 75,22 L 68,30 L 75,30">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="68"
+                android:startY="22"
+                android:endX="75"
+                android:endY="30">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Big Zzz symbol with Sounder signature gradient -->
+    <path
+        android:strokeWidth="3.4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 76,8 L 87,8 L 76,20 L 87,20">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="76"
+                android:startY="8"
+                android:endX="87"
+                android:endY="20">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="0.5" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+</vector>

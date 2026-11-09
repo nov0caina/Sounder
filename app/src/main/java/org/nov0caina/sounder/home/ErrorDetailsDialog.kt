@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -26,13 +26,13 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogErrorDetailsBinding
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.getSystemServiceCompat
-import org.oxycblt.auxio.util.openInBrowser
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogErrorDetailsBinding
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.getSystemServiceCompat
+import org.nov0caina.sounder.util.openInBrowser
+import org.nov0caina.sounder.util.showToast
 
 /**
  * A dialog that shows a stack trace for a music loading error.
@@ -88,7 +88,7 @@ class ErrorDetailsDialog : ViewBindingMaterialDialogFragment<DialogErrorDetailsB
     private companion object {
         /** The URL to the bug report issue form */
         const val LINK_ISSUES =
-            "https://github.com/OxygenCobalt/Auxio/issues/new" +
+            "https://github.com/nov0caina/Sounder/issues/new" +
                 "?assignees=OxygenCobalt&labels=bug&projects=&template=bug-crash-report.yml"
     }
 }

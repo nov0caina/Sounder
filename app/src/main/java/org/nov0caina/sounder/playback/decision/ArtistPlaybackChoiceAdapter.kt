@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.decision
+package org.nov0caina.sounder.playback.decision
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.ItemPickerChoiceBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.list.adapter.FlexibleListAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemPickerChoiceBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.list.adapter.FlexibleListAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Artist
 
 /**

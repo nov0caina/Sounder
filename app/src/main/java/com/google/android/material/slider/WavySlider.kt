@@ -43,7 +43,7 @@ import com.google.android.material.motion.MotionUtils
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.R
 import timber.log.Timber
 
 /**

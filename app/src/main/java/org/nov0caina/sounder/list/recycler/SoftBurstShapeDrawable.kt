@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.content.Context
 import android.graphics.Canvas
@@ -34,8 +34,8 @@ import kotlin.math.hypot
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
-import org.oxycblt.auxio.ui.ExpressiveShapes
-import org.oxycblt.auxio.util.getAttrColorCompat
+import org.nov0caina.sounder.ui.ExpressiveShapes
+import org.nov0caina.sounder.util.getAttrColorCompat
 
 /**
  * A drawable that fills its bounds with the expressive soft-burst shape.

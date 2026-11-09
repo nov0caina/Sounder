@@ -173,4 +173,16 @@
         <item name="colorSurfaceContainerHigh">@color/grey_surfaceContainerHigh_black</item>
         <item name="colorSurfaceContainerHighest">@color/grey_surfaceContainerHighest_black</item>
     </style>
+
+    <style name="Theme.Auxio.Sounder.Black" parent="Theme.Auxio.Sounder">
+        <item name="colorSurface">@color/sounder_surface_black</item>
+        <item name="colorSurfaceDim">@color/sounder_surfaceDim_black</item>
+        <item name="colorSurfaceBright">@color/sounder_surfaceBright_black</item>
+        <item name="colorSurfaceContainerLowest">@color/sounder_surfaceContainerLowest_black</item>
+        <item name="colorSurfaceContainerLow">@color/sounder_surfaceContainerLow_black</item>
+        <item name="colorSurfaceContainer">@color/sounder_surfaceContainer_black</item>
+        <item name="colorSurfaceContainerHigh">@color/sounder_surfaceContainerHigh_black</item>
+        <item name="colorSurfaceContainerHighest">@color/sounder_surfaceContainerHighest_black</item>
+    </style>
+
 </resources>

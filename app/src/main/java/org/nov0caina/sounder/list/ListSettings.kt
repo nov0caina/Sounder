@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list
+package org.nov0caina.sounder.list
 
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.settings.Settings
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.settings.Settings
 
 interface ListSettings : Settings<ListSettings.Listener> {
     /** The [Sort] mode used in Song lists. */

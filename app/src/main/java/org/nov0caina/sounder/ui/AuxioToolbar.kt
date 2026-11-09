@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -42,10 +42,10 @@ import androidx.core.view.children
 import androidx.core.view.isNotEmpty
 import androidx.core.view.isVisible
 import com.google.android.material.R as MR
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ViewToolbarBinding
-import org.oxycblt.auxio.util.isRtl
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ViewToolbarBinding
+import org.nov0caina.sounder.util.isRtl
+import org.nov0caina.sounder.util.unlikelyToBeNull
 
 /**
  * Minimal MaterialToolbar replacement that implements everything with MaterialButtons compared to

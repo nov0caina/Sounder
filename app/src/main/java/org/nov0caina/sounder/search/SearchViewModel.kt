@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.search
+package org.nov0caina.sounder.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,15 +28,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.list.BasicHeader
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.playback.PlaySong
-import org.oxycblt.auxio.playback.PlaybackSettings
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.list.BasicHeader
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.playback.PlaybackSettings
 import org.oxycblt.musikr.Library
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L

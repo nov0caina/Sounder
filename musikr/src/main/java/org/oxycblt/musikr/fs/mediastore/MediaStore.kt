@@ -31,10 +31,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import org.oxycblt.musikr.fs.AddedMs
+import org.oxycblt.musikr.fs.Components
 import org.oxycblt.musikr.fs.FS
 import org.oxycblt.musikr.fs.FSUpdate
 import org.oxycblt.musikr.fs.File
 import org.oxycblt.musikr.fs.Location
+import org.oxycblt.musikr.fs.Path
 import org.oxycblt.musikr.fs.path.MediaStorePathInterpreter
 import org.oxycblt.musikr.fs.path.VolumeManager
 import org.oxycblt.musikr.fs.saf.contentResolverSafe
@@ -69,8 +71,15 @@ private constructor(
             // Handle include/exclude directories
             when (query.mode) {
                 FilterMode.INCLUDE -> {
-                    val pathSelector =
-                        pathInterpreterFactory.createSelector(query.filtered.map { it.path })
+                    val pathsToFilter = if (query.filtered.isEmpty()) {
+                        // By default, strictly scope to Music/Sounder across all available volumes
+                        volumeManager.getVolumes().map { volume ->
+                            Path(volume, Components.parseUnix("Music/Sounder"))
+                        }
+                    } else {
+                        query.filtered.map { it.path }
+                    }
+                    val pathSelector = pathInterpreterFactory.createSelector(pathsToFilter)
                     if (pathSelector != null) {
                         selector += " AND (${pathSelector.template})"
                         args.addAll(pathSelector.args)
@@ -114,6 +123,31 @@ private constructor(
                             AOSPMediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                             id.toString(),
                         )
+
+                    // Verify that the file physically exists on storage to avoid indexing ghost files
+                    val dataIndex = cursor.getColumnIndex(AOSPMediaStore.Audio.AudioColumns.DATA)
+                    val rawDataPath = if (dataIndex != -1) cursor.getStringOrNull(dataIndex) else null
+                    if (rawDataPath != null) {
+                        val physicalFile = java.io.File(rawDataPath)
+                        if (!physicalFile.exists()) {
+                            try {
+                                context.contentResolverSafe.delete(uri, null, null)
+                            } catch (_: Throwable) {}
+                            continue
+                        }
+                    } else {
+                        val volComp = path.volume.components?.toString()
+                        if (volComp != null) {
+                            val candidate = java.io.File("/$volComp", path.components.toString())
+                            if (!candidate.exists()) {
+                                try {
+                                    context.contentResolverSafe.delete(uri, null, null)
+                                } catch (_: Throwable) {}
+                                continue
+                            }
+                        }
+                    }
+
                     val mimeType = cursor.getStringOrNull(mimeTypeIndex) ?: "audio/*"
                     val size = cursor.getLong(sizeIndex)
                     val dateAdded = cursor.getLong(dateAddedIndex) * 1000 // Convert to milliseconds
@@ -184,6 +218,7 @@ private constructor(
                 AOSPMediaStore.Audio.AudioColumns.DATE_MODIFIED,
                 AOSPMediaStore.Audio.AudioColumns.SIZE,
                 AOSPMediaStore.Audio.AudioColumns.MIME_TYPE,
+                AOSPMediaStore.Audio.AudioColumns.DATA,
             )
     }
 }

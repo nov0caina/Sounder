@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui.button
+package org.nov0caina.sounder.playback.ui.button
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.annotation.DrawableRes
 import com.google.android.material.R
-import org.oxycblt.auxio.ui.RippleFixMaterialButton
+import org.nov0caina.sounder.ui.RippleFixMaterialButton
 
 /**
- * [org.oxycblt.auxio.ui.RippleFixMaterialButton] that works around another bug where switching the
+ * [org.nov0caina.sounder.ui.RippleFixMaterialButton] that works around another bug where switching the
  * icon during a press breaks width expansion animations.
  *
  * @author Alexander Capehart (OxygenCobalt)

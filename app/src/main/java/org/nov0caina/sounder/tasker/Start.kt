@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.tasker
+package org.nov0caina.sounder.tasker
 
 import android.app.Activity
 import android.content.Context
@@ -30,9 +30,9 @@ import com.joaomgcd.taskerpluginlibrary.config.TaskerPluginConfigNoInput
 import com.joaomgcd.taskerpluginlibrary.input.TaskerInput
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResult
 import com.joaomgcd.taskerpluginlibrary.runner.TaskerPluginResultSucess
-import org.oxycblt.auxio.AuxioService
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.SounderPlaybackService
 
 class StartActionHelper(config: TaskerPluginConfig<Unit>) :
     TaskerPluginConfigHelperNoOutputOrInput<StartActionRunner>(config) {
@@ -60,11 +60,11 @@ class StartActionRunner : TaskerPluginRunnerActionNoOutputOrInput() {
     override fun run(context: Context, input: TaskerInput<Unit>): TaskerPluginResult<Unit> {
         ContextCompat.startForegroundService(
             context,
-            Intent(context, AuxioService::class.java)
-                .setAction(AuxioService.ACTION_START)
-                .putExtra(AuxioService.INTENT_KEY_START_ID, IntegerTable.START_ID_TASKER),
+            Intent(context, SounderPlaybackService::class.java)
+                .setAction(SounderPlaybackService.ACTION_START)
+                .putExtra(SounderPlaybackService.INTENT_KEY_START_ID, IntegerTable.START_ID_TASKER),
         )
-        while (!AuxioService.isForeground) {
+        while (!SounderPlaybackService.isForeground) {
             Thread.sleep(100)
         }
         // Actually need to sleep even longer since for some reason the notification still

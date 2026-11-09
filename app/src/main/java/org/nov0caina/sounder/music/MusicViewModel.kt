@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music
+package org.nov0caina.sounder.music
 
 import android.content.Context
 import android.net.Uri
@@ -29,13 +29,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
+import kotlinx.coroutines.withContext
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
+import org.oxycblt.musikr.Library
+import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
 import org.oxycblt.musikr.playlist.ExportConfig
@@ -51,9 +56,11 @@ import timber.log.Timber as L
 class MusicViewModel
 @Inject
 constructor(
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
     private val listSettings: ListSettings,
     private val musicRepository: MusicRepository,
+    private val musicSettings: MusicSettings,
+    private val downloadManager: DownloadManager,
 ) : ViewModel(), MusicRepository.UpdateListener, MusicRepository.IndexingListener {
     private val externalPlaylistManager = ExternalPlaylistManager.from(context)
 
@@ -66,6 +73,11 @@ constructor(
     val statistics: StateFlow<Statistics?>
         field = MutableStateFlow<Statistics?>(null)
 
+    private val _favoriteSongUids = MutableStateFlow<Set<Music.UID>>(emptySet())
+
+    /** The set of [Music.UID]s currently in the Favoritos playlist. */
+    val favoriteSongUids: StateFlow<Set<Music.UID>> = _favoriteSongUids
+
     /**
      * A [PlaylistDecision] command that is awaiting a view capable of responding to it. Null if
      * none currently.
@@ -76,9 +88,51 @@ constructor(
     val playlistMessage: Event<PlaylistMessage>
         field = MutableEvent<PlaylistMessage>()
 
+    companion object {
+        const val FAVORITES_NAME = "Likes"
+
+        val FAVORITES_ALIASES = setOf(
+            "likes",
+            "liked",
+            "liked songs",
+            "favorites",
+            "favorite",
+            "favourites",
+            "favourite",
+            "favoritos",
+            "favorito",
+            "favoris",
+            "favoriten",
+            "preferiti",
+            "ulubione",
+            "избранное",
+            "вибране",
+            "me gusta",
+            "canciones que te gustan",
+            "tus me gusta"
+        )
+
+        fun isFavoritesPlaylistName(context: Context, name: String): Boolean {
+            val trimmed = name.trim()
+            if (FAVORITES_ALIASES.contains(trimmed.lowercase(java.util.Locale.ROOT))) return true
+            if (trimmed.equals(context.getString(R.string.lbl_favorite), ignoreCase = true)) return true
+            if (trimmed.equals(context.getString(R.string.lbl_favorites_playlist), ignoreCase = true)) return true
+            return false
+        }
+
+        fun resolvePlaylistDisplayName(context: Context, rawName: String): String {
+            return if (isFavoritesPlaylistName(context, rawName)) {
+                context.getString(R.string.lbl_favorites_playlist)
+            } else {
+                rawName
+            }
+        }
+    }
+
     init {
         musicRepository.addUpdateListener(this)
         musicRepository.addIndexingListener(this)
+        musicRepository.library?.let { updateFavorites(it) }
     }
 
     override fun onCleared() {
@@ -87,8 +141,12 @@ constructor(
     }
 
     override fun onMusicChanges(changes: MusicRepository.Changes) {
+        val library = musicRepository.library
+        if (library != null) {
+            updateFavorites(library)
+        }
         if (!changes.deviceLibrary) return
-        val library = musicRepository.library ?: return
+        if (library == null) return
         statistics.value =
             Statistics(
                 library.songs.size,
@@ -99,6 +157,95 @@ constructor(
                 library.songs.sumOf { it.size },
             )
         L.d("Updated statistics: ${statistics.value}")
+    }
+
+    private fun isFavoritesPlaylistName(name: String): Boolean =
+        isFavoritesPlaylistName(context, name)
+
+    private fun findFavoritesPlaylist(library: Library): Playlist? {
+        return library.playlists.find { isFavoritesPlaylistName(it.name.resolve(context)) }
+    }
+
+    fun getFavoritesPlaylist(): Playlist? {
+        val lib = musicRepository.library ?: return null
+        return findFavoritesPlaylist(lib)
+    }
+
+    suspend fun getOrCreateFavoritesPlaylist(): Playlist? {
+        val lib = musicRepository.library ?: return null
+        val existing = findFavoritesPlaylist(lib)
+        if (existing != null) return existing
+        val onlineFavs = musicRepository.getOnlineTracksForPlaylist(FAVORITES_NAME)
+        musicRepository.createPlaylist(FAVORITES_NAME, onlineFavs)
+        return musicRepository.library?.let { findFavoritesPlaylist(it) }
+    }
+
+    fun getFavoritesSongs(): List<Song> {
+        val lib = musicRepository.library ?: return emptyList()
+        val favPlaylist = findFavoritesPlaylist(lib)
+        val playlistName = favPlaylist?.name?.resolve(context) ?: FAVORITES_NAME
+        val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        return ((favPlaylist?.songs ?: emptyList()) + onlineTracks).distinctBy { it.uid.toString() }
+    }
+
+    private fun updateFavorites(library: Library) {
+        val favPlaylist = findFavoritesPlaylist(library)
+        val playlistName = favPlaylist?.name?.resolve(context) ?: FAVORITES_NAME
+        val onlineFavs = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        val allUids = (favPlaylist?.songs?.map { it.uid } ?: emptyList()) + onlineFavs.map { it.uid }
+        _favoriteSongUids.value = allUids.toSet()
+    }
+
+    fun isFavorite(song: Song): Boolean = _favoriteSongUids.value.contains(song.uid)
+
+    fun toggleFavorite(song: Song, onResult: ((Boolean) -> Unit)? = null) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lib = musicRepository.library ?: return@launch
+            val favPlaylist = findFavoritesPlaylist(lib)
+            val isCurrentlyFav = _favoriteSongUids.value.contains(song.uid) ||
+                (favPlaylist?.songs?.any { it.uid == song.uid } == true)
+
+            if (favPlaylist == null) {
+                _favoriteSongUids.value = _favoriteSongUids.value + song.uid
+                withContext(Dispatchers.Main) { onResult?.invoke(true) }
+                musicRepository.createPlaylist(FAVORITES_NAME, listOf(song))
+                if (song is OnlineSong && musicSettings.autoDownloadFavorites) {
+                    if (!downloadManager.isDownloaded(song.onlineTrack.id)) {
+                        downloadManager.enqueue(song.onlineTrack)
+                    }
+                }
+            } else {
+                val playlistName = favPlaylist.name.resolve(context)
+                val allCurrentSongs = (favPlaylist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName))
+                    .distinctBy { it.uid.toString() }
+                if (isCurrentlyFav) {
+                    _favoriteSongUids.value = _favoriteSongUids.value - song.uid
+                    withContext(Dispatchers.Main) { onResult?.invoke(false) }
+                    val remaining = allCurrentSongs.filter { it.uid.toString() != song.uid.toString() }
+                    musicRepository.rewritePlaylist(favPlaylist, remaining)
+                } else {
+                    _favoriteSongUids.value = _favoriteSongUids.value + song.uid
+                    withContext(Dispatchers.Main) { onResult?.invoke(true) }
+                    musicRepository.addToPlaylist(listOf(song), favPlaylist)
+                    if (song is OnlineSong && musicSettings.autoDownloadFavorites) {
+                        if (!downloadManager.isDownloaded(song.onlineTrack.id)) {
+                            downloadManager.enqueue(song.onlineTrack)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun removeFromPlaylist(song: Song, playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val playlistName = playlist.name.resolve(context)
+            val allCurrentSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName))
+                .distinctBy { it.uid.toString() }
+            val remaining = allCurrentSongs.filter { it.uid.toString() != song.uid.toString() }
+            musicRepository.rewritePlaylist(playlist, remaining)
+            playlistMessage.put(PlaylistMessage.DeleteSuccess)
+        }
     }
 
     override fun onIndexingStateChanged() {
@@ -144,6 +291,7 @@ constructor(
             }
         } else {
             L.d("Launching creation dialog for ${songs.size} songs")
+            org.nov0caina.sounder.music.decision.PlaylistPickerViewModel.pendingOnlineSongs = songs
             playlistDecision.put(PlaylistDecision.New(songs, null, reason))
         }
     }
@@ -347,6 +495,7 @@ constructor(
             }
         } else {
             L.d("Launching addition dialog for songs=${songs.size}")
+            org.nov0caina.sounder.music.decision.PlaylistPickerViewModel.pendingOnlineSongs = songs
             playlistDecision.put(PlaylistDecision.Add(songs))
         }
     }

@@ -16,29 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail
+package org.nov0caina.sounder.detail
 
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentDetailBinding
-import org.oxycblt.auxio.detail.list.ArtistDetailListAdapter
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.menu.Menu
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.music.PlaylistMessage
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.playback.PlaybackDecision
-import org.oxycblt.auxio.util.collect
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.getPlural
-import org.oxycblt.auxio.util.navigateSafe
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentDetailBinding
+import org.nov0caina.sounder.detail.list.ArtistDetailListAdapter
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.music.PlaylistMessage
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.playback.PlaybackDecision
+import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.getPlural
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Music

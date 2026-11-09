@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.tabs
+package org.nov0caina.sounder.home.tabs
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,12 +25,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogTabsBinding
-import org.oxycblt.auxio.home.HomeSettings
-import org.oxycblt.auxio.list.EditClickListListener
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogTabsBinding
+import org.nov0caina.sounder.home.HomeSettings
+import org.nov0caina.sounder.list.EditClickListListener
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
 import timber.log.Timber as L
 
 /**

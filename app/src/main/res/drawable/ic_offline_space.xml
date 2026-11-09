@@ -1,0 +1,163 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Planet with ring in background -->
+    <path
+        android:fillColor="?attr/colorSurfaceVariant"
+        android:pathData="M 18,22 A 10,10 0 1,1 18.1,22 Z" />
+    <path
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 10,26 C 14,20 22,18 26,22">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="10"
+                android:startY="26"
+                android:endX="26"
+                android:endY="22">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Star 1 (sparkle) -->
+    <path
+        android:fillColor="#FE5C4A"
+        android:pathData="M 82,16 L 83.5,20 L 87.5,21.5 L 83.5,23 L 82,27 L 80.5,23 L 76.5,21.5 L 80.5,20 Z" />
+    <!-- Star 2 -->
+    <path
+        android:fillColor="#E11D48"
+        android:pathData="M 78,68 L 79,71 L 82,72 L 79,73 L 78,76 L 77,73 L 74,72 L 77,71 Z" />
+    <!-- Star 3 -->
+    <path
+        android:fillColor="#A855F7"
+        android:pathData="M 16,62 L 17,64 L 19,65 L 17,66 L 16,68 L 15,66 L 13,65 L 15,64 Z" />
+
+    <!-- UFO Glass Dome -->
+    <path
+        android:fillColor="?attr/colorSurfaceVariant"
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3"
+        android:pathData="M 32,46 C 32,28 64,28 64,46 Z" />
+
+    <!-- Cute Alien / Music Bot inside the dome -->
+    <!-- Head -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 42,40 A 6,6 0 1,1 42.1,40 Z" />
+    <!-- Big cute alien eye -->
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 45,39 A 2.2,2.2 0 1,1 45.1,39 Z" />
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 46,39 A 1,1 0 1,1 46.1,39 Z" />
+    <!-- Little headphones on alien -->
+    <path
+        android:strokeColor="#FE5C4A"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 41,36 C 44,32 50,32 53,36" />
+    <path
+        android:fillColor="#FE5C4A"
+        android:pathData="M 40,36 A 1.8,1.8 0 1,1 40.1,36 Z" />
+    <path
+        android:fillColor="#FE5C4A"
+        android:pathData="M 54,36 A 1.8,1.8 0 1,1 54.1,36 Z" />
+
+    <!-- Antenna with disconnected signal -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 48,28 L 48,18" />
+    <path
+        android:fillColor="#E11D48"
+        android:pathData="M 48,17 A 3,3 0 1,1 48.1,17 Z" />
+    <!-- Disconnected WiFi / Radio wave (broken) with Sounder gradient -->
+    <path
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M 40,11 C 42,9 44,9 46,10 M 50,10 C 52,9 54,9 56,11">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="40"
+                android:startY="9"
+                android:endX="56"
+                android:endY="11">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="0.5" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- UFO Saucer Body -->
+    <path
+        android:pathData="M 16,52 C 16,44 80,44 80,52 C 80,60 16,60 16,52 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="16"
+                android:startY="52"
+                android:endX="80"
+                android:endY="52">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="0.5" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Saucer lights (dots) -->
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 26,52 A 2.5,2.5 0 1,1 26.1,52 Z" />
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 40,53 A 2.5,2.5 0 1,1 40.1,53 Z" />
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 56,53 A 2.5,2.5 0 1,1 56.1,53 Z" />
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 70,52 A 2.5,2.5 0 1,1 70.1,52 Z" />
+
+    <!-- UFO Landing Tractor Beam / Sound Wave Cone -->
+    <path
+        android:fillColor="?attr/colorSurfaceVariant"
+        android:fillAlpha="0.6"
+        android:pathData="M 36,58 L 22,86 L 74,86 L 60,58 Z" />
+
+    <!-- Musical notes lost in the beam with ? -->
+    <path
+        android:pathData="M 44,72 A 3,2.5 -25 1,1 41.5,70.5 L 43.5,63 L 52,61 L 52,66 L 46,67.5 L 46,73 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="41"
+                android:startY="61"
+                android:endX="52"
+                android:endY="73">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:strokeColor="#FE5C4A"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 58,74 C 58,71 61,70 61,68 C 61,66 59,66 59,66" />
+    <path
+        android:fillColor="#FE5C4A"
+        android:pathData="M 59,78 A 1.2,1.2 0 1,1 59.1,78 Z" />
+
+</vector>

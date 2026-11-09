@@ -16,14 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home
+package org.nov0caina.sounder.home
 
 import javax.inject.Inject
-import org.oxycblt.auxio.home.tabs.Tab
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicType
+import org.nov0caina.sounder.home.tabs.Tab
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicType
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

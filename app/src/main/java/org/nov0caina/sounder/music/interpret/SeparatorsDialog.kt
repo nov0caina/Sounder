@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.interpret
+package org.nov0caina.sounder.music.interpret
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,11 +25,11 @@ import androidx.core.view.children
 import com.google.android.material.checkbox.MaterialCheckBox
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogSeparatorsBinding
-import org.oxycblt.auxio.music.MusicSettings
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogSeparatorsBinding
+import org.nov0caina.sounder.music.MusicSettings
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
 import org.oxycblt.musikr.tag.interpret.Separators
 import timber.log.Timber as L
 

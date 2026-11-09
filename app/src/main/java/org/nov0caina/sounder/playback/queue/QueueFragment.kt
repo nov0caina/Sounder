@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.queue
+package org.nov0caina.sounder.playback.queue
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,11 +28,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.min
-import org.oxycblt.auxio.databinding.FragmentQueueBinding
-import org.oxycblt.auxio.list.EditClickListListener
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.ui.ViewBindingFragment
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.databinding.FragmentQueueBinding
+import org.nov0caina.sounder.list.EditClickListListener
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 

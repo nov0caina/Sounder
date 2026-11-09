@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Hip-Hop / Boombox Icon -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillAlpha="0.85"
+        android:pathData="M20,6H16V4C16,2.89 15.11,2 14,2H10C8.89,2 8,2.89 8,4V6H4C2.89,6 2,6.89 2,8V18C2,19.11 2.89,20 4,20H20C21.11,20 22,19.11 22,18V8C22,6.89 21.11,6 20,6M10,4H14V6H10V4M6,16C4.9,16 4,15.1 4,14C4,12.9 4.9,12 6,12C7.1,12 8,12.9 8,14C8,15.1 7.1,16 6,16M18,16C16.9,16 16,15.1 16,14C16,12.9 16.9,12 18,12C19.1,12 20,12.9 20,14C20,15.1 19.1,16 18,16M14,15H10V13H14V15Z" />
+</vector>

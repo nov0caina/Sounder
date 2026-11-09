@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.search
+package org.nov0caina.sounder.search
 
 import android.content.Context
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.settings.Settings
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.settings.Settings
 
 /**
  * User configuration specific to the search UI.

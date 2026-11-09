@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.os.Build
@@ -24,9 +24,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.settings.Settings
-import org.oxycblt.auxio.ui.accent.Accent
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.settings.Settings
+import org.nov0caina.sounder.ui.accent.Accent
 import timber.log.Timber as L
 
 /**

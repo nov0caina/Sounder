@@ -16,11 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
+import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
@@ -48,20 +49,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
-import org.oxycblt.auxio.image.ImageSettings
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.playback.persist.PersistenceRepository
-import org.oxycblt.auxio.playback.replaygain.ReplayGainAudioProcessor
-import org.oxycblt.auxio.playback.state.DeferredPlayback
-import org.oxycblt.auxio.playback.state.PlaybackCommand
-import org.oxycblt.auxio.playback.state.PlaybackStateHolder
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.Progression
-import org.oxycblt.auxio.playback.state.RawQueue
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.playback.state.ShuffleMode
-import org.oxycblt.auxio.playback.state.StateAck
+import org.nov0caina.sounder.image.ImageSettings
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.playback.persist.PersistenceRepository
+import org.nov0caina.sounder.playback.replaygain.ReplayGainAudioProcessor
+import org.nov0caina.sounder.playback.state.DeferredPlayback
+import org.nov0caina.sounder.playback.state.PlaybackCommand
+import org.nov0caina.sounder.playback.state.PlaybackStateHolder
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.Progression
+import org.nov0caina.sounder.playback.state.RawQueue
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.playback.state.ShuffleMode
+import org.nov0caina.sounder.playback.state.StateAck
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -118,7 +120,16 @@ class ExoPlaybackStateHolder(
     override val progression: Progression
         get() {
             val mediaItem = player.currentMediaItem ?: return Progression.nil()
-            val duration = mediaItem.mediaMetadata.extras?.getLong("durationMs") ?: Long.MAX_VALUE
+            val song = mediaItem.song
+            val playerDuration = player.duration.takeIf { it != C.TIME_UNSET && it > 0 }
+            if (playerDuration != null && song is OnlineSong && song.durationMs <= 0L) {
+                song.durationMs = playerDuration
+                mediaItem.mediaMetadata.extras?.putLong("durationMs", playerDuration)
+            }
+            val duration = song?.durationMs?.takeIf { it > 0 }
+                ?: playerDuration
+                ?: mediaItem.mediaMetadata.extras?.getLong("durationMs")?.takeIf { it > 0 }
+                ?: Long.MAX_VALUE
             val clampedPosition = player.currentPosition.coerceAtLeast(0).coerceAtMost(duration)
             return Progression.from(player.playWhenReady, player.isPlaying, clampedPosition)
         }
@@ -136,18 +147,19 @@ class ExoPlaybackStateHolder(
         get() = player.audioSessionId
 
     override fun resolveQueue(): RawQueue {
-        if (musicRepository.library == null) {
-            // No library, cannot do anything.
+        val heap = (0 until player.mediaItemCount).map { player.getMediaItemAt(it) }
+        val songs = heap.mapNotNull { it.song }
+        if (songs.isEmpty() && musicRepository.library == null) {
+            // No queue and no library, cannot do anything.
             return RawQueue(emptyList(), emptyList(), 0)
         }
-        val heap = (0 until player.mediaItemCount).map { player.getMediaItemAt(it) }
         val shuffledMapping =
             if (player.shuffleModeEnabled) {
                 player.unscrambleQueueIndices()
             } else {
                 emptyList()
             }
-        return RawQueue(heap.mapNotNull { it.song }, shuffledMapping, player.currentMediaItemIndex)
+        return RawQueue(songs, shuffledMapping, player.currentMediaItemIndex)
     }
 
     override fun handleDeferred(action: DeferredPlayback): Boolean {
@@ -252,8 +264,11 @@ class ExoPlaybackStateHolder(
         player.setMediaItems(command.queue.map { it.buildMediaItem() })
         val startIndex =
             command.song
-                ?.let { command.queue.indexOf(it) }
-                .also { check(it != -1) { "Start song not in queue" } }
+                ?.let { song ->
+                    val idx = command.queue.indexOf(song)
+                    if (idx != -1) idx else command.queue.indexOfFirst { it.uid.toString() == song.uid.toString() }
+                }
+                ?.let { if (it == -1) 0 else it }
         if (command.shuffled) {
             player.setShuffleOrder(BetterShuffleOrder(command.queue.size, startIndex ?: -1))
         }
@@ -515,8 +530,17 @@ class ExoPlaybackStateHolder(
                 Player.EVENT_PLAY_WHEN_READY_CHANGED,
                 Player.EVENT_IS_PLAYING_CHANGED,
                 Player.EVENT_POSITION_DISCONTINUITY,
+                Player.EVENT_PLAYBACK_STATE_CHANGED,
+                Player.EVENT_TIMELINE_CHANGED,
             )
         ) {
+            val mediaItem = player.currentMediaItem
+            val song = mediaItem?.song
+            val playerDuration = player.duration.takeIf { it != C.TIME_UNSET && it > 0 }
+            if (playerDuration != null && song is OnlineSong && song.durationMs <= 0L) {
+                song.durationMs = playerDuration
+                mediaItem.mediaMetadata.extras?.putLong("durationMs", playerDuration)
+            }
             L.d("Player state changed, must synchronize state")
             playbackManager.ack(this, StateAck.ProgressionChanged)
         }
@@ -592,7 +616,27 @@ class ExoPlaybackStateHolder(
         currentSaveJob = saveScope.launch { block() }
     }
 
-    private fun Song.buildMediaItem() = MediaItem.Builder().setUri(uri).setTag(this).build()
+    private fun Song.buildMediaItem(): MediaItem {
+        var itemUri = uri
+        if (this is OnlineSong) {
+            val sp = context.getSharedPreferences("sounder_downloads_store", Context.MODE_PRIVATE)
+            val localPath = sp.getString(onlineTrack.id, null) ?: sp.getString("path_${onlineTrack.id}", null)
+            if (localPath != null && java.io.File(localPath).exists()) {
+                itemUri = Uri.fromFile(java.io.File(localPath))
+            }
+        }
+        val extras = android.os.Bundle().apply {
+            putLong("durationMs", durationMs)
+        }
+        val metadata = androidx.media3.common.MediaMetadata.Builder()
+            .setExtras(extras)
+            .build()
+        return MediaItem.Builder()
+            .setUri(itemUri)
+            .setMediaMetadata(metadata)
+            .setTag(this)
+            .build()
+    }
 
     private val MediaItem.song: Song?
         get() = this.localConfiguration?.tag as? Song?

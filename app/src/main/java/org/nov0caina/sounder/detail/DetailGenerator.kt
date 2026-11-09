@@ -16,15 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail
+package org.nov0caina.sounder.detail
 
+import android.content.Context
 import androidx.annotation.StringRes
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicType
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.music.resolve
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -62,13 +65,18 @@ interface DetailGenerator {
 
 class DetailGeneratorFactoryImpl
 @Inject
-constructor(private val listSettings: ListSettings, private val musicRepository: MusicRepository) :
+constructor(
+    @ApplicationContext private val context: Context,
+    private val listSettings: ListSettings,
+    private val musicRepository: MusicRepository
+) :
     DetailGenerator.Factory {
     override fun create(invalidator: DetailGenerator.Invalidator): DetailGenerator =
-        DetailGeneratorImpl(invalidator, listSettings, musicRepository)
+        DetailGeneratorImpl(context, invalidator, listSettings, musicRepository)
 }
 
 private class DetailGeneratorImpl(
+    private val context: Context,
     private val invalidator: DetailGenerator.Invalidator,
     private val listSettings: ListSettings,
     private val musicRepository: MusicRepository,
@@ -181,8 +189,12 @@ private class DetailGeneratorImpl(
 
     override fun playlist(uid: Music.UID): Detail<Playlist>? {
         val playlist = musicRepository.library?.findPlaylist(uid) ?: return null
-        if (playlist.songs.isNotEmpty()) {
-            val songs = DetailSection.Songs(playlist.songs)
+        val playlistName = playlist.name.resolve(context)
+        val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        val existingUids = playlist.songs.map { it.uid.toString() }.toSet()
+        val allSongs = playlist.songs + onlineTracks.filter { it.uid.toString() !in existingUids }
+        if (allSongs.isNotEmpty()) {
+            val songs = DetailSection.Songs(allSongs)
             return Detail(playlist, listOf(songs))
         }
         return Detail(playlist, listOf())

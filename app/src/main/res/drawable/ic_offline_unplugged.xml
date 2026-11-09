@@ -1,0 +1,144 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Wall Socket Base on the left -->
+    <path
+        android:fillColor="?attr/colorSurfaceVariant"
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3"
+        android:pathData="M 12,24 L 28,24 C 32,24 34,26 34,30 L 34,66 C 34,70 32,72 28,72 L 12,72 Z" />
+
+    <!-- Socket Holes -->
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 24,36 L 30,36 L 30,42 L 24,42 Z" />
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 24,54 L 30,54 L 30,60 L 24,60 Z" />
+
+    <!-- Disconnected Plug Prongs with Sounder gradient -->
+    <path
+        android:pathData="M 38,37 L 48,37 L 48,41 L 38,41 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="38"
+                android:startY="37"
+                android:endX="48"
+                android:endY="41">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:pathData="M 38,55 L 48,55 L 48,59 L 38,59 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="38"
+                android:startY="55"
+                android:endX="48"
+                android:endY="59">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Plug Body -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 48,28 C 48,28 68,26 72,32 L 72,64 C 68,70 48,68 48,68 Z" />
+
+    <!-- Plug Cable curving away to the right -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M 72,48 C 84,48 84,72 74,78 C 66,82 68,90 78,90" />
+
+    <!-- Cute bewildered face on the plug body -->
+    <!-- Left dizzy eye: > -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 54,42 L 58,45 L 54,48" />
+    <!-- Right dizzy eye: < -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 66,42 L 62,45 L 66,48" />
+    <!-- Wavy confused mouth: ~ -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M 57,55 Q 60,53 63,56" />
+
+    <!-- Little electric spark with vibrant Sounder gradient -->
+    <path
+        android:pathData="M 34,44 L 40,41 L 37,47 L 43,45 L 36,52 L 38,47 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="34"
+                android:startY="41"
+                android:endX="43"
+                android:endY="52">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="0.5" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Disconnected WiFi signal bars on top with Sounder gradient -->
+    <path
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 68,16 C 74,13 82,13 88,16">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="68"
+                android:startY="13"
+                android:endX="88"
+                android:endY="16">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M 72,21 C 76,19 80,19 84,21">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="72"
+                android:startY="19"
+                android:endX="84"
+                android:endY="21">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Strikethrough slash on wifi -->
+    <path
+        android:strokeColor="#FE5C4A"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M 66,24 L 88,12" />
+
+</vector>

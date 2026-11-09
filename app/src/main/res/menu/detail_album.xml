@@ -25,6 +25,10 @@
         android:icon="@drawable/ic_artist_24"
         android:title="@string/lbl_artist_details" />
     <item
+        android:id="@+id/action_delete_download_album"
+        android:icon="@drawable/ic_delete_24"
+        android:title="@string/lbl_delete_download_album" />
+    <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_share_24"
         android:title="@string/lbl_share" />

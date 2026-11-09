@@ -16,23 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.search
+package org.nov0caina.sounder.search
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.list.BasicHeader
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.list.recycler.AlbumViewHolder
-import org.oxycblt.auxio.list.recycler.ArtistViewHolder
-import org.oxycblt.auxio.list.recycler.BasicHeaderViewHolder
-import org.oxycblt.auxio.list.recycler.DividerViewHolder
-import org.oxycblt.auxio.list.recycler.GenreViewHolder
-import org.oxycblt.auxio.list.recycler.PlaylistViewHolder
-import org.oxycblt.auxio.list.recycler.SongViewHolder
+import org.nov0caina.sounder.list.BasicHeader
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.list.recycler.AlbumViewHolder
+import org.nov0caina.sounder.list.recycler.ArtistViewHolder
+import org.nov0caina.sounder.list.recycler.BasicHeaderViewHolder
+import org.nov0caina.sounder.list.recycler.DividerViewHolder
+import org.nov0caina.sounder.list.recycler.GenreViewHolder
+import org.nov0caina.sounder.list.recycler.PlaylistViewHolder
+import org.nov0caina.sounder.list.recycler.SongViewHolder
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

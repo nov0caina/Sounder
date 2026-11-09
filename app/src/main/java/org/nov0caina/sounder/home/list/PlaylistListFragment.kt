@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.list
+package org.nov0caina.sounder.home.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,22 +24,23 @@ import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentHomeListBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.home.HomeViewModel
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.ListViewModel
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.recycler.FastScrollRecyclerView
-import org.oxycblt.auxio.list.recycler.PlaylistViewHolder
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.playback.PlaybackViewModel
-import org.oxycblt.auxio.playback.formatDurationMsPopup
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentHomeListBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.home.HomeViewModel
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.ListViewModel
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.recycler.FastScrollRecyclerView
+import org.nov0caina.sounder.list.recycler.PlaylistViewHolder
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.playback.PlaybackViewModel
+import org.nov0caina.sounder.playback.formatDurationMsPopup
+import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Playlist
@@ -110,8 +111,13 @@ class PlaylistListFragment :
         // Change how we display the popup depending on the current sort mode.
         return when (homeModel.playlistSort.mode) {
             // By Name -> Use Name
-            is Sort.Mode.ByName ->
-                FastScrollRecyclerView.PopupProvider.PopupData(playlist.name.thumb() ?: "?")
+            is Sort.Mode.ByName -> {
+                val displayName = playlist.resolveName(requireContext())
+                val thumb = displayName.firstOrNull()?.let {
+                    if (it.isDigit()) "#" else it.uppercase()
+                } ?: "?"
+                FastScrollRecyclerView.PopupProvider.PopupData(thumb)
+            }
 
             // Duration -> Use compact bucket duration
             is Sort.Mode.ByDuration ->
@@ -150,17 +156,20 @@ class PlaylistListFragment :
         indexingState: IndexingState?,
     ) {
         val binding = requireBinding()
-        binding.homeRecycler.isInvisible = empty
-        binding.homeNoMusic.isInvisible = !empty && playlists.isNotEmpty()
-        if (!empty && playlists.isEmpty()) {
-            binding.homeNoMusicAction.isVisible = true
-            binding.homeNoMusicAction.text = getString(R.string.lbl_new_playlist)
-            binding.homeNoMusicAction.setOnClickListener { musicModel.createPlaylist() }
-        } else {
-            binding.homeNoMusicAction.isVisible =
-                indexingState == null || (empty && indexingState is IndexingState.Completed)
-            binding.homeNoMusicAction.text = getString(R.string.set_locations)
-            binding.homeNoMusicAction.setOnClickListener { homeModel.startChooseMusicLocations() }
+        val hasPlaylists = playlists.isNotEmpty()
+        binding.homeRecycler.isInvisible = !hasPlaylists
+        binding.homeNoMusic.isInvisible = hasPlaylists
+        if (!hasPlaylists) {
+            if (!empty) {
+                binding.homeNoMusicAction.isVisible = true
+                binding.homeNoMusicAction.text = getString(R.string.lbl_new_playlist)
+                binding.homeNoMusicAction.setOnClickListener { musicModel.createPlaylist() }
+            } else {
+                binding.homeNoMusicAction.isVisible =
+                    indexingState == null || (empty && indexingState is IndexingState.Completed)
+                binding.homeNoMusicAction.text = getString(R.string.set_locations)
+                binding.homeNoMusicAction.setOnClickListener { homeModel.startChooseMusicLocations() }
+            }
         }
     }
 

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.replaygain
+package org.nov0caina.sounder.playback.replaygain
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,10 +24,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogPreAmpBinding
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogPreAmpBinding
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
 import timber.log.Timber as L
 
 /**

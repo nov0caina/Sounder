@@ -26,9 +26,31 @@
         app:summary="@string/set_audio_desc"
         app:title="@string/set_audio" />
 
+    <PreferenceCategory app:title="@string/set_storage_category">
+
+        <ListPreference
+            app:defaultValue="INTERNAL"
+            app:entries="@array/entries_download_storage"
+            app:entryValues="@array/values_download_storage"
+            app:key="@string/set_key_download_storage"
+            app:title="@string/set_download_storage"
+            app:useSimpleSummaryProvider="true" />
+
+        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+            app:key="@string/set_key_migrate_library"
+            app:summary="@string/set_migrate_library_desc"
+            app:title="@string/set_migrate_library" />
+
+        <Preference
+            app:key="@string/set_key_direct_deletion"
+            app:summary="@string/set_direct_deletion_desc"
+            app:title="@string/set_direct_deletion" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/set_library">
 
-        <org.oxycblt.auxio.settings.ui.WrappedDialogPreference
+        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
             app:key="@string/set_key_music_dirs"
             app:summary="@string/set_locations_desc"
             app:title="@string/set_locations" />

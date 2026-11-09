@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui.accent
+package org.nov0caina.sounder.ui.accent
 
 import android.R as SR
 import android.view.ViewGroup
 import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.R as MR
-import org.oxycblt.auxio.databinding.ItemAccentBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.getColorCompat
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemAccentBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.getColorCompat
+import org.nov0caina.sounder.util.inflater
 
 /**
  * A [RecyclerView.Adapter] that displays [Accent] choices.

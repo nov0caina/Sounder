@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.adapter
+package org.nov0caina.sounder.list.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil

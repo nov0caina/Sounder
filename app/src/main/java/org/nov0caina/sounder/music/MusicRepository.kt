@@ -16,21 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music
+package org.nov0caina.sounder.music
 
 import android.content.Context
+import android.net.Uri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
-import org.oxycblt.auxio.image.covers.SettingCovers
-import org.oxycblt.auxio.music.MusicRepository.IndexingWorker
-import org.oxycblt.auxio.music.locations.LocationMode
-import org.oxycblt.auxio.music.shim.WriteOnlyMutableCache
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.covers.SettingCovers
+import org.nov0caina.sounder.music.MusicRepository.IndexingWorker
+import org.nov0caina.sounder.music.locations.LocationMode
+import org.nov0caina.sounder.music.shim.WriteOnlyMutableCache
+import org.nov0caina.sounder.online.db.OnlinePlaylistTrackDao
+import org.nov0caina.sounder.online.db.OnlinePlaylistTrackEntity
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.online.model.OnlineTrack
 import org.oxycblt.musikr.Config
 import org.oxycblt.musikr.IndexingProgress
 import org.oxycblt.musikr.Interpretation
@@ -163,6 +171,14 @@ interface MusicRepository {
     suspend fun rewritePlaylist(playlist: Playlist, songs: List<Song>)
 
     /**
+     * Retrieve any un-downloaded online tracks belonging to a playlist.
+     *
+     * @param playlistName Name of the playlist.
+     * @return List of [OnlineSong] instances recorded for this playlist.
+     */
+    fun getOnlineTracksForPlaylist(playlistName: String): List<OnlineSong>
+
+    /**
      * Request that a music loading operation is started by the current [IndexingWorker]. Does
      * nothing if one is not available.
      *
@@ -245,10 +261,49 @@ constructor(
     private val storedPlaylists: StoredPlaylists,
     private val settingCovers: SettingCovers,
     private val musicSettings: MusicSettings,
+    private val onlinePlaylistTrackDao: OnlinePlaylistTrackDao,
 ) : MusicRepository {
+    private val onlineTracksCache = java.util.concurrent.ConcurrentHashMap<String, MutableList<OnlineSong>>()
     private val updateListeners = mutableListOf<MusicRepository.UpdateListener>()
     private val indexingListeners = mutableListOf<MusicRepository.IndexingListener>()
     @Volatile private var indexingWorker: IndexingWorker? = null
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            loadOnlineTracksIntoCache()
+        }
+    }
+
+    private suspend fun loadOnlineTracksIntoCache() {
+        try {
+            val onlineTracks = onlinePlaylistTrackDao.getAll()
+            if (onlineTracks.isNotEmpty()) {
+                val tracksByPlaylist = onlineTracks.groupBy { it.playlistName }
+                for ((pName, tracks) in tracksByPlaylist) {
+                    val key = pName.lowercase(java.util.Locale.ROOT)
+                    val onlineSongs = tracks.map { track ->
+                        val onlineTrack = OnlineTrack(
+                            id = track.trackId,
+                            title = track.title,
+                            artist = track.artist,
+                            album = track.album,
+                            durationMs = track.durationMs,
+                            artworkUrl = track.artworkUrl
+                        )
+                        OnlineSong(
+                            onlineTrack,
+                            Uri.parse("https://www.youtube.com/watch?v=${track.trackId}")
+                        )
+                    }
+                    val cachedList = java.util.Collections.synchronizedList(mutableListOf<OnlineSong>())
+                    cachedList.addAll(onlineSongs)
+                    onlineTracksCache[key] = cachedList
+                }
+            }
+        } catch (e: Exception) {
+            L.w(e, "Failed to load online tracks cache on startup")
+        }
+    }
 
     @Volatile override var library: MutableLibrary? = null
     @Volatile private var previousCompletedState: IndexingState.Completed? = null
@@ -317,9 +372,64 @@ constructor(
                 ?: findPlaylist(uid)
         })
 
+    override fun getOnlineTracksForPlaylist(playlistName: String): List<OnlineSong> {
+        val keys = mutableSetOf(playlistName.lowercase(java.util.Locale.ROOT))
+        if (MusicViewModel.isFavoritesPlaylistName(context, playlistName)) {
+            keys.addAll(MusicViewModel.FAVORITES_ALIASES)
+            keys.add(context.getString(R.string.lbl_favorites_playlist).lowercase(java.util.Locale.ROOT))
+            keys.add(context.getString(R.string.lbl_favorite).lowercase(java.util.Locale.ROOT))
+        }
+        val result = mutableListOf<OnlineSong>()
+        val seenIds = mutableSetOf<String>()
+        for (k in keys) {
+            onlineTracksCache[k]?.let { list ->
+                synchronized(list) {
+                    for (song in list) {
+                        if (seenIds.add(song.onlineTrack.id)) {
+                            result.add(song)
+                        }
+                    }
+                }
+            }
+        }
+        return result
+    }
+
+    private suspend fun saveOnlineTracks(playlistName: String, songs: List<Song>) {
+        val key = playlistName.lowercase(java.util.Locale.ROOT)
+        val list = onlineTracksCache.getOrPut(key) { java.util.Collections.synchronizedList(mutableListOf()) }
+        try {
+            for (song in songs) {
+                if (song is OnlineSong) {
+                    synchronized(list) {
+                        if (list.none { it.onlineTrack.id == song.onlineTrack.id }) {
+                            list.add(song)
+                        }
+                    }
+                    val track = song.onlineTrack
+                    onlinePlaylistTrackDao.insertOrUpdate(
+                        OnlinePlaylistTrackEntity(
+                            playlistName = playlistName,
+                            songUid = song.uid.toString(),
+                            trackId = track.id,
+                            title = track.title,
+                            artist = track.artist,
+                            album = track.album,
+                            durationMs = track.durationMs,
+                            artworkUrl = track.artworkUrl
+                        )
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            L.w(e, "Failed to persist online track metadata")
+        }
+    }
+
     override suspend fun createPlaylist(name: String, songs: List<Song>) {
         val library = synchronized(this) { library ?: return }
         L.d("Creating playlist $name with ${songs.size} songs")
+        saveOnlineTracks(name, songs)
         val newLibrary = library.createPlaylist(name, songs)
         synchronized(this) { this.library = newLibrary }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
@@ -328,6 +438,11 @@ constructor(
     override suspend fun renamePlaylist(playlist: Playlist, name: String) {
         val library = synchronized(this) { library ?: return }
         L.d("Renaming $playlist to $name")
+        val oldKey = playlist.name.resolve(context).lowercase(java.util.Locale.ROOT)
+        val newKey = name.lowercase(java.util.Locale.ROOT)
+        onlineTracksCache.remove(oldKey)?.let {
+            onlineTracksCache[newKey] = it
+        }
         val newLibrary = library.renamePlaylist(playlist, name)
         synchronized(this) { this.library = newLibrary }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
@@ -336,6 +451,13 @@ constructor(
     override suspend fun deletePlaylist(playlist: Playlist) {
         val library = synchronized(this) { library ?: return }
         L.d("Deleting $playlist")
+        val key = playlist.name.resolve(context).lowercase(java.util.Locale.ROOT)
+        onlineTracksCache.remove(key)
+        try {
+            onlinePlaylistTrackDao.deleteForPlaylist(playlist.name.resolve(context))
+        } catch (e: Exception) {
+            L.w(e, "Failed to clean up online playlist tracks for deleted playlist")
+        }
         val newLibrary = library.deletePlaylist(playlist)
         synchronized(this) { this.library = newLibrary }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
@@ -344,6 +466,7 @@ constructor(
     override suspend fun addToPlaylist(songs: List<Song>, playlist: Playlist) {
         val library = synchronized(this) { library ?: return }
         L.d("Adding ${songs.size} songs to $playlist")
+        saveOnlineTracks(playlist.name.resolve(context), songs)
         val newLibrary = library.addToPlaylist(playlist, songs)
         synchronized(this) { this.library = newLibrary }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
@@ -352,6 +475,15 @@ constructor(
     override suspend fun rewritePlaylist(playlist: Playlist, songs: List<Song>) {
         val library = synchronized(this) { library ?: return }
         L.d("Rewriting $playlist with ${songs.size} songs")
+        val playlistName = playlist.name.resolve(context)
+        val key = playlistName.lowercase(java.util.Locale.ROOT)
+        onlineTracksCache.remove(key)
+        try {
+            onlinePlaylistTrackDao.deleteForPlaylist(playlistName)
+            saveOnlineTracks(playlistName, songs)
+        } catch (e: Exception) {
+            L.w(e, "Failed to update online playlist tracks on rewrite")
+        }
         val newLibrary = library.rewritePlaylist(playlist, songs)
         synchronized(this) { this.library = newLibrary }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
@@ -400,7 +532,19 @@ constructor(
         L.d("Covers: $covers")
         val fs =
             when (musicSettings.locationMode) {
-                LocationMode.SAF -> SAF.from(context, musicSettings.safQuery)
+                LocationMode.SAF -> {
+                    val safFs = SAF.from(context, musicSettings.safQuery)
+                    val auxioFs =
+                        MediaStore.from(
+                            context,
+                            MediaStore.Query(
+                                mode = MediaStore.FilterMode.EXCLUDE,
+                                filtered = emptyList(),
+                                excludeNonMusic = false,
+                            ),
+                        )
+                    SounderCompositeFS(safFs, auxioFs)
+                }
                 LocationMode.MEDIA_STORE -> MediaStore.from(context, musicSettings.mediaStoreQuery)
             }
         L.d("FS: $fs")
@@ -419,7 +563,55 @@ constructor(
         // This will more or less block until all required item translation and
         // cleanup finishes.
         L.d("Emitting new library")
-        emitLibrary(result.library)
+        var initialLibrary = result.library
+        try {
+            val onlineTracks = onlinePlaylistTrackDao.getAll()
+            onlineTracksCache.clear()
+            if (onlineTracks.isNotEmpty()) {
+                val tracksByPlaylist = onlineTracks.groupBy { it.playlistName }
+                for ((pName, tracks) in tracksByPlaylist) {
+                    val key = pName.lowercase(java.util.Locale.ROOT)
+                    val onlineSongs = tracks.map { track ->
+                        val onlineTrack = OnlineTrack(
+                            id = track.trackId,
+                            title = track.title,
+                            artist = track.artist,
+                            album = track.album,
+                            durationMs = track.durationMs,
+                            artworkUrl = track.artworkUrl
+                        )
+                        OnlineSong(
+                            onlineTrack,
+                            Uri.parse("https://www.youtube.com/watch?v=${track.trackId}")
+                        )
+                    }
+                    val cachedList = java.util.Collections.synchronizedList(mutableListOf<OnlineSong>())
+                    cachedList.addAll(onlineSongs)
+                    onlineTracksCache[key] = cachedList
+
+                    val isFav = MusicViewModel.isFavoritesPlaylistName(context, pName)
+                    val matchingLibPlaylist = initialLibrary.playlists.find {
+                        (isFav && MusicViewModel.isFavoritesPlaylistName(context, it.name.resolve(context))) ||
+                        it.name.resolve(context).equals(pName, ignoreCase = true)
+                    }
+                    if (matchingLibPlaylist != null) {
+                        val missingOnlineSongs = onlineSongs.filter { os ->
+                            matchingLibPlaylist.songs.none { it.uid.toString() == os.uid.toString() }
+                        }
+                        if (missingOnlineSongs.isNotEmpty()) {
+                            initialLibrary = initialLibrary.addToPlaylist(matchingLibPlaylist, missingOnlineSongs)
+                        }
+                    } else {
+                        if (onlineSongs.isNotEmpty()) {
+                            initialLibrary = initialLibrary.createPlaylist(pName, onlineSongs)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            L.w(e, "Failed to restore online playlist tracks")
+        }
+        emitLibrary(initialLibrary)
         // Clean up old data that is now impossible for the app to be using.
         L.d("Cleanup")
         result.cleanup()

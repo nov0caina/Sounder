@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.state
+package org.nov0caina.sounder.playback.state
 
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.playback.state.PlaybackStateManager.Listener
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.playback.state.PlaybackStateManager.Listener
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Song

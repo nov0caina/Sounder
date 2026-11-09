@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings.ui
+package org.nov0caina.sounder.settings.ui
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -29,9 +29,9 @@ import androidx.preference.DialogPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import java.lang.reflect.Field
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.getInteger
-import org.oxycblt.auxio.util.lazyReflectedField
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.getInteger
+import org.nov0caina.sounder.util.lazyReflectedField
 
 /**
  * An implementation of a list-based preference backed with integers.

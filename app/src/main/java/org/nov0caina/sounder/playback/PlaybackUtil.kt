@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
 import android.icu.text.MeasureFormat
 import android.icu.util.Measure

@@ -16,26 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.list
+package org.nov0caina.sounder.detail.list
 
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.databinding.ItemSortHeaderBinding
-import org.oxycblt.auxio.list.BasicHeader
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.PlainHeader
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.list.recycler.BasicHeaderViewHolder
-import org.oxycblt.auxio.list.recycler.DividerViewHolder
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.databinding.ItemSortHeaderBinding
+import org.nov0caina.sounder.list.BasicHeader
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.PlainHeader
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.list.recycler.BasicHeaderViewHolder
+import org.nov0caina.sounder.list.recycler.DividerViewHolder
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Music
 
 /**

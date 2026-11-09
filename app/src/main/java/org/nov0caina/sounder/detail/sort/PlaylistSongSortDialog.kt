@@ -16,17 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail.sort
+package org.nov0caina.sounder.detail.sort
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.databinding.DialogSortBinding
-import org.oxycblt.auxio.detail.DetailViewModel
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.list.sort.SortDialog
-import org.oxycblt.auxio.util.collectImmediately
+import org.nov0caina.sounder.databinding.DialogSortBinding
+import org.nov0caina.sounder.detail.DetailViewModel
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.list.sort.SortDialog
+import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Playlist
 import timber.log.Timber as L
 

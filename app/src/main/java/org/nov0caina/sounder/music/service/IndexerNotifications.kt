@@ -16,16 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
 import android.content.Context
 import android.os.SystemClock
 import androidx.core.app.NotificationCompat
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.ForegroundServiceNotification
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.newMainPendingIntent
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.ForegroundServiceNotification
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.newMainPendingIntent
 import org.oxycblt.musikr.IndexingProgress
 import timber.log.Timber as L
 

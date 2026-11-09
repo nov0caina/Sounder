@@ -16,11 +16,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.persist
+package org.nov0caina.sounder.playback.persist
 
 import javax.inject.Inject
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
 import org.oxycblt.musikr.MusicParent
 import timber.log.Timber as L
 

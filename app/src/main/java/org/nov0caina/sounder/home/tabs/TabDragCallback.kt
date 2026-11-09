@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.tabs
+package org.nov0caina.sounder.home.tabs
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper

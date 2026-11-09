@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings
+package org.nov0caina.sounder.settings
 
 import android.os.Bundle
 import androidx.fragment.app.activityViewModels
@@ -26,10 +26,12 @@ import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.transition.MaterialFadeThrough
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.MusicViewModel
-import org.oxycblt.auxio.settings.ui.WrappedDialogPreference
-import org.oxycblt.auxio.util.navigateSafe
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+import org.nov0caina.sounder.util.StoragePermissionHelper
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.showToast
 import timber.log.Timber as L
 
 /**
@@ -50,12 +52,48 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        findPreference<Preference>(getString(R.string.set_key_direct_deletion))?.let { pref ->
+            updateDirectDeletionSummary(pref)
+        }
+    }
+
     override fun onOpenDialogPreference(preference: WrappedDialogPreference) {
         when (preference.key) {
             getString(R.string.set_key_music_dirs) -> {
                 findNavController()
                     .navigateSafe(RootPreferenceFragmentDirections.musicLocationsSettings())
             }
+            getString(R.string.set_key_migrate_library) -> {
+                findNavController()
+                    .navigateSafe(RootPreferenceFragmentDirections.libraryMigrationSettings())
+            }
+        }
+    }
+
+    override fun onSetupPreference(preference: Preference) {
+        if (preference.key == getString(R.string.set_key_download_storage)) {
+            val listPref = preference as? androidx.preference.ListPreference ?: return
+            val hasSd = org.nov0caina.sounder.util.StorageVolumeHelper.isSdCardAvailable(requireContext())
+            if (!hasSd) {
+                listPref.entries = arrayOf(
+                    getString(R.string.set_download_storage_internal),
+                    getString(R.string.set_download_storage_sd_unavailable)
+                )
+                listPref.entryValues = arrayOf("INTERNAL", "INTERNAL")
+            }
+        } else if (preference.key == getString(R.string.set_key_direct_deletion)) {
+            updateDirectDeletionSummary(preference)
+        }
+    }
+
+    private fun updateDirectDeletionSummary(preference: Preference) {
+        val context = context ?: return
+        if (StoragePermissionHelper.hasAllFilesAccess(context)) {
+            preference.summary = getString(R.string.set_direct_deletion_enabled_desc)
+        } else {
+            preference.summary = getString(R.string.set_direct_deletion_desc)
         }
     }
 
@@ -81,6 +119,18 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
             getString(R.string.set_key_audio) -> {
                 L.d("Navigating to audio preferences")
                 findNavController().navigateSafe(RootPreferenceFragmentDirections.audioPeferences())
+            }
+            getString(R.string.set_key_direct_deletion) -> {
+                val context = requireContext()
+                if (!StoragePermissionHelper.hasAllFilesAccess(context)) {
+                    try {
+                        startActivity(StoragePermissionHelper.createManageAllFilesAccessIntent(context))
+                    } catch (t: Throwable) {
+                        context.showToast(R.string.err_no_app)
+                    }
+                } else {
+                    context.showToast(R.string.set_direct_deletion_enabled_desc)
+                }
             }
             getString(R.string.set_key_reindex) -> musicModel.refresh()
             getString(R.string.set_key_rescan) -> musicModel.rescan()

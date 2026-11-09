@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.settings.ui
+package org.nov0caina.sounder.settings.ui
 
 import android.content.Context
 import android.util.AttributeSet

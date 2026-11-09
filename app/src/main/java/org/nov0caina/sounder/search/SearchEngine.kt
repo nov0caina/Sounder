@@ -16,13 +16,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.search
+package org.nov0caina.sounder.search
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.Normalizer
 import javax.inject.Inject
-import org.oxycblt.auxio.music.resolve
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveName
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -99,7 +100,7 @@ class SearchEngineImpl @Inject constructor(@ApplicationContext private val conte
                 // situations.
                 val name = it.name
 
-                val resolvedName = name.resolve(context)
+                val resolvedName = (it as? Playlist)?.resolveName(context) ?: name.resolve(context)
                 if (resolvedName.contains(query, ignoreCase = true)) {
                     return@filter true
                 }

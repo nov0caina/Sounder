@@ -16,30 +16,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback
+package org.nov0caina.sounder.playback
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.list.ListSettings
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.playback.state.DeferredPlayback
-import org.oxycblt.auxio.playback.state.PlaybackCommand
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.playback.state.Progression
-import org.oxycblt.auxio.playback.state.QueueChange
-import org.oxycblt.auxio.playback.state.RepeatMode
-import org.oxycblt.auxio.playback.state.ShuffleMode
-import org.oxycblt.auxio.util.Event
-import org.oxycblt.auxio.util.MutableEvent
+import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.online.repository.OnlineMusicRepository
+import org.nov0caina.sounder.playback.state.DeferredPlayback
+import org.nov0caina.sounder.playback.state.PlaybackCommand
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.playback.state.Progression
+import org.nov0caina.sounder.playback.state.QueueChange
+import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.playback.state.ShuffleMode
+import org.nov0caina.sounder.util.Event
+import org.nov0caina.sounder.util.MutableEvent
+import org.nov0caina.sounder.util.NetworkUtil
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -63,6 +73,10 @@ constructor(
     private val playbackSettings: PlaybackSettings,
     private val commandFactory: PlaybackCommand.Factory,
     private val listSettings: ListSettings,
+    @ApplicationContext private val context: Context,
+    private val downloadManager: DownloadManager,
+    private val onlineMusicRepository: OnlineMusicRepository,
+    private val musicRepository: MusicRepository,
 ) : ViewModel(), PlaybackStateManager.Listener, PlaybackSettings.Listener {
     private var lastPositionJob: Job? = null
 
@@ -115,6 +129,10 @@ constructor(
      */
     val playbackDecision: Event<PlaybackDecision>
         field = MutableEvent<PlaybackDecision>()
+
+    /** Event emitted when playback of an un-downloaded online track cannot start because offline. */
+    val offlinePlaybackWarning: Event<Unit>
+        field = MutableEvent<Unit>()
 
     /**
      * The current audio session ID of the internal player. Null if no audio player is available.
@@ -207,8 +225,54 @@ constructor(
 
     // --- PLAYING FUNCTIONS ---
 
+    private fun filterPlayablePlaylistSongs(songs: List<Song>): List<Song> {
+        if (NetworkUtil.isConnected(context)) {
+            return songs
+        }
+        return songs.filter { song ->
+            if (song is OnlineSong) {
+                downloadManager.isDownloaded(song.onlineTrack.id)
+            } else {
+                true
+            }
+        }
+    }
+
     fun play(song: Song, with: PlaySong) {
         L.d("Playing $song with $with")
+        if (song is OnlineSong && song.uri.toString().contains("watch?v=")) {
+            val localPath = downloadManager.getDownloadedFilePath(song.onlineTrack.id)
+            if (localPath != null && File(localPath).exists()) {
+                val localSong = OnlineSong(song.onlineTrack, Uri.fromFile(File(localPath)))
+                playWithImpl(localSong, with, ShuffleMode.IMPLICIT)
+                return
+            }
+            if (!NetworkUtil.isConnected(context)) {
+                L.w("Cannot play un-downloaded online song offline: %s", song.onlineTrack.title)
+                (offlinePlaybackWarning as MutableEvent<Unit>).put(Unit)
+                return
+            }
+            viewModelScope.launch {
+                try {
+                    val streamInfo = onlineMusicRepository.resolveStreamInfo(
+                        song.onlineTrack.id,
+                        title = song.onlineTrack.title,
+                        artist = song.onlineTrack.artist
+                    )
+                    if (streamInfo != null && streamInfo.url.isNotBlank()) {
+                        val duration = if (song.onlineTrack.durationMs > 0) song.onlineTrack.durationMs else streamInfo.durationMs
+                        val resolvedSong = OnlineSong(song.onlineTrack.copy(durationMs = duration), Uri.parse(streamInfo.url))
+                        playWithImpl(resolvedSong, with, ShuffleMode.IMPLICIT)
+                    } else {
+                        playWithImpl(song, with, ShuffleMode.IMPLICIT)
+                    }
+                } catch (e: Exception) {
+                    L.e(e, "Failed to resolve stream for %s", song.onlineTrack.title)
+                    playWithImpl(song, with, ShuffleMode.IMPLICIT)
+                }
+            }
+            return
+        }
         playWithImpl(song, with, ShuffleMode.IMPLICIT)
     }
 
@@ -309,7 +373,58 @@ constructor(
 
     private fun playFromPlaylistImpl(song: Song, playlist: Playlist, shuffle: ShuffleMode) {
         L.d("Playing $song from $playlist")
-        playImpl(commandFactory.songFromPlaylist(song, playlist, shuffle))
+        val playlistName = playlist.name.resolve(context)
+        val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val playable = filterPlayablePlaylistSongs(allSongs)
+
+        val matchingSong = playable.find { it.uid.toString() == song.uid.toString() }
+        if (matchingSong == null) {
+            L.w("Selected song is not playable offline")
+            return
+        }
+
+        if (song is OnlineSong && song.uri.toString().contains("watch?v=")) {
+            val localPath = downloadManager.getDownloadedFilePath(song.onlineTrack.id)
+            if (localPath != null && File(localPath).exists()) {
+                val localSong = OnlineSong(song.onlineTrack, Uri.fromFile(File(localPath)))
+                val queue = playable.map { if (it.uid.toString() == song.uid.toString()) localSong else it }
+                playImpl(commandFactory.songFromPlaylist(localSong, playlist, queue, shuffle))
+                return
+            }
+            if (!NetworkUtil.isConnected(context)) {
+                L.w("Cannot play un-downloaded online song offline: %s", song.onlineTrack.title)
+                (offlinePlaybackWarning as MutableEvent<Unit>).put(Unit)
+                return
+            }
+            viewModelScope.launch {
+                try {
+                    val streamInfo = onlineMusicRepository.resolveStreamInfo(
+                        song.onlineTrack.id,
+                        title = song.onlineTrack.title,
+                        artist = song.onlineTrack.artist
+                    )
+                    if (streamInfo != null && streamInfo.url.isNotBlank()) {
+                        val duration = if (song.onlineTrack.durationMs > 0) song.onlineTrack.durationMs else streamInfo.durationMs
+                        val resolvedSong = OnlineSong(song.onlineTrack.copy(durationMs = duration), Uri.parse(streamInfo.url))
+                        val queue = playable.map { if (it.uid.toString() == song.uid.toString()) resolvedSong else it }
+                        playImpl(commandFactory.songFromPlaylist(resolvedSong, playlist, queue, shuffle))
+                    } else {
+                        val queue = playable.map { if (it.uid.toString() == song.uid.toString()) song else it }
+                        playImpl(commandFactory.songFromPlaylist(song, playlist, queue, shuffle))
+                    }
+                } catch (e: Exception) {
+                    L.e(e, "Failed to resolve stream for %s", song.onlineTrack.title)
+                    val queue = playable.map { if (it.uid.toString() == song.uid.toString()) song else it }
+                    playImpl(commandFactory.songFromPlaylist(song, playlist, queue, shuffle))
+                }
+            }
+            return
+        }
+
+        val targetSong = if (song is OnlineSong && !song.uri.toString().contains("watch?v=")) song else matchingSong
+        val queue = playable.map { if (it.uid.toString() == targetSong.uid.toString()) targetSong else it }
+        playImpl(commandFactory.songFromPlaylist(targetSong, playlist, queue, shuffle))
     }
 
     private fun startPlaybackDecision(decision: PlaybackDecision) {
@@ -388,7 +503,16 @@ constructor(
      */
     fun play(playlist: Playlist) {
         L.d("Playing $playlist")
-        playImpl(commandFactory.playlist(playlist, ShuffleMode.OFF))
+        val playlistName = playlist.name.resolve(context)
+        val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val playable = filterPlayablePlaylistSongs(allSongs)
+        if (playable.isEmpty()) {
+            L.w("No offline playable songs in playlist")
+            return
+        }
+        val firstSong = playable.first()
+        playFromPlaylistImpl(firstSong, playlist, ShuffleMode.OFF)
     }
 
     /**
@@ -398,7 +522,37 @@ constructor(
      */
     fun shuffle(playlist: Playlist) {
         L.d("Shuffling $playlist")
-        playImpl(commandFactory.playlist(playlist, ShuffleMode.ON))
+        val playlistName = playlist.name.resolve(context)
+        val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
+        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val playable = filterPlayablePlaylistSongs(allSongs)
+        if (playable.isEmpty()) {
+            L.w("No offline playable songs in playlist")
+            return
+        }
+        val firstSong = playable.random()
+        playFromPlaylistImpl(firstSong, playlist, ShuffleMode.ON)
+    }
+
+    /**
+     * Play a list of [Song]s starting at a specific [Song] in that queue.
+     *
+     * @param song The [Song] to start playing from, or null for the beginning.
+     * @param queue The list of [Song]s to enqueue.
+     * @param shuffle The [ShuffleMode] to apply.
+     */
+    fun play(song: Song?, queue: List<Song>, shuffle: ShuffleMode = ShuffleMode.IMPLICIT) {
+        L.d("Playing $song with custom queue of ${queue.size} songs")
+        if (song is OnlineSong && song.uri.scheme != "file") {
+            val localPath = downloadManager.getDownloadedFilePath(song.onlineTrack.id)
+            val isLocal = localPath != null && File(localPath).exists()
+            if (!isLocal && !NetworkUtil.isConnected(context)) {
+                L.w("Cannot play un-downloaded online song offline: %s", song.onlineTrack.title)
+                (offlinePlaybackWarning as MutableEvent<Unit>).put(Unit)
+                return
+            }
+        }
+        playImpl(commandFactory.songFromQueue(song, queue, shuffle))
     }
 
     /**
@@ -603,6 +757,20 @@ constructor(
     }
 
     // --- STATUS FUNCTIONS ---
+
+    /** Pauses active playback if currently playing. */
+    fun pause() {
+        if (playbackManager.progression.isPlaying) {
+            L.d("Pausing playback")
+            playbackManager.playing(false)
+        }
+    }
+
+    /** Ends the current playback session and releases player resources. */
+    fun endSession() {
+        L.d("Ending playback session")
+        playbackManager.endSession()
+    }
 
     /** Toggle [isPlaying] (i.e from playing to paused) */
     fun togglePlaying() {

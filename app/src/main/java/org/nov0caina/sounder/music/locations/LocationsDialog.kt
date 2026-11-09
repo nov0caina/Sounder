@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.locations
+package org.nov0caina.sounder.music.locations
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -33,12 +33,12 @@ import androidx.core.view.isVisible
 import com.google.android.material.R as MR
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.DialogMusicLocationsBinding
-import org.oxycblt.auxio.music.MusicSettings
-import org.oxycblt.auxio.ui.ViewBindingMaterialDialogFragment
-import org.oxycblt.auxio.util.getAttrColorCompat
-import org.oxycblt.auxio.util.showToast
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.DialogMusicLocationsBinding
+import org.nov0caina.sounder.music.MusicSettings
+import org.nov0caina.sounder.ui.ViewBindingMaterialDialogFragment
+import org.nov0caina.sounder.util.getAttrColorCompat
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.fs.Location
 import org.oxycblt.musikr.fs.Volume
 import org.oxycblt.musikr.fs.mediastore.MediaStore

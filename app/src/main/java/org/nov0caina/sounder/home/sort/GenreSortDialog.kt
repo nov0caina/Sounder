@@ -16,13 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.sort
+package org.nov0caina.sounder.home.sort
 
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.home.HomeViewModel
-import org.oxycblt.auxio.list.sort.Sort
-import org.oxycblt.auxio.list.sort.SortDialog
+import org.nov0caina.sounder.home.HomeViewModel
+import org.nov0caina.sounder.list.sort.Sort
+import org.nov0caina.sounder.list.sort.SortDialog
 
 /**
  * A [SortDialog] that controls the [Sort] of [HomeViewModel.genreList].

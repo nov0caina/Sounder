@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.util
+package org.nov0caina.sounder.util
 
 import android.app.PendingIntent
 import android.content.Context
@@ -37,9 +37,9 @@ import androidx.annotation.Px
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import kotlin.reflect.KClass
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.MainActivity
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.MainActivity
+import org.nov0caina.sounder.R
 
 /**
  * Get a [LayoutInflater] instance from this [Context].
@@ -191,6 +191,15 @@ fun <T : Any> Context.getSystemServiceCompat(serviceClass: KClass<T>) =
  */
 fun Context.showToast(@StringRes stringRes: Int) {
     Toast.makeText(applicationContext, getString(stringRes), Toast.LENGTH_SHORT).show()
+}
+
+/**
+ * Create a short-length [Toast] with custom text.
+ *
+ * @param message The text to use in the toast.
+ */
+fun Context.showToast(message: CharSequence) {
+    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
 }
 
 /** Create a [PendingIntent] that will launch the app activity when launched. */

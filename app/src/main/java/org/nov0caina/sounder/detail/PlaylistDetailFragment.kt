@@ -16,37 +16,50 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.detail
+package org.nov0caina.sounder.detail
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.FragmentDetailBinding
-import org.oxycblt.auxio.detail.list.PlaylistDetailListAdapter
-import org.oxycblt.auxio.detail.list.PlaylistDragCallback
-import org.oxycblt.auxio.list.Item
-import org.oxycblt.auxio.list.ListFragment
-import org.oxycblt.auxio.list.menu.Menu
-import org.oxycblt.auxio.music.PlaylistDecision
-import org.oxycblt.auxio.music.PlaylistMessage
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.playback.PlaybackDecision
-import org.oxycblt.auxio.playback.formatDurationMs
-import org.oxycblt.auxio.ui.DialogAwareNavigationListener
-import org.oxycblt.auxio.util.collect
-import org.oxycblt.auxio.util.collectImmediately
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getPlural
-import org.oxycblt.auxio.util.navigateSafe
-import org.oxycblt.auxio.util.showToast
+import javax.inject.Inject
+import kotlinx.coroutines.launch
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.FragmentDetailBinding
+import org.nov0caina.sounder.detail.list.PlaylistDetailListAdapter
+import org.nov0caina.sounder.detail.list.PlaylistDragCallback
+import org.nov0caina.sounder.list.Item
+import org.nov0caina.sounder.list.ListFragment
+import org.nov0caina.sounder.list.menu.Menu
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.music.PlaylistMessage
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.online.repository.OnlineMusicRepository
+import org.nov0caina.sounder.playback.PlaybackDecision
+import org.nov0caina.sounder.playback.formatDurationMs
+import org.nov0caina.sounder.ui.DialogAwareNavigationListener
+import org.nov0caina.sounder.util.NetworkUtil
+import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.collectImmediately
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getPlural
+import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.Playlist
@@ -66,14 +79,31 @@ class PlaylistDetailFragment :
     // as a UID, as that is the only safe way to parcel an playlist.
     private val args: PlaylistDetailFragmentArgs by navArgs()
     private val playlistListAdapter = PlaylistDetailListAdapter(this)
-    private var touchHelper: ItemTouchHelper? = null
     private var editNavigationListener: DialogAwareNavigationListener? = null
     private var getContentLauncher: ActivityResultLauncher<String>? = null
     private var pendingImportTarget: Playlist? = null
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
+
+    @Inject lateinit var downloadManager: DownloadManager
+    @Inject lateinit var onlineMusicRepository: OnlineMusicRepository
+    @Inject lateinit var musicRepository: MusicRepository
 
     override fun getDetailListAdapter() = playlistListAdapter
 
     override fun getToolbarParent() = detailModel.currentPlaylist.value
+
+    override fun setupItemTouchHelper(binding: FragmentDetailBinding) {
+        touchHelper =
+            ItemTouchHelper(
+                PlaylistDragCallback(
+                    detailModel = detailModel,
+                    playbackModel = playbackModel,
+                    getSongAt = { pos -> playlistListAdapter.currentList.getOrNull(pos) as? Song },
+                )
+            ).also {
+                it.attachToRecyclerView(binding.detailRecycler)
+            }
+    }
 
     override fun onBindingCreated(binding: FragmentDetailBinding, savedInstanceState: Bundle?) {
         super.onBindingCreated(binding, savedInstanceState)
@@ -98,11 +128,6 @@ class PlaylistDetailFragment :
             setOnMenuItemClickListener(this@PlaylistDetailFragment)
         }
 
-        touchHelper =
-            ItemTouchHelper(PlaylistDragCallback(detailModel)).also {
-                it.attachToRecyclerView(binding.detailRecycler)
-            }
-
         // --- VIEWMODEL SETUP ---
         // DetailViewModel handles most initialization from the navigation argument.
         detailModel.setPlaylist(args.playlistUid)
@@ -125,6 +150,9 @@ class PlaylistDetailFragment :
             ::updatePlayback,
         )
         collect(playbackModel.playbackDecision.flow, ::handlePlaybackDecision)
+        collect(downloadManager.downloads) {
+            view?.post { playlistListAdapter.notifyItemRangeChanged(0, playlistListAdapter.itemCount) }
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -146,12 +174,45 @@ class PlaylistDetailFragment :
         // so handle that by resetting the flag.
         requireNotNull(editNavigationListener) { "NavigationListener was not available" }
             .attach(findNavController())
+
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        if (cm != null) {
+            val callback = object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    view?.post { playlistListAdapter.notifyItemRangeChanged(0, playlistListAdapter.itemCount) }
+                }
+                override fun onLost(network: Network) {
+                    view?.post { playlistListAdapter.notifyItemRangeChanged(0, playlistListAdapter.itemCount) }
+                }
+            }
+            networkCallback = callback
+            try {
+                cm.registerDefaultNetworkCallback(callback)
+            } catch (e: Exception) {
+                L.w(e, "Failed to register network callback")
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playlistListAdapter.notifyItemRangeChanged(0, playlistListAdapter.itemCount)
     }
 
     override fun onStop() {
         super.onStop()
         requireNotNull(editNavigationListener) { "NavigationListener was not available" }
             .release(findNavController())
+
+        networkCallback?.let {
+            val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+            try {
+                cm?.unregisterNetworkCallback(it)
+            } catch (e: Exception) {
+                L.w(e, "Failed to unregister network callback")
+            }
+            networkCallback = null
+        }
     }
 
     override fun onDestroyBinding(binding: FragmentDetailBinding) {
@@ -165,15 +226,84 @@ class PlaylistDetailFragment :
         editNavigationListener = null
     }
 
+    override fun isSongDisabledOffline(song: Song): Boolean {
+        if (song is OnlineSong) {
+            return !NetworkUtil.isConnected(requireContext()) && !downloadManager.isDownloaded(song.onlineTrack.id)
+        }
+        return false
+    }
+
+    override fun onDisabledOfflineSongClick(song: Song) {
+        requireContext().showToast(R.string.error_offline_track_requires_connection)
+    }
+
     override fun onPlayParent(parent: Playlist) {
-        playbackModel.play(parent)
+        playPlaylist(parent, shuffle = false)
     }
 
     override fun onShuffleParent(parent: Playlist) {
-        playbackModel.shuffle(parent)
+        playPlaylist(parent, shuffle = true)
+    }
+
+    private fun playPlaylist(playlist: Playlist, shuffle: Boolean) {
+        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlist.name.resolve(requireContext())))
+            .distinctBy { it.uid.toString() }
+        val isOnline = NetworkUtil.isConnected(requireContext())
+        if (!isOnline) {
+            val offlineSongs = allSongs.filter { song ->
+                if (song is OnlineSong) downloadManager.isDownloaded(song.onlineTrack.id) else true
+            }
+            if (offlineSongs.isEmpty()) {
+                requireContext().showToast(R.string.error_no_offline_tracks_in_playlist)
+                return
+            }
+            if (shuffle) {
+                playbackModel.shuffle(offlineSongs)
+            } else {
+                playbackModel.play(offlineSongs)
+            }
+            return
+        }
+
+        if (shuffle) {
+            playbackModel.shuffle(allSongs)
+        } else {
+            playbackModel.play(allSongs)
+        }
     }
 
     override fun onRealClick(item: Song) {
+        if (item is OnlineSong) {
+            val isDownloaded = downloadManager.isDownloaded(item.onlineTrack.id)
+            if (!isDownloaded) {
+                if (!NetworkUtil.isConnected(requireContext())) {
+                    requireContext().showToast(R.string.error_offline_track_requires_connection)
+                    return
+                }
+                if (item.uri.toString().contains("watch?v=")) {
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        try {
+                            val streamInfo = onlineMusicRepository.resolveStreamInfo(
+                                item.onlineTrack.id,
+                                title = item.onlineTrack.title,
+                                artist = item.onlineTrack.artist
+                            )
+                            if (streamInfo != null && streamInfo.url.isNotBlank()) {
+                                val duration = if (item.onlineTrack.durationMs > 0) item.onlineTrack.durationMs else streamInfo.durationMs
+                                val resolvedSong = OnlineSong(item.onlineTrack.copy(durationMs = duration), Uri.parse(streamInfo.url))
+                                playbackModel.play(resolvedSong, detailModel.playInPlaylistWith)
+                            } else {
+                                requireContext().showToast(R.string.error_offline_track_requires_connection)
+                            }
+                        } catch (e: Exception) {
+                            L.e(e, "Failed to resolve online song stream")
+                            requireContext().showToast(R.string.error_offline_track_requires_connection)
+                        }
+                    }
+                    return
+                }
+            }
+        }
         playbackModel.play(item, detailModel.playInPlaylistWith)
     }
 
@@ -205,15 +335,16 @@ class PlaylistDetailFragment :
             return
         }
         val binding = requireBinding()
-        binding.detailNormalToolbar.title = playlist.name.resolve(requireContext())
+        val resolvedName = playlist.resolveName(requireContext())
+        binding.detailNormalToolbar.title = resolvedName
         binding.detailEditToolbar.title =
-            getString(R.string.fmt_editing, playlist.name.resolve(requireContext()))
+            getString(R.string.fmt_editing, resolvedName)
 
         if (editedPlaylist != null) {
             L.d("Binding edited playlist image")
             binding.detailCover.bind(
                 editedPlaylist,
-                binding.context.getString(R.string.desc_playlist_image, playlist.name),
+                binding.context.getString(R.string.desc_playlist_image, resolvedName),
                 R.drawable.ic_playlist_24,
                 playlist.uid.toString().hashCode(),
             )
@@ -222,12 +353,14 @@ class PlaylistDetailFragment :
         }
 
         binding.detailType.text = binding.context.getString(R.string.lbl_playlist)
-        binding.detailName.text = playlist.name.resolve(binding.context)
+        binding.detailName.text = resolvedName
         // Nothing about a playlist is applicable to the sub-head text.
         binding.detailSubhead.isVisible = false
 
-        val songs = editedPlaylist ?: playlist.songs
-        val durationMs = editedPlaylist?.sumOf { it.durationMs } ?: playlist.durationMs
+        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlist.name.resolve(requireContext())))
+            .distinctBy { it.uid.toString() }
+        val songs = editedPlaylist ?: allSongs
+        val durationMs = songs.sumOf { it.durationMs }
         // The song count of the playlist maps to the info text.
         binding.detailInfo.text =
             if (songs.isNotEmpty()) {
@@ -240,18 +373,18 @@ class PlaylistDetailFragment :
                 binding.context.getString(R.string.def_song_count)
             }
 
-        val playable = playlist.songs.isNotEmpty() && editedPlaylist == null
+        val playable = allSongs.isNotEmpty() && editedPlaylist == null
         if (!playable) {
             L.d("Playlist is being edited or is empty, disabling playback options")
         }
 
         binding.detailPlayButton?.apply {
             isEnabled = playable
-            setOnClickListener { playbackModel.play(playlist) }
+            setOnClickListener { playPlaylist(playlist, shuffle = false) }
         }
         binding.detailShuffleButton?.apply {
             isEnabled = playable
-            setOnClickListener { playbackModel.shuffle(playlist) }
+            setOnClickListener { playPlaylist(playlist, shuffle = true) }
         }
         setToolbarPlaybackButtonsEnabled(playable)
         updatePlayback(

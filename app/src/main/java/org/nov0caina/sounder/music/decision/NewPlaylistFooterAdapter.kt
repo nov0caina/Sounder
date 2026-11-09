@@ -16,12 +16,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.decision
+package org.nov0caina.sounder.music.decision
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.ItemNewPlaylistChoiceBinding
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemNewPlaylistChoiceBinding
+import org.nov0caina.sounder.util.inflater
 
 /**
  * A purely-visual [RecyclerView.Adapter] that acts as a footer providing a "New Playlist" choice in

@@ -16,16 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.home.tabs
+package org.nov0caina.sounder.home.tabs
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemTabBinding
-import org.oxycblt.auxio.list.EditClickListListener
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemTabBinding
+import org.nov0caina.sounder.list.EditClickListListener
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.util.inflater
 import timber.log.Timber as L
 
 /**

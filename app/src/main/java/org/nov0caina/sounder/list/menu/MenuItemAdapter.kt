@@ -16,16 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.menu
+package org.nov0caina.sounder.list.menu
 
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.oxycblt.auxio.databinding.ItemMenuOptionBinding
-import org.oxycblt.auxio.list.ClickableListListener
-import org.oxycblt.auxio.list.adapter.FlexibleListAdapter
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.databinding.ItemMenuOptionBinding
+import org.nov0caina.sounder.list.ClickableListListener
+import org.nov0caina.sounder.list.adapter.FlexibleListAdapter
+import org.nov0caina.sounder.util.inflater
 
 /**
  * Displays a list of [MenuItem]s as custom list items.

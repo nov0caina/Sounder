@@ -21,7 +21,7 @@ package org.oxycblt.musikr.metadata
 import java.io.FileInputStream
 import org.oxycblt.musikr.fs.File
 
-internal object TagLibJNI {
+object TagLibJNI {
     init {
         System.loadLibrary("tagJNI")
     }
@@ -38,5 +38,32 @@ internal object TagLibJNI {
         return tag
     }
 
+    /**
+     * Writes metadata tags (title, artist, album, genre, cover artwork, track number, year) to an audio file on disk.
+     */
+    fun writeTags(
+        path: String,
+        title: String? = null,
+        artist: String? = null,
+        album: String? = null,
+        genre: String? = null,
+        coverData: ByteArray? = null,
+        track: Int = 0,
+        year: Int = 0
+    ): Boolean {
+        return writeTagsNative(path, title, artist, album, genre, coverData, track, year)
+    }
+
     private external fun openNative(inputStream: NativeInputStream): MetadataResult
+
+    private external fun writeTagsNative(
+        path: String,
+        title: String?,
+        artist: String?,
+        album: String?,
+        genre: String?,
+        coverData: ByteArray?,
+        track: Int,
+        year: Int
+    ): Boolean
 }

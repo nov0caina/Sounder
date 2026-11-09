@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -25,10 +25,10 @@ import android.content.IntentFilter
 import android.media.AudioManager
 import androidx.core.content.ContextCompat
 import javax.inject.Inject
-import org.oxycblt.auxio.playback.PlaybackSettings
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.widgets.WidgetComponent
-import org.oxycblt.auxio.widgets.WidgetProvider
+import org.nov0caina.sounder.playback.PlaybackSettings
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.widgets.WidgetComponent
+import org.nov0caina.sounder.widgets.WidgetProvider
 import timber.log.Timber as L
 
 /**

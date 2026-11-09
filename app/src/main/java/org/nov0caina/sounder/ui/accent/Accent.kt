@@ -16,14 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui.accent
+package org.nov0caina.sounder.ui.accent
 
 import android.os.Build
-import org.oxycblt.auxio.R
+import org.nov0caina.sounder.R
 import timber.log.Timber as L
 
 private val accentNames =
     intArrayOf(
+        R.string.clr_sounder,
         R.string.clr_red,
         R.string.clr_pink,
         R.string.clr_purple,
@@ -45,6 +46,7 @@ private val accentNames =
 
 private val accentThemes =
     intArrayOf(
+        R.style.Theme_Auxio_Sounder,
         R.style.Theme_Auxio_Red,
         R.style.Theme_Auxio_Pink,
         R.style.Theme_Auxio_Purple,
@@ -66,6 +68,7 @@ private val accentThemes =
 
 private val accentBlackThemes =
     intArrayOf(
+        R.style.Theme_Auxio_Sounder_Black,
         R.style.Theme_Auxio_Red_Black,
         R.style.Theme_Auxio_Pink_Black,
         R.style.Theme_Auxio_Purple_Black,
@@ -87,6 +90,7 @@ private val accentBlackThemes =
 
 private val accentPrimaryColors =
     intArrayOf(
+        R.color.sounder_primary,
         R.color.red_primary,
         R.color.pink_primary,
         R.color.purple_primary,
@@ -153,15 +157,8 @@ class Accent private constructor(val index: Int) {
             return Accent(index)
         }
 
-        /** The default accent. */
-        val DEFAULT =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                // Use dynamic coloring on devices that support it.
-                accentThemes.lastIndex
-            } else {
-                // Use blue everywhere else.
-                5
-            }
+        /** The default accent (Sounder signature theme). */
+        val DEFAULT = 0
 
         /** The amount of valid accents. */
         val MAX =

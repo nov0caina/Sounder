@@ -783,4 +783,54 @@
         <item name="colorSurfaceContainerHigh">@color/grey_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/grey_surfaceContainerHighest</item>
     </style>
+
+    <style name="Theme.Auxio.Sounder" parent="Theme.Auxio.Base">
+        <item name="colorPrimary">@color/sounder_primary</item>
+        <item name="colorOnPrimary">@color/sounder_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/sounder_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/sounder_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/sounder_secondary</item>
+        <item name="colorOnSecondary">@color/sounder_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/sounder_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/sounder_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/sounder_tertiary</item>
+        <item name="colorOnTertiary">@color/sounder_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/sounder_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/sounder_onTertiaryContainer</item>
+        <item name="colorError">@color/sounder_error</item>
+        <item name="colorOnError">@color/sounder_onError</item>
+        <item name="colorErrorContainer">@color/sounder_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/sounder_onErrorContainer</item>
+        <item name="android:colorBackground">@color/sounder_background</item>
+        <item name="colorOnBackground">@color/sounder_onBackground</item>
+        <item name="colorSurface">@color/sounder_surface</item>
+        <item name="colorOnSurface">@color/sounder_onSurface</item>
+        <item name="colorSurfaceVariant">@color/sounder_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/sounder_onSurfaceVariant</item>
+        <item name="colorOutline">@color/sounder_outline</item>
+        <item name="colorOutlineVariant">@color/sounder_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/sounder_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/sounder_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/sounder_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/sounder_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/sounder_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/sounder_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/sounder_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/sounder_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/sounder_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/sounder_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/sounder_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/sounder_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/sounder_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/sounder_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/sounder_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/sounder_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/sounder_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/sounder_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/sounder_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/sounder_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/sounder_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/sounder_surfaceContainerHighest</item>
+    </style>
+
 </resources>

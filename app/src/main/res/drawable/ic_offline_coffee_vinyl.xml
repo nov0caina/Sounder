@@ -1,0 +1,158 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Vinyl Record Outer Body -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 44,44 A 36,36 0 1,1 44.1,44 Z" />
+
+    <!-- Vinyl Grooves (subtle circles) -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="1.5"
+        android:strokeAlpha="0.3"
+        android:pathData="M 44,44 A 30,30 0 1,1 44.1,44 Z" />
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="1.5"
+        android:strokeAlpha="0.3"
+        android:pathData="M 44,44 A 24,24 0 1,1 44.1,44 Z" />
+
+    <!-- Vinyl Center Label with Sounder gradient -->
+    <path
+        android:pathData="M 44,44 A 14,14 0 1,1 44.1,44 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="30"
+                android:startY="30"
+                android:endX="58"
+                android:endY="58">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Center Spindle Hole -->
+    <path
+        android:fillColor="?attr/colorSurface"
+        android:pathData="M 44,44 A 4,4 0 1,1 44.1,44 Z" />
+
+    <!-- Pause Icon in center label: || -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 37,39 L 41,39 L 41,49 L 37,49 Z" />
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 47,39 L 51,39 L 51,49 L 47,49 Z" />
+
+    <!-- Steaming Coffee Cup on bottom right -->
+    <!-- Saucer -->
+    <path
+        android:fillColor="?attr/colorSurfaceVariant"
+        android:pathData="M 58,84 L 88,84 C 88,84 86,88 73,88 C 60,88 58,84 58,84 Z" />
+
+    <!-- Cup Body -->
+    <path
+        android:fillColor="?attr/colorPrimary"
+        android:pathData="M 62,64 L 84,64 L 82,82 C 82,85 80,86 77,86 L 69,86 C 66,86 64,85 64,82 Z" />
+
+    <!-- Cup Handle -->
+    <path
+        android:strokeColor="?attr/colorPrimary"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:pathData="M 83,67 C 89,67 89,77 83,79" />
+
+    <!-- Cute sleeping face on cup -->
+    <!-- Eyes: - - -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 68,73 L 71,73" />
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 75,73 L 78,73" />
+    <!-- Smile -->
+    <path
+        android:strokeColor="?attr/colorSurface"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 72,77 Q 73,79 74,77" />
+
+    <!-- Rising Steam / Aroma Waves with Sounder signature gradient -->
+    <path
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 67,58 C 65,54 69,52 67,48">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="65"
+                android:startY="58"
+                android:endX="69"
+                android:endY="48">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="1.0" android:color="#E11D48" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:pathData="M 73,59 C 71,53 76,51 74,45">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="71"
+                android:startY="59"
+                android:endX="76"
+                android:endY="45">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M 79,58 C 77,54 81,52 79,48">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:type="linear"
+                android:startX="77"
+                android:startY="58"
+                android:endX="81"
+                android:endY="48">
+                <item android:offset="0.0" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Musical Note in Steam with Sounder gradient -->
+    <path
+        android:pathData="M 84,40 A 2.2,1.8 -20 1,1 82.2,38.5 L 83.5,33 L 89,32 L 89,35.5 L 85,36.5 L 85,41 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="82"
+                android:startY="32"
+                android:endX="89"
+                android:endY="41">
+                <item android:offset="0.0" android:color="#7C3AED" />
+                <item android:offset="0.5" android:color="#E11D48" />
+                <item android:offset="1.0" android:color="#EA580C" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+</vector>

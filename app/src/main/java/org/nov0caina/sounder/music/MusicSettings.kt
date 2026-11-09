@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music
+package org.nov0caina.sounder.music
 
 import android.content.Context
 import androidx.core.content.edit
@@ -24,11 +24,11 @@ import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
 import javax.inject.Inject
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.music.locations.LocationMode
-import org.oxycblt.auxio.settings.Settings
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.music.locations.LocationMode
+import org.nov0caina.sounder.settings.Settings
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import org.oxycblt.musikr.fs.Location
 import org.oxycblt.musikr.fs.mediastore.MediaStore
 import org.oxycblt.musikr.fs.saf.SAF
@@ -63,6 +63,9 @@ interface MusicSettings : Settings<MusicSettings.Listener> {
 
     /** Whether to use the file-system cache for improved loading times. */
     val useFileTreeCache: Boolean
+
+    /** Whether to automatically download online tracks added to Favorites. */
+    val autoDownloadFavorites: Boolean
 
     fun forceLocationUpdate()
 
@@ -113,14 +116,17 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
     override val useFileTreeCache: Boolean
         get() = sharedPreferences.getBoolean(getString(R.string.set_key_fs_cache), false)
 
+    override val autoDownloadFavorites: Boolean
+        get() = sharedPreferences.getBoolean(getString(R.string.set_key_auto_download_favorites), false)
+
     override var locationMode: LocationMode
         get() {
             val mode =
                 sharedPreferences.getInt(
                     getString(R.string.set_key_locations_mode),
-                    IntegerTable.LOCATION_MODE_SAF,
+                    IntegerTable.LOCATION_MODE_MEDIA_STORE,
                 )
-            return LocationMode.fromInt(mode) ?: LocationMode.SAF
+            return LocationMode.fromInt(mode) ?: LocationMode.MEDIA_STORE
         }
         set(value) {
             sharedPreferences.edit {
@@ -170,7 +176,7 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
             val filterMode =
                 sharedPreferences.getInt(
                     getString(R.string.set_key_filter_mode),
-                    IntegerTable.FILTER_MODE_EXCLUDE,
+                    IntegerTable.FILTER_MODE_INCLUDE,
                 )
             val filteredLocations =
                 unlikelyToBeNull(

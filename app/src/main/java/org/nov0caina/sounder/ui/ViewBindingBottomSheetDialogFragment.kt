@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -31,8 +31,8 @@ import com.google.android.material.bottomsheet.BackportBottomSheetDialog
 import com.google.android.material.bottomsheet.BackportBottomSheetDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import javax.inject.Inject
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.unlikelyToBeNull
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.unlikelyToBeNull
 import timber.log.Timber as L
 
 /**

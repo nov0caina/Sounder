@@ -10,7 +10,7 @@
     android:paddingEnd="@dimen/spacing_large"
     android:paddingBottom="@dimen/spacing_mid_medium">
 
-    <org.oxycblt.auxio.image.CoverView
+    <org.nov0caina.sounder.image.CoverView
         android:id="@+id/picker_image"
         style="@style/Widget.Auxio.Image.Small"
         app:layout_constraintBottom_toBottomOf="parent"

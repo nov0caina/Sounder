@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.image
+package org.nov0caina.sounder.image
 
 import android.content.ContentProvider
 import android.content.ContentResolver
@@ -26,8 +26,8 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import kotlinx.coroutines.runBlocking
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.image.covers.SettingCovers
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.image.covers.SettingCovers
 import org.oxycblt.musikr.covers.CoverResult
 
 class CoverProvider : ContentProvider() {

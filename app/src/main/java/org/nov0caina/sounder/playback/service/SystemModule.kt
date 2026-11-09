@@ -16,13 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.service
+package org.nov0caina.sounder.playback.service
 
 import android.content.Context
 import androidx.annotation.OptIn
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.ContentDataSource
 import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.ExtractorsFactory
@@ -35,11 +37,15 @@ import androidx.media3.extractor.ogg.OggExtractor
 import androidx.media3.extractor.text.DefaultSubtitleParserFactory
 import androidx.media3.extractor.ts.AdtsExtractor
 import androidx.media3.extractor.wav.WavExtractor
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.io.File
+import kotlinx.coroutines.runBlocking
+import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -52,9 +58,43 @@ class SystemModule {
     ): MediaSource.Factory = ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory)
 
     @Provides
-    fun dataSourceFactory(@ApplicationContext context: Context) =
-        // We only ever open conte tURIs, so only provide those data sources.
-        DataSource.Factory { ContentDataSource(context) }
+    fun dataSourceFactory(
+        @ApplicationContext context: Context,
+        onlineRepository: Lazy<OnlineMusicRepository>,
+    ): DataSource.Factory {
+        val httpDataSourceFactory = DefaultHttpDataSource.Factory()
+            .setUserAgent("Sounder")
+            .setAllowCrossProtocolRedirects(true)
+        val defaultDataSourceFactory = DefaultDataSource.Factory(context, httpDataSourceFactory)
+        return ResolvingDataSource.Factory(defaultDataSourceFactory) { dataSpec ->
+            val uriStr = dataSpec.uri.toString()
+            if (uriStr.contains("watch?v=") || uriStr.startsWith("https://music.youtube.com/watch") || uriStr.startsWith("sounder://")) {
+                val videoId = dataSpec.uri.getQueryParameter("v")
+                    ?: uriStr.substringAfterLast("watch?v=").substringBefore("&")
+                    .takeIf { it.isNotBlank() }
+                    ?: dataSpec.uri.lastPathSegment ?: ""
+
+                if (videoId.isNotBlank()) {
+                    val sp = context.getSharedPreferences("sounder_downloads_store", Context.MODE_PRIVATE)
+                    val localPath = sp.getString(videoId, null) ?: sp.getString("path_$videoId", null)
+                    if (localPath != null && File(localPath).exists()) {
+                        return@Factory dataSpec.buildUpon().setUri(android.net.Uri.fromFile(File(localPath))).build()
+                    }
+                    val streamUrl = runBlocking {
+                        try {
+                            onlineRepository.get().resolveStreamUrl(videoId)
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+                    if (!streamUrl.isNullOrBlank()) {
+                        return@Factory dataSpec.buildUpon().setUri(android.net.Uri.parse(streamUrl)).build()
+                    }
+                }
+            }
+            dataSpec
+        }
+    }
 
     @Provides
     fun extractorsFactory() = ExtractorsFactory {

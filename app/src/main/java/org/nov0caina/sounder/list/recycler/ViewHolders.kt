@@ -16,28 +16,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.recycler
+package org.nov0caina.sounder.list.recycler
 
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.divider.MaterialDivider
-import org.oxycblt.auxio.IntegerTable
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.databinding.ItemHeaderBinding
-import org.oxycblt.auxio.databinding.ItemParentBinding
-import org.oxycblt.auxio.databinding.ItemSongBinding
-import org.oxycblt.auxio.list.BasicHeader
-import org.oxycblt.auxio.list.PlainDivider
-import org.oxycblt.auxio.list.SelectableListListener
-import org.oxycblt.auxio.list.adapter.SelectionIndicatorAdapter
-import org.oxycblt.auxio.list.adapter.SimpleDiffCallback
-import org.oxycblt.auxio.music.areNamesTheSame
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.music.resolveNames
-import org.oxycblt.auxio.util.context
-import org.oxycblt.auxio.util.getPlural
-import org.oxycblt.auxio.util.inflater
+import org.nov0caina.sounder.IntegerTable
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.databinding.ItemHeaderBinding
+import org.nov0caina.sounder.databinding.ItemParentBinding
+import org.nov0caina.sounder.databinding.ItemSongBinding
+import org.nov0caina.sounder.list.BasicHeader
+import org.nov0caina.sounder.list.PlainDivider
+import org.nov0caina.sounder.list.SelectableListListener
+import org.nov0caina.sounder.list.adapter.SelectionIndicatorAdapter
+import org.nov0caina.sounder.list.adapter.SimpleDiffCallback
+import org.nov0caina.sounder.music.areNamesTheSame
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getPlural
+import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -288,7 +289,7 @@ class PlaylistViewHolder private constructor(private val binding: ItemParentBind
     fun bind(playlist: Playlist, listener: SelectableListListener<Playlist>) {
         listener.bind(playlist, this, menuButton = binding.parentMenu)
         binding.parentImage.bind(playlist)
-        binding.parentName.text = playlist.name.resolve(binding.context)
+        binding.parentName.text = playlist.resolveName(binding.context)
         binding.parentInfo.text =
             if (playlist.songs.isNotEmpty()) {
                 binding.context.getPlural(R.plurals.fmt_song_count, playlist.songs.size)

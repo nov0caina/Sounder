@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -25,9 +25,9 @@ import android.view.WindowInsets
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.bottomsheet.BackportBottomSheetBehavior
 import kotlin.math.abs
-import org.oxycblt.auxio.util.coordinatorLayoutBehavior
-import org.oxycblt.auxio.util.replaceSystemBarInsetsCompat
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.util.coordinatorLayoutBehavior
+import org.nov0caina.sounder.util.replaceSystemBarInsetsCompat
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * A behavior that automatically re-layouts and re-insets content to align with the parent layout's

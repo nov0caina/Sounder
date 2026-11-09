@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -28,10 +28,10 @@ import android.view.WindowInsets
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.R as MR
 import com.google.android.material.bottomsheet.BackportBottomSheetBehavior
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.getDimen
-import org.oxycblt.auxio.util.getDimenPixels
-import org.oxycblt.auxio.util.systemGestureInsetsCompat
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.getDimen
+import org.nov0caina.sounder.util.getDimenPixels
+import org.nov0caina.sounder.util.systemGestureInsetsCompat
 import timber.log.Timber as L
 
 /**
@@ -50,6 +50,7 @@ abstract class BaseBottomSheetBehavior<V : View>(context: Context, attributeSet:
     // I can't manually inject this, MainFragment must be the one to do it.
     // TODO: Just use another library. Tired of Hilt.
     lateinit var uiSettings: UISettings
+    var additionalBottomOffset: Int = 0
 
     init {
         // Disable isFitToContents to make the bottom sheet expand to the top of the screen and
@@ -83,11 +84,11 @@ abstract class BaseBottomSheetBehavior<V : View>(context: Context, attributeSet:
         val gestures = insets.systemGestureInsetsCompat
         val bar = (child as ViewGroup).getChildAt(0)
         peekHeight =
-            if (bar.measuredHeight > 0) {
+            (if (bar.measuredHeight > 0) {
                 bar.measuredHeight + gestures.bottom
             } else {
                 getIdealBarHeight(child.context) + gestures.bottom
-            }
+            }) + additionalBottomOffset
         return insets
     }
 

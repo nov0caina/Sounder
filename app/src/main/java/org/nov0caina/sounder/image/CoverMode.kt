@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.image
+package org.nov0caina.sounder.image
 
-import org.oxycblt.auxio.IntegerTable
+import org.nov0caina.sounder.IntegerTable
 
 /**
  * Represents the options available for album cover loading.

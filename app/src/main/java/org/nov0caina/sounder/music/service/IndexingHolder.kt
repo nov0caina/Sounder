@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
 import android.content.Context
 import android.os.PowerManager
@@ -26,15 +26,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.ForegroundListener
-import org.oxycblt.auxio.ForegroundServiceNotification
-import org.oxycblt.auxio.music.IndexingState
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicSettings
-import org.oxycblt.auxio.music.locations.LocationMode
-import org.oxycblt.auxio.playback.state.PlaybackStateManager
-import org.oxycblt.auxio.util.getSystemServiceCompat
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.ForegroundListener
+import org.nov0caina.sounder.ForegroundServiceNotification
+import org.nov0caina.sounder.music.SounderCompositeFS
+import org.nov0caina.sounder.music.IndexingState
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicSettings
+import org.nov0caina.sounder.music.locations.LocationMode
+import org.nov0caina.sounder.online.model.OnlineSong
+import org.nov0caina.sounder.playback.state.PlaybackStateManager
+import org.nov0caina.sounder.util.getSystemServiceCompat
 import org.oxycblt.musikr.MusicParent
 import org.oxycblt.musikr.fs.mediastore.MediaStore
 import org.oxycblt.musikr.fs.saf.SAF
@@ -159,14 +161,28 @@ private constructor(
         // to a listener as it is bad practice for a shared object to attach to
         // the listener system of another.
         playbackManager.toSavedState()?.let { savedState ->
-            playbackManager.applySavedState(
-                savedState.copy(
-                    parent =
-                        savedState.parent?.let { musicRepository.find(it.uid) as? MusicParent? },
-                    heap = savedState.heap.map { song -> song?.let { library.findSong(it.uid) } },
-                ),
-                true,
-            )
+            val mappedHeap = savedState.heap.map { song ->
+                if (song is OnlineSong) {
+                    song
+                } else {
+                    song?.let { library.findSong(it.uid) }
+                }
+            }
+            val mappedParent = savedState.parent?.let { parent ->
+                (musicRepository.find(parent.uid) as? MusicParent?) ?: parent
+            }
+
+            // Only apply if models were invalidated or removed from storage.
+            // If the queue is unchanged, applying saved state would unnecessarily disrupt active playback.
+            if (mappedHeap != savedState.heap || mappedParent != savedState.parent) {
+                playbackManager.applySavedState(
+                    savedState.copy(
+                        parent = mappedParent,
+                        heap = mappedHeap,
+                    ),
+                    true,
+                )
+            }
         }
     }
 
@@ -176,7 +192,19 @@ private constructor(
             when (musicSettings.locationMode) {
                 LocationMode.MEDIA_STORE ->
                     MediaStore.from(workerContext, musicSettings.mediaStoreQuery)
-                LocationMode.SAF -> SAF.from(workerContext, musicSettings.safQuery)
+                LocationMode.SAF -> {
+                    val safFs = SAF.from(workerContext, musicSettings.safQuery)
+                    val auxioFs =
+                        MediaStore.from(
+                            workerContext,
+                            MediaStore.Query(
+                                mode = MediaStore.FilterMode.EXCLUDE,
+                                filtered = emptyList(),
+                                excludeNonMusic = false,
+                            ),
+                        )
+                    SounderCompositeFS(safFs, auxioFs)
+                }
             }
         trackingJob = indexScope.launch { fs.track().collect { requestIndex(true) } }
     }

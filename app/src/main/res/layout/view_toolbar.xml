@@ -10,7 +10,7 @@
     android:minHeight="?attr/actionBarSize"
     android:orientation="horizontal">
 
-    <org.oxycblt.auxio.ui.RippleFixMaterialButton
+    <org.nov0caina.sounder.ui.RippleFixMaterialButton
         android:id="@+id/toolbar_navigation_button"
         style="@style/Widget.Auxio.Button.Icon.Base"
         android:layout_width="wrap_content"

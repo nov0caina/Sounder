@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.playback.ui.button
+package org.nov0caina.sounder.playback.ui.button
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -33,7 +33,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.shape.StateListShapeAppearanceModel
 import java.lang.reflect.Method
 import kotlin.math.max
-import org.oxycblt.auxio.util.lazyReflectedMethod
+import org.nov0caina.sounder.util.lazyReflectedMethod
 
 /**
  * Companion scalable button to [ScaledPlaybackButtonGroup], see that.

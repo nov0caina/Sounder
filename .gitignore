@@ -16,3 +16,9 @@ captures/
 .kotlin
 .aider*
 .env
+.gradle-home/
+.vscode/
+.agents/
+openspec/
+scripts/
+Sounder_Branding/

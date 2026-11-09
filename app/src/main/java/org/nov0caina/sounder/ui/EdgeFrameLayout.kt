@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -24,7 +24,7 @@ import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import androidx.core.view.updatePadding
-import org.oxycblt.auxio.util.systemBarInsetsCompat
+import org.nov0caina.sounder.util.systemBarInsetsCompat
 
 /**
  * A [FrameLayout] that automatically applies bottom insets.

@@ -16,15 +16,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui.accent
+package org.nov0caina.sounder.ui.accent
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.max
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.util.getDimenPixels
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.util.getDimenPixels
 
 /**
  * A [GridLayoutManager] that automatically sets the span size in order to use the most possible

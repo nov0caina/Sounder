@@ -16,16 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.menu
+package org.nov0caina.sounder.list.menu
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.playback.PlaySong
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.playback.PlaySong
 import org.oxycblt.musikr.MusicParent
+import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 
 /**
@@ -39,6 +40,11 @@ class MenuViewModel @Inject constructor(private val musicRepository: MusicReposi
     private val _currentMenu = MutableStateFlow<Menu?>(null)
     /** The current [Menu] information being shown in a dialog. */
     val currentMenu: StateFlow<Menu?> = _currentMenu
+
+    companion object {
+        @Volatile
+        var pendingSong: Song? = null
+    }
 
     init {
         musicRepository.addUpdateListener(this)
@@ -70,9 +76,11 @@ class MenuViewModel @Inject constructor(private val musicRepository: MusicReposi
         }
 
     private fun unpackSongParcel(parcel: Menu.ForSong.Parcel): Menu.ForSong? {
-        val song = musicRepository.library?.findSong(parcel.songUid) ?: return null
+        val song = musicRepository.library?.findSong(parcel.songUid)
+            ?: pendingSong?.takeIf { it.uid == parcel.songUid }
+            ?: return null
         val parent = parcel.playWithUid?.let(musicRepository::find) as MusicParent?
-        val playWith = PlaySong.fromIntCode(parcel.playWithCode, parent) ?: return null
+        val playWith = PlaySong.fromIntCode(parcel.playWithCode, parent) ?: PlaySong.ByItself
         return Menu.ForSong(parcel.res, song, playWith)
     }
 

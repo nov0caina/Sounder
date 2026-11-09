@@ -16,9 +16,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.locations
+package org.nov0caina.sounder.music.locations
 
-import org.oxycblt.auxio.IntegerTable
+import org.nov0caina.sounder.IntegerTable
 
 /** Represents the mode for loading music locations. */
 enum class LocationMode {

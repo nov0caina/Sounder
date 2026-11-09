@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.ui
+package org.nov0caina.sounder.ui
 
 import android.content.Context
 import android.util.AttributeSet
@@ -26,7 +26,7 @@ import androidx.annotation.IdRes
 import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.dynamicanimation.animation.SpringAnimation
-import org.oxycblt.auxio.util.scale
+import org.nov0caina.sounder.util.scale
 import timber.log.Timber as L
 
 class MultiToolbar

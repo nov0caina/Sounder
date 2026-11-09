@@ -16,10 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.list.adapter
+package org.nov0caina.sounder.list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import org.oxycblt.auxio.list.Item
+import org.nov0caina.sounder.list.Item
 
 /**
  * A [DiffUtil.ItemCallback] that automatically implements the [areItemsTheSame] method. Use this

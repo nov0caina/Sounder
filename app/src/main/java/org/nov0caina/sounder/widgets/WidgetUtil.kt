@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.widgets
+package org.nov0caina.sounder.widgets
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
@@ -27,8 +27,8 @@ import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
-import org.oxycblt.auxio.util.isLandscape
-import org.oxycblt.auxio.util.newMainPendingIntent
+import org.nov0caina.sounder.util.isLandscape
+import org.nov0caina.sounder.util.newMainPendingIntent
 import timber.log.Timber as L
 
 /**

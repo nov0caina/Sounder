@@ -16,21 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
-package org.oxycblt.auxio.music.service
+package org.nov0caina.sounder.music.service
 
 import android.content.Context
 import android.support.v4.media.MediaBrowserCompat.MediaItem
 import javax.inject.Inject
-import org.oxycblt.auxio.BuildConfig
-import org.oxycblt.auxio.R
-import org.oxycblt.auxio.detail.DetailGenerator
-import org.oxycblt.auxio.detail.DetailSection
-import org.oxycblt.auxio.home.HomeGenerator
-import org.oxycblt.auxio.list.adapter.UpdateInstructions
-import org.oxycblt.auxio.music.MusicRepository
-import org.oxycblt.auxio.music.MusicType
-import org.oxycblt.auxio.music.resolve
-import org.oxycblt.auxio.search.SearchEngine
+import org.nov0caina.sounder.BuildConfig
+import org.nov0caina.sounder.R
+import org.nov0caina.sounder.detail.DetailGenerator
+import org.nov0caina.sounder.detail.DetailSection
+import org.nov0caina.sounder.home.HomeGenerator
+import org.nov0caina.sounder.list.adapter.UpdateInstructions
+import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.music.MusicType
+import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.search.SearchEngine
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre

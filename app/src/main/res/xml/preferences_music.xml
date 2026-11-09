@@ -9,7 +9,7 @@
             app:summary="@string/set_observing_desc"
             app:title="@string/set_observing" />
 
-        <org.oxycblt.auxio.settings.ui.WrappedDialogPreference
+        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
             app:key="@string/set_key_separators"
             app:summary="@string/set_separators_desc"
             app:title="@string/set_separators" />
@@ -26,11 +26,23 @@
             app:summary="@string/set_hide_collaborators_desc"
             app:title="@string/set_hide_collaborators" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="@string/set_key_auto_download_favorites"
+            app:summary="@string/set_auto_download_favorites_desc"
+            app:title="@string/set_auto_download_favorites" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_prefer_studio_audio"
+            app:summary="@string/set_prefer_studio_audio_desc"
+            app:title="@string/set_prefer_studio_audio" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/set_images">
 
-        <org.oxycblt.auxio.settings.ui.IntListPreference
+        <org.nov0caina.sounder.settings.ui.IntListPreference
             app:defaultValue="@integer/cover_mode_balanced"
             app:entries="@array/entries_cover_mode"
             app:entryValues="@array/values_cover_mode"
