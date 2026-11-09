@@ -67,6 +67,7 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
         binding.aboutWiki.setOnClickListener { requireContext().openInBrowser(LINK_WIKI) }
         binding.aboutLicenses.setOnClickListener { requireContext().openInBrowser(LINK_LICENSES) }
         binding.aboutProfile.setOnClickListener { requireContext().openInBrowser(LINK_PROFILE) }
+        binding.aboutInstagram.setOnClickListener { requireContext().openInBrowser(LINK_INSTAGRAM) }
         binding.aboutFeedbackGithub.setOnClickListener {
             requireContext().openInBrowser(LINK_NEW_ISSUE)
         }
@@ -113,6 +114,7 @@ class AboutFragment : ViewBindingFragment<FragmentAboutBinding>() {
         const val LINK_LICENSES = "$LINK_WIKI/Licenses"
         const val LINK_NEW_ISSUE = "$LINK_SOURCE/issues/new"
         const val LINK_PROFILE = "https://github.com/nov0caina"
+        const val LINK_INSTAGRAM = "https://instagram.com/nov0caina"
         const val LINK_KOFI = "https://ko-fi.com/nov0caina"
         const val LINK_PAYPAL = "https://www.paypal.com/paypalme/nov0caina"
         const val LINK_GITHUB_SPONSORS = "https://github.com/sponsors/nov0caina"

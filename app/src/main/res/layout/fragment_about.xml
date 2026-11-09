@@ -188,6 +188,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/about_licenses" />
 
+                    <TextView
+                        android:id="@+id/about_instagram"
+                        style="@style/Widget.Auxio.TextView.Icon.Clickable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_instagram"
+                        app:drawableStartCompat="@drawable/ic_instagram_24"
+                        app:drawableTint="?attr/colorControlNormal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
