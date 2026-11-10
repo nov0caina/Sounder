@@ -109,7 +109,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupEdgeToEdge(binding.root)
         checkStoragePermission()
-        checkAutomaticUpdate()
         L.d("Activity created")
     }
 
@@ -143,6 +142,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        checkAutomaticUpdate()
 
         startService(
             Intent(this, SounderPlaybackService::class.java)

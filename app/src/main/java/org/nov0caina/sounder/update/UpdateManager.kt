@@ -191,12 +191,13 @@ class UpdateManager @Inject constructor(
     }
 
     /**
-     * Returns true if at least 24 hours have elapsed since the previous update check.
+     * Returns true if at least 9 hours have elapsed since the previous update check.
      */
-    fun shouldCheckAutomatically(): Boolean {
-        val lastCheck = getLastCheckTimestamp()
-        val now = System.currentTimeMillis()
-        return (now - lastCheck) >= CHECK_INTERVAL_MS
+    fun shouldCheckAutomatically(
+        now: Long = System.currentTimeMillis(),
+        lastCheck: Long = getLastCheckTimestamp(),
+    ): Boolean {
+        return isCheckIntervalElapsed(lastCheck, now)
     }
 
     /**
@@ -211,7 +212,7 @@ class UpdateManager @Inject constructor(
         }
 
         if (!isManual && !shouldCheckAutomatically()) {
-            L.d("Skipping automatic update check (checked within 24 hours)")
+            L.d("Skipping automatic update check (checked within 9 hours)")
             return@withContext UpdateResult.UpToDate
         }
 
@@ -290,7 +291,14 @@ class UpdateManager @Inject constructor(
     companion object {
         const val KEY_LAST_UPDATE_CHECK = "sounder_last_update_check"
         const val KEY_IGNORED_UPDATE_TAG = "sounder_ignored_update_tag"
-        const val CHECK_INTERVAL_MS = 24 * 60 * 60 * 1000L // 24 hours
+        const val CHECK_INTERVAL_MS = 9 * 60 * 60 * 1000L // 9 hours
+
+        /**
+         * Checks whether the 9-hour cooldown interval has elapsed between [lastCheck] and [now].
+         */
+        fun isCheckIntervalElapsed(lastCheck: Long, now: Long = System.currentTimeMillis()): Boolean {
+            return (now - lastCheck) >= CHECK_INTERVAL_MS
+        }
 
         private const val GITHUB_RELEASES_LATEST_URL =
             "https://api.github.com/repos/nov0caina/Sounder/releases/latest"
