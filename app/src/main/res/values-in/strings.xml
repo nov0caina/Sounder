@@ -513,4 +513,6 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="lbl_update_managed_by_fdroid">Pembaruan Sounder dikelola oleh klien F-Droid Anda.</string>
     <string name="lbl_open_fdroid">Buka F-Droid</string>
     <string name="err_update_check_failed">Gagal memeriksa pembaruan. Periksa koneksi Anda.</string>
+    <string name="lbl_recent_downloads">Unduhan Terbaru</string>
+    <string name="lng_empty_downloads">Unduhan terbaru Anda akan muncul di sini.</string>
 </resources>

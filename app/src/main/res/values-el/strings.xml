@@ -157,10 +157,10 @@
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Λήψη άλμπουμ</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">Η λήψη απέτυχε: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">Επανάληψη προσπάθειας λήψης…</string>
+    <string name="download_status_queued">%1$s • Στην ουρά</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -291,4 +291,9 @@
     <string name="lbl_open_fdroid">Άνοιγμα F-Droid</string>
     <string name="err_update_check_failed">Αδυναμία ελέγχου για ενημερώσεις. Ελέγξτε τη σύνδεσή σας.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">Πρόσφατες λήψεις</string>
+    <string name="lng_empty_downloads">Οι πρόσφατες λήψεις σας θα εμφανίζονται εδώ.</string>
+    <string name="set_lib_tabs">Καρτέλες βιβλιοθήκης</string>
+    <string name="desc_tab_handle">Μετακίνηση αυτής της καρτέλας</string>
+    <string name="lbl_playlists">Λίστες αναπαραγωγής</string>
 </resources>

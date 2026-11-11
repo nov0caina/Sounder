@@ -391,7 +391,7 @@ ATTENTION : Faites attention en contrôlant ce service, si vous le fermez puis e
     <string name="download_failed">Échec du téléchargement : %1$s</string>
     <string name="download_queued">Téléchargement en file d\'attente : %1$s</string>
     <string name="download_retrying">Nouvelle tentative de téléchargement…</string>
-    <string name="download_status_queued">Pour téléchargement : %1$s</string>
+    <string name="download_status_queued">%1$s • En file d\'attente</string>
     <string name="empty_downloads">Aucun téléchargement en cours</string>
     <string name="err_delete_failed">Impossible de supprimer le fichier. Veuillez vérifier les autorisations de stockage.</string>
     <string name="err_local_file_not_found">Fichier local introuvable</string>
@@ -521,4 +521,6 @@ ATTENTION : Faites attention en contrôlant ce service, si vous le fermez puis e
     <string name="lbl_update_managed_by_fdroid">Les mises à jour de Sounder sont gérées par votre client F-Droid.</string>
     <string name="lbl_open_fdroid">Ouvrir F-Droid</string>
     <string name="err_update_check_failed">Impossible de vérifier les mises à jour. Vérifiez votre connexion.</string>
+    <string name="lbl_recent_downloads">Téléchargements récents</string>
+    <string name="lng_empty_downloads">Vos téléchargements récents s\'afficheront ici.</string>
 </resources>

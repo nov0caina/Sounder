@@ -490,4 +490,6 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="lbl_update_managed_by_fdroid">Sounder-updates worden beheerd door je F-Droid-client.</string>
     <string name="lbl_open_fdroid">F-Droid openen</string>
     <string name="err_update_check_failed">Kon niet controleren op updates. Controleer je verbinding.</string>
+    <string name="lbl_recent_downloads">Recente downloads</string>
+    <string name="lng_empty_downloads">Je recente downloads verschijnen hier.</string>
 </resources>

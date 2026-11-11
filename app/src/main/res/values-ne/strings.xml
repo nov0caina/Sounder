@@ -73,7 +73,7 @@
     <string name="btn_delete">हटाएं</string>
     <string name="btn_download">डाउनलोड</string>
     <string name="btn_downloaded">डाउनलोड हो गया</string>
-    <string name="btn_downloading">डाउनलोड हो रहा है…</string>
+    <string name="btn_downloading">डाउनलोड हुँदैछ…</string>
     <string name="btn_open_settings">सेटिंग्स खोलें</string>
     <string name="btn_play">चलाएं</string>
     <string name="btn_retry">पुनः प्रयास करें</string>
@@ -94,10 +94,10 @@
     <string name="dlg_storage_manager_perm_title">स्टोरेज अनुमति आवश्यक है</string>
     <string name="download_album">एल्बम डाउनलोड करें</string>
     <string name="download_complete">डाउनलोड पूरा हुआ: %1$s</string>
-    <string name="download_failed">डाउनलोड विफल: %1$s</string>
+    <string name="download_failed">डाउनलोड असफल भयो: %1$s</string>
     <string name="download_queued">डाउनलोड कतारबद्ध: %1$s</string>
-    <string name="download_retrying">डाउनलोड का पुनः प्रयास…</string>
-    <string name="download_status_queued">%1$s • कतार में</string>
+    <string name="download_retrying">फेरि डाउनलोड गर्ने प्रयास गर्दै…</string>
+    <string name="download_status_queued">%1$s • लाममा</string>
     <string name="empty_downloads">कोई डाउनलोड प्रगति पर नहीं है</string>
     <string name="err_delete_failed">फ़ाइल हटाने में विफल। कृपया स्टोरेज अनुमतियों की जांच करें।</string>
     <string name="err_local_file_not_found">स्थानीय फ़ाइल नहीं मिली</string>
@@ -228,4 +228,11 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">हालैका डाउनलोडहरू</string>
+    <string name="lng_empty_downloads">तपाईंका हालैका डाउनलोडहरू यहाँ देखिनेछन्।</string>
+    <string name="lbl_cancel">रद्द गर्नुहोस्</string>
+    <string name="lbl_ok">ठीक छ</string>
+    <string name="set_lib_tabs">पुस्तकालय ट्याबहरू</string>
+    <string name="desc_tab_handle">यो ट्याब सार्नुहोस्</string>
+    <string name="lng_queue_added">लाममा थपियो</string>
 </resources>

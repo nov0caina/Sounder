@@ -521,4 +521,6 @@
     <string name="lbl_update_managed_by_fdroid">Оновлення Sounder керуються вашим клієнтом F-Droid.</string>
     <string name="lbl_open_fdroid">Відкрити F-Droid</string>
     <string name="err_update_check_failed">Не вдалося перевірити оновлення. Перевірте з\'єднання.</string>
+    <string name="lbl_recent_downloads">Нещодавні завантаження</string>
+    <string name="lng_empty_downloads">Ваші нещодавні завантаження з\'являться тут.</string>
 </resources>

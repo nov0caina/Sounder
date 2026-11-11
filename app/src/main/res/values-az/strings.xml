@@ -363,7 +363,7 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="btn_delete">Sil</string>
     <string name="btn_download">İndir</string>
     <string name="btn_downloaded">İndirildi</string>
-    <string name="btn_downloading">İndiriliyor…</string>
+    <string name="btn_downloading">Endirilir…</string>
     <string name="btn_open_settings">Ayarları Aç</string>
     <string name="btn_play">Çal</string>
     <string name="btn_retry">Tekrar dene</string>
@@ -384,10 +384,10 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="dlg_storage_manager_perm_title">Depolama İzni Gerekli</string>
     <string name="download_album">Albümü indir</string>
     <string name="download_complete">İndirme tamamlandı: %1$s</string>
-    <string name="download_failed">İndirme başarısız: %1$s</string>
+    <string name="download_failed">Endirmə uğursuz oldu: %1$s</string>
     <string name="download_queued">İndirme kuyrukta: %1$s</string>
-    <string name="download_retrying">İndirme yeniden deneniyor…</string>
-    <string name="download_status_queued">%1$s • Kuyrukta</string>
+    <string name="download_retrying">Endirmə yenidən cəhd edilir…</string>
+    <string name="download_status_queued">%1$s • Növbədə</string>
     <string name="empty_downloads">Devam eden indirme yok</string>
     <string name="err_delete_failed">Dosya silinemedi. Lütfen depolama izinlerini kontrol edin.</string>
     <string name="err_local_file_not_found">Yerel dosya bulunamadı</string>
@@ -517,4 +517,6 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Son Endirmələr</string>
+    <string name="lng_empty_downloads">Son endirmələriniz burada görünəcək.</string>
 </resources>

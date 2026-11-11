@@ -517,4 +517,6 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="lbl_update_managed_by_fdroid">Sounderin päivityksiä hallinnoi F-Droid-sovelluksesi.</string>
     <string name="lbl_open_fdroid">Avaa F-Droid</string>
     <string name="err_update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista verkkoyhteys.</string>
+    <string name="lbl_recent_downloads">Viimeisimmät lataukset</string>
+    <string name="lng_empty_downloads">Viimeisimmät latauksesi näkyvät täällä.</string>
 </resources>

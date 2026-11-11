@@ -33,10 +33,10 @@
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Lataa albumi</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">Lejupielāde neizdevās: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">Mēģina lejupielādēt vēlreiz…</string>
+    <string name="download_status_queued">%1$s • Rindā</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -167,4 +167,16 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">Nesenie lejupielādes</string>
+    <string name="lng_empty_downloads">Jūsu nesenās lejupielādes tiks rādītas šeit.</string>
+    <string name="lbl_cancel">Atcelt</string>
+    <string name="lbl_ok">Labi</string>
+    <string name="set_lib_tabs">Bibliotēkas cilnes</string>
+    <string name="desc_tab_handle">Pārvietot šo cilni</string>
+    <string name="lng_queue_added">Pievienots rindai</string>
+    <string name="lbl_songs">Dziesmas</string>
+    <string name="lbl_albums">Albumi</string>
+    <string name="lbl_artists">Izpildītāji</string>
+    <string name="lbl_genres">Žanri</string>
+    <string name="lbl_playlists">Atskaņošanas saraksti</string>
 </resources>

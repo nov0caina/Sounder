@@ -517,4 +517,6 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="lbl_update_managed_by_fdroid">Gli aggiornamenti di Sounder sono gestiti dal tuo client F-Droid.</string>
     <string name="lbl_open_fdroid">Apri F-Droid</string>
     <string name="err_update_check_failed">Impossibile verificare gli aggiornamenti. Controlla la connessione.</string>
+    <string name="lbl_recent_downloads">Download recenti</string>
+    <string name="lng_empty_downloads">I tuoi download recenti verranno mostrati qui.</string>
 </resources>

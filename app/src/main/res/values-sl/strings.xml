@@ -333,10 +333,10 @@
     <string name="dlg_storage_manager_perm_title">Potrebna je dozvola za pohranu</string>
     <string name="download_album">Prenesi album</string>
     <string name="download_complete">Preuzimanje završeno: %1$s</string>
-    <string name="download_failed">Preuzimanje nije uspjelo: %1$s</string>
+    <string name="download_failed">Prenos ni uspel: %1$s</string>
     <string name="download_queued">Preuzimanje u redu: %1$s</string>
-    <string name="download_retrying">Ponovni pokušaj preuzimanja…</string>
-    <string name="download_status_queued">%1$s • U redu</string>
+    <string name="download_retrying">Ponovni poskus prenosa…</string>
+    <string name="download_status_queued">%1$s • V čakalni vrsti</string>
     <string name="empty_downloads">Nema aktivnih preuzimanja</string>
     <string name="err_delete_failed">Brisanje datoteke nije uspjelo. Provjerite dozvole pohrane.</string>
     <string name="err_local_file_not_found">Lokalna datoteka nije pronađena</string>
@@ -466,4 +466,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Nedavni prenosi</string>
+    <string name="lng_empty_downloads">Vaši nedavni prenosi bodo prikazani tukaj.</string>
 </resources>

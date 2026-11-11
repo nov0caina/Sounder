@@ -478,4 +478,6 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="lbl_update_managed_by_fdroid">Sounder-uppdateringar hanteras av din F-Droid-klient.</string>
     <string name="lbl_open_fdroid">Öppna F-Droid</string>
     <string name="err_update_check_failed">Det gick inte att söka efter uppdateringar. Kontrollera anslutningen.</string>
+    <string name="lbl_recent_downloads">Senaste nedladdningar</string>
+    <string name="lng_empty_downloads">Dina senaste nedladdningar visas här.</string>
 </resources>

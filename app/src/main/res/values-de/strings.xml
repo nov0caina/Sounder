@@ -517,4 +517,6 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="lbl_update_managed_by_fdroid">Sounder-Updates werden von deinem F-Droid-Client verwaltet.</string>
     <string name="lbl_open_fdroid">F-Droid öffnen</string>
     <string name="err_update_check_failed">Updates konnten nicht geprüft werden. Überprüfe deine Verbindung.</string>
+    <string name="lbl_recent_downloads">Neueste Downloads</string>
+    <string name="lng_empty_downloads">Deine neuesten Downloads werden hier angezeigt.</string>
 </resources>

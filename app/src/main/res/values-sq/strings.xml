@@ -373,10 +373,10 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Lataa albumi</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">Shkarkimi dështoi: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">Po provohet sërish shkarkimi…</string>
+    <string name="download_status_queued">%1$s • Në radhë</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -506,4 +506,6 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Shkarkimet e fundit</string>
+    <string name="lng_empty_downloads">Shkarkimet tuaja të fundit do të shfaqen këtu.</string>
 </resources>

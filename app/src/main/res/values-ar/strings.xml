@@ -401,7 +401,7 @@
     <string name="download_failed">فشل التنزيل: %1$s</string>
     <string name="download_queued">في قائمة انتظار التنزيل: %1$s</string>
     <string name="download_retrying">جارٍ إعادة محاولة التنزيل…</string>
-    <string name="download_status_queued">%1$s • في الانتظار</string>
+    <string name="download_status_queued">%1$s • في قائمة الانتظار</string>
     <string name="empty_downloads">لا توجد تنزيلات جارية</string>
     <string name="err_delete_failed">فشل حذف الملف. يرجى التحقق من أذونات التخزين.</string>
     <string name="err_local_file_not_found">الملف المحلي غير موجود</string>
@@ -531,4 +531,6 @@
     <string name="lbl_update_managed_by_fdroid">تتم إدارة تحديثات Sounder بواسطة عميل F-Droid الخاص بك.</string>
     <string name="lbl_open_fdroid">فتح F-Droid</string>
     <string name="err_update_check_failed">تعذر التحقق من التحديثات. تحقق من اتصالك.</string>
+    <string name="lbl_recent_downloads">التنزيلات الأخيرة</string>
+    <string name="lng_empty_downloads">ستظهر تنزيلاتك الأخيرة هنا.</string>
 </resources>

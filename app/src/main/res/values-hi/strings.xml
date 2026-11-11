@@ -340,7 +340,7 @@
     <string name="download_complete">डाउनलोड पूरा हुआ: %1$s</string>
     <string name="download_failed">डाउनलोड विफल: %1$s</string>
     <string name="download_queued">डाउनलोड कतारबद्ध: %1$s</string>
-    <string name="download_retrying">डाउनलोड का पुनः प्रयास…</string>
+    <string name="download_retrying">डाउनलोड का पुनः प्रयास किया जा रहा है…</string>
     <string name="download_status_queued">%1$s • कतार में</string>
     <string name="empty_downloads">कोई डाउनलोड प्रगति पर नहीं है</string>
     <string name="err_delete_failed">फ़ाइल हटाने में विफल। कृपया स्टोरेज अनुमतियों की जांच करें।</string>
@@ -471,4 +471,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder अपडेट आपके F-Droid क्लाइंट द्वारा प्रबंधित किए जाते हैं।</string>
     <string name="lbl_open_fdroid">F-Droid खोलें</string>
     <string name="err_update_check_failed">अपडेट की जांच करने में असमर्थ। अपना कनेक्शन जांचें।</string>
+    <string name="lbl_recent_downloads">हाल के डाउनलोड</string>
+    <string name="lng_empty_downloads">आपके हाल के डाउनलोड यहाँ दिखाई देंगे।</string>
 </resources>

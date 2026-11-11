@@ -41,7 +41,7 @@
     <string name="download_failed">فشل التنزيل: %1$s</string>
     <string name="download_queued">في قائمة انتظار التنزيل: %1$s</string>
     <string name="download_retrying">جارٍ إعادة محاولة التنزيل…</string>
-    <string name="download_status_queued">%1$s • في الانتظار</string>
+    <string name="download_status_queued">%1$s • في قائمة الانتظار</string>
     <string name="empty_downloads">لا توجد تنزيلات جارية</string>
     <string name="err_delete_failed">فشل حذف الملف. يرجى التحقق من أذونات التخزين.</string>
     <string name="err_local_file_not_found">الملف المحلي غير موجود</string>
@@ -172,4 +172,16 @@
     <string name="lbl_open_fdroid">فتح F-Droid</string>
     <string name="err_update_check_failed">تعذر التحقق من التحديثات. تحقق من اتصالك.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">التنزيلات الأخيرة</string>
+    <string name="lng_empty_downloads">ستظهر تنزيلاتك الأخيرة هنا.</string>
+    <string name="lbl_cancel">إلغاء</string>
+    <string name="lbl_ok">حسناً</string>
+    <string name="set_lib_tabs">علامات تبويب المكتبة</string>
+    <string name="desc_tab_handle">نقل علامة التبويب هذه</string>
+    <string name="lng_queue_added">تمت الإضافة إلى قائمة الانتظار</string>
+    <string name="lbl_songs">الأغاني</string>
+    <string name="lbl_albums">الألبومات</string>
+    <string name="lbl_artists">الفنانون</string>
+    <string name="lbl_genres">الأنواع</string>
+    <string name="lbl_playlists">قوائم التشغيل</string>
 </resources>

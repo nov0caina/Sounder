@@ -97,9 +97,6 @@
         android:label="home_feed_fragment"
         tools:layout="@layout/fragment_home_feed">
         <action
-            android:id="@+id/downloads"
-            app:destination="@id/downloads_fragment" />
-        <action
             android:id="@+id/show_online_artist"
             app:destination="@id/online_artist_fragment" />
         <action
@@ -199,9 +196,6 @@
         <action
             android:id="@+id/discover"
             app:destination="@id/discover_fragment" />
-        <action
-            android:id="@+id/downloads"
-            app:destination="@id/downloads_fragment" />
     </fragment>
 
     <fragment
@@ -209,9 +203,6 @@
         android:name="org.nov0caina.sounder.online.ui.DiscoverFragment"
         android:label="discover_fragment"
         tools:layout="@layout/fragment_discover">
-        <action
-            android:id="@+id/downloads"
-            app:destination="@id/downloads_fragment" />
         <action
             android:id="@+id/show_online_artist"
             app:destination="@id/online_artist_fragment" />
@@ -263,12 +254,6 @@
             android:id="@+id/show_online_album"
             app:destination="@id/online_album_fragment" />
     </fragment>
-
-    <fragment
-        android:id="@+id/downloads_fragment"
-        android:name="org.nov0caina.sounder.online.ui.DownloadsFragment"
-        android:label="downloads_fragment"
-        tools:layout="@layout/fragment_downloads" />
 
     <dialog
         android:id="@+id/error_details_dialog"

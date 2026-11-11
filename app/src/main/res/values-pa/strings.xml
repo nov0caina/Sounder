@@ -310,7 +310,7 @@
     <string name="btn_delete">हटाएं</string>
     <string name="btn_download">डाउनलोड</string>
     <string name="btn_downloaded">डाउनलोड हो गया</string>
-    <string name="btn_downloading">डाउनलोड हो रहा है…</string>
+    <string name="btn_downloading">ਡਾਊਨਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…</string>
     <string name="btn_open_settings">सेटिंग्स खोलें</string>
     <string name="btn_play">चलाएं</string>
     <string name="btn_retry">पुनः प्रयास करें</string>
@@ -331,10 +331,10 @@
     <string name="dlg_storage_manager_perm_title">स्टोरेज अनुमति आवश्यक है</string>
     <string name="download_album">एल्बम डाउनलोड करें</string>
     <string name="download_complete">डाउनलोड पूरा हुआ: %1$s</string>
-    <string name="download_failed">डाउनलोड विफल: %1$s</string>
+    <string name="download_failed">ਡਾਊਨਲੋਡ ਅਸਫਲ ਰਿਹਾ: %1$s</string>
     <string name="download_queued">डाउनलोड कतारबद्ध: %1$s</string>
-    <string name="download_retrying">डाउनलोड का पुनः प्रयास…</string>
-    <string name="download_status_queued">%1$s • कतार में</string>
+    <string name="download_retrying">ਡਾਊਨਲੋਡ ਦੀ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ…</string>
+    <string name="download_status_queued">%1$s • ਕਤਾਰ ਵਿੱਚ</string>
     <string name="empty_downloads">कोई डाउनलोड प्रगति पर नहीं है</string>
     <string name="err_delete_failed">फ़ाइल हटाने में विफल। कृपया स्टोरेज अनुमतियों की जांच करें।</string>
     <string name="err_local_file_not_found">स्थानीय फ़ाइल नहीं मिली</string>
@@ -464,4 +464,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">ਹਾਲੀਆ ਡਾਊਨਲੋਡ</string>
+    <string name="lng_empty_downloads">ਤੁਹਾਡੇ ਹਾਲੀਆ ਡਾਊਨਲੋਡ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।</string>
 </resources>

@@ -485,4 +485,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder のアップデートは F-Droid クライアントによって管理されています。</string>
     <string name="lbl_open_fdroid">F-Droid を開く</string>
     <string name="err_update_check_failed">アップデートの確認に失敗しました。接続を確認してください。</string>
+    <string name="lbl_recent_downloads">最近のダウンロード</string>
+    <string name="lng_empty_downloads">最近ダウンロードした曲がここに表示されます。</string>
 </resources>

@@ -150,10 +150,10 @@
     <string name="dlg_storage_manager_perm_title">Vyžadováno oprávnění k úložišti</string>
     <string name="download_album">Stiahnuť album</string>
     <string name="download_complete">Stahování dokončeno: %1$s</string>
-    <string name="download_failed">Stahování se nezdařilo: %1$s</string>
+    <string name="download_failed">Sťahovanie zlyhalo: %1$s</string>
     <string name="download_queued">Zařazeno ke stažení: %1$s</string>
-    <string name="download_retrying">Opakování stahování…</string>
-    <string name="download_status_queued">%1$s • Ve frontě</string>
+    <string name="download_retrying">Opakovanie sťahovania…</string>
+    <string name="download_status_queued">%1$s • V rade</string>
     <string name="empty_downloads">Žádná aktivní stahování</string>
     <string name="err_delete_failed">Soubor se nepodařilo smazat. Zkontrolujte oprávnění úložiště.</string>
     <string name="err_local_file_not_found">Místní soubor nenalezen</string>
@@ -283,4 +283,9 @@
     <string name="lbl_update_managed_by_fdroid">Aktualizácie aplikácie Sounder spravuje váš klient F-Droid.</string>
     <string name="lbl_open_fdroid">Otvoriť F-Droid</string>
     <string name="err_update_check_failed">Nepodarilo sa skontrolovať aktualizácie. Skontrolujte pripojenie.</string>
+    <string name="lbl_recent_downloads">Nedávne stiahnutia</string>
+    <string name="lng_empty_downloads">Tu sa zobrazia vaše nedávne stiahnutia.</string>
+    <string name="set_lib_tabs">Karty knižnice</string>
+    <string name="desc_tab_handle">Presunúť túto kartu</string>
+    <string name="lng_queue_added">Pridané do radu</string>
 </resources>

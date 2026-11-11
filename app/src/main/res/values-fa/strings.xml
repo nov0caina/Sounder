@@ -359,7 +359,7 @@
     <string name="btn_delete">حذف</string>
     <string name="btn_download">دانلود</string>
     <string name="btn_downloaded">تم التنزيل</string>
-    <string name="btn_downloading">جارٍ التنزيل…</string>
+    <string name="btn_downloading">در حال دانلود…</string>
     <string name="btn_open_settings">فتح الإعدادات</string>
     <string name="btn_play">پخش</string>
     <string name="btn_retry">إعادة المحاولة</string>
@@ -380,10 +380,10 @@
     <string name="dlg_storage_manager_perm_title">إذن التخزين مطلوب</string>
     <string name="download_album">تنزيل الألبوم</string>
     <string name="download_complete">اكتمل التنزيل: %1$s</string>
-    <string name="download_failed">فشل التنزيل: %1$s</string>
+    <string name="download_failed">دانلود ناموفق بود: %1$s</string>
     <string name="download_queued">في قائمة انتظار التنزيل: %1$s</string>
-    <string name="download_retrying">جارٍ إعادة محاولة التنزيل…</string>
-    <string name="download_status_queued">%1$s • في الانتظار</string>
+    <string name="download_retrying">تلاش مجدد برای دانلود…</string>
+    <string name="download_status_queued">%1$s • در صف</string>
     <string name="empty_downloads">لا توجد تنزيلات جارية</string>
     <string name="err_delete_failed">فشل حذف الملف. يرجى التحقق من أذونات التخزين.</string>
     <string name="err_local_file_not_found">الملف المحلي غير موجود</string>
@@ -513,4 +513,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">دانلودهای اخیر</string>
+    <string name="lng_empty_downloads">دانلودهای اخیر شما در اینجا نمایش داده می‌شوند.</string>
 </resources>

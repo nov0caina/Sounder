@@ -363,7 +363,7 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="btn_delete">Slett</string>
     <string name="btn_download">Last ned</string>
     <string name="btn_downloaded">Nedlastet</string>
-    <string name="btn_downloading">Laster ned…</string>
+    <string name="btn_downloading">Lastar ned…</string>
     <string name="btn_open_settings">Åpne innstillinger</string>
     <string name="btn_play">Spill av</string>
     <string name="btn_retry">Prøv igjen</string>
@@ -384,7 +384,7 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="dlg_storage_manager_perm_title">Lagringstillatelse kreves</string>
     <string name="download_album">Last ned album</string>
     <string name="download_complete">Nedlasting fullført: %1$s</string>
-    <string name="download_failed">Nedlasting mislyktes: %1$s</string>
+    <string name="download_failed">Nedlasting mislukkast: %1$s</string>
     <string name="download_queued">Nedlasting i kø: %1$s</string>
     <string name="download_retrying">Prøver nedlasting på nytt…</string>
     <string name="download_status_queued">%1$s • I kø</string>
@@ -517,4 +517,6 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="lbl_update_managed_by_fdroid">Sounder-oppdateringer administreres av F-Droid-klienten din.</string>
     <string name="lbl_open_fdroid">Åpne F-Droid</string>
     <string name="err_update_check_failed">Kunne ikke se etter oppdateringer. Sjekk tilkoblingen din.</string>
+    <string name="lbl_recent_downloads">Nylege nedlastingar</string>
+    <string name="lng_empty_downloads">Dei nylege nedlastingane dine vil visast her.</string>
 </resources>

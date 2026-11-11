@@ -521,4 +521,6 @@ AVISO: Tenha cuidado ao controlar este serviço. Se você fechá-lo e então ten
     <string name="lbl_update_managed_by_fdroid">As atualizações do Sounder são gerenciadas pelo seu cliente F-Droid.</string>
     <string name="lbl_open_fdroid">Abrir F-Droid</string>
     <string name="err_update_check_failed">Não foi possível verificar atualizações. Verifique sua conexão.</string>
+    <string name="lbl_recent_downloads">Downloads recentes</string>
+    <string name="lng_empty_downloads">Seus downloads recentes aparecerão aqui.</string>
 </resources>

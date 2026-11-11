@@ -359,7 +359,7 @@
     <string name="btn_delete">ลบ</string>
     <string name="btn_download">ดาวน์โหลด</string>
     <string name="btn_downloaded">ดาวน์โหลดแล้ว</string>
-    <string name="btn_downloading">กำลังดาวน์โหลด…</string>
+    <string name="btn_downloading">ກຳລັງດາວໂຫຼດ…</string>
     <string name="btn_open_settings">เปิดการตั้งค่า</string>
     <string name="btn_play">เล่น</string>
     <string name="btn_retry">ลองอีกครั้ง</string>
@@ -380,10 +380,10 @@
     <string name="dlg_storage_manager_perm_title">Izin Penyimpanan Diperlukan</string>
     <string name="download_album">Unduh album</string>
     <string name="download_complete">Unduhan selesai: %1$s</string>
-    <string name="download_failed">Unduhan gagal: %1$s</string>
+    <string name="download_failed">ດາວໂຫຼດລົ້ມເຫຼວ: %1$s</string>
     <string name="download_queued">Unduhan dalam antrean: %1$s</string>
-    <string name="download_retrying">Mencoba mengunduh ulang…</string>
-    <string name="download_status_queued">%1$s • Dalam antrean</string>
+    <string name="download_retrying">ກຳລັງລອງດາວໂຫຼດໃໝ່…</string>
+    <string name="download_status_queued">%1$s • ຢູ່ໃນຄິວ</string>
     <string name="empty_downloads">Tidak ada unduhan aktif</string>
     <string name="err_delete_failed">Gagal menghapus file. Silakan periksa izin penyimpanan.</string>
     <string name="err_local_file_not_found">File lokal tidak ditemukan</string>
@@ -513,4 +513,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">ການດາວໂຫຼດຫຼ້າສຸດ</string>
+    <string name="lng_empty_downloads">ການດາວໂຫຼດຫຼ້າສຸດຂອງທ່ານຈະສະແດງຢູ່ບ່ອນນີ້.</string>
 </resources>

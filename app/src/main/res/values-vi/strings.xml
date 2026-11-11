@@ -37,7 +37,7 @@
     <string name="download_failed">Tải xuống thất bại: %1$s</string>
     <string name="download_queued">Đã vào hàng đợi tải xuống: %1$s</string>
     <string name="download_retrying">Đang thử tải lại…</string>
-    <string name="download_status_queued">%1$s • Đang đợi</string>
+    <string name="download_status_queued">%1$s • Đang chờ</string>
     <string name="empty_downloads">Không có tệp đang tải xuống</string>
     <string name="err_delete_failed">Không thể xóa tệp. Vui lòng kiểm tra quyền bộ nhớ.</string>
     <string name="err_local_file_not_found">Không tìm thấy tệp cục bộ</string>
@@ -168,4 +168,16 @@
     <string name="lbl_open_fdroid">Mở F-Droid</string>
     <string name="err_update_check_failed">Không thể kiểm tra cập nhật. Vui lòng kiểm tra kết nối.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">Tải xuống gần đây</string>
+    <string name="lng_empty_downloads">Các bản tải xuống gần đây của bạn sẽ xuất hiện ở đây.</string>
+    <string name="lbl_cancel">Hủy</string>
+    <string name="lbl_ok">OK</string>
+    <string name="set_lib_tabs">Thẻ thư viện</string>
+    <string name="desc_tab_handle">Di chuyển thẻ này</string>
+    <string name="lng_queue_added">Đã thêm vào hàng chờ</string>
+    <string name="lbl_songs">Bài hát</string>
+    <string name="lbl_albums">Album</string>
+    <string name="lbl_artists">Nghệ sĩ</string>
+    <string name="lbl_genres">Thể loại</string>
+    <string name="lbl_playlists">Danh sách phát</string>
 </resources>

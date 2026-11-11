@@ -240,10 +240,10 @@
     <string name="dlg_storage_manager_perm_title">Autorizzazione memoria richiesta</string>
     <string name="download_album">Scarica album</string>
     <string name="download_complete">Download completato: %1$s</string>
-    <string name="download_failed">Download non riuscito: %1$s</string>
+    <string name="download_failed">Discargamento fallite: %1$s</string>
     <string name="download_queued">Download in coda: %1$s</string>
-    <string name="download_retrying">Nuovo tentativo di download…</string>
-    <string name="download_status_queued">%1$s • In coda</string>
+    <string name="download_retrying">Retentante le discargamento…</string>
+    <string name="download_status_queued">%1$s • In cauda</string>
     <string name="empty_downloads">Nessun download in corso</string>
     <string name="err_delete_failed">Impossibile eliminare il file. Verifica le autorizzazioni della memoria.</string>
     <string name="err_local_file_not_found">File locale non trovato</string>
@@ -373,4 +373,7 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Discargamentos recente</string>
+    <string name="lng_empty_downloads">Tu discargamentos recente apparera hic.</string>
+    <string name="desc_tab_handle">Mover iste scheda</string>
 </resources>

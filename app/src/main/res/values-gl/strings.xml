@@ -403,4 +403,6 @@
     <string name="lbl_update_managed_by_fdroid">As actualizacións de Sounder son xestionadas polo teu cliente de F-Droid.</string>
     <string name="lbl_open_fdroid">Abrir F-Droid</string>
     <string name="err_update_check_failed">Non se puideron comprobar as actualizacións. Revisa a túa conexión.</string>
+    <string name="lbl_recent_downloads">Descargas recentes</string>
+    <string name="lng_empty_downloads">As túas descargas recentes aparecerán aquí.</string>
 </resources>

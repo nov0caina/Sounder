@@ -367,7 +367,7 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="btn_delete">Excluir</string>
     <string name="btn_download">Baixar</string>
     <string name="btn_downloaded">Baixado</string>
-    <string name="btn_downloading">Baixando…</string>
+    <string name="btn_downloading">A transferir…</string>
     <string name="btn_open_settings">Abrir configurações</string>
     <string name="btn_play">Tocar</string>
     <string name="btn_retry">Tentar novamente</string>
@@ -388,9 +388,9 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="dlg_storage_manager_perm_title">Permissão de armazenamento necessária</string>
     <string name="download_album">Baixar álbum</string>
     <string name="download_complete">Download concluído: %1$s</string>
-    <string name="download_failed">Falha no download: %1$s</string>
+    <string name="download_failed">Falha na transferência: %1$s</string>
     <string name="download_queued">Download na fila: %1$s</string>
-    <string name="download_retrying">Tentando baixar novamente…</string>
+    <string name="download_retrying">A tentar transferir novamente…</string>
     <string name="download_status_queued">%1$s • Na fila</string>
     <string name="empty_downloads">Nenhum download em andamento</string>
     <string name="err_delete_failed">Falha ao excluir o arquivo. Verifique as permissões de armazenamento.</string>
@@ -521,4 +521,6 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="lbl_update_managed_by_fdroid">As atualizações do Sounder são gerenciadas pelo seu cliente F-Droid.</string>
     <string name="lbl_open_fdroid">Abrir F-Droid</string>
     <string name="err_update_check_failed">Não foi possível verificar atualizações. Verifique sua conexão.</string>
+    <string name="lbl_recent_downloads">Transferências recentes</string>
+    <string name="lng_empty_downloads">As suas transferências recentes aparecerão aqui.</string>
 </resources>

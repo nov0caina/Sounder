@@ -106,7 +106,7 @@
     <string name="btn_delete">Poista</string>
     <string name="btn_download">Lataa</string>
     <string name="btn_downloaded">Ladattu</string>
-    <string name="btn_downloading">Ladataan…</string>
+    <string name="btn_downloading">در حال دانلود…</string>
     <string name="btn_open_settings">Avaa asetukset</string>
     <string name="btn_play">Toista</string>
     <string name="btn_retry">Yritä uudelleen</string>
@@ -127,10 +127,10 @@
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Lataa albumi</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">دانلود انجام نوابی: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">تلاش دوباره سی دانلود…</string>
+    <string name="download_status_queued">%1$s • در صف</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -261,4 +261,10 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">دانلودهای اخیر</string>
+    <string name="lng_empty_downloads">دانلودهای اخیر شما در اینجا نمایش داده می‌شوند.</string>
+    <string name="set_lib_tabs">سربرگ‌یل کتابخونه</string>
+    <string name="desc_tab_handle">جابه‌جایی ای سربرگ</string>
+    <string name="lng_queue_added">به صف اضافه وابی</string>
+    <string name="lbl_playlists">فهرست‌یل پخش</string>
 </resources>

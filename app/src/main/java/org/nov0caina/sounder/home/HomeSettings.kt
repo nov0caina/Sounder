@@ -53,12 +53,14 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
     Settings.Impl<HomeSettings.Listener>(context), HomeSettings {
     override var homeTabs: Array<Tab>
         get() =
-            Tab.fromIntCode(
-                sharedPreferences.getInt(
-                    getString(R.string.set_key_home_tabs),
-                    Tab.SEQUENCE_DEFAULT,
-                )
-            ) ?: unlikelyToBeNull(Tab.fromIntCode(Tab.SEQUENCE_DEFAULT))
+            migrateTabsIfNeeded(
+                Tab.fromIntCode(
+                    sharedPreferences.getInt(
+                        getString(R.string.set_key_home_tabs),
+                        Tab.SEQUENCE_DEFAULT,
+                    )
+                ) ?: unlikelyToBeNull(Tab.fromIntCode(Tab.SEQUENCE_DEFAULT))
+            )
         set(value) {
             sharedPreferences.edit {
                 putInt(getString(R.string.set_key_home_tabs), Tab.toIntCode(value))
@@ -82,8 +84,24 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
             oldTabs[playlistIndex] = Tab.Visible(MusicType.PLAYLISTS)
 
             sharedPreferences.edit {
-                putInt(getString(R.string.set_key_home_tabs), Tab.toIntCode(oldTabs))
+                putInt(getString(R.string.set_key_home_tabs), Tab.toIntCode(migrateTabsIfNeeded(oldTabs)))
                 remove(OLD_KEY_LIB_TABS)
+            }
+        }
+
+        val homeTabsKey = getString(R.string.set_key_home_tabs)
+        if (sharedPreferences.contains(homeTabsKey)) {
+            val rawCode = sharedPreferences.getInt(homeTabsKey, Tab.SEQUENCE_DEFAULT)
+            val parsed = Tab.fromIntCode(rawCode)
+            if (parsed != null) {
+                val migrated = migrateTabsIfNeeded(parsed)
+                val migratedCode = Tab.toIntCode(migrated)
+                if (migratedCode != rawCode) {
+                    L.d("Migrating 5-tab home sequence to 6-tab sequence")
+                    sharedPreferences.edit {
+                        putInt(homeTabsKey, migratedCode)
+                    }
+                }
             }
         }
     }
@@ -103,5 +121,31 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
 
     companion object {
         const val OLD_KEY_LIB_TABS = "auxio_lib_tabs"
+
+        fun migrateTabsIfNeeded(tabs: Array<Tab>): Array<Tab> {
+            if (tabs.any { it.type == MusicType.DOWNLOADS }) {
+                return tabs
+            }
+            return tabs + Tab.Visible(MusicType.DOWNLOADS)
+        }
+
+        fun reorderVisibleTabs(
+            currentTabs: Array<Tab>,
+            newVisibleOrder: List<MusicType>,
+        ): Array<Tab> {
+            val visibleIterator = newVisibleOrder.iterator()
+            return Array(currentTabs.size) { idx ->
+                when (val existing = currentTabs[idx]) {
+                    is Tab.Visible -> {
+                        if (visibleIterator.hasNext()) {
+                            Tab.Visible(visibleIterator.next())
+                        } else {
+                            existing
+                        }
+                    }
+                    is Tab.Invisible -> existing
+                }
+            }
+        }
     }
 }

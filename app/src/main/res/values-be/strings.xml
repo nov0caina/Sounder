@@ -351,10 +351,10 @@
     <string name="dlg_storage_manager_perm_title">Требуется доступ к хранилищу</string>
     <string name="download_album">Спампаваць альбом</string>
     <string name="download_complete">Скачивание завершено: %1$s</string>
-    <string name="download_failed">Ошибка скачивания: %1$s</string>
+    <string name="download_failed">Памылка спампоўвання: %1$s</string>
     <string name="download_queued">В очереди на скачивание: %1$s</string>
-    <string name="download_retrying">Повторная попытка скачивания…</string>
-    <string name="download_status_queued">%1$s • В очереди</string>
+    <string name="download_retrying">Паўторная спроба спампоўвання…</string>
+    <string name="download_status_queued">%1$s • У чарзе</string>
     <string name="empty_downloads">Нет активных скачиваний</string>
     <string name="err_delete_failed">Не удалось удалить файл. Проверьте разрешения на доступ к памяти.</string>
     <string name="err_local_file_not_found">Локальный файл не найден</string>
@@ -484,4 +484,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Нядаўнія спампоўкі</string>
+    <string name="lng_empty_downloads">Вашы нядаўнія спампоўкі з\'явяцца тут.</string>
 </resources>

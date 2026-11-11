@@ -517,4 +517,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Скорошни изтегляния</string>
+    <string name="lng_empty_downloads">Вашите скорошни изтегляния ще се покажат тук.</string>
 </resources>

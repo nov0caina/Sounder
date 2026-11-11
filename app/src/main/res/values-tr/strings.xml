@@ -393,7 +393,7 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="download_failed">İndirme başarısız: %1$s</string>
     <string name="download_queued">İndirme kuyrukta: %1$s</string>
     <string name="download_retrying">İndirme yeniden deneniyor…</string>
-    <string name="download_status_queued">%1$s • Kuyrukta</string>
+    <string name="download_status_queued">%1$s • Sırada</string>
     <string name="empty_downloads">Devam eden indirme yok</string>
     <string name="err_delete_failed">Dosya silinemedi. Lütfen depolama izinlerini kontrol edin.</string>
     <string name="err_local_file_not_found">Yerel dosya bulunamadı</string>
@@ -523,4 +523,6 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="lbl_update_managed_by_fdroid">Sounder güncellemeleri F-Droid istemciniz tarafından yönetilir.</string>
     <string name="lbl_open_fdroid">F-Droid\'i Aç</string>
     <string name="err_update_check_failed">Güncellemeler denetlenemedi. Bağlantınızı kontrol edin.</string>
+    <string name="lbl_recent_downloads">Son İndirilenler</string>
+    <string name="lng_empty_downloads">Son indirmeleriniz burada görünecek.</string>
 </resources>

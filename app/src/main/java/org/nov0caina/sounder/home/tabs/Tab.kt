@@ -58,13 +58,19 @@ sealed class Tab(open val type: MusicType) {
         // MusicMode for this tab.
 
         /** The maximum index that a well-formed tab sequence should be. */
-        const val MAX_SEQUENCE_IDX = 4
+        const val MAX_SEQUENCE_IDX = 5
+
+        /** The total number of configurable library tabs. */
+        const val NUM_ITEMS = 6
+
+        /** Legacy 5-tab maximum sequence index used prior to adding Recent Downloads. */
+        private const val LEGACY_MAX_SEQUENCE_IDX = 4
 
         /**
-         * The default tab sequence, in integer form. This represents a set of four visible tabs
-         * ordered as "Song", "Album", "Artist", "Genre", and "Playlists
+         * The default tab sequence, in integer form. This represents a set of six visible tabs
+         * ordered as "Song", "Album", "Artist", "Genre", "Playlists", and "Recent Downloads".
          */
-        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1100
+        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1100_1101
 
         /** Maps between the integer code in the tab sequence and it's [MusicType]. */
         private val MODE_TABLE =
@@ -74,6 +80,7 @@ sealed class Tab(open val type: MusicType) {
                 MusicType.ARTISTS,
                 MusicType.GENRES,
                 MusicType.PLAYLISTS,
+                MusicType.DOWNLOADS,
             )
 
         /**
@@ -114,11 +121,34 @@ sealed class Tab(open val type: MusicType) {
          * @return An array of [Tab]s corresponding to the sequence.
          */
         fun fromIntCode(intCode: Int): Array<Tab>? {
+            // Try parsing as a full 6-tab sequence first.
+            val sixTabs = parseChunks(intCode, MAX_SEQUENCE_IDX)
+            if (sixTabs.size == MODE_TABLE.size) {
+                return sixTabs.toTypedArray()
+            }
+
+            // Fallback for legacy 5-tab sequences where the top 4-bit chunk is 0
+            // and shifts 16..0 contain the 5 legacy tabs without DOWNLOADS.
+            if (intCode.ushr(MAX_SEQUENCE_IDX * 4) and 0b1111 == 0) {
+                val fiveTabs = parseChunks(intCode, LEGACY_MAX_SEQUENCE_IDX)
+                if (
+                    fiveTabs.size == LEGACY_MAX_SEQUENCE_IDX + 1 &&
+                        fiveTabs.none { it.type == MusicType.DOWNLOADS }
+                ) {
+                    return (fiveTabs + Visible(MusicType.DOWNLOADS)).toTypedArray()
+                }
+            }
+
+            L.e("Sequence size was invalid for intCode $intCode")
+            return null
+        }
+
+        private fun parseChunks(intCode: Int, maxIdx: Int): List<Tab> {
             val tabs = mutableListOf<Tab>()
 
             // Try to parse a mode for each chunk in the sequence.
             // If we can't parse one, just skip it.
-            for (shift in (0..MAX_SEQUENCE_IDX * 4).reversed() step 4) {
+            for (shift in (0..maxIdx * 4).reversed() step 4) {
                 val chunk = intCode.shr(shift) and 0b1111
                 val mode = MODE_TABLE.getOrNull(chunk and 7) ?: continue
 
@@ -139,13 +169,7 @@ sealed class Tab(open val type: MusicType) {
                 )
             }
 
-            // For safety, return null if we have an empty or larger-than-expected tab array.
-            if (distinct.isEmpty() || distinct.size < MAX_SEQUENCE_IDX) {
-                L.e("Sequence size was ${distinct.size}, which is invalid")
-                return null
-            }
-
-            return distinct.toTypedArray()
+            return distinct
         }
     }
 }

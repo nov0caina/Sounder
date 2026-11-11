@@ -377,10 +377,10 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Lataa albumi</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">Methwyd lawrlwytho: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">Yn rhoi cynnig arall ar lawrlwytho…</string>
+    <string name="download_status_queued">%1$s • Yn y ciw</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -510,4 +510,6 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Lawrlwythiadau Diweddar</string>
+    <string name="lng_empty_downloads">Bydd eich lawrlwythiadau diweddar yn ymddangos yma.</string>
 </resources>

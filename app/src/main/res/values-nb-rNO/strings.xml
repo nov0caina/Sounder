@@ -468,4 +468,6 @@ ADVARSEL: Vær varsom med å kontrollere denne tjenesten, hvis du lukker den og 
     <string name="lbl_update_managed_by_fdroid">Sounder-oppdateringer administreres av F-Droid-klienten din.</string>
     <string name="lbl_open_fdroid">Åpne F-Droid</string>
     <string name="err_update_check_failed">Kunne ikke se etter oppdateringer. Sjekk tilkoblingen din.</string>
+    <string name="lbl_recent_downloads">Nylige nedlastinger</string>
+    <string name="lng_empty_downloads">Dine nylige nedlastinger vil vises her.</string>
 </resources>

@@ -17,7 +17,7 @@
     <string name="btn_delete">हटाएं</string>
     <string name="btn_download">डाउनलोड</string>
     <string name="btn_downloaded">डाउनलोड हो गया</string>
-    <string name="btn_downloading">डाउनलोड हो रहा है…</string>
+    <string name="btn_downloading">ଡାଉନଲୋଡ୍ ହେଉଛି…</string>
     <string name="btn_open_settings">सेटिंग्स खोलें</string>
     <string name="btn_play">चलाएं</string>
     <string name="btn_retry">पुनः प्रयास करें</string>
@@ -38,10 +38,10 @@
     <string name="dlg_storage_manager_perm_title">स्टोरेज अनुमति आवश्यक है</string>
     <string name="download_album">एल्बम डाउनलोड करें</string>
     <string name="download_complete">डाउनलोड पूरा हुआ: %1$s</string>
-    <string name="download_failed">डाउनलोड विफल: %1$s</string>
+    <string name="download_failed">ଡାଉନଲୋଡ୍ ବିଫଳ ହେଲା: %1$s</string>
     <string name="download_queued">डाउनलोड कतारबद्ध: %1$s</string>
-    <string name="download_retrying">डाउनलोड का पुनः प्रयास…</string>
-    <string name="download_status_queued">%1$s • कतार में</string>
+    <string name="download_retrying">ପୁଣି ଡାଉନଲୋଡ୍ କରିବାକୁ ଚେଷ୍ଟା କରାଯାଉଛି…</string>
+    <string name="download_status_queued">%1$s • ଧାଡ଼ିରେ ଅଛି</string>
     <string name="empty_downloads">कोई डाउनलोड प्रगति पर नहीं है</string>
     <string name="err_delete_failed">फ़ाइल हटाने में विफल। कृपया स्टोरेज अनुमतियों की जांच करें।</string>
     <string name="err_local_file_not_found">स्थानीय फ़ाइल नहीं मिली</string>
@@ -172,4 +172,16 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">ସାମ୍ପ୍ରତିକ ଡାଉନଲୋଡ୍</string>
+    <string name="lng_empty_downloads">ଆପଣଙ୍କର ସାମ୍ପ୍ରତିକ ଡାଉନଲୋଡ୍ ଏଠାରେ ଦେଖାଯିବ।</string>
+    <string name="lbl_cancel">ବାତିଲ୍ କରନ୍ତୁ</string>
+    <string name="lbl_ok">ଠିକ୍ ଅଛି</string>
+    <string name="set_lib_tabs">ଲାଇବ୍ରେରୀ ଟ୍ୟାବ୍</string>
+    <string name="desc_tab_handle">ଏହି ଟ୍ୟାବ୍ ଘୁଞ୍ଚାନ୍ତୁ</string>
+    <string name="lng_queue_added">ଧାଡ଼ିରେ ଯୋଡ଼ାଗଲା</string>
+    <string name="lbl_songs">ଗୀତଗୁଡ଼ିକ</string>
+    <string name="lbl_albums">ଆଲବମ୍‌ଗୁଡ଼ିକ</string>
+    <string name="lbl_artists">କଳାକାରମାନେ</string>
+    <string name="lbl_genres">ଶୈଳୀଗୁଡ଼ିକ</string>
+    <string name="lbl_playlists">ପ୍ଲେଲିଷ୍ଟଗୁଡ଼ିକ</string>
 </resources>

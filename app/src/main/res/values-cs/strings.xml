@@ -525,4 +525,6 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="lbl_update_managed_by_fdroid">Aktualizace aplikace Sounder spravuje váš klient F-Droid.</string>
     <string name="lbl_open_fdroid">Otevřít F-Droid</string>
     <string name="err_update_check_failed">Aktualizace se nepodařilo zkontrolovat. Zkontrolujte připojení.</string>
+    <string name="lbl_recent_downloads">Nedávná stažení</string>
+    <string name="lng_empty_downloads">Zde se zobrazí vaše nedávná stažení.</string>
 </resources>

@@ -427,4 +427,7 @@
     <string name="lbl_update_managed_by_fdroid">Actualizările Sounder sunt gestionate de clientul F-Droid.</string>
     <string name="lbl_open_fdroid">Deschide F-Droid</string>
     <string name="err_update_check_failed">Nu s-au putut verifica actualizările. Verificați conexiunea.</string>
+    <string name="lbl_recent_downloads">Descărcări recente</string>
+    <string name="lng_empty_downloads">Descărcările tale recente vor apărea aici.</string>
+    <string name="desc_tab_handle">Mută această filă</string>
 </resources>

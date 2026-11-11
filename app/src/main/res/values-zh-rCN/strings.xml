@@ -513,4 +513,6 @@
     <string name="lbl_update_managed_by_fdroid">Sounder 更新由您的 F-Droid 客户端管理。</string>
     <string name="lbl_open_fdroid">打开 F-Droid</string>
     <string name="err_update_check_failed">无法检查更新，请检查网络连接。</string>
+    <string name="lbl_recent_downloads">最近下载</string>
+    <string name="lng_empty_downloads">您最近下载的音乐将显示在这里。</string>
 </resources>

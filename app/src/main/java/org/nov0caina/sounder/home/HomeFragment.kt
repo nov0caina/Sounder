@@ -19,9 +19,13 @@
 package org.nov0caina.sounder.home
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.view.DragEvent
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuCompat
@@ -35,7 +39,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import org.nov0caina.sounder.R
@@ -46,8 +50,8 @@ import org.nov0caina.sounder.home.list.AlbumListFragment
 import org.nov0caina.sounder.home.list.ArtistListFragment
 import org.nov0caina.sounder.home.list.GenreListFragment
 import org.nov0caina.sounder.home.list.PlaylistListFragment
+import org.nov0caina.sounder.home.list.RecentDownloadsListFragment
 import org.nov0caina.sounder.home.list.SongListFragment
-import org.nov0caina.sounder.home.tabs.NamedTabStrategy
 import org.nov0caina.sounder.home.tabs.Tab
 import org.nov0caina.sounder.list.ListViewModel
 import org.nov0caina.sounder.list.SelectionFragment
@@ -86,6 +90,25 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
     private var storagePermissionLauncher: ActivityResultLauncher<String>? = null
     private var getContentLauncher: ActivityResultLauncher<String>? = null
     private var pendingImportTarget: Playlist? = null
+    private var homePagerAdapter: HomePagerAdapter? = null
+    private var isSettingUpPager: Boolean = false
+    private var isDraggingTab: Boolean = false
+
+    private val tabSelectedListener =
+        object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                if (!isSettingUpPager && !isDraggingTab) {
+                    val binding = binding ?: return
+                    if (binding.homePager.currentItem != tab.position) {
+                        binding.homePager.setCurrentItem(tab.position, true)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -137,8 +160,24 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
             // is an object for some reason.
             registerOnPageChangeCallback(
                 object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int,
+                    ) {
+                        if (!isSettingUpPager && !isDraggingTab) {
+                            binding.homeTabs.setScrollPosition(position, positionOffset, true)
+                        }
+                    }
+
                     override fun onPageSelected(position: Int) {
-                        homeModel.synchronizeTabPosition(position)
+                        if (!isSettingUpPager && !isDraggingTab) {
+                            homeModel.synchronizeTabPosition(position)
+                            val tab = binding.homeTabs.getTabAt(position)
+                            if (tab != null && !tab.isSelected) {
+                                binding.homeTabs.selectTab(tab)
+                            }
+                        }
                     }
                 }
             )
@@ -159,6 +198,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
 
         // Further initialization must be done in the function that also handles
         // re-creating the ViewPager.
+        setupTabDragReordering(binding)
         setupPager(binding)
 
         // --- VIEWMODEL SETUP ---
@@ -175,6 +215,9 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
 
     override fun onDestroyBinding(binding: FragmentHomeBinding) {
         super.onDestroyBinding(binding)
+        binding.homeTabs.removeOnTabSelectedListener(tabSelectedListener)
+        homePagerAdapter = null
+        binding.homeLayout.setOnDragListener(null)
         storagePermissionLauncher = null
         binding.homeNormalToolbar.setOnMenuItemClickListener(null)
     }
@@ -185,12 +228,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         }
 
         return when (item.itemId) {
-            // Handle main actions (Downloads, Search, Settings, About)
-            R.id.action_downloads -> {
-                L.d("Navigating to downloads")
-                findNavController().navigateSafe(HomeFragmentDirections.downloads())
-                true
-            }
+            // Handle main actions (Search, Settings, About)
             R.id.action_search -> {
                 L.d("Navigating to search")
                 findNavController().navigateSafe(HomeFragmentDirections.search())
@@ -217,8 +255,11 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                         MusicType.ARTISTS -> HomeFragmentDirections.sortArtists()
                         MusicType.GENRES -> HomeFragmentDirections.sortGenres()
                         MusicType.PLAYLISTS -> HomeFragmentDirections.sortPlaylists()
+                        MusicType.DOWNLOADS -> null
                     }
-                findNavController().navigateSafe(directions)
+                if (directions != null) {
+                    findNavController().navigateSafe(directions)
+                }
                 true
             }
             else -> {
@@ -229,8 +270,21 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
     }
 
     private fun setupPager(binding: FragmentHomeBinding) {
-        binding.homePager.adapter =
-            HomePagerAdapter(homeModel.currentTabTypes, childFragmentManager, viewLifecycleOwner)
+        val activeTabType = homeModel.currentTabType.value
+        val activeIndex = homeModel.currentTabTypes.indexOf(activeTabType).coerceAtLeast(0)
+
+        isSettingUpPager = true
+        binding.homeTabs.removeOnTabSelectedListener(tabSelectedListener)
+
+        val adapter =
+            HomePagerAdapter(
+                homeModel.currentTabTypes.toMutableList(),
+                childFragmentManager,
+                viewLifecycleOwner,
+            )
+        homePagerAdapter = adapter
+        binding.homePager.adapter = adapter
+        binding.homePager.setCurrentItem(activeIndex, false)
 
         val toolbarParams = binding.homeToolbar.layoutParams as AppBarLayout.LayoutParams
         if (homeModel.currentTabTypes.size == 1) {
@@ -247,17 +301,240 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                     AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
         }
 
-        // Set up the mapping between the ViewPager and TabLayout.
-        TabLayoutMediator(
-                binding.homeTabs,
-                binding.homePager,
-                NamedTabStrategy(homeModel.currentTabTypes),
-            )
-            .attach()
+        binding.homeTabs.removeAllTabs()
+        for (i in homeModel.currentTabTypes.indices) {
+            val tab = binding.homeTabs.newTab().setText(homeModel.currentTabTypes[i].nameRes)
+            binding.homeTabs.addTab(tab, i == activeIndex)
+        }
+        binding.homeTabs.addOnTabSelectedListener(tabSelectedListener)
+
+        isSettingUpPager = false
+        homeModel.synchronizeTabPosition(activeIndex)
+        binding.homeTabs.post {
+            binding.homeTabs.setScrollPosition(activeIndex, 0f, true)
+        }
+
+        attachTabLongClickListeners(binding, homeModel.currentTabTypes)
+    }
+
+    private fun attachTabLongClickListeners(
+        binding: FragmentHomeBinding,
+        tabOrder: List<MusicType>,
+    ) {
+        // Allow press & hold and drag horizontally on any library tab header to reorder it directly.
+        for (i in 0 until binding.homeTabs.tabCount) {
+            val tab = binding.homeTabs.getTabAt(i) ?: continue
+            tab.tag = tabOrder.getOrNull(i)
+            tab.view.setOnLongClickListener { view ->
+                val tabType = tab.tag as? MusicType ?: return@setOnLongClickListener false
+                view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+                val shadowBuilder = View.DragShadowBuilder(view)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    view.startDragAndDrop(null, shadowBuilder, tabType, 0)
+                } else {
+                    @Suppress("DEPRECATION")
+                    view.startDrag(null, shadowBuilder, tabType, 0)
+                }
+                true
+            }
+        }
+    }
+
+    private fun setupTabDragReordering(binding: FragmentHomeBinding) {
+        var draggedTabType: MusicType? = null
+        var activeTabTypeBeforeDrag: MusicType? = null
+        var workingOrder: MutableList<MusicType> = mutableListOf()
+        var lastDragLocalX: Float = Float.NaN
+        var autoScrollVelocityPx: Int = 0
+        var isAutoScrollScheduled: Boolean = false
+
+        fun evaluateDragSwap(localX: Float) {
+            val tabType = draggedTabType ?: return
+            val currentIndex = workingOrder.indexOf(tabType)
+            if (currentIndex == -1) return
+
+            val density = binding.homeTabs.resources.displayMetrics.density
+            val snapEdgePx = 36f * density
+            val contentX = localX + binding.homeTabs.scrollX
+
+            var targetIndex = currentIndex
+            if (localX <= snapEdgePx && binding.homeTabs.scrollX <= 0) {
+                targetIndex = 0
+            } else if (
+                localX >= binding.homeTabs.width - snapEdgePx &&
+                    !binding.homeTabs.canScrollHorizontally(1)
+            ) {
+                targetIndex = (binding.homeTabs.tabCount - 1).coerceAtLeast(0)
+            } else {
+                for (i in 0 until binding.homeTabs.tabCount) {
+                    val tabView = binding.homeTabs.getTabAt(i)?.view ?: continue
+                    val midpoint = (tabView.left + tabView.right) / 2f
+                    if (i < currentIndex && contentX < midpoint) {
+                        targetIndex = i
+                        break
+                    } else if (i > currentIndex && contentX > midpoint) {
+                        targetIndex = i
+                    }
+                }
+            }
+
+            if (targetIndex != currentIndex) {
+                val savedScrollX = binding.homeTabs.scrollX
+                workingOrder.removeAt(currentIndex)
+                workingOrder.add(targetIndex, tabType)
+                homePagerAdapter?.moveTab(currentIndex, targetIndex)
+
+                for (i in workingOrder.indices) {
+                    val tab = binding.homeTabs.getTabAt(i) ?: continue
+                    tab.tag = workingOrder[i]
+                    tab.setText(workingOrder[i].nameRes)
+                    tab.view.alpha = if (workingOrder[i] == tabType) 0.35f else 1.0f
+                }
+
+                // Keep the TabLayout visual underline on the section where the user was already located
+                // without triggering TabLayout's scrollAnimator back toward activeIdx.
+                val activeIdx = workingOrder.indexOf(activeTabTypeBeforeDrag)
+                if (activeIdx > -1) {
+                    binding.homeTabs.setScrollPosition(activeIdx, 0f, true)
+                }
+                binding.homeTabs.scrollX = savedScrollX
+                binding.homeTabs.post {
+                    val currentActiveIdx = workingOrder.indexOf(activeTabTypeBeforeDrag)
+                    if (isDraggingTab && currentActiveIdx > -1) {
+                        val currentScrollX = binding.homeTabs.scrollX
+                        binding.homeTabs.setScrollPosition(currentActiveIdx, 0f, true)
+                        binding.homeTabs.scrollX = currentScrollX
+                    }
+                }
+                binding.homeTabs.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+            }
+        }
+
+        val autoScrollRunnable =
+            object : Runnable {
+                override fun run() {
+                    if (!isDraggingTab || autoScrollVelocityPx == 0) {
+                        isAutoScrollScheduled = false
+                        return
+                    }
+                    val canScroll =
+                        if (autoScrollVelocityPx < 0) {
+                            binding.homeTabs.scrollX > 0
+                        } else {
+                            binding.homeTabs.canScrollHorizontally(1)
+                        }
+                    if (canScroll) {
+                        binding.homeTabs.scrollBy(autoScrollVelocityPx, 0)
+                    }
+                    if (!lastDragLocalX.isNaN()) {
+                        evaluateDragSwap(lastDragLocalX)
+                    }
+                    if (canScroll) {
+                        binding.homeTabs.postOnAnimation(this)
+                    } else {
+                        isAutoScrollScheduled = false
+                    }
+                }
+            }
+
+        binding.homeLayout.setOnDragListener { _, event ->
+            when (event.action) {
+                DragEvent.ACTION_DRAG_STARTED -> {
+                    val tabType = event.localState as? MusicType ?: return@setOnDragListener false
+                    isDraggingTab = true
+                    draggedTabType = tabType
+                    activeTabTypeBeforeDrag = homeModel.currentTabType.value
+                    workingOrder = homeModel.currentTabTypes.toMutableList()
+                    lastDragLocalX = Float.NaN
+                    autoScrollVelocityPx = 0
+                    isAutoScrollScheduled = false
+                    for (i in 0 until binding.homeTabs.tabCount) {
+                        binding.homeTabs.getTabAt(i)?.view?.alpha =
+                            if (workingOrder.getOrNull(i) == tabType) 0.35f else 1.0f
+                    }
+                    true
+                }
+                DragEvent.ACTION_DRAG_LOCATION -> {
+                    if (draggedTabType == null) return@setOnDragListener true
+                    val localX = event.x - binding.homeTabs.left
+                    lastDragLocalX = localX
+
+                    val density = binding.homeTabs.resources.displayMetrics.density
+                    val edgeZonePx = 88f * density
+                    val minScrollStepPx = 6f * density
+                    val maxScrollStepPx = 22f * density
+
+                    autoScrollVelocityPx =
+                        when {
+                            localX < edgeZonePx -> {
+                                val fraction =
+                                    ((edgeZonePx - localX) / edgeZonePx).coerceIn(0f, 1f)
+                                -(minScrollStepPx + fraction * (maxScrollStepPx - minScrollStepPx))
+                                    .toInt()
+                            }
+                            localX > binding.homeTabs.width - edgeZonePx -> {
+                                val fraction =
+                                    ((localX - (binding.homeTabs.width - edgeZonePx)) / edgeZonePx)
+                                        .coerceIn(0f, 1f)
+                                (minScrollStepPx + fraction * (maxScrollStepPx - minScrollStepPx))
+                                    .toInt()
+                            }
+                            else -> 0
+                        }
+
+                    if (autoScrollVelocityPx != 0 && !isAutoScrollScheduled) {
+                        isAutoScrollScheduled = true
+                        binding.homeTabs.postOnAnimation(autoScrollRunnable)
+                    }
+
+                    evaluateDragSwap(localX)
+                    true
+                }
+                DragEvent.ACTION_DROP -> {
+                    true
+                }
+                DragEvent.ACTION_DRAG_ENDED -> {
+                    autoScrollVelocityPx = 0
+                    isAutoScrollScheduled = false
+                    lastDragLocalX = Float.NaN
+                    binding.homeTabs.removeCallbacks(autoScrollRunnable)
+                    draggedTabType = null
+
+                    for (i in 0 until binding.homeTabs.tabCount) {
+                        binding.homeTabs.getTabAt(i)?.view?.alpha = 1.0f
+                    }
+
+                    if (workingOrder.isNotEmpty() && workingOrder != homeModel.currentTabTypes) {
+                        val savedScrollX = binding.homeTabs.scrollX
+                        val activeIdx =
+                            workingOrder.indexOf(activeTabTypeBeforeDrag).coerceAtLeast(0)
+                        isSettingUpPager = true
+                        if (binding.homePager.currentItem != activeIdx) {
+                            binding.homePager.setCurrentItem(activeIdx, false)
+                        }
+                        binding.homeTabs.getTabAt(activeIdx)?.select()
+                        binding.homeTabs.setScrollPosition(activeIdx, 0f, true)
+                        binding.homeTabs.scrollX = savedScrollX
+                        isSettingUpPager = false
+
+                        homeModel.reorderVisibleTabs(workingOrder.toList())
+                        homeModel.synchronizeTabPosition(activeIdx)
+                    }
+
+                    isDraggingTab = false
+                    activeTabTypeBeforeDrag = null
+                    true
+                }
+                else -> true
+            }
+        }
     }
 
     private fun updateCurrentTab(tabType: MusicType) {
         val binding = requireBinding()
+
+        binding.homeNormalToolbar.menu.findItem(R.id.action_sort)?.isVisible =
+            tabType != MusicType.DOWNLOADS
 
         // Update the scrolling view in AppBarLayout to align with the current tab's
         // scrolling state. This prevents the lift state from being confused as one
@@ -269,6 +546,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                 MusicType.ARTISTS -> R.id.home_artist_recycler
                 MusicType.GENRES -> R.id.home_genre_recycler
                 MusicType.PLAYLISTS -> R.id.home_playlist_recycler
+                MusicType.DOWNLOADS -> R.id.home_downloads_recycler
             }
     }
 
@@ -276,9 +554,8 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         if (recreate == null) return
         val binding = requireBinding()
         L.d("Recreating ViewPager")
-        // Move back to position zero, as there must be a tab there.
-        binding.homePager.currentItem = 0
-        // Make sure tabs are set up to also follow the new ViewPager configuration.
+        // Make sure tabs are set up to also follow the new ViewPager configuration
+        // while keeping the user located on their current active section.
         setupPager(binding)
         homeModel.recreateTabs.consume()
     }
@@ -436,11 +713,25 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
      *   [FragmentStateAdapter].
      */
     private class HomePagerAdapter(
-        private val tabs: List<MusicType>,
+        private val tabs: MutableList<MusicType>,
         fragmentManager: FragmentManager,
         lifecycleOwner: LifecycleOwner,
     ) : FragmentStateAdapter(fragmentManager, lifecycleOwner.lifecycle) {
         override fun getItemCount() = tabs.size
+
+        override fun getItemId(position: Int): Long = tabs[position].intCode.toLong()
+
+        override fun containsItem(itemId: Long): Boolean =
+            tabs.any { it.intCode.toLong() == itemId }
+
+        fun moveTab(fromIndex: Int, toIndex: Int) {
+            if (fromIndex == toIndex || fromIndex !in tabs.indices || toIndex !in tabs.indices) {
+                return
+            }
+            val moved = tabs.removeAt(fromIndex)
+            tabs.add(toIndex, moved)
+            notifyItemMoved(fromIndex, toIndex)
+        }
 
         override fun createFragment(position: Int): Fragment =
             when (tabs[position]) {
@@ -449,6 +740,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                 MusicType.ARTISTS -> ArtistListFragment()
                 MusicType.GENRES -> GenreListFragment()
                 MusicType.PLAYLISTS -> PlaylistListFragment()
+                MusicType.DOWNLOADS -> RecentDownloadsListFragment()
             }
     }
 }

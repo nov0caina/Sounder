@@ -48,6 +48,7 @@ import timber.log.Timber as L
 class HomeViewModel
 @Inject
 constructor(
+    private val homeSettings: HomeSettings,
     private val listSettings: ListSettings,
     private val playbackSettings: PlaybackSettings,
     homeGeneratorFactory: HomeGenerator.Factory,
@@ -123,6 +124,14 @@ constructor(
     val playlistSort: Sort
         get() = listSettings.playlistSort
 
+    /** A list of downloaded [Song]s, sorted from newest to oldest, to be shown in the home view. */
+    val downloadsList: StateFlow<List<Song>>
+        field = MutableStateFlow(listOf<Song>())
+
+    /** Instructions for how to update [downloadsList] in the UI. */
+    val downloadsInstructions: Event<UpdateInstructions>
+        field = MutableEvent<UpdateInstructions>()
+
     private val homeGenerator = homeGeneratorFactory.create(this)
 
     /**
@@ -188,11 +197,22 @@ constructor(
                 playlistInstructions.put(instructions)
                 playlistList.value = homeGenerator.playlists()
             }
+            MusicType.DOWNLOADS -> {
+                downloadsInstructions.put(instructions)
+                downloadsList.value = homeGenerator.downloads()
+            }
         }
     }
 
     override fun invalidateTabs() {
-        currentTabTypes = homeGenerator.tabs()
+        val newTabs = homeGenerator.tabs()
+        if (newTabs == currentTabTypes) {
+            return
+        }
+        currentTabTypes = newTabs
+        if (_currentTabType.value !in currentTabTypes && currentTabTypes.isNotEmpty()) {
+            _currentTabType.value = currentTabTypes[0]
+        }
         recreateTabs.put(Unit)
     }
 
@@ -247,8 +267,21 @@ constructor(
      * @param pagerPos The new position of the ViewPager2 instance.
      */
     fun synchronizeTabPosition(pagerPos: Int) {
-        L.d("Updating current tab to ${currentTabTypes[pagerPos]}")
-        _currentTabType.value = currentTabTypes[pagerPos]
+        if (pagerPos in currentTabTypes.indices) {
+            L.d("Updating current tab to ${currentTabTypes[pagerPos]}")
+            _currentTabType.value = currentTabTypes[pagerPos]
+        }
+    }
+
+    /**
+     * Persist a new ordering of visible [MusicType] tabs (e.g. after a drag-and-drop reorder
+     * on the Library TabLayout), keeping any hidden tabs in their relative positions and
+     * preserving the user's currently active [currentTabType].
+     */
+    fun reorderVisibleTabs(newVisibleOrder: List<MusicType>) {
+        currentTabTypes = newVisibleOrder
+        homeSettings.homeTabs =
+            HomeSettingsImpl.reorderVisibleTabs(homeSettings.homeTabs, newVisibleOrder)
     }
 
     /**

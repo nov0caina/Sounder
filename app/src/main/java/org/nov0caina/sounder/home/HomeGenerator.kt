@@ -48,6 +48,8 @@ interface HomeGenerator {
 
     fun playlists(): List<Playlist>
 
+    fun downloads(): List<Song>
+
     fun tabs(): List<MusicType>
 
     interface Invalidator {
@@ -134,6 +136,7 @@ private class HomeGeneratorImpl(
             invalidator.invalidateMusic(MusicType.ALBUMS, UpdateInstructions.Diff)
             invalidator.invalidateMusic(MusicType.ARTISTS, UpdateInstructions.Diff)
             invalidator.invalidateMusic(MusicType.GENRES, UpdateInstructions.Diff)
+            invalidator.invalidateMusic(MusicType.DOWNLOADS, UpdateInstructions.Diff)
         }
 
         if (changes.userLibrary && library != null) {
@@ -171,6 +174,15 @@ private class HomeGeneratorImpl(
 
     override fun playlists() =
         musicRepository.library?.let { listSettings.playlistSort.playlists(it.playlists) }
+            ?: emptyList()
+
+    override fun downloads() =
+        musicRepository.library?.songs
+            ?.filter { song ->
+                song.path.components.toString().contains("Sounder", ignoreCase = true) ||
+                    song.uri.toString().contains("Sounder", ignoreCase = true)
+            }
+            ?.sortedByDescending { it.addedMs }
             ?: emptyList()
 
     override fun tabs() = homeSettings.homeTabs.filterIsInstance<Tab.Visible>().map { it.type }

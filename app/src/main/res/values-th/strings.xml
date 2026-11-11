@@ -169,10 +169,10 @@
     <string name="dlg_storage_manager_perm_title">Izin Penyimpanan Diperlukan</string>
     <string name="download_album">Unduh album</string>
     <string name="download_complete">Unduhan selesai: %1$s</string>
-    <string name="download_failed">Unduhan gagal: %1$s</string>
+    <string name="download_failed">ดาวน์โหลดล้มเหลว: %1$s</string>
     <string name="download_queued">Unduhan dalam antrean: %1$s</string>
-    <string name="download_retrying">Mencoba mengunduh ulang…</string>
-    <string name="download_status_queued">%1$s • Dalam antrean</string>
+    <string name="download_retrying">กำลังลองดาวน์โหลดใหม่…</string>
+    <string name="download_status_queued">%1$s • อยู่ในคิว</string>
     <string name="empty_downloads">Tidak ada unduhan aktif</string>
     <string name="err_delete_failed">Gagal menghapus file. Silakan periksa izin penyimpanan.</string>
     <string name="err_local_file_not_found">File lokal tidak ditemukan</string>
@@ -302,4 +302,8 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">การดาวน์โหลดล่าสุด</string>
+    <string name="lng_empty_downloads">การดาวน์โหลดล่าสุดของคุณจะแสดงที่นี่</string>
+    <string name="set_lib_tabs">แท็บคลังเพลง</string>
+    <string name="desc_tab_handle">ย้ายแท็บนี้</string>
 </resources>

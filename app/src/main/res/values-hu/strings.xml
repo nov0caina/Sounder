@@ -359,7 +359,7 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="download_complete">Letöltés befejezve: %1$s</string>
     <string name="download_failed">Letöltés sikertelen: %1$s</string>
     <string name="download_queued">Letöltési sorban: %1$s</string>
-    <string name="download_retrying">Újrapróbálkozás…</string>
+    <string name="download_retrying">Letöltés újrapróbálása…</string>
     <string name="download_status_queued">%1$s • Sorban áll</string>
     <string name="empty_downloads">Nincsenek folyamatban lévő letöltések</string>
     <string name="err_delete_failed">Nem sikerült törölni a fájlt. Kérjük, ellenőrizze a tárhely-jogosultságokat.</string>
@@ -490,4 +490,6 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="lbl_update_managed_by_fdroid">A Sounder frissítéseit az F-Droid kliens kezeli.</string>
     <string name="lbl_open_fdroid">F-Droid megnyitása</string>
     <string name="err_update_check_failed">Nem sikerült ellenőrizni a frissítéseket. Ellenőrizze a kapcsolatot.</string>
+    <string name="lbl_recent_downloads">Legutóbbi letöltések</string>
+    <string name="lng_empty_downloads">A legutóbbi letöltései itt fognak megjelenni.</string>
 </resources>

@@ -383,7 +383,7 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="download_failed">Muat turun gagal: %1$s</string>
     <string name="download_queued">Muat turun dalam giliran: %1$s</string>
     <string name="download_retrying">Mencuba semula muat turun…</string>
-    <string name="download_status_queued">%1$s • Dalam antrean</string>
+    <string name="download_status_queued">%1$s • Dalam giliran</string>
     <string name="empty_downloads">Tidak ada unduhan aktif</string>
     <string name="err_delete_failed">Gagal menghapus file. Silakan periksa izin penyimpanan.</string>
     <string name="err_local_file_not_found">File lokal tidak ditemukan</string>
@@ -513,4 +513,6 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="lbl_update_managed_by_fdroid">Kemas kini Sounder diuruskan oleh pelanggan F-Droid anda.</string>
     <string name="lbl_open_fdroid">Buka F-Droid</string>
     <string name="err_update_check_failed">Gagal menyemak kemas kini. Sila periksa sambungan anda.</string>
+    <string name="lbl_recent_downloads">Muat Turun Terkini</string>
+    <string name="lng_empty_downloads">Muat turun terkini anda akan dipaparkan di sini.</string>
 </resources>

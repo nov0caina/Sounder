@@ -96,14 +96,6 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         super.onBindingCreated(binding, savedInstanceState)
 
         binding.homeFeedToolbar.inflateMenu(R.menu.toolbar_home_feed)
-        binding.homeFeedToolbar.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.action_downloads) {
-                findNavController().navigate(R.id.downloads_fragment)
-                true
-            } else {
-                false
-            }
-        }
         binding.homeFeedToolbar.findViewById<com.google.android.material.button.MaterialButton>(R.id.toolbar_navigation_button)?.apply {
             iconTint = null
             iconSize = resources.getDimensionPixelSize(R.dimen.size_icon_medium)

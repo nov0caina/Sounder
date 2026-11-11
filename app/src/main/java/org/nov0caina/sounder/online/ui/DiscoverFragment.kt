@@ -125,14 +125,6 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         }
 
         binding.discoverNormalToolbar.inflateMenu(R.menu.toolbar_discover)
-        binding.discoverNormalToolbar.setOnMenuItemClickListener { menuItem ->
-            if (menuItem.itemId == R.id.action_downloads) {
-                findNavController().navigateSafe(DiscoverFragmentDirections.downloads())
-                true
-            } else {
-                false
-            }
-        }
 
         // Setup Mood Chips in Discover Home
         val quickMoods = listOf(
@@ -422,17 +414,6 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
 
         collect(musicModel.indexingState) {
             trackAdapter?.notifyDataSetChanged()
-        }
-
-        collect(discoverModel.activeDownloadsCount) { count ->
-            val menuItem = binding.discoverNormalToolbar.menu.findItem(R.id.action_downloads)
-            if (menuItem != null) {
-                menuItem.title = if (count > 0) {
-                    "${getString(R.string.title_downloads)} ($count)"
-                } else {
-                    getString(R.string.title_downloads)
-                }
-            }
         }
 
         collect(listModel.menu.flow) { menu ->

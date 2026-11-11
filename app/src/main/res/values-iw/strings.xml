@@ -330,7 +330,7 @@
     <string name="btn_delete">מחק</string>
     <string name="btn_download">הורדה</string>
     <string name="btn_downloaded">تم التنزيل</string>
-    <string name="btn_downloading">جارٍ التنزيل…</string>
+    <string name="btn_downloading">מוריד…</string>
     <string name="btn_open_settings">فتح الإعدادات</string>
     <string name="btn_play">הפעל</string>
     <string name="btn_retry">إعادة المحاولة</string>
@@ -351,10 +351,10 @@
     <string name="dlg_storage_manager_perm_title">إذن التخزين مطلوب</string>
     <string name="download_album">تنزيل الألبوم</string>
     <string name="download_complete">اكتمل التنزيل: %1$s</string>
-    <string name="download_failed">فشل التنزيل: %1$s</string>
+    <string name="download_failed">ההורדה נכשלה: %1$s</string>
     <string name="download_queued">في قائمة انتظار التنزيل: %1$s</string>
-    <string name="download_retrying">جارٍ إعادة محاولة التنزيل…</string>
-    <string name="download_status_queued">%1$s • في الانتظار</string>
+    <string name="download_retrying">מנסה להוריד שוב…</string>
+    <string name="download_status_queued">%1$s • בתור</string>
     <string name="empty_downloads">لا توجد تنزيلات جارية</string>
     <string name="err_delete_failed">فشل حذف الملف. يرجى التحقق من أذونات التخزين.</string>
     <string name="err_local_file_not_found">الملف المحلي غير موجود</string>
@@ -484,4 +484,6 @@
     <string name="lbl_update_managed_by_fdroid">עדכוני Sounder מנוהלים על ידי לקוח F-Droid שלך.</string>
     <string name="lbl_open_fdroid">פתח את F-Droid</string>
     <string name="err_update_check_failed">לא ניתן לבדוק עדכונים. בדוק את החיבור שלך.</string>
+    <string name="lbl_recent_downloads">הורדות אחרונות</string>
+    <string name="lng_empty_downloads">ההורדות האחרונות שלך יופיעו כאן.</string>
 </resources>

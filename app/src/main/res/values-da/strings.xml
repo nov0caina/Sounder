@@ -272,4 +272,9 @@
     <string name="lbl_open_fdroid">Åbn F-Droid</string>
     <string name="err_update_check_failed">Kunne ikke søge efter opdateringer. Tjek din forbindelse.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">Seneste downloads</string>
+    <string name="lng_empty_downloads">Dine seneste downloads vises her.</string>
+    <string name="set_lib_tabs">Biblioteksfaner</string>
+    <string name="desc_tab_handle">Flyt denne fane</string>
+    <string name="lng_queue_added">Tilføjet til kø</string>
 </resources>

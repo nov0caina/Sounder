@@ -36,7 +36,7 @@
     <string name="btn_delete">Обриши</string>
     <string name="btn_download">Преузми</string>
     <string name="btn_downloaded">Preuzeto</string>
-    <string name="btn_downloading">Preuzimanje…</string>
+    <string name="btn_downloading">Преузимање…</string>
     <string name="btn_open_settings">Otvori postavke</string>
     <string name="btn_play">Пусти</string>
     <string name="btn_retry">Pokušaj ponovo</string>
@@ -57,10 +57,10 @@
     <string name="dlg_storage_manager_perm_title">Potrebna je dozvola za pohranu</string>
     <string name="download_album">Preuzmi album</string>
     <string name="download_complete">Preuzimanje završeno: %1$s</string>
-    <string name="download_failed">Preuzimanje nije uspjelo: %1$s</string>
+    <string name="download_failed">Преузимање није успело: %1$s</string>
     <string name="download_queued">Preuzimanje u redu: %1$s</string>
-    <string name="download_retrying">Ponovni pokušaj preuzimanja…</string>
-    <string name="download_status_queued">%1$s • U redu</string>
+    <string name="download_retrying">Поновни покушај преузимања…</string>
+    <string name="download_status_queued">%1$s • У реду чекања</string>
     <string name="empty_downloads">Nema aktivnih preuzimanja</string>
     <string name="err_delete_failed">Brisanje datoteke nije uspjelo. Provjerite dozvole pohrane.</string>
     <string name="err_local_file_not_found">Lokalna datoteka nije pronađena</string>
@@ -191,4 +191,14 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">Недавна преузимања</string>
+    <string name="lng_empty_downloads">Ваша недавна преузимања ће се појавити овде.</string>
+    <string name="lbl_cancel">Откажи</string>
+    <string name="lbl_ok">У реду</string>
+    <string name="set_lib_tabs">Картице библиотеке</string>
+    <string name="desc_tab_handle">Помери ову картицу</string>
+    <string name="lng_queue_added">Додато у ред чекања</string>
+    <string name="lbl_artists">Извођачи</string>
+    <string name="lbl_genres">Жанрови</string>
+    <string name="lbl_playlists">Плејлисте</string>
 </resources>

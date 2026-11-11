@@ -504,8 +504,7 @@ class MainFragment :
             R.id.home_feed_fragment -> R.id.nav_home
             R.id.discover_fragment,
             R.id.online_artist_fragment,
-            R.id.online_album_fragment,
-            R.id.downloads_fragment -> R.id.nav_search
+            R.id.online_album_fragment -> R.id.nav_search
             R.id.home_fragment,
             R.id.search_fragment,
             R.id.album_detail_fragment,
@@ -736,12 +735,8 @@ class MainFragment :
         if (binding.mainBottomNav.isVisible) {
             snackbar.anchorView = binding.mainBottomNav
         }
-        snackbar.setAction(R.string.title_downloads) {
-            try {
-                binding.exploreNavHost.findNavController().navigate(R.id.downloads_fragment)
-            } catch (_: Exception) {
-                binding.mainBottomNav.selectedItemId = R.id.nav_library
-            }
+        snackbar.setAction(R.string.lbl_recent_downloads) {
+            binding.mainBottomNav.selectedItemId = R.id.nav_library
         }
         snackbar.show()
     }

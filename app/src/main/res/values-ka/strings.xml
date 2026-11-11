@@ -138,7 +138,7 @@
     <string name="btn_delete">წაშლა</string>
     <string name="btn_download">ჩამოტვირთვა</string>
     <string name="btn_downloaded">Ladattu</string>
-    <string name="btn_downloading">Ladataan…</string>
+    <string name="btn_downloading">იტვირთება…</string>
     <string name="btn_open_settings">Avaa asetukset</string>
     <string name="btn_play">დაკვრა</string>
     <string name="btn_retry">Yritä uudelleen</string>
@@ -159,10 +159,10 @@
     <string name="dlg_storage_manager_perm_title">Tallennusoikeus vaaditaan</string>
     <string name="download_album">Lataa albumi</string>
     <string name="download_complete">Lataus valmis: %1$s</string>
-    <string name="download_failed">Lataus epäonnistui: %1$s</string>
+    <string name="download_failed">ჩამოტვირთვა ვერ მოხერხდა: %1$s</string>
     <string name="download_queued">Lataus jonossa: %1$s</string>
-    <string name="download_retrying">Yritetään latausta uudelleen…</string>
-    <string name="download_status_queued">%1$s • Jonossa</string>
+    <string name="download_retrying">ჩამოტვირთვის ხელახლა ცდა…</string>
+    <string name="download_status_queued">%1$s • რიგშია</string>
     <string name="empty_downloads">Ei käynnissä olevia latauksia</string>
     <string name="err_delete_failed">Tiedoston poistaminen epäonnistui. Tarkista tallennusoikeudet.</string>
     <string name="err_local_file_not_found">Paikallista tiedostoa ei löydy</string>
@@ -293,4 +293,9 @@
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_author_name">nov0caina</string>
+    <string name="lbl_recent_downloads">ბოლო ჩამოტვირთვები</string>
+    <string name="lng_empty_downloads">თქვენი ბოლო ჩამოტვირთვები აქ გამოჩნდება.</string>
+    <string name="lbl_ok">კარგი</string>
+    <string name="set_lib_tabs">ბიბლიოთეკის ჩანართები</string>
+    <string name="desc_tab_handle">ამ ჩანართის გადატანა</string>
 </resources>

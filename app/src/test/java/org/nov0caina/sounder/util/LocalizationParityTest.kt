@@ -89,6 +89,7 @@ class LocalizationParityTest {
         assertEquals("Your Library", baseStrings["nav_library"])
         assertEquals("Trending Tracks", baseStrings["header_trending_tracks"])
         assertEquals("Download song", baseStrings["lbl_download_track"])
+        assertEquals("Recent Downloads", baseStrings["lbl_recent_downloads"])
 
         // Spanish localizations
         assertEquals("Inicio", esStrings["nav_home"])
@@ -96,6 +97,7 @@ class LocalizationParityTest {
         assertEquals("Tu Biblioteca", esStrings["nav_library"])
         assertEquals("Canciones en Tendencia", esStrings["header_trending_tracks"])
         assertEquals("Descargar canción", esStrings["lbl_download_track"])
+        assertEquals("Descargas Recientes", esStrings["lbl_recent_downloads"])
 
         // French localizations
         assertEquals("Accueil", frStrings["nav_home"])
@@ -117,5 +119,59 @@ class LocalizationParityTest {
         assertEquals("La teva biblioteca", caStrings["nav_library"])
         assertEquals("Cançons en tendència", caStrings["header_trending_tracks"])
         assertEquals("Baixa la cançó", caStrings["lbl_download_track"])
+        assertEquals("Baixades recents", caStrings["lbl_recent_downloads"])
+    }
+
+    @Test
+    fun testRecentDownloadsAndLibraryTabsAcrossAll61Locales() {
+        val baseStrings = loadStringMap("src/main/res/values/strings.xml")
+        val resDir = File("src/main/res")
+        val localeDirs = resDir.listFiles { file ->
+            file.isDirectory && file.name.startsWith("values-") && File(file, "strings.xml").exists()
+        }.orEmpty().sortedBy { it.name }
+
+        assertEquals("Expected 61 language bundles", 61, localeDirs.size)
+
+        val requiredKeys = listOf(
+            "lbl_recent_downloads",
+            "lng_empty_downloads",
+            "download_status_queued",
+            "download_retrying",
+            "btn_downloading",
+            "download_failed",
+            "lbl_cancel",
+            "lbl_ok",
+            "set_lib_tabs",
+            "desc_tab_handle",
+            "lng_queue_added",
+            "lbl_songs",
+            "lbl_albums",
+            "lbl_artists",
+            "lbl_genres",
+            "lbl_playlists",
+        )
+
+        val placeholderPattern = Pattern.compile("%(\\d+\\\$)?[-#+ 0,(]*\\d*(?:\\.\\d+)?[a-zA-Z%]")
+        fun extractTokens(text: String): List<String> {
+            val matcher = placeholderPattern.matcher(text)
+            val tokens = mutableListOf<String>()
+            while (matcher.find()) {
+                tokens.add(matcher.group())
+            }
+            return tokens.sorted()
+        }
+
+        for (dir in localeDirs) {
+            val localeStrings = loadStringMap(File(dir, "strings.xml").path)
+            for (key in requiredKeys) {
+                val value = localeStrings[key]
+                assertFalse("Missing or blank key '$key' in ${dir.name}", value.isNullOrBlank())
+                assertEquals(
+                    "Placeholder mismatch for '$key' in ${dir.name}",
+                    extractTokens(baseStrings[key] ?: ""),
+                    extractTokens(value ?: ""),
+                )
+            }
+        }
     }
 }

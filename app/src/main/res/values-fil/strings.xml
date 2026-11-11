@@ -127,10 +127,10 @@
     <string name="dlg_storage_manager_perm_title">Izin Penyimpanan Diperlukan</string>
     <string name="download_album">I-download ang album</string>
     <string name="download_complete">Unduhan selesai: %1$s</string>
-    <string name="download_failed">Unduhan gagal: %1$s</string>
+    <string name="download_failed">Nabigo ang pag-download: %1$s</string>
     <string name="download_queued">Unduhan dalam antrean: %1$s</string>
-    <string name="download_retrying">Mencoba mengunduh ulang…</string>
-    <string name="download_status_queued">%1$s • Dalam antrean</string>
+    <string name="download_retrying">Sinusubukang i-download muli…</string>
+    <string name="download_status_queued">%1$s • Nakapila</string>
     <string name="empty_downloads">Tidak ada unduhan aktif</string>
     <string name="err_delete_failed">Gagal menghapus file. Silakan periksa izin penyimpanan.</string>
     <string name="err_local_file_not_found">File lokal tidak ditemukan</string>
@@ -260,4 +260,10 @@
     <string name="lbl_update_managed_by_fdroid">Pinamamahalaan ang mga update ng Sounder ng iyong F-Droid client.</string>
     <string name="lbl_open_fdroid">Buksan ang F-Droid</string>
     <string name="err_update_check_failed">Hindi masuri ang mga update. Pakitingnan ang iyong koneksyon.</string>
+    <string name="lbl_recent_downloads">Mga Kamakailang Download</string>
+    <string name="lng_empty_downloads">Lalabas dito ang iyong mga kamakailang download.</string>
+    <string name="lbl_cancel">Kanselahin</string>
+    <string name="lbl_ok">OK</string>
+    <string name="desc_tab_handle">Ilipat ang tab na ito</string>
+    <string name="lbl_playlists">Mga Playlist</string>
 </resources>

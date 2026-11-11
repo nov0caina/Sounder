@@ -391,7 +391,7 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="download_failed">Preuzimanje nije uspjelo: %1$s</string>
     <string name="download_queued">Preuzimanje u redu: %1$s</string>
     <string name="download_retrying">Ponovni pokušaj preuzimanja…</string>
-    <string name="download_status_queued">%1$s • U redu</string>
+    <string name="download_status_queued">%1$s • U redu čekanja</string>
     <string name="empty_downloads">Nema aktivnih preuzimanja</string>
     <string name="err_delete_failed">Brisanje datoteke nije uspjelo. Provjerite dozvole pohrane.</string>
     <string name="err_local_file_not_found">Lokalna datoteka nije pronađena</string>
@@ -521,4 +521,6 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+    <string name="lbl_recent_downloads">Nedavna preuzimanja</string>
+    <string name="lng_empty_downloads">Vaša nedavna preuzimanja prikazat će se ovdje.</string>
 </resources>

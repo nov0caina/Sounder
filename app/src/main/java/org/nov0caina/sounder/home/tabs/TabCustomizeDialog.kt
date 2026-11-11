@@ -21,6 +21,7 @@ package org.nov0caina.sounder.home.tabs
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
@@ -111,7 +112,14 @@ class TabCustomizeDialog :
         requireNotNull(touchHelper) { "ItemTouchHelper was not available" }.startDrag(viewHolder)
     }
 
-    private companion object {
+    companion object {
+        private const val TAG = BuildConfig.APPLICATION_ID + ".tag.TAB_CUSTOMIZE"
         const val KEY_TABS = BuildConfig.APPLICATION_ID + ".key.PENDING_TABS"
+
+        fun show(fm: FragmentManager) {
+            if (fm.findFragmentByTag(TAG) == null) {
+                TabCustomizeDialog().show(fm, TAG)
+            }
+        }
     }
 }
