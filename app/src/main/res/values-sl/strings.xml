@@ -471,4 +471,9 @@
     <string name="lbl_edit_playlist">Uredi seznam predvajanja</string>
     <string name="lbl_choose_cover">Izberi sliko</string>
     <string name="lbl_remove_cover">Odstrani sliko</string>
+
+    <string name="set_online_downloads">Na spletu in prenosi</string>
+    <string name="set_online_downloads_desc">Nastavite kakovost pretakanja, prenose in shrambo</string>
+    <string name="set_streaming_category">Pretakanje</string>
+    <string name="set_downloads_category">Prenosi</string>
 </resources>

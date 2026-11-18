@@ -60,30 +60,14 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
     }
 
     override fun onOpenDialogPreference(preference: WrappedDialogPreference) {
-        when (preference.key) {
-            getString(R.string.set_key_music_dirs) -> {
-                findNavController()
-                    .navigateSafe(RootPreferenceFragmentDirections.musicLocationsSettings())
-            }
-            getString(R.string.set_key_migrate_library) -> {
-                findNavController()
-                    .navigateSafe(RootPreferenceFragmentDirections.libraryMigrationSettings())
-            }
+        if (preference.key == getString(R.string.set_key_music_dirs)) {
+            findNavController()
+                .navigateSafe(RootPreferenceFragmentDirections.musicLocationsSettings())
         }
     }
 
     override fun onSetupPreference(preference: Preference) {
-        if (preference.key == getString(R.string.set_key_download_storage)) {
-            val listPref = preference as? androidx.preference.ListPreference ?: return
-            val hasSd = org.nov0caina.sounder.util.StorageVolumeHelper.isSdCardAvailable(requireContext())
-            if (!hasSd) {
-                listPref.entries = arrayOf(
-                    getString(R.string.set_download_storage_internal),
-                    getString(R.string.set_download_storage_sd_unavailable)
-                )
-                listPref.entryValues = arrayOf("INTERNAL", "INTERNAL")
-            }
-        } else if (preference.key == getString(R.string.set_key_direct_deletion)) {
+        if (preference.key == getString(R.string.set_key_direct_deletion)) {
             updateDirectDeletionSummary(preference)
         }
     }
@@ -119,6 +103,11 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
             getString(R.string.set_key_audio) -> {
                 L.d("Navigating to audio preferences")
                 findNavController().navigateSafe(RootPreferenceFragmentDirections.audioPeferences())
+            }
+            getString(R.string.set_key_online_downloads) -> {
+                L.d("Navigating to online & downloads preferences")
+                findNavController()
+                    .navigateSafe(RootPreferenceFragmentDirections.onlinePreferences())
             }
             getString(R.string.set_key_direct_deletion) -> {
                 val context = requireContext()

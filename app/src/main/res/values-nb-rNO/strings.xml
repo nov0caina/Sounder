@@ -473,4 +473,9 @@ ADVARSEL: Vær varsom med å kontrollere denne tjenesten, hvis du lukker den og 
     <string name="lbl_edit_playlist">Rediger spilleliste</string>
     <string name="lbl_choose_cover">Velg bilde</string>
     <string name="lbl_remove_cover">Fjern bilde</string>
+
+    <string name="set_online_downloads">På nett og nedlastinger</string>
+    <string name="set_online_downloads_desc">Konfigurer strømmekvalitet, nedlastinger og lagring</string>
+    <string name="set_streaming_category">Strømming</string>
+    <string name="set_downloads_category">Nedlastinger</string>
 </resources>

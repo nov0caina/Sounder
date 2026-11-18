@@ -238,4 +238,9 @@
     <string name="lbl_edit_playlist">प्लेलिस्ट सम्पादन गर्नुहोस्</string>
     <string name="lbl_choose_cover">तस्बिर छान्नुहोस्</string>
     <string name="lbl_remove_cover">तस्बिर हटाउनुहोस्</string>
+
+    <string name="set_online_downloads">अनलाइन र डाउनलोड</string>
+    <string name="set_online_downloads_desc">स्ट्रिमिङ गुणस्तर, डाउनलोड र भण्डारण कन्फिगर गर्नुहोस्</string>
+    <string name="set_streaming_category">स्ट्रिमिङ</string>
+    <string name="set_downloads_category">डाउनलोड</string>
 </resources>

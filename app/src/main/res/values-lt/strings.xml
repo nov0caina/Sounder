@@ -530,4 +530,9 @@
     <string name="lbl_edit_playlist">Redaguoti grojaraštį</string>
     <string name="lbl_choose_cover">Pasirinkti vaizdą</string>
     <string name="lbl_remove_cover">Pašalinti vaizdą</string>
+
+    <string name="set_online_downloads">Internetas ir atsisiuntimai</string>
+    <string name="set_online_downloads_desc">Nustatykite transliacijos kokybę, atsisiuntimus ir saugyklą</string>
+    <string name="set_streaming_category">Transliacija</string>
+    <string name="set_downloads_category">Atsisiuntimai</string>
 </resources>

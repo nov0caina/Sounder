@@ -483,4 +483,9 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="lbl_edit_playlist">Redigera spellista</string>
     <string name="lbl_choose_cover">Välj bild</string>
     <string name="lbl_remove_cover">Ta bort bild</string>
+
+    <string name="set_online_downloads">Online och nedladdningar</string>
+    <string name="set_online_downloads_desc">Konfigurera strömningskvalitet, nedladdningar och lagring</string>
+    <string name="set_streaming_category">Strömning</string>
+    <string name="set_downloads_category">Nedladdningar</string>
 </resources>

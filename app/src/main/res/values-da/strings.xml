@@ -280,4 +280,9 @@
     <string name="lbl_edit_playlist">Rediger spilleliste</string>
     <string name="lbl_choose_cover">Vælg billede</string>
     <string name="lbl_remove_cover">Fjern billede</string>
+
+    <string name="set_online_downloads">Online og downloads</string>
+    <string name="set_online_downloads_desc">Konfigurer streamingkvalitet, downloads og lagerplads</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Downloads</string>
 </resources>

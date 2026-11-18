@@ -26,27 +26,11 @@
         app:summary="@string/set_audio_desc"
         app:title="@string/set_audio" />
 
-    <PreferenceCategory app:title="@string/set_storage_category">
-
-        <ListPreference
-            app:defaultValue="INTERNAL"
-            app:entries="@array/entries_download_storage"
-            app:entryValues="@array/values_download_storage"
-            app:key="@string/set_key_download_storage"
-            app:title="@string/set_download_storage"
-            app:useSimpleSummaryProvider="true" />
-
-        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
-            app:key="@string/set_key_migrate_library"
-            app:summary="@string/set_migrate_library_desc"
-            app:title="@string/set_migrate_library" />
-
-        <Preference
-            app:key="@string/set_key_direct_deletion"
-            app:summary="@string/set_direct_deletion_desc"
-            app:title="@string/set_direct_deletion" />
-
-    </PreferenceCategory>
+    <Preference
+        app:icon="@drawable/ic_download_24"
+        app:key="@string/set_key_online_downloads"
+        app:summary="@string/set_online_downloads_desc"
+        app:title="@string/set_online_downloads" />
 
     <PreferenceCategory app:title="@string/set_library">
 
@@ -64,6 +48,11 @@
             app:key="@string/set_key_rescan"
             app:summary="@string/set_rescan_desc"
             app:title="@string/set_rescan" />
+
+        <Preference
+            app:key="@string/set_key_direct_deletion"
+            app:summary="@string/set_direct_deletion_desc"
+            app:title="@string/set_direct_deletion" />
 
     </PreferenceCategory>
 

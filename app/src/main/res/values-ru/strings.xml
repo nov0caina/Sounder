@@ -530,4 +530,9 @@
     <string name="lbl_edit_playlist">Редактировать плейлист</string>
     <string name="lbl_choose_cover">Выбрать изображение</string>
     <string name="lbl_remove_cover">Удалить изображение</string>
+
+    <string name="set_online_downloads">Онлайн и загрузки</string>
+    <string name="set_online_downloads_desc">Настройка качества стриминга, загрузок и хранилища</string>
+    <string name="set_streaming_category">Стриминг</string>
+    <string name="set_downloads_category">Загрузки</string>
 </resources>

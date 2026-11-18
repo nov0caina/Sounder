@@ -526,4 +526,9 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="lbl_edit_playlist">Edita la llista de reproducció</string>
     <string name="lbl_choose_cover">Tria una imatge</string>
     <string name="lbl_remove_cover">Elimina la imatge</string>
+
+    <string name="set_online_downloads">En línia i baixades</string>
+    <string name="set_online_downloads_desc">Configura la qualitat de reproducció, les baixades i l\'emmagatzematge</string>
+    <string name="set_streaming_category">Reproducció en línia</string>
+    <string name="set_downloads_category">Baixades</string>
 </resources>

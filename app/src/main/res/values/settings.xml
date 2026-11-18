@@ -5,6 +5,7 @@
     <string name="set_key_personalize" translatable="false">sounder_personalize</string>
     <string name="set_key_music" translatable="false">sounder_music</string>
     <string name="set_key_audio" translatable="false">sounder_audio</string>
+    <string name="set_key_online_downloads" translatable="false">sounder_online_downloads</string>
 
     <string name="set_key_theme" translatable="false">KEY_THEME2</string>
     <string name="set_key_black_theme" translatable="false">KEY_BLACK_THEME</string>
@@ -14,7 +15,6 @@
     <string name="set_key_rescan" translatable="false">sounder_rescan</string>
     <string name="set_key_observing" translatable="false">sounder_observing</string>
     <string name="set_key_music_dirs" translatable="false">sounder_music_dirs</string>
-    <string name="set_key_excluded_dirs" translatable="false">sounder_excluded_dirs</string>
     <string name="set_key_fs_cache" translatable="false">sounder_fs_cache</string>
     <string name="set_key_cover_mode" translatable="false">sounder_cover_mode2</string>
     <string name="set_key_square_covers" translatable="false">sounder_square_covers</string>

@@ -266,7 +266,14 @@
     <string name="lbl_ok">OK</string>
     <string name="desc_tab_handle">Ilipat ang tab na ito</string>
     <string name="lbl_playlists">Mga Playlist</string>
+    <string name="lbl_new_playlist">Bagong playlist</string>
+    <string name="lbl_import_playlist">Mag-import ng playlist</string>
     <string name="lbl_edit_playlist">I-edit ang playlist</string>
     <string name="lbl_choose_cover">Pumili ng larawan</string>
     <string name="lbl_remove_cover">Alisin ang larawan</string>
+
+    <string name="set_online_downloads">Online at Mga Download</string>
+    <string name="set_online_downloads_desc">I-configure ang kalidad ng streaming, mga download, at storage</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Mga Na-download</string>
 </resources>

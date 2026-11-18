@@ -528,4 +528,9 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="lbl_edit_playlist">Çalma listesini düzenle</string>
     <string name="lbl_choose_cover">Görsel seç</string>
     <string name="lbl_remove_cover">Görseli kaldır</string>
+
+    <string name="set_online_downloads">Çevrimiçi ve İndirilenler</string>
+    <string name="set_online_downloads_desc">Yayın kalitesini, indirmeleri ve depolama alanını yapılandırın</string>
+    <string name="set_streaming_category">Yayın</string>
+    <string name="set_downloads_category">İndirilenler</string>
 </resources>

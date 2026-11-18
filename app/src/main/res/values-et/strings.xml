@@ -522,4 +522,9 @@ HOIATUS: Ole selle teenuse kasutamisel hoolikas - kui sa ta sulged ja siis proov
     <string name="lbl_edit_playlist">Muuda esitusloendit</string>
     <string name="lbl_choose_cover">Vali pilt</string>
     <string name="lbl_remove_cover">Eemalda pilt</string>
+
+    <string name="set_online_downloads">Võrk ja allalaadimised</string>
+    <string name="set_online_downloads_desc">Seadista voogedastuse kvaliteet, allalaadimised ja salvestusruum</string>
+    <string name="set_streaming_category">Voogedastus</string>
+    <string name="set_downloads_category">Allalaadimised</string>
 </resources>

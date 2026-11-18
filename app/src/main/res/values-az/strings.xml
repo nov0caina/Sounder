@@ -522,4 +522,9 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="lbl_edit_playlist">Pleylisti redaktə et</string>
     <string name="lbl_choose_cover">Şəkil seç</string>
     <string name="lbl_remove_cover">Şəkli sil</string>
+
+    <string name="set_online_downloads">Onlayn və Yükləmələr</string>
+    <string name="set_online_downloads_desc">Yayım keyfiyyətini, yükləmələri və yaddaşı tənzimləyin</string>
+    <string name="set_streaming_category">Yayım</string>
+    <string name="set_downloads_category">Yükləmələr</string>
 </resources>

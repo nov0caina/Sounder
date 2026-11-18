@@ -526,4 +526,9 @@
     <string name="lbl_edit_playlist">Редагувати список відтворення</string>
     <string name="lbl_choose_cover">Вибрати зображення</string>
     <string name="lbl_remove_cover">Видалити зображення</string>
+
+    <string name="set_online_downloads">Онлайн і завантаження</string>
+    <string name="set_online_downloads_desc">Налаштування якості стримінгу, завантажень і сховища</string>
+    <string name="set_streaming_category">Стримінг</string>
+    <string name="set_downloads_category">Завантаження</string>
 </resources>

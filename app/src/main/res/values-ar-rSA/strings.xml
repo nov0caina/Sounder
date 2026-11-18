@@ -184,7 +184,14 @@
     <string name="lbl_artists">الفنانون</string>
     <string name="lbl_genres">الأنواع</string>
     <string name="lbl_playlists">قوائم التشغيل</string>
+    <string name="lbl_new_playlist">قائمة تشغيل جديدة</string>
+    <string name="lbl_import_playlist">استيراد قائمة تشغيل</string>
     <string name="lbl_edit_playlist">تعديل قائمة التشغيل</string>
     <string name="lbl_choose_cover">اختيار صورة</string>
     <string name="lbl_remove_cover">إزالة الصورة</string>
+
+    <string name="set_online_downloads">الإنترنت والتنزيلات</string>
+    <string name="set_online_downloads_desc">ضبط جودة البث والتنزيلات ومساحة التخزين</string>
+    <string name="set_streaming_category">البث</string>
+    <string name="set_downloads_category">التنزيلات</string>
 </resources>

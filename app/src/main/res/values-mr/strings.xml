@@ -185,7 +185,14 @@
     <string name="lbl_artists">कलाकार</string>
     <string name="lbl_genres">शैली</string>
     <string name="lbl_playlists">प्लेलिस्ट</string>
+    <string name="lbl_new_playlist">नवीन प्लेलिस्ट</string>
+    <string name="lbl_import_playlist">प्लेलिस्ट इम्पोर्ट करा</string>
     <string name="lbl_edit_playlist">प्लेलिस्ट संपादित करा</string>
     <string name="lbl_choose_cover">प्रतिमा निवडा</string>
     <string name="lbl_remove_cover">प्रतिमा काढा</string>
+
+    <string name="set_online_downloads">ऑनलाइन आणि डाउनलोड</string>
+    <string name="set_online_downloads_desc">स्ट्रीमिंग गुणवत्ता, डाउनलोड आणि स्टोरेज कॉन्फिगर करा</string>
+    <string name="set_streaming_category">स्ट्रीमिंग</string>
+    <string name="set_downloads_category">डाउनलोड</string>
 </resources>

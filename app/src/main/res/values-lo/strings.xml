@@ -518,4 +518,9 @@
     <string name="lbl_edit_playlist">ແກ້ໄຂລາຍການເພງ</string>
     <string name="lbl_choose_cover">ເລືອກຮູບພາບ</string>
     <string name="lbl_remove_cover">ລຶບຮູບພາບ</string>
+
+    <string name="set_online_downloads">ອອນລາຍ ແລະ ດາວໂຫຼດ</string>
+    <string name="set_online_downloads_desc">ຕັ້ງຄ່າຄຸນນະພາບສະຕຣີມມິງ, ການດາວໂຫຼດ ແລະ ບ່ອນເກັບຂໍ້ມູນ</string>
+    <string name="set_streaming_category">ສະຕຣີມມິງ</string>
+    <string name="set_downloads_category">ດາວໂຫຼດ</string>
 </resources>

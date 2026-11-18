@@ -526,4 +526,9 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="lbl_edit_playlist">Editar lista de reprodução</string>
     <string name="lbl_choose_cover">Escolher imagem</string>
     <string name="lbl_remove_cover">Remover imagem</string>
+
+    <string name="set_online_downloads">Online e Downloads</string>
+    <string name="set_online_downloads_desc">Configurar qualidade de streaming, downloads e armazenamento</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Downloads</string>
 </resources>

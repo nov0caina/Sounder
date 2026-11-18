@@ -34,11 +34,11 @@
             android:id="@+id/audio_peferences"
             app:destination="@id/audio_preferences_fragment" />
         <action
+            android:id="@+id/online_preferences"
+            app:destination="@id/online_preferences_fragment" />
+        <action
             android:id="@+id/music_locations_settings"
             app:destination="@id/music_locations_dialog" />
-        <action
-            android:id="@+id/library_migration_settings"
-            app:destination="@id/library_migration_dialog" />
     </fragment>
 
     <fragment
@@ -75,6 +75,15 @@
         <action
             android:id="@+id/pre_amp_settings"
             app:destination="@id/pre_amp_dialog" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/online_preferences_fragment"
+        android:name="org.nov0caina.sounder.settings.categories.OnlinePreferenceFragment"
+        android:label="online_preferences_fragment">
+        <action
+            android:id="@+id/library_migration_settings"
+            app:destination="@id/library_migration_dialog" />
     </fragment>
 
     <dialog

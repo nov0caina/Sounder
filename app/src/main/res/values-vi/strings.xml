@@ -180,7 +180,14 @@
     <string name="lbl_artists">Nghệ sĩ</string>
     <string name="lbl_genres">Thể loại</string>
     <string name="lbl_playlists">Danh sách phát</string>
+    <string name="lbl_new_playlist">Danh sách phát mới</string>
+    <string name="lbl_import_playlist">Nhập danh sách phát</string>
     <string name="lbl_edit_playlist">Chỉnh sửa danh sách phát</string>
     <string name="lbl_choose_cover">Chọn hình ảnh</string>
     <string name="lbl_remove_cover">Xóa hình ảnh</string>
+
+    <string name="set_online_downloads">Trực tuyến &amp; Tải xuống</string>
+    <string name="set_online_downloads_desc">Cấu hình chất lượng phát trực tuyến, tải xuống và bộ nhớ</string>
+    <string name="set_streaming_category">Phát trực tuyến</string>
+    <string name="set_downloads_category">Đã tải xuống</string>
 </resources>

@@ -518,4 +518,9 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="lbl_edit_playlist">Edit playlist</string>
     <string name="lbl_choose_cover">Pilih gambar</string>
     <string name="lbl_remove_cover">Hapus gambar</string>
+
+    <string name="set_online_downloads">Online &amp; Unduhan</string>
+    <string name="set_online_downloads_desc">Atur kualitas streaming, unduhan, dan penyimpanan</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Unduhan</string>
 </resources>

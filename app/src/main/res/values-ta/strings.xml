@@ -520,4 +520,9 @@
     <string name="lbl_edit_playlist">பிளேலிஸ்ட்டைத் திருத்து</string>
     <string name="lbl_choose_cover">படத்தைத் தேர்ந்தெடு</string>
     <string name="lbl_remove_cover">படத்தை அகற்று</string>
+
+    <string name="set_online_downloads">ஆன்லைன் மற்றும் பதிவிறக்கங்கள்</string>
+    <string name="set_online_downloads_desc">ஸ்ட்ரீமிங் தரம், பதிவிறக்கங்கள் மற்றும் சேமிப்பகத்தை உள்ளமைக்கவும்</string>
+    <string name="set_streaming_category">ஸ்ட்ரீமிங்</string>
+    <string name="set_downloads_category">பதிவிறக்கங்கள்</string>
 </resources>

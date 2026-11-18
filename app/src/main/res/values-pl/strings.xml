@@ -530,4 +530,9 @@ UWAGA: Zachowaj ostrożność przy korzystaniu z tej opcji. Jeśli ją zamkniesz
     <string name="lbl_edit_playlist">Edytuj playlistę</string>
     <string name="lbl_choose_cover">Wybierz obraz</string>
     <string name="lbl_remove_cover">Usuń obraz</string>
+
+    <string name="set_online_downloads">Online i pobrane</string>
+    <string name="set_online_downloads_desc">Skonfiguruj jakość streamingu, pobieranie i pamięć</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Pobrane</string>
 </resources>

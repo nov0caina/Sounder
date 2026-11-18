@@ -194,7 +194,14 @@
     <string name="lbl_artists">فنکار</string>
     <string name="lbl_genres">صنفاں</string>
     <string name="lbl_playlists">پلے لسٹاں</string>
+    <string name="lbl_new_playlist">نویں پلے لسٹ</string>
+    <string name="lbl_import_playlist">پلے لسٹ درآمد کرو</string>
     <string name="lbl_edit_playlist">پلے لسٹ وچ ترمیم کرو</string>
     <string name="lbl_choose_cover">تصویر چنو</string>
     <string name="lbl_remove_cover">تصویر ہٹاؤ</string>
+
+    <string name="set_online_downloads">آن لائن تے ڈاؤن لوڈز</string>
+    <string name="set_online_downloads_desc">اسٹریمنگ کوالٹی، ڈاؤن لوڈز تے اسٹوریج سیٹ کرو</string>
+    <string name="set_streaming_category">اسٹریمنگ</string>
+    <string name="set_downloads_category">ڈاؤن لوڈز</string>
 </resources>

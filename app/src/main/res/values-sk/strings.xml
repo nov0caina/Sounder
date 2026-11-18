@@ -291,4 +291,9 @@
     <string name="lbl_edit_playlist">Upraviť zoznam skladieb</string>
     <string name="lbl_choose_cover">Vybrať obrázok</string>
     <string name="lbl_remove_cover">Odstrániť obrázok</string>
+
+    <string name="set_online_downloads">Online a sťahovanie</string>
+    <string name="set_online_downloads_desc">Nastavenie kvality streamovania, sťahovania a úložiska</string>
+    <string name="set_streaming_category">Streamovanie</string>
+    <string name="set_downloads_category">Stiahnuté</string>
 </resources>

@@ -64,9 +64,6 @@ interface MusicSettings : Settings<MusicSettings.Listener> {
     /** Whether to use the file-system cache for improved loading times. */
     val useFileTreeCache: Boolean
 
-    /** Whether to automatically download online tracks added to Favorites. */
-    val autoDownloadFavorites: Boolean
-
     fun forceLocationUpdate()
 
     interface Listener {
@@ -115,9 +112,6 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
 
     override val useFileTreeCache: Boolean
         get() = sharedPreferences.getBoolean(getString(R.string.set_key_fs_cache), false)
-
-    override val autoDownloadFavorites: Boolean
-        get() = sharedPreferences.getBoolean(getString(R.string.set_key_auto_download_favorites), false)
 
     override var locationMode: LocationMode
         get() {

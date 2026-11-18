@@ -476,4 +476,9 @@
     <string name="lbl_edit_playlist">प्लेलिस्ट संपादित करें</string>
     <string name="lbl_choose_cover">छवि चुनें</string>
     <string name="lbl_remove_cover">छवि हटाएं</string>
+
+    <string name="set_online_downloads">ऑनलाइन और डाउनलोड</string>
+    <string name="set_online_downloads_desc">स्ट्रीमिंग गुणवत्ता, डाउनलोड और स्टोरेज कॉन्फ़िगर करें</string>
+    <string name="set_streaming_category">स्ट्रीमिंग</string>
+    <string name="set_downloads_category">डाउनलोड</string>
 </resources>

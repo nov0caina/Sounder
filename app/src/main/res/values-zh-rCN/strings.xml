@@ -518,4 +518,9 @@
     <string name="lbl_edit_playlist">编辑播放列表</string>
     <string name="lbl_choose_cover">选择图片</string>
     <string name="lbl_remove_cover">移除图片</string>
+
+    <string name="set_online_downloads">在线与下载</string>
+    <string name="set_online_downloads_desc">配置流媒体音质、下载和存储位置</string>
+    <string name="set_streaming_category">流媒体</string>
+    <string name="set_downloads_category">下载</string>
 </resources>

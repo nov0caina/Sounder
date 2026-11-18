@@ -522,4 +522,9 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="lbl_edit_playlist">Wiedergabeliste bearbeiten</string>
     <string name="lbl_choose_cover">Bild auswählen</string>
     <string name="lbl_remove_cover">Bild entfernen</string>
+
+    <string name="set_online_downloads">Online &amp; Downloads</string>
+    <string name="set_online_downloads_desc">Streaming-Qualität, Downloads und Speicherort festlegen</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Downloads</string>
 </resources>

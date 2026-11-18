@@ -511,4 +511,9 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="lbl_edit_playlist">Modifiko listën e dëgjimit</string>
     <string name="lbl_choose_cover">Zgjidh imazhin</string>
     <string name="lbl_remove_cover">Hiq imazhin</string>
+
+    <string name="set_online_downloads">Online dhe Shkarkimet</string>
+    <string name="set_online_downloads_desc">Konfiguroni cilësinë e transmetimit, shkarkimet dhe ruajtjen</string>
+    <string name="set_streaming_category">Transmetimi</string>
+    <string name="set_downloads_category">Shkarkimet</string>
 </resources>

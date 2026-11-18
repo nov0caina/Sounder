@@ -509,6 +509,10 @@
     </plurals>
 
     <!-- Online Music, Streaming, Lyrics & Downloads -->
+    <string name="set_online_downloads">Online &amp; Downloads</string>
+    <string name="set_online_downloads_desc">Configure streaming quality, downloads, and storage</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Downloads</string>
     <string name="set_online_category">Online music</string>
     <string name="set_online_quality">Audio quality</string>
     <string name="set_online_quality_desc">Select preferred audio format and bitrate for streaming and downloads</string>

@@ -469,4 +469,9 @@
     <string name="lbl_edit_playlist">ਪਲੇਲਿਸਟ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</string>
     <string name="lbl_choose_cover">ਤਸਵੀਰ ਚੁਣੋ</string>
     <string name="lbl_remove_cover">ਤਸਵੀਰ ਹਟਾਓ</string>
+
+    <string name="set_online_downloads">ਆਨਲਾਈਨ ਅਤੇ ਡਾਊਨਲੋਡ</string>
+    <string name="set_online_downloads_desc">ਸਟ੍ਰੀਮਿੰਗ ਕੁਆਲਿਟੀ, ਡਾਊਨਲੋਡ ਅਤੇ ਸਟੋਰੇਜ ਕੌਂਫਿਗਰ ਕਰੋ</string>
+    <string name="set_streaming_category">ਸਟ੍ਰੀਮਿੰਗ</string>
+    <string name="set_downloads_category">ਡਾਊਨਲੋਡ</string>
 </resources>

@@ -179,7 +179,14 @@
     <string name="lbl_artists">Izpildītāji</string>
     <string name="lbl_genres">Žanri</string>
     <string name="lbl_playlists">Atskaņošanas saraksti</string>
+    <string name="lbl_new_playlist">Jauns atskaņošanas saraksts</string>
+    <string name="lbl_import_playlist">Importēt atskaņošanas sarakstu</string>
     <string name="lbl_edit_playlist">Rediģēt atskaņošanas sarakstu</string>
     <string name="lbl_choose_cover">Izvēlēties attēlu</string>
     <string name="lbl_remove_cover">Noņemt attēlu</string>
+
+    <string name="set_online_downloads">Tiešsaiste un lejupielādes</string>
+    <string name="set_online_downloads_desc">Konfigurēt straumēšanas kvalitāti, lejupielādes un krātuvi</string>
+    <string name="set_streaming_category">Straumēšana</string>
+    <string name="set_downloads_category">Lejupielādes</string>
 </resources>

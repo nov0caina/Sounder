@@ -270,4 +270,9 @@
     <string name="lbl_edit_playlist">ویرایش لیست پخش</string>
     <string name="lbl_choose_cover">انتخاب عکس</string>
     <string name="lbl_remove_cover">حذف عکس</string>
+
+    <string name="set_online_downloads">آنلاین و دانلودها</string>
+    <string name="set_online_downloads_desc">تنظیم کیفیت پخش آنلاین، دانلودها و حافظه</string>
+    <string name="set_streaming_category">پخش آنلاین</string>
+    <string name="set_downloads_category">دانلودها</string>
 </resources>

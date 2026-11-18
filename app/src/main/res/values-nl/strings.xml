@@ -495,4 +495,9 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="lbl_edit_playlist">Afspeellijst bewerken</string>
     <string name="lbl_choose_cover">Afbeelding kiezen</string>
     <string name="lbl_remove_cover">Afbeelding verwijderen</string>
+
+    <string name="set_online_downloads">Online &amp; Downloads</string>
+    <string name="set_online_downloads_desc">Streamingkwaliteit, downloads en opslag configureren</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Downloads</string>
 </resources>

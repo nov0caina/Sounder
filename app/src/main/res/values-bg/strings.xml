@@ -522,4 +522,9 @@
     <string name="lbl_edit_playlist">Редактиране на плейлист</string>
     <string name="lbl_choose_cover">Избор на изображение</string>
     <string name="lbl_remove_cover">Премахване на изображението</string>
+
+    <string name="set_online_downloads">Онлайн и изтегляния</string>
+    <string name="set_online_downloads_desc">Настройка на качеството на стрийминг, изтеглянията и хранилището</string>
+    <string name="set_streaming_category">Стрийминг</string>
+    <string name="set_downloads_category">Изтегляния</string>
 </resources>

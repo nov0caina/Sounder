@@ -530,4 +530,9 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="lbl_edit_playlist">Upravit playlist</string>
     <string name="lbl_choose_cover">Vybrat obrázek</string>
     <string name="lbl_remove_cover">Odebrat obrázek</string>
+
+    <string name="set_online_downloads">Online a stahování</string>
+    <string name="set_online_downloads_desc">Nastavení kvality streamování, stahování a úložiště</string>
+    <string name="set_streaming_category">Streamování</string>
+    <string name="set_downloads_category">Stahování</string>
 </resources>

@@ -405,7 +405,14 @@
     <string name="err_update_check_failed">Non se puideron comprobar as actualizacións. Revisa a túa conexión.</string>
     <string name="lbl_recent_downloads">Descargas recentes</string>
     <string name="lng_empty_downloads">As túas descargas recentes aparecerán aquí.</string>
+    <string name="lbl_new_playlist">Nova lista de reprodución</string>
+    <string name="lbl_import_playlist">Importar lista de reprodución</string>
     <string name="lbl_edit_playlist">Editar lista de reprodución</string>
     <string name="lbl_choose_cover">Escoller imaxe</string>
     <string name="lbl_remove_cover">Eliminar imaxe</string>
+
+    <string name="set_online_downloads">En liña e descargas</string>
+    <string name="set_online_downloads_desc">Configura a calidade de streaming, descargas e almacenamento</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Descargas</string>
 </resources>

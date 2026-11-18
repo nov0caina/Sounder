@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:title="@string/set_online_downloads">
+
+    <PreferenceCategory android:title="@string/set_streaming_category">
+
+        <ListPreference
+            app:defaultValue="HIGH_QUALITY"
+            app:entries="@array/entries_online_quality"
+            app:entryValues="@array/values_online_quality"
+            app:key="@string/set_key_online_quality"
+            app:summary="%s"
+            app:title="@string/set_online_quality" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_prefer_studio_audio"
+            app:summary="@string/set_prefer_studio_audio_desc"
+            app:title="@string/set_prefer_studio_audio" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/set_downloads_category">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="@string/set_key_wifi_only_downloads"
+            app:summary="@string/set_wifi_only_downloads_desc"
+            app:title="@string/set_wifi_only_downloads" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="false"
+            app:key="@string/set_key_auto_download_favorites"
+            app:summary="@string/set_auto_download_favorites_desc"
+            app:title="@string/set_auto_download_favorites" />
+
+        <ListPreference
+            app:defaultValue="INTERNAL"
+            app:entries="@array/entries_download_storage"
+            app:entryValues="@array/values_download_storage"
+            app:key="@string/set_key_download_storage"
+            app:title="@string/set_download_storage"
+            app:useSimpleSummaryProvider="true" />
+
+        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+            app:key="@string/set_key_migrate_library"
+            app:summary="@string/set_migrate_library_desc"
+            app:title="@string/set_migrate_library" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

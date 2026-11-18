@@ -489,4 +489,9 @@
     <string name="lbl_edit_playlist">Рэдагаваць плэйліст</string>
     <string name="lbl_choose_cover">Выбраць выяву</string>
     <string name="lbl_remove_cover">Выдаліць выяву</string>
+
+    <string name="set_online_downloads">Анлайн і спампоўкі</string>
+    <string name="set_online_downloads_desc">Налада якасці трансляцыі, спамповак і сховішча</string>
+    <string name="set_streaming_category">Стрымінг</string>
+    <string name="set_downloads_category">Спампоўкі</string>
 </resources>

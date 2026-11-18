@@ -495,4 +495,9 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="lbl_edit_playlist">Lejátszási lista szerkesztése</string>
     <string name="lbl_choose_cover">Kép kiválasztása</string>
     <string name="lbl_remove_cover">Kép eltávolítása</string>
+
+    <string name="set_online_downloads">Online és letöltések</string>
+    <string name="set_online_downloads_desc">A streaming minőségének, a letöltéseknek és a tárhelynek a beállítása</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Letöltések</string>
 </resources>

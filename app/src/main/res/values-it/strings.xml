@@ -522,4 +522,9 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="lbl_edit_playlist">Modifica playlist</string>
     <string name="lbl_choose_cover">Scegli immagine</string>
     <string name="lbl_remove_cover">Rimuovi immagine</string>
+
+    <string name="set_online_downloads">Online e download</string>
+    <string name="set_online_downloads_desc">Configura qualità di streaming, download e archiviazione</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Download</string>
 </resources>

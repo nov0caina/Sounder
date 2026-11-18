@@ -493,4 +493,9 @@
     <string name="lbl_edit_playlist">재생목록 편집</string>
     <string name="lbl_choose_cover">이미지 선택</string>
     <string name="lbl_remove_cover">이미지 제거</string>
+
+    <string name="set_online_downloads">온라인 및 다운로드</string>
+    <string name="set_online_downloads_desc">스트리밍 음질, 다운로드 및 저장소 설정</string>
+    <string name="set_streaming_category">스트리밍</string>
+    <string name="set_downloads_category">다운로드</string>
 </resources>

@@ -184,7 +184,14 @@
     <string name="lbl_artists">କଳାକାରମାନେ</string>
     <string name="lbl_genres">ଶୈଳୀଗୁଡ଼ିକ</string>
     <string name="lbl_playlists">ପ୍ଲେଲିଷ୍ଟଗୁଡ଼ିକ</string>
+    <string name="lbl_new_playlist">ନୂତନ ପ୍ଲେଲିଷ୍ଟ</string>
+    <string name="lbl_import_playlist">ପ୍ଲେଲିଷ୍ଟ ଇମ୍ପୋର୍ଟ କରନ୍ତୁ</string>
     <string name="lbl_edit_playlist">ପ୍ଲେଲିଷ୍ଟ ସମ୍ପାଦନ କରନ୍ତୁ</string>
     <string name="lbl_choose_cover">ଚିତ୍ର ବାଛନ୍ତୁ</string>
     <string name="lbl_remove_cover">ଚିତ୍ର ହଟାନ୍ତୁ</string>
+
+    <string name="set_online_downloads">ଅନଲାଇନ୍ ଏବଂ ଡାଉନଲୋଡ୍</string>
+    <string name="set_online_downloads_desc">ଷ୍ଟ୍ରିମିଂ ଗୁଣବତ୍ତା, ଡାଉନଲୋଡ୍ ଏବଂ ଷ୍ଟୋରେଜ୍ କନଫିଗର୍ କରନ୍ତୁ</string>
+    <string name="set_streaming_category">ଷ୍ଟ୍ରିମିଂ</string>
+    <string name="set_downloads_category">ଡାଉନଲୋଡ୍</string>
 </resources>

@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.image.PlaylistCoverManager
 import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.online.OnlineSettings
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.util.Event
@@ -61,6 +62,7 @@ constructor(
     private val listSettings: ListSettings,
     private val musicRepository: MusicRepository,
     private val musicSettings: MusicSettings,
+    private val onlineSettings: OnlineSettings,
     private val downloadManager: DownloadManager,
 ) : ViewModel(), MusicRepository.UpdateListener, MusicRepository.IndexingListener {
     private val externalPlaylistManager = ExternalPlaylistManager.from(context)
@@ -210,7 +212,7 @@ constructor(
                 _favoriteSongUids.value = _favoriteSongUids.value + song.uid
                 withContext(Dispatchers.Main) { onResult?.invoke(true) }
                 musicRepository.createPlaylist(FAVORITES_NAME, listOf(song))
-                if (song is OnlineSong && musicSettings.autoDownloadFavorites) {
+                if (song is OnlineSong && onlineSettings.autoDownloadFavorites) {
                     if (!downloadManager.isDownloaded(song.onlineTrack.id)) {
                         downloadManager.enqueue(song.onlineTrack)
                     }
@@ -228,7 +230,7 @@ constructor(
                     _favoriteSongUids.value = _favoriteSongUids.value + song.uid
                     withContext(Dispatchers.Main) { onResult?.invoke(true) }
                     musicRepository.addToPlaylist(listOf(song), favPlaylist)
-                    if (song is OnlineSong && musicSettings.autoDownloadFavorites) {
+                    if (song is OnlineSong && onlineSettings.autoDownloadFavorites) {
                         if (!downloadManager.isDownloaded(song.onlineTrack.id)) {
                             downloadManager.enqueue(song.onlineTrack)
                         }
@@ -399,10 +401,20 @@ constructor(
         name: String? = null,
         applySongs: List<Song> = listOf(),
         reason: PlaylistDecision.Rename.Reason = PlaylistDecision.Rename.Reason.ACTION,
+        coverUri: Uri? = null,
+        removeCover: Boolean = false,
     ) {
         if (name != null) {
-            L.d("Renaming $playlist to $name")
+            L.d("Renaming $playlist to $name (coverUri=$coverUri, removeCover=$removeCover)")
             viewModelScope.launch(Dispatchers.IO) {
+                val oldResolvedName = playlist.name.resolve(context)
+                if (removeCover) {
+                    PlaylistCoverManager.deleteCover(context, oldResolvedName)
+                    PlaylistCoverManager.deleteCover(context, name)
+                }
+                if (coverUri != null) {
+                    PlaylistCoverManager.saveCoverFromUri(context, oldResolvedName, coverUri)
+                }
                 musicRepository.renamePlaylist(playlist, name)
                 if (applySongs.isNotEmpty()) {
                     musicRepository.rewritePlaylist(playlist, applySongs)

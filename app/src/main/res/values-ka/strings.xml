@@ -301,4 +301,9 @@
     <string name="lbl_edit_playlist">დასაკრავი სიის რედაქტირება</string>
     <string name="lbl_choose_cover">სურათის არჩევა</string>
     <string name="lbl_remove_cover">სურათის წაშლა</string>
+
+    <string name="set_online_downloads">ონლაინ და ჩამოტვირთვები</string>
+    <string name="set_online_downloads_desc">სტრიმინგის ხარისხის, ჩამოტვირთვებისა და მეხსიერების მართვა</string>
+    <string name="set_streaming_category">სტრიმინგი</string>
+    <string name="set_downloads_category">ჩამოტვირთვები</string>
 </resources>

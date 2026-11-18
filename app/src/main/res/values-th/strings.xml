@@ -309,4 +309,9 @@
     <string name="lbl_edit_playlist">แก้ไขเพลย์ลิสต์</string>
     <string name="lbl_choose_cover">เลือกรูปภาพ</string>
     <string name="lbl_remove_cover">ลบรูปภาพ</string>
+
+    <string name="set_online_downloads">ออนไลน์และการดาวน์โหลด</string>
+    <string name="set_online_downloads_desc">ตั้งค่าคุณภาพการสตรีม การดาวน์โหลด และพื้นที่จัดเก็บ</string>
+    <string name="set_streaming_category">สตรีมมิง</string>
+    <string name="set_downloads_category">ดาวน์โหลด</string>
 </resources>

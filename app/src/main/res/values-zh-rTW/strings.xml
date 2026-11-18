@@ -519,4 +519,9 @@
     <string name="lbl_edit_playlist">編輯播放清單</string>
     <string name="lbl_choose_cover">選擇圖片</string>
     <string name="lbl_remove_cover">移除圖片</string>
+
+    <string name="set_online_downloads">線上與下載</string>
+    <string name="set_online_downloads_desc">設定串流音質、下載與儲存位置</string>
+    <string name="set_streaming_category">串流</string>
+    <string name="set_downloads_category">下載</string>
 </resources>

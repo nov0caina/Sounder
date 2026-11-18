@@ -522,4 +522,9 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="lbl_edit_playlist">Muokkaa soittolistaa</string>
     <string name="lbl_choose_cover">Valitse kuva</string>
     <string name="lbl_remove_cover">Poista kuva</string>
+
+    <string name="set_online_downloads">Verkko ja lataukset</string>
+    <string name="set_online_downloads_desc">Määritä suoratoiston laatu, lataukset ja tallennustila</string>
+    <string name="set_streaming_category">Suoratoisto</string>
+    <string name="set_downloads_category">Lataukset</string>
 </resources>

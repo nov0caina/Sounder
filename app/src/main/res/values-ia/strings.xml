@@ -379,4 +379,9 @@
     <string name="lbl_edit_playlist">Modificar lista de reproduction</string>
     <string name="lbl_choose_cover">Seliger imagine</string>
     <string name="lbl_remove_cover">Remover imagine</string>
+
+    <string name="set_online_downloads">Online e discargamentos</string>
+    <string name="set_online_downloads_desc">Configurar le qualitate de streaming, discargamentos e immagazinage</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Discargamentos</string>
 </resources>

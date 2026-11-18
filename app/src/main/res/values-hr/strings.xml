@@ -526,4 +526,9 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="lbl_edit_playlist">Uredi popis za reprodukciju</string>
     <string name="lbl_choose_cover">Odaberi sliku</string>
     <string name="lbl_remove_cover">Ukloni sliku</string>
+
+    <string name="set_online_downloads">Mreža i preuzimanja</string>
+    <string name="set_online_downloads_desc">Podesite kvalitetu strujanja, preuzimanja i pohranu</string>
+    <string name="set_streaming_category">Strujanje</string>
+    <string name="set_downloads_category">Preuzimanja</string>
 </resources>

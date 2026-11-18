@@ -433,4 +433,9 @@
     <string name="lbl_edit_playlist">Editează lista de redare</string>
     <string name="lbl_choose_cover">Alege o imagine</string>
     <string name="lbl_remove_cover">Elimină imaginea</string>
+
+    <string name="set_online_downloads">Online și descărcări</string>
+    <string name="set_online_downloads_desc">Configurează calitatea streamingului, descărcările și stocarea</string>
+    <string name="set_streaming_category">Streaming</string>
+    <string name="set_downloads_category">Descărcări</string>
 </resources>

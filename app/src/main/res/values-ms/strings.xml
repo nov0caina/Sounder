@@ -518,4 +518,9 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="lbl_edit_playlist">Edit senarai main</string>
     <string name="lbl_choose_cover">Pilih imej</string>
     <string name="lbl_remove_cover">Buang imej</string>
+
+    <string name="set_online_downloads">Dalam Talian &amp; Muat Turun</string>
+    <string name="set_online_downloads_desc">Konfigurasikan kualiti penstriman, muat turun dan storan</string>
+    <string name="set_streaming_category">Penstriman</string>
+    <string name="set_downloads_category">Muat Turun</string>
 </resources>

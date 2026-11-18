@@ -201,7 +201,14 @@
     <string name="lbl_artists">Извођачи</string>
     <string name="lbl_genres">Жанрови</string>
     <string name="lbl_playlists">Плејлисте</string>
+    <string name="lbl_new_playlist">Нова плејлиста</string>
+    <string name="lbl_import_playlist">Увези плејлисту</string>
     <string name="lbl_edit_playlist">Уреди плејлисту</string>
     <string name="lbl_choose_cover">Изабери слику</string>
     <string name="lbl_remove_cover">Уклони слику</string>
+
+    <string name="set_online_downloads">Онлајн и преузимања</string>
+    <string name="set_online_downloads_desc">Подесите квалитет стримовања, преузимања и складиште</string>
+    <string name="set_streaming_category">Стримовање</string>
+    <string name="set_downloads_category">Преузимања</string>
 </resources>

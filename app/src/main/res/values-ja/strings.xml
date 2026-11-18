@@ -490,4 +490,9 @@
     <string name="lbl_edit_playlist">プレイリストを編集</string>
     <string name="lbl_choose_cover">画像を選択</string>
     <string name="lbl_remove_cover">画像を削除</string>
+
+    <string name="set_online_downloads">オンラインとダウンロード</string>
+    <string name="set_online_downloads_desc">ストリーミング音質、ダウンロード、保存先を設定</string>
+    <string name="set_streaming_category">ストリーミング</string>
+    <string name="set_downloads_category">ダウンロード</string>
 </resources>

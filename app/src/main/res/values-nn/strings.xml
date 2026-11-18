@@ -522,4 +522,9 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="lbl_edit_playlist">Rediger speleliste</string>
     <string name="lbl_choose_cover">Vel bilete</string>
     <string name="lbl_remove_cover">Fjern bilete</string>
+
+    <string name="set_online_downloads">På nett og nedlastingar</string>
+    <string name="set_online_downloads_desc">Konfigurer strøymekvalitet, nedlastingar og lagring</string>
+    <string name="set_streaming_category">Strøyming</string>
+    <string name="set_downloads_category">Nedlastingar</string>
 </resources>

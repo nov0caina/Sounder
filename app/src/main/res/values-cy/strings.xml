@@ -515,4 +515,9 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="lbl_edit_playlist">Golygu rhestr chwarae</string>
     <string name="lbl_choose_cover">Dewis llun</string>
     <string name="lbl_remove_cover">Tynnu llun</string>
+
+    <string name="set_online_downloads">Ar-lein a Lawrlwythiadau</string>
+    <string name="set_online_downloads_desc">Ffurfweddu ansawdd ffrydio, lawrlwythiadau a storfa</string>
+    <string name="set_streaming_category">Ffrydio</string>
+    <string name="set_downloads_category">Lawrlwythiadau</string>
 </resources>
