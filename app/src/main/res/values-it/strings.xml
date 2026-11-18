@@ -519,4 +519,7 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="err_update_check_failed">Impossibile verificare gli aggiornamenti. Controlla la connessione.</string>
     <string name="lbl_recent_downloads">Download recenti</string>
     <string name="lng_empty_downloads">I tuoi download recenti verranno mostrati qui.</string>
+    <string name="lbl_edit_playlist">Modifica playlist</string>
+    <string name="lbl_choose_cover">Scegli immagine</string>
+    <string name="lbl_remove_cover">Rimuovi immagine</string>
 </resources>

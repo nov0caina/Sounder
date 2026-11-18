@@ -324,7 +324,14 @@ class PlaylistViewHolder private constructor(private val binding: ItemParentBind
         val DIFF_CALLBACK =
             object : SimpleDiffCallback<Playlist>() {
                 override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist) =
-                    oldItem.name == newItem.name && oldItem.songs.size == newItem.songs.size
+                    oldItem.name == newItem.name &&
+                        oldItem.songs.size == newItem.songs.size &&
+                        org.nov0caina.sounder.image.PlaylistCoverManager.getCoverSignature(
+                            oldItem.name.raw
+                        ) ==
+                            org.nov0caina.sounder.image.PlaylistCoverManager.getCoverSignature(
+                                newItem.name.raw
+                            )
             }
     }
 }

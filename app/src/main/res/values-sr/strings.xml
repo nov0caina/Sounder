@@ -201,4 +201,7 @@
     <string name="lbl_artists">Извођачи</string>
     <string name="lbl_genres">Жанрови</string>
     <string name="lbl_playlists">Плејлисте</string>
+    <string name="lbl_edit_playlist">Уреди плејлисту</string>
+    <string name="lbl_choose_cover">Изабери слику</string>
+    <string name="lbl_remove_cover">Уклони слику</string>
 </resources>

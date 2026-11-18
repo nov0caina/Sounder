@@ -515,4 +515,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">ການດາວໂຫຼດຫຼ້າສຸດ</string>
     <string name="lng_empty_downloads">ການດາວໂຫຼດຫຼ້າສຸດຂອງທ່ານຈະສະແດງຢູ່ບ່ອນນີ້.</string>
+    <string name="lbl_edit_playlist">ແກ້ໄຂລາຍການເພງ</string>
+    <string name="lbl_choose_cover">ເລືອກຮູບພາບ</string>
+    <string name="lbl_remove_cover">ລຶບຮູບພາບ</string>
 </resources>

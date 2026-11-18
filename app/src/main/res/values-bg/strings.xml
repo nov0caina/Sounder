@@ -519,4 +519,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Скорошни изтегляния</string>
     <string name="lng_empty_downloads">Вашите скорошни изтегляния ще се покажат тук.</string>
+    <string name="lbl_edit_playlist">Редактиране на плейлист</string>
+    <string name="lbl_choose_cover">Избор на изображение</string>
+    <string name="lbl_remove_cover">Премахване на изображението</string>
 </resources>

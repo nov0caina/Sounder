@@ -519,4 +519,7 @@ HOIATUS: Ole selle teenuse kasutamisel hoolikas - kui sa ta sulged ja siis proov
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Hiljutised allalaadimised</string>
     <string name="lng_empty_downloads">Sinu hiljutised allalaadimised ilmuvad siia.</string>
+    <string name="lbl_edit_playlist">Muuda esitusloendit</string>
+    <string name="lbl_choose_cover">Vali pilt</string>
+    <string name="lbl_remove_cover">Eemalda pilt</string>
 </resources>

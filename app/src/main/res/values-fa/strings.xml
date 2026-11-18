@@ -515,4 +515,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">دانلودهای اخیر</string>
     <string name="lng_empty_downloads">دانلودهای اخیر شما در اینجا نمایش داده می‌شوند.</string>
+    <string name="lbl_edit_playlist">ویرایش فهرست پخش</string>
+    <string name="lbl_choose_cover">انتخاب تصویر</string>
+    <string name="lbl_remove_cover">حذف تصویر</string>
 </resources>

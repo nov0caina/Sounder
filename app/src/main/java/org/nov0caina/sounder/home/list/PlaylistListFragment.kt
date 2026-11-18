@@ -40,6 +40,7 @@ import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.music.resolveName
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.formatDurationMsPopup
+import org.nov0caina.sounder.util.collect
 import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.MusicParent
@@ -95,6 +96,11 @@ class PlaylistListFragment :
             playbackModel.isPlaying,
             ::updatePlayback,
         )
+        collect(org.nov0caina.sounder.image.PlaylistCoverManager.coverChanges) {
+            if (playlistAdapter.itemCount > 0) {
+                playlistAdapter.notifyItemRangeChanged(0, playlistAdapter.itemCount)
+            }
+        }
     }
 
     override fun onDestroyBinding(binding: FragmentHomeListBinding) {

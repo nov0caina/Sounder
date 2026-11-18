@@ -149,6 +149,11 @@ class LocalizationParityTest {
             "lbl_artists",
             "lbl_genres",
             "lbl_playlists",
+            "lbl_new_playlist",
+            "lbl_import_playlist",
+            "lbl_edit_playlist",
+            "lbl_choose_cover",
+            "lbl_remove_cover",
         )
 
         val placeholderPattern = Pattern.compile("%(\\d+\\\$)?[-#+ 0,(]*\\d*(?:\\.\\d+)?[a-zA-Z%]")

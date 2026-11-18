@@ -486,4 +486,7 @@
     <string name="err_update_check_failed">לא ניתן לבדוק עדכונים. בדוק את החיבור שלך.</string>
     <string name="lbl_recent_downloads">הורדות אחרונות</string>
     <string name="lng_empty_downloads">ההורדות האחרונות שלך יופיעו כאן.</string>
+    <string name="lbl_edit_playlist">עריכת רשימת השמעה</string>
+    <string name="lbl_choose_cover">בחירת תמונה</string>
+    <string name="lbl_remove_cover">הסרת תמונה</string>
 </resources>

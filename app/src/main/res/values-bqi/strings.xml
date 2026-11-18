@@ -267,4 +267,7 @@
     <string name="desc_tab_handle">جابه‌جایی ای سربرگ</string>
     <string name="lng_queue_added">به صف اضافه وابی</string>
     <string name="lbl_playlists">فهرست‌یل پخش</string>
+    <string name="lbl_edit_playlist">ویرایش لیست پخش</string>
+    <string name="lbl_choose_cover">انتخاب عکس</string>
+    <string name="lbl_remove_cover">حذف عکس</string>
 </resources>

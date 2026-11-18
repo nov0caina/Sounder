@@ -515,4 +515,7 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="err_update_check_failed">Gagal menyemak kemas kini. Sila periksa sambungan anda.</string>
     <string name="lbl_recent_downloads">Muat Turun Terkini</string>
     <string name="lng_empty_downloads">Muat turun terkini anda akan dipaparkan di sini.</string>
+    <string name="lbl_edit_playlist">Edit senarai main</string>
+    <string name="lbl_choose_cover">Pilih imej</string>
+    <string name="lbl_remove_cover">Buang imej</string>
 </resources>

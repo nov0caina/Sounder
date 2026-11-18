@@ -487,4 +487,7 @@
     <string name="err_update_check_failed">アップデートの確認に失敗しました。接続を確認してください。</string>
     <string name="lbl_recent_downloads">最近のダウンロード</string>
     <string name="lng_empty_downloads">最近ダウンロードした曲がここに表示されます。</string>
+    <string name="lbl_edit_playlist">プレイリストを編集</string>
+    <string name="lbl_choose_cover">画像を選択</string>
+    <string name="lbl_remove_cover">画像を削除</string>
 </resources>

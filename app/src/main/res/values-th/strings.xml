@@ -306,4 +306,7 @@
     <string name="lng_empty_downloads">การดาวน์โหลดล่าสุดของคุณจะแสดงที่นี่</string>
     <string name="set_lib_tabs">แท็บคลังเพลง</string>
     <string name="desc_tab_handle">ย้ายแท็บนี้</string>
+    <string name="lbl_edit_playlist">แก้ไขเพลย์ลิสต์</string>
+    <string name="lbl_choose_cover">เลือกรูปภาพ</string>
+    <string name="lbl_remove_cover">ลบรูปภาพ</string>
 </resources>

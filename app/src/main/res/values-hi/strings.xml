@@ -473,4 +473,7 @@
     <string name="err_update_check_failed">अपडेट की जांच करने में असमर्थ। अपना कनेक्शन जांचें।</string>
     <string name="lbl_recent_downloads">हाल के डाउनलोड</string>
     <string name="lng_empty_downloads">आपके हाल के डाउनलोड यहाँ दिखाई देंगे।</string>
+    <string name="lbl_edit_playlist">प्लेलिस्ट संपादित करें</string>
+    <string name="lbl_choose_cover">छवि चुनें</string>
+    <string name="lbl_remove_cover">छवि हटाएं</string>
 </resources>

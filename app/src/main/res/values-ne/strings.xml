@@ -235,4 +235,7 @@
     <string name="set_lib_tabs">पुस्तकालय ट्याबहरू</string>
     <string name="desc_tab_handle">यो ट्याब सार्नुहोस्</string>
     <string name="lng_queue_added">लाममा थपियो</string>
+    <string name="lbl_edit_playlist">प्लेलिस्ट सम्पादन गर्नुहोस्</string>
+    <string name="lbl_choose_cover">तस्बिर छान्नुहोस्</string>
+    <string name="lbl_remove_cover">तस्बिर हटाउनुहोस्</string>
 </resources>

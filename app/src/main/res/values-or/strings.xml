@@ -184,4 +184,7 @@
     <string name="lbl_artists">କଳାକାରମାନେ</string>
     <string name="lbl_genres">ଶୈଳୀଗୁଡ଼ିକ</string>
     <string name="lbl_playlists">ପ୍ଲେଲିଷ୍ଟଗୁଡ଼ିକ</string>
+    <string name="lbl_edit_playlist">ପ୍ଲେଲିଷ୍ଟ ସମ୍ପାଦନ କରନ୍ତୁ</string>
+    <string name="lbl_choose_cover">ଚିତ୍ର ବାଛନ୍ତୁ</string>
+    <string name="lbl_remove_cover">ଚିତ୍ର ହଟାନ୍ତୁ</string>
 </resources>

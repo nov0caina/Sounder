@@ -298,4 +298,7 @@
     <string name="lbl_ok">კარგი</string>
     <string name="set_lib_tabs">ბიბლიოთეკის ჩანართები</string>
     <string name="desc_tab_handle">ამ ჩანართის გადატანა</string>
+    <string name="lbl_edit_playlist">დასაკრავი სიის რედაქტირება</string>
+    <string name="lbl_choose_cover">სურათის არჩევა</string>
+    <string name="lbl_remove_cover">სურათის წაშლა</string>
 </resources>

@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.PlaylistCoverManager
 import org.nov0caina.sounder.image.covers.SettingCovers
 import org.nov0caina.sounder.music.MusicRepository.IndexingWorker
 import org.nov0caina.sounder.music.locations.LocationMode
@@ -438,23 +439,31 @@ constructor(
     override suspend fun renamePlaylist(playlist: Playlist, name: String) {
         val library = synchronized(this) { library ?: return }
         L.d("Renaming $playlist to $name")
-        val oldKey = playlist.name.resolve(context).lowercase(java.util.Locale.ROOT)
+        val oldResolvedName = playlist.name.resolve(context)
+        val oldKey = oldResolvedName.lowercase(java.util.Locale.ROOT)
         val newKey = name.lowercase(java.util.Locale.ROOT)
-        onlineTracksCache.remove(oldKey)?.let {
-            onlineTracksCache[newKey] = it
+        if (oldKey != newKey) {
+            onlineTracksCache.remove(oldKey)?.let {
+                onlineTracksCache[newKey] = it
+            }
+            PlaylistCoverManager.renameCover(context, oldResolvedName, name)
         }
-        val newLibrary = library.renamePlaylist(playlist, name)
-        synchronized(this) { this.library = newLibrary }
+        if (oldResolvedName != name) {
+            val newLibrary = library.renamePlaylist(playlist, name)
+            synchronized(this) { this.library = newLibrary }
+        }
         withContext(Dispatchers.Main) { dispatchLibraryChange(device = false, user = true) }
     }
 
     override suspend fun deletePlaylist(playlist: Playlist) {
         val library = synchronized(this) { library ?: return }
         L.d("Deleting $playlist")
-        val key = playlist.name.resolve(context).lowercase(java.util.Locale.ROOT)
+        val resolvedName = playlist.name.resolve(context)
+        val key = resolvedName.lowercase(java.util.Locale.ROOT)
         onlineTracksCache.remove(key)
+        PlaylistCoverManager.deleteCover(context, resolvedName)
         try {
-            onlinePlaylistTrackDao.deleteForPlaylist(playlist.name.resolve(context))
+            onlinePlaylistTrackDao.deleteForPlaylist(resolvedName)
         } catch (e: Exception) {
             L.w(e, "Failed to clean up online playlist tracks for deleted playlist")
         }

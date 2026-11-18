@@ -523,4 +523,7 @@ ADVERTENCIA: Ten cuidado al controlar este servicio, si lo cierras y luego inten
     <string name="err_update_check_failed">No se pudo buscar actualizaciones. Comprueba tu conexión.</string>
     <string name="lbl_recent_downloads">Descargas Recientes</string>
     <string name="lng_empty_downloads">Tus descargas recientes aparecerán aquí.</string>
+    <string name="lbl_edit_playlist">Editar Playlist</string>
+    <string name="lbl_choose_cover">Elegir imagen</string>
+    <string name="lbl_remove_cover">Eliminar imagen</string>
 </resources>

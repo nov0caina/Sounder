@@ -480,4 +480,7 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="err_update_check_failed">Det gick inte att söka efter uppdateringar. Kontrollera anslutningen.</string>
     <string name="lbl_recent_downloads">Senaste nedladdningar</string>
     <string name="lng_empty_downloads">Dina senaste nedladdningar visas här.</string>
+    <string name="lbl_edit_playlist">Redigera spellista</string>
+    <string name="lbl_choose_cover">Välj bild</string>
+    <string name="lbl_remove_cover">Ta bort bild</string>
 </resources>

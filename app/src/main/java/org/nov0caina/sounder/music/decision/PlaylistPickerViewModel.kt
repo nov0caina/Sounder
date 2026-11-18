@@ -19,6 +19,7 @@
 package org.nov0caina.sounder.music.decision
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -66,6 +67,14 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
     /** The users chosen name for [currentPendingNewPlaylist] or [currentPendingRenamePlaylist]. */
     val chosenName: StateFlow<ChosenName>
         field = MutableStateFlow<ChosenName>(ChosenName.Empty)
+
+    /** A gallery image [Uri] selected as a custom cover for the pending new or edited playlist. */
+    val chosenCoverUri: StateFlow<Uri?>
+        field = MutableStateFlow<Uri?>(null)
+
+    /** Whether the user requested removing an existing custom cover in the edit playlist dialog. */
+    val removeExistingCover: StateFlow<Boolean>
+        field = MutableStateFlow(false)
 
     /** A batch of [Song]s to add to a playlist chosen by the user. Null if none yet. */
     val currentSongsToAdd: StateFlow<List<Song>?>
@@ -170,13 +179,11 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
                 possibleName
             }
 
+        if (currentPendingNewPlaylist.value != null) return
+        chosenCoverUri.value = null
+        removeExistingCover.value = false
         currentPendingNewPlaylist.value =
-            if (possibleName != null && songs.isNotEmpty()) {
-                PendingNewPlaylist(possibleName, songs, template, reason)
-            } else {
-                L.w("Given song UIDs to create were invalid")
-                null
-            }
+            buildPendingNewPlaylist(possibleName, songUids.size, songs, template, reason)
     }
 
     /**
@@ -191,6 +198,9 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
         reason: PlaylistDecision.Rename.Reason,
     ) {
         L.d("Opening playlist $playlistUid to rename")
+        if (currentPendingRenamePlaylist.value?.playlist?.uid == playlistUid) return
+        chosenCoverUri.value = null
+        removeExistingCover.value = false
         val playlist = musicRepository.library?.findPlaylist(playlistUid)
         val applySongs = musicRepository.library?.let { applySongUids.mapNotNull(it::findSong) }
 
@@ -201,6 +211,18 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
                 L.w("Given playlist UID to rename was invalid")
                 null
             }
+    }
+
+    fun selectCoverUri(uri: Uri?) {
+        chosenCoverUri.value = uri
+        if (uri != null) {
+            removeExistingCover.value = false
+        }
+    }
+
+    fun markExistingCoverRemoved() {
+        chosenCoverUri.value = null
+        removeExistingCover.value = true
     }
 
     /**
@@ -304,6 +326,52 @@ class PlaylistPickerViewModel @Inject constructor(private val musicRepository: M
     companion object {
         private val DEFAULT_EXPORT_CONFIG = ExportConfig(absolute = false, windowsPaths = false)
         var pendingOnlineSongs: List<Song> = emptyList()
+
+        internal fun buildPendingNewPlaylist(
+            possibleName: String?,
+            requestedSongUidCount: Int,
+            resolvedSongs: List<Song>,
+            template: String?,
+            reason: PlaylistDecision.New.Reason,
+        ): PendingNewPlaylist? =
+            if (possibleName != null && (requestedSongUidCount == 0 || resolvedSongs.isNotEmpty())) {
+                PendingNewPlaylist(possibleName, resolvedSongs, template, reason)
+            } else {
+                L.w("Given song UIDs to create were invalid")
+                null
+            }
+
+        internal fun canConfirmPlaylistEdit(
+            chosenName: ChosenName,
+            originalPlaylistName: String?,
+            hasPendingCoverUri: Boolean,
+            removeExistingCover: Boolean,
+        ): Boolean {
+            val hasCoverModification = hasPendingCoverUri || removeExistingCover
+            return when (chosenName) {
+                is ChosenName.Valid -> true
+                is ChosenName.AlreadyExists ->
+                    hasCoverModification &&
+                        originalPlaylistName != null &&
+                        chosenName.prior.equals(originalPlaylistName.trim(), ignoreCase = true)
+                else -> false
+            }
+        }
+
+        internal fun resolveEditedPlaylistName(
+            chosenName: ChosenName,
+            originalPlaylistName: String,
+        ): String =
+            when (chosenName) {
+                is ChosenName.Valid -> chosenName.value
+                is ChosenName.AlreadyExists ->
+                    if (chosenName.prior.equals(originalPlaylistName.trim(), ignoreCase = true)) {
+                        chosenName.prior
+                    } else {
+                        throw IllegalStateException("Chosen name collides with another playlist")
+                    }
+                else -> throw IllegalStateException("Chosen name is invalid: $chosenName")
+            }
     }
 }
 

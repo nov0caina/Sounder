@@ -519,4 +519,7 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Son Endirmələr</string>
     <string name="lng_empty_downloads">Son endirmələriniz burada görünəcək.</string>
+    <string name="lbl_edit_playlist">Pleylisti redaktə et</string>
+    <string name="lbl_choose_cover">Şəkil seç</string>
+    <string name="lbl_remove_cover">Şəkli sil</string>
 </resources>

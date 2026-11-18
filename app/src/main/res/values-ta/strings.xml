@@ -517,4 +517,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">சமீபத்திய பதிவிறக்கங்கள்</string>
     <string name="lng_empty_downloads">உங்கள் சமீபத்திய பதிவிறக்கங்கள் இங்கே தோன்றும்.</string>
+    <string name="lbl_edit_playlist">பிளேலிஸ்ட்டைத் திருத்து</string>
+    <string name="lbl_choose_cover">படத்தைத் தேர்ந்தெடு</string>
+    <string name="lbl_remove_cover">படத்தை அகற்று</string>
 </resources>

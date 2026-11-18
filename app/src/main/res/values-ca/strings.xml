@@ -523,4 +523,7 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="err_update_check_failed">No s\'han pogut cercar actualitzacions. Comprova la teva connexió.</string>
     <string name="lbl_recent_downloads">Baixades recents</string>
     <string name="lng_empty_downloads">Les teves baixades recents es mostraran aquí.</string>
+    <string name="lbl_edit_playlist">Edita la llista de reproducció</string>
+    <string name="lbl_choose_cover">Tria una imatge</string>
+    <string name="lbl_remove_cover">Elimina la imatge</string>
 </resources>

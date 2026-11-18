@@ -523,4 +523,7 @@ ATTENTION : Faites attention en contrôlant ce service, si vous le fermez puis e
     <string name="err_update_check_failed">Impossible de vérifier les mises à jour. Vérifiez votre connexion.</string>
     <string name="lbl_recent_downloads">Téléchargements récents</string>
     <string name="lng_empty_downloads">Vos téléchargements récents s\'afficheront ici.</string>
+    <string name="lbl_edit_playlist">Modifier la playlist</string>
+    <string name="lbl_choose_cover">Choisir une image</string>
+    <string name="lbl_remove_cover">Supprimer l\'image</string>
 </resources>

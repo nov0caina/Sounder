@@ -523,4 +523,7 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="err_update_check_failed">Não foi possível verificar atualizações. Verifique sua conexão.</string>
     <string name="lbl_recent_downloads">Transferências recentes</string>
     <string name="lng_empty_downloads">As suas transferências recentes aparecerão aqui.</string>
+    <string name="lbl_edit_playlist">Editar lista de reprodução</string>
+    <string name="lbl_choose_cover">Escolher imagem</string>
+    <string name="lbl_remove_cover">Remover imagem</string>
 </resources>

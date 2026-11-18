@@ -527,4 +527,7 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="err_update_check_failed">Aktualizace se nepodařilo zkontrolovat. Zkontrolujte připojení.</string>
     <string name="lbl_recent_downloads">Nedávná stažení</string>
     <string name="lng_empty_downloads">Zde se zobrazí vaše nedávná stažení.</string>
+    <string name="lbl_edit_playlist">Upravit playlist</string>
+    <string name="lbl_choose_cover">Vybrat obrázek</string>
+    <string name="lbl_remove_cover">Odebrat obrázek</string>
 </resources>

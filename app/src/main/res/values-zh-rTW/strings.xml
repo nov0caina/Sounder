@@ -516,4 +516,7 @@
     <string name="err_update_check_failed">無法檢查更新，請確認網路連線。</string>
     <string name="lbl_recent_downloads">最近下載</string>
     <string name="lng_empty_downloads">您最近下載的音樂將顯示在這裡。</string>
+    <string name="lbl_edit_playlist">編輯播放清單</string>
+    <string name="lbl_choose_cover">選擇圖片</string>
+    <string name="lbl_remove_cover">移除圖片</string>
 </resources>

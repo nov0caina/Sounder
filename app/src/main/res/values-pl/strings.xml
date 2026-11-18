@@ -527,4 +527,7 @@ UWAGA: Zachowaj ostrożność przy korzystaniu z tej opcji. Jeśli ją zamkniesz
     <string name="err_update_check_failed">Nie udało się sprawdzić aktualizacji. Sprawdź połączenie.</string>
     <string name="lbl_recent_downloads">Ostatnie pobrania</string>
     <string name="lng_empty_downloads">Twoje ostatnie pobrania pojawią się tutaj.</string>
+    <string name="lbl_edit_playlist">Edytuj playlistę</string>
+    <string name="lbl_choose_cover">Wybierz obraz</string>
+    <string name="lbl_remove_cover">Usuń obraz</string>
 </resources>

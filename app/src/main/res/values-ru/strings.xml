@@ -527,4 +527,7 @@
     <string name="err_update_check_failed">Не удалось проверить обновления. Проверьте соединение.</string>
     <string name="lbl_recent_downloads">Недавние загрузки</string>
     <string name="lng_empty_downloads">Ваши недавние загрузки появятся здесь.</string>
+    <string name="lbl_edit_playlist">Редактировать плейлист</string>
+    <string name="lbl_choose_cover">Выбрать изображение</string>
+    <string name="lbl_remove_cover">Удалить изображение</string>
 </resources>

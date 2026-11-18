@@ -430,4 +430,7 @@
     <string name="lbl_recent_downloads">Descărcări recente</string>
     <string name="lng_empty_downloads">Descărcările tale recente vor apărea aici.</string>
     <string name="desc_tab_handle">Mută această filă</string>
+    <string name="lbl_edit_playlist">Editează lista de redare</string>
+    <string name="lbl_choose_cover">Alege o imagine</string>
+    <string name="lbl_remove_cover">Elimină imaginea</string>
 </resources>

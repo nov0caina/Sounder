@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.R
+import org.nov0caina.sounder.image.PlaylistCoverManager
 import org.nov0caina.sounder.list.ListSettings
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineSong
@@ -276,10 +277,14 @@ constructor(
         name: String? = null,
         songs: List<Song> = listOf(),
         reason: PlaylistDecision.New.Reason = PlaylistDecision.New.Reason.NEW,
+        coverUri: Uri? = null,
     ) {
         if (name != null) {
             L.d("Creating $name with ${songs.size} songs]")
             viewModelScope.launch(Dispatchers.IO) {
+                if (coverUri != null) {
+                    PlaylistCoverManager.saveCoverFromUri(context, name, coverUri)
+                }
                 musicRepository.createPlaylist(name, songs)
                 val message =
                     when (reason) {

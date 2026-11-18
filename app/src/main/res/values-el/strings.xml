@@ -296,4 +296,7 @@
     <string name="set_lib_tabs">Καρτέλες βιβλιοθήκης</string>
     <string name="desc_tab_handle">Μετακίνηση αυτής της καρτέλας</string>
     <string name="lbl_playlists">Λίστες αναπαραγωγής</string>
+    <string name="lbl_edit_playlist">Επεξεργασία λίστας αναπαραγωγής</string>
+    <string name="lbl_choose_cover">Επιλογή εικόνας</string>
+    <string name="lbl_remove_cover">Αφαίρεση εικόνας</string>
 </resources>

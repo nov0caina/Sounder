@@ -519,4 +519,7 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="err_update_check_failed">Päivityksiä ei voitu tarkistaa. Tarkista verkkoyhteys.</string>
     <string name="lbl_recent_downloads">Viimeisimmät lataukset</string>
     <string name="lng_empty_downloads">Viimeisimmät latauksesi näkyvät täällä.</string>
+    <string name="lbl_edit_playlist">Muokkaa soittolistaa</string>
+    <string name="lbl_choose_cover">Valitse kuva</string>
+    <string name="lbl_remove_cover">Poista kuva</string>
 </resources>

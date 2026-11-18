@@ -269,4 +269,7 @@
     <string name="lng_queue_added">ക്യൂവിലേക്ക് ചേർത്തു</string>
     <string name="lbl_albums">ആൽബങ്ങൾ</string>
     <string name="lbl_playlists">പ്ലേലിസ്റ്റുകൾ</string>
+    <string name="lbl_edit_playlist">പ്ലേലിസ്റ്റ് എഡിറ്റ് ചെയ്യുക</string>
+    <string name="lbl_choose_cover">ചിത്രം തിരഞ്ഞെടുക്കുക</string>
+    <string name="lbl_remove_cover">ചിത്രം നീക്കം ചെയ്യുക</string>
 </resources>

@@ -466,4 +466,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">ਹਾਲੀਆ ਡਾਊਨਲੋਡ</string>
     <string name="lng_empty_downloads">ਤੁਹਾਡੇ ਹਾਲੀਆ ਡਾਊਨਲੋਡ ਇੱਥੇ ਦਿਖਾਈ ਦੇਣਗੇ।</string>
+    <string name="lbl_edit_playlist">ਪਲੇਲਿਸਟ ਦਾ ਸੰਪਾਦਨ ਕਰੋ</string>
+    <string name="lbl_choose_cover">ਤਸਵੀਰ ਚੁਣੋ</string>
+    <string name="lbl_remove_cover">ਤਸਵੀਰ ਹਟਾਓ</string>
 </resources>

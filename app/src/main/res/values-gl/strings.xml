@@ -405,4 +405,7 @@
     <string name="err_update_check_failed">Non se puideron comprobar as actualizacións. Revisa a túa conexión.</string>
     <string name="lbl_recent_downloads">Descargas recentes</string>
     <string name="lng_empty_downloads">As túas descargas recentes aparecerán aquí.</string>
+    <string name="lbl_edit_playlist">Editar lista de reprodución</string>
+    <string name="lbl_choose_cover">Escoller imaxe</string>
+    <string name="lbl_remove_cover">Eliminar imaxe</string>
 </resources>

@@ -179,4 +179,7 @@
     <string name="lbl_artists">Izpildītāji</string>
     <string name="lbl_genres">Žanri</string>
     <string name="lbl_playlists">Atskaņošanas saraksti</string>
+    <string name="lbl_edit_playlist">Rediģēt atskaņošanas sarakstu</string>
+    <string name="lbl_choose_cover">Izvēlēties attēlu</string>
+    <string name="lbl_remove_cover">Noņemt attēlu</string>
 </resources>

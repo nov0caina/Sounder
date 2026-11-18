@@ -523,4 +523,7 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Nedavna preuzimanja</string>
     <string name="lng_empty_downloads">Vaša nedavna preuzimanja prikazat će se ovdje.</string>
+    <string name="lbl_edit_playlist">Uredi popis za reprodukciju</string>
+    <string name="lbl_choose_cover">Odaberi sliku</string>
+    <string name="lbl_remove_cover">Ukloni sliku</string>
 </resources>

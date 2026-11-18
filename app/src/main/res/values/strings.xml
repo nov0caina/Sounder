@@ -93,6 +93,9 @@
     <string name="lbl_export_playlist">Export playlist</string>
     <string name="lbl_rename">Rename</string>
     <string name="lbl_rename_playlist">Rename playlist</string>
+    <string name="lbl_edit_playlist">Edit playlist</string>
+    <string name="lbl_choose_cover">Choose image</string>
+    <string name="lbl_remove_cover">Remove image</string>
     <string name="lbl_delete">Delete</string>
     <string name="lbl_confirm_delete_playlist">Delete playlist?</string>
     <string name="lbl_edit">Edit</string>

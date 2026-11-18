@@ -153,6 +153,9 @@ class PlaylistDetailFragment :
         collect(downloadManager.downloads) {
             view?.post { playlistListAdapter.notifyItemRangeChanged(0, playlistListAdapter.itemCount) }
         }
+        collect(org.nov0caina.sounder.image.PlaylistCoverManager.coverChanges) {
+            updatePlaylist(detailModel.currentPlaylist.value, detailModel.editedPlaylist.value)
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {

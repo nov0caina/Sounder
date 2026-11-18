@@ -65,6 +65,11 @@ class AmbientGlowView @JvmOverloads constructor(
     private var glowBitmap: Bitmap? = null
     private var oldBitmap: Bitmap? = null
     private var transitionProgress: Float = 1f
+    var showFallbackAura: Boolean = false
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     private val bitmapPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -97,12 +102,23 @@ class AmbientGlowView @JvmOverloads constructor(
             clear()
             return
         }
+        bindData(song.cover, song.uid, imageLoader)
+    }
 
-        if (song.uid == currentSongUid && glowBitmap != null) return
-        currentSongUid = song.uid
+    /**
+     * Binds arbitrary image data (such as a custom playlist cover Uri, File, or Cover) to this ambient glow view.
+     */
+    fun bindData(data: Any?, key: Any? = data, imageLoader: ImageLoader) {
+        if (data == null) {
+            clear()
+            return
+        }
+
+        if (key != null && key == currentSongUid && glowBitmap != null) return
+        currentSongUid = key
 
         val request = ImageRequest.Builder(context)
-            .data(song.cover)
+            .data(data)
             .size(128, 128)
             .scale(Scale.FILL)
             .target(
@@ -112,13 +128,17 @@ class AmbientGlowView @JvmOverloads constructor(
                     setGlowBitmap(bmp)
                 },
                 onError = {
-                    L.w("AmbientGlowView: failed to load cover bitmap for $song")
+                    L.w("AmbientGlowView: failed to load cover bitmap for $data")
                     clear()
                 }
             )
             .build()
 
         imageLoader.enqueue(request)
+    }
+
+    fun clearGlow() {
+        clear()
     }
 
     private fun setGlowBitmap(newBmp: Bitmap) {
@@ -151,10 +171,64 @@ class AmbientGlowView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val current = glowBitmap ?: return
         val w = width.toFloat()
         val h = height.toFloat()
         if (w <= 0f || h <= 0f) return
+
+        // Find playback_pager or playlist_cover_card to center glow precisely behind the cover
+        val parentGroup = parent as? ViewGroup
+        val anchor = parentGroup?.findViewById<View>(org.nov0caina.sounder.R.id.playback_pager)
+            ?: parentGroup?.findViewById<View>(org.nov0caina.sounder.R.id.playlist_cover_card)
+        var cx = w / 2f
+        var cy = h * 0.38f
+        var coverSize = w - dp(48f)
+        if (anchor != null) {
+            var offsetX = anchor.x
+            var offsetY = anchor.y
+            var p = anchor.parent
+            while (p is View && p !== parentGroup) {
+                offsetX += p.x
+                offsetY += p.y
+                p = p.parent
+            }
+            cx = offsetX + anchor.width / 2f
+            cy = offsetY + anchor.height / 2f
+            coverSize = anchor.width.toFloat().coerceAtLeast(1f)
+        }
+        val coverRadius = coverSize / 2f
+
+        // Expand glow generously around cover edges for a prominent atmospheric aura
+        val isDialogAnchor = anchor?.id == org.nov0caina.sounder.R.id.playlist_cover_card
+        val glowSpread = dp(if (isDialogAnchor) 52f else 64f)
+        val glowRadius = coverRadius + glowSpread
+
+        val glowLeft = cx - glowRadius
+        val glowTop = cy - glowRadius
+        val glowRight = cx + glowRadius
+        val glowBottom = cy + glowRadius
+
+        val current = glowBitmap
+        if (current == null) {
+            if (!showFallbackAura) return
+            val primaryColor = context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary).defaultColor
+            val fallbackShader = RadialGradient(
+                cx,
+                cy,
+                glowRadius,
+                intArrayOf(
+                    ColorUtils.setAlphaComponent(primaryColor, 95),
+                    ColorUtils.setAlphaComponent(primaryColor, 45),
+                    Color.TRANSPARENT,
+                ),
+                floatArrayOf(0f, 0.55f, 1f),
+                Shader.TileMode.CLAMP,
+            )
+            layerPaint.shader = fallbackShader
+            layerPaint.alpha = 255
+            canvas.drawRect(glowLeft, glowTop, glowRight, glowBottom, layerPaint)
+            layerPaint.shader = null
+            return
+        }
 
         // Adapt opacity based on dark or light surface theme
         val surfaceColor = context.getAttrColorCompat(com.google.android.material.R.attr.colorSurface).defaultColor
@@ -163,22 +237,6 @@ class AmbientGlowView @JvmOverloads constructor(
 
         layerPaint.alpha = (baseAlpha * 255).toInt()
         val saveCount = canvas.saveLayer(0f, 0f, w, h, layerPaint)
-
-        // Find playback_pager to center glow precisely behind the album cover
-        val pager = (parent as? ViewGroup)?.findViewById<View>(org.nov0caina.sounder.R.id.playback_pager)
-        val cx = pager?.let { it.x + it.width / 2f } ?: (w / 2f)
-        val cy = pager?.let { it.y + it.height / 2f } ?: (h * 0.38f)
-        val coverSize = pager?.let { it.width.toFloat().coerceAtLeast(1f) } ?: (w - dp(48f))
-        val coverRadius = coverSize / 2f
-
-        // Expand glow generously (64dp beyond cover edges) for a prominent atmospheric aura
-        val glowSpread = dp(64f)
-        val glowRadius = coverRadius + glowSpread
-
-        val glowLeft = cx - glowRadius
-        val glowTop = cy - glowRadius
-        val glowRight = cx + glowRadius
-        val glowBottom = cy + glowRadius
 
         // In light theme, lift shadows so dark album art never creates dirty soot/smudges
         if (!isDark) {

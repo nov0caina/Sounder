@@ -468,4 +468,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Nedavni prenosi</string>
     <string name="lng_empty_downloads">Vaši nedavni prenosi bodo prikazani tukaj.</string>
+    <string name="lbl_edit_playlist">Uredi seznam predvajanja</string>
+    <string name="lbl_choose_cover">Izberi sliko</string>
+    <string name="lbl_remove_cover">Odstrani sliko</string>
 </resources>

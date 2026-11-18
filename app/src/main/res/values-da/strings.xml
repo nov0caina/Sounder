@@ -277,4 +277,7 @@
     <string name="set_lib_tabs">Biblioteksfaner</string>
     <string name="desc_tab_handle">Flyt denne fane</string>
     <string name="lng_queue_added">Tilføjet til kø</string>
+    <string name="lbl_edit_playlist">Rediger spilleliste</string>
+    <string name="lbl_choose_cover">Vælg billede</string>
+    <string name="lbl_remove_cover">Fjern billede</string>
 </resources>

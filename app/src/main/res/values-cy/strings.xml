@@ -512,4 +512,7 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Lawrlwythiadau Diweddar</string>
     <string name="lng_empty_downloads">Bydd eich lawrlwythiadau diweddar yn ymddangos yma.</string>
+    <string name="lbl_edit_playlist">Golygu rhestr chwarae</string>
+    <string name="lbl_choose_cover">Dewis llun</string>
+    <string name="lbl_remove_cover">Tynnu llun</string>
 </resources>

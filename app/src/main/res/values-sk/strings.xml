@@ -288,4 +288,7 @@
     <string name="set_lib_tabs">Karty knižnice</string>
     <string name="desc_tab_handle">Presunúť túto kartu</string>
     <string name="lng_queue_added">Pridané do radu</string>
+    <string name="lbl_edit_playlist">Upraviť zoznam skladieb</string>
+    <string name="lbl_choose_cover">Vybrať obrázok</string>
+    <string name="lbl_remove_cover">Odstrániť obrázok</string>
 </resources>

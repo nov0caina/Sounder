@@ -194,4 +194,7 @@
     <string name="lbl_artists">فنکار</string>
     <string name="lbl_genres">صنفاں</string>
     <string name="lbl_playlists">پلے لسٹاں</string>
+    <string name="lbl_edit_playlist">پلے لسٹ وچ ترمیم کرو</string>
+    <string name="lbl_choose_cover">تصویر چنو</string>
+    <string name="lbl_remove_cover">تصویر ہٹاؤ</string>
 </resources>

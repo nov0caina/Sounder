@@ -1,17 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/playlist_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playlist_dialog_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="@dimen/spacing_mid_large"
-    android:paddingTop="@dimen/spacing_medium"
-    android:paddingEnd="@dimen/spacing_mid_large"
-    app:hintEnabled="false">
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/playlist_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <org.nov0caina.sounder.playback.ui.AmbientGlowView
+        android:id="@+id/playlist_cover_glow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</com.google.android.material.textfield.TextInputLayout>
+    <LinearLayout
+        android:id="@+id/playlist_dialog_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/spacing_large"
+        android:paddingTop="@dimen/spacing_large"
+        android:paddingEnd="@dimen/spacing_large"
+        android:paddingBottom="@dimen/spacing_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/playlist_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:textAppearance="@style/TextAppearance.Auxio.HeadlineSmall.Emphasized"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="@string/lbl_edit_playlist" />
+
+        <!-- Glassmorphic 1:1 Cover Preview Stage -->
+        <FrameLayout
+            android:id="@+id/playlist_cover_card"
+            android:layout_width="164dp"
+            android:layout_height="164dp"
+            android:background="@drawable/bg_playlist_cover_glass"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:padding="10dp">
+
+            <org.nov0caina.sounder.image.CoverView
+                android:id="@+id/playlist_default_cover"
+                style="@style/Widget.Auxio.Image.Full"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                app:enablePlaybackIndicator="false"
+                app:enableSelectionBadge="false" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/playlist_custom_cover_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/lbl_choose_cover"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+                tools:src="@drawable/ic_playlist_48"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+        <!-- Cover Action Buttons (Choose / Remove) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playlist_choose_cover_btn"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lbl_choose_cover"
+                android:textSize="13sp"
+                app:icon="@drawable/ic_edit_24"
+                app:iconSize="18dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playlist_remove_cover_btn"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:text="@string/lbl_remove_cover"
+                android:textColor="?attr/colorError"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:icon="@drawable/ic_delete_24"
+                app:iconSize="18dp"
+                app:iconTint="?attr/colorError"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <!-- Playlist Name Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/playlist_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_medium"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/playlist_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                tools:hint="Playlist 1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

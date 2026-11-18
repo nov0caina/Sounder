@@ -523,4 +523,7 @@
     <string name="err_update_check_failed">Не вдалося перевірити оновлення. Перевірте з\'єднання.</string>
     <string name="lbl_recent_downloads">Нещодавні завантаження</string>
     <string name="lng_empty_downloads">Ваші нещодавні завантаження з\'являться тут.</string>
+    <string name="lbl_edit_playlist">Редагувати список відтворення</string>
+    <string name="lbl_choose_cover">Вибрати зображення</string>
+    <string name="lbl_remove_cover">Видалити зображення</string>
 </resources>

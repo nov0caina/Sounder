@@ -376,4 +376,7 @@
     <string name="lbl_recent_downloads">Discargamentos recente</string>
     <string name="lng_empty_downloads">Tu discargamentos recente apparera hic.</string>
     <string name="desc_tab_handle">Mover iste scheda</string>
+    <string name="lbl_edit_playlist">Modificar lista de reproduction</string>
+    <string name="lbl_choose_cover">Seliger imagine</string>
+    <string name="lbl_remove_cover">Remover imagine</string>
 </resources>

@@ -185,4 +185,7 @@
     <string name="lbl_artists">कलाकार</string>
     <string name="lbl_genres">शैली</string>
     <string name="lbl_playlists">प्लेलिस्ट</string>
+    <string name="lbl_edit_playlist">प्लेलिस्ट संपादित करा</string>
+    <string name="lbl_choose_cover">प्रतिमा निवडा</string>
+    <string name="lbl_remove_cover">प्रतिमा काढा</string>
 </resources>

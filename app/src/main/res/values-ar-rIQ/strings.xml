@@ -470,4 +470,7 @@
     <string name="err_update_check_failed">تعذر التحقق من التحديثات. تحقق من اتصالك.</string>
     <string name="lbl_recent_downloads">التنزيلات الأخيرة</string>
     <string name="lng_empty_downloads">ستظهر تنزيلاتك الأخيرة هنا.</string>
+    <string name="lbl_edit_playlist">تعديل قائمة التشغيل</string>
+    <string name="lbl_choose_cover">اختيار صورة</string>
+    <string name="lbl_remove_cover">إزالة الصورة</string>
 </resources>

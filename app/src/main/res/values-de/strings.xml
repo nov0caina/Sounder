@@ -519,4 +519,7 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="err_update_check_failed">Updates konnten nicht geprüft werden. Überprüfe deine Verbindung.</string>
     <string name="lbl_recent_downloads">Neueste Downloads</string>
     <string name="lng_empty_downloads">Deine neuesten Downloads werden hier angezeigt.</string>
+    <string name="lbl_edit_playlist">Wiedergabeliste bearbeiten</string>
+    <string name="lbl_choose_cover">Bild auswählen</string>
+    <string name="lbl_remove_cover">Bild entfernen</string>
 </resources>

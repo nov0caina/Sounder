@@ -508,4 +508,7 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Shkarkimet e fundit</string>
     <string name="lng_empty_downloads">Shkarkimet tuaja të fundit do të shfaqen këtu.</string>
+    <string name="lbl_edit_playlist">Modifiko listën e dëgjimit</string>
+    <string name="lbl_choose_cover">Zgjidh imazhin</string>
+    <string name="lbl_remove_cover">Hiq imazhin</string>
 </resources>

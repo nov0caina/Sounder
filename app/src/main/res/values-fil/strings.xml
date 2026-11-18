@@ -266,4 +266,7 @@
     <string name="lbl_ok">OK</string>
     <string name="desc_tab_handle">Ilipat ang tab na ito</string>
     <string name="lbl_playlists">Mga Playlist</string>
+    <string name="lbl_edit_playlist">I-edit ang playlist</string>
+    <string name="lbl_choose_cover">Pumili ng larawan</string>
+    <string name="lbl_remove_cover">Alisin ang larawan</string>
 </resources>

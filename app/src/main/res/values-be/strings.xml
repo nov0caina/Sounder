@@ -486,4 +486,7 @@
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
     <string name="lbl_recent_downloads">Нядаўнія спампоўкі</string>
     <string name="lng_empty_downloads">Вашы нядаўнія спампоўкі з\'явяцца тут.</string>
+    <string name="lbl_edit_playlist">Рэдагаваць плэйліст</string>
+    <string name="lbl_choose_cover">Выбраць выяву</string>
+    <string name="lbl_remove_cover">Выдаліць выяву</string>
 </resources>

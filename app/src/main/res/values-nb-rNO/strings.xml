@@ -470,4 +470,7 @@ ADVARSEL: Vær varsom med å kontrollere denne tjenesten, hvis du lukker den og 
     <string name="err_update_check_failed">Kunne ikke se etter oppdateringer. Sjekk tilkoblingen din.</string>
     <string name="lbl_recent_downloads">Nylige nedlastinger</string>
     <string name="lng_empty_downloads">Dine nylige nedlastinger vil vises her.</string>
+    <string name="lbl_edit_playlist">Rediger spilleliste</string>
+    <string name="lbl_choose_cover">Velg bilde</string>
+    <string name="lbl_remove_cover">Fjern bilde</string>
 </resources>

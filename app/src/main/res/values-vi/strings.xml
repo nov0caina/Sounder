@@ -180,4 +180,7 @@
     <string name="lbl_artists">Nghệ sĩ</string>
     <string name="lbl_genres">Thể loại</string>
     <string name="lbl_playlists">Danh sách phát</string>
+    <string name="lbl_edit_playlist">Chỉnh sửa danh sách phát</string>
+    <string name="lbl_choose_cover">Chọn hình ảnh</string>
+    <string name="lbl_remove_cover">Xóa hình ảnh</string>
 </resources>

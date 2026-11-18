@@ -515,4 +515,7 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="err_update_check_failed">Gagal memeriksa pembaruan. Periksa koneksi Anda.</string>
     <string name="lbl_recent_downloads">Unduhan Terbaru</string>
     <string name="lng_empty_downloads">Unduhan terbaru Anda akan muncul di sini.</string>
+    <string name="lbl_edit_playlist">Edit playlist</string>
+    <string name="lbl_choose_cover">Pilih gambar</string>
+    <string name="lbl_remove_cover">Hapus gambar</string>
 </resources>

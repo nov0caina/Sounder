@@ -515,4 +515,7 @@
     <string name="err_update_check_failed">无法检查更新，请检查网络连接。</string>
     <string name="lbl_recent_downloads">最近下载</string>
     <string name="lng_empty_downloads">您最近下载的音乐将显示在这里。</string>
+    <string name="lbl_edit_playlist">编辑播放列表</string>
+    <string name="lbl_choose_cover">选择图片</string>
+    <string name="lbl_remove_cover">移除图片</string>
 </resources>

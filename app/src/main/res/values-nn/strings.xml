@@ -519,4 +519,7 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="err_update_check_failed">Kunne ikke se etter oppdateringer. Sjekk tilkoblingen din.</string>
     <string name="lbl_recent_downloads">Nylege nedlastingar</string>
     <string name="lng_empty_downloads">Dei nylege nedlastingane dine vil visast her.</string>
+    <string name="lbl_edit_playlist">Rediger speleliste</string>
+    <string name="lbl_choose_cover">Vel bilete</string>
+    <string name="lbl_remove_cover">Fjern bilete</string>
 </resources>

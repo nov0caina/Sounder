@@ -430,15 +430,17 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
      */
     fun bind(playlist: Playlist) =
         // Playlists are organized in a straight diagonal stack to give the appearance of an
-        // "orderly" pile of covers.
+        // "orderly" pile of covers, unless a custom playlist cover has been configured.
         bindImpl(
             { size ->
-                StackCoverComposition(
-                    playlist.covers,
-                    responsiveCornerRatio(size),
-                    playlist.uid.toString().hashCode(),
-                    backgroundColor(),
-                )
+                val resolvedName = playlist.resolveName(context)
+                PlaylistCoverManager.getCoverFile(context, resolvedName)
+                    ?: StackCoverComposition(
+                        playlist.covers,
+                        responsiveCornerRatio(size),
+                        playlist.uid.toString().hashCode(),
+                        backgroundColor(),
+                    )
             },
             context.getString(R.string.desc_playlist_image, playlist.resolveName(context)),
             R.drawable.ic_playlist_24,
@@ -508,19 +510,26 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
         size: Size,
         shapeAppearanceModel: ShapeAppearanceModel,
     ) {
+        val resolvedData = img(size)
         val request =
             ImageRequest.Builder(context)
-                .data(img(size))
+                .data(resolvedData)
                 .error(
                     StyledDrawable(context, context.getDrawableCompat(errorRes), iconSize).asImage()
                 )
                 .target(image)
 
+        if (resolvedData is java.io.File) {
+            request.memoryCacheKey(
+                "${resolvedData.absolutePath}_${resolvedData.lastModified()}_${size.width}x${size.height}"
+            )
+        }
+
         val bounds = RectF(0f, 0f, size.width.toFloat(), size.height.toFloat())
         val cornerRadius = shapeAppearanceModel.topLeftCornerSize.getCornerSize(bounds)
         val cornersTransformation = RoundedRectTransformation(cornerRadius)
         val circular = shapeAppearanceModel.topLeftCornerSize is RelativeCornerSize
-        if (circular || imageSettings.forceSquareCovers) {
+        if (circular || imageSettings.forceSquareCovers || resolvedData is java.io.File) {
             request.transformations(SquareCropTransformation.INSTANCE, cornersTransformation)
         } else {
             request.transformations(cornersTransformation)

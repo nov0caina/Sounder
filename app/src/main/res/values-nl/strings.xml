@@ -492,4 +492,7 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="err_update_check_failed">Kon niet controleren op updates. Controleer je verbinding.</string>
     <string name="lbl_recent_downloads">Recente downloads</string>
     <string name="lng_empty_downloads">Je recente downloads verschijnen hier.</string>
+    <string name="lbl_edit_playlist">Afspeellijst bewerken</string>
+    <string name="lbl_choose_cover">Afbeelding kiezen</string>
+    <string name="lbl_remove_cover">Afbeelding verwijderen</string>
 </resources>
