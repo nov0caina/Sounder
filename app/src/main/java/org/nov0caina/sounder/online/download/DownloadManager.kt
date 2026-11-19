@@ -24,6 +24,7 @@ import org.nov0caina.sounder.music.MusicRepository
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveNames
 import org.nov0caina.sounder.online.OnlineSettings
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.model.OnlineAlbumDetail
 import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.util.SongMatcher
@@ -37,7 +38,8 @@ import timber.log.Timber as L
 class DownloadManager @Inject constructor(
     @ApplicationContext private val context: Context,
     private val onlineSettings: OnlineSettings,
-    private val musicRepositoryProvider: Provider<MusicRepository>
+    private val musicRepositoryProvider: Provider<MusicRepository>,
+    private val streamingCacheManager: StreamingCacheManager,
 ) {
     private val workManager = WorkManager.getInstance(context)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -107,8 +109,11 @@ class DownloadManager @Inject constructor(
         itemsMap[track.id] = item
         updateList()
 
+        val isFullyCached = streamingCacheManager.isTrackFullyCached(track.id)
         val constraints = Constraints.Builder().apply {
-            if (onlineSettings.wifiOnlyDownloads) {
+            if (isFullyCached) {
+                setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+            } else if (onlineSettings.wifiOnlyDownloads) {
                 setRequiredNetworkType(NetworkType.UNMETERED)
             } else {
                 setRequiredNetworkType(NetworkType.CONNECTED)

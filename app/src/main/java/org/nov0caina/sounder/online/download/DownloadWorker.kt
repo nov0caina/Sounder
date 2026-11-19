@@ -29,6 +29,7 @@ import org.json.JSONObject
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.music.MusicRepository
 import org.nov0caina.sounder.online.OnlineSettings
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.innertube.InnerTubeClient
 import org.nov0caina.sounder.online.innertube.InnerTubeParser
 import org.nov0caina.sounder.online.lyrics.LrcLibClient
@@ -43,6 +44,7 @@ interface DownloadWorkerEntryPoint {
     fun lrcLibClient(): LrcLibClient
     fun onlineSettings(): OnlineSettings
     fun musicRepository(): MusicRepository
+    fun streamingCacheManager(): StreamingCacheManager
 }
 
 class DownloadWorker(
@@ -105,16 +107,19 @@ class DownloadWorker(
                 .readTimeout(60, TimeUnit.SECONDS)
                 .build()
 
-            // 1. Resolve Audio Stream URL
-            val quality = entryPoint.onlineSettings().audioQuality
-            val streamUrl = entryPoint.innerTubeClient().resolveStreamUrl(trackId, quality, title, artist)
-                ?: return@withContext Result.failure(
-                    workDataOf(KEY_ERROR to "Failed to resolve audio stream URL")
-                )
+            val cacheManager = entryPoint.streamingCacheManager()
+            val cachedEntity = cacheManager.getCachedTrackEntity(trackId)
+            val isFullyCached = cacheManager.isTrackFullyCached(trackId)
+            val effectiveAlbum = album?.takeIf { it.isNotBlank() } ?: cachedEntity?.album
+            val effectiveArtworkUrl = artworkUrl?.takeIf { it.isNotBlank() } ?: cachedEntity?.artworkUrl
+            val effectiveTrackNumber = if (inputTrackNumber > 0) inputTrackNumber else (cachedEntity?.trackNumber ?: 0)
+            val effectiveYear = if (inputYear > 0) inputYear else (cachedEntity?.year ?: 0)
 
-            // 2. Resolve Metadata via iTunes Search API (genre, album, high-res artwork) if needed
+            // 1. Resolve Metadata via iTunes Search API (skip when offline & promoting from cache)
             val resolvedTitle = LyricsSanitizer.cleanTitle(title, artist)
-            val needsITunes = (album.isNullOrBlank() || album.equals("Single", ignoreCase = true) || artworkUrl.isNullOrBlank() || inputTrackNumber <= 0 || inputYear <= 0)
+            val isNetworkAvailable = org.nov0caina.sounder.util.NetworkUtil.isConnected(context)
+            val needsITunes = isNetworkAvailable && !isFullyCached &&
+                (effectiveAlbum.isNullOrBlank() || effectiveAlbum.equals("Single", ignoreCase = true) || effectiveArtworkUrl.isNullOrBlank() || effectiveTrackNumber <= 0 || effectiveYear <= 0)
             val itunesClient = if (needsITunes) {
                 OkHttpClient.Builder()
                     .connectTimeout(3, TimeUnit.SECONDS)
@@ -129,20 +134,20 @@ class DownloadWorker(
             } else null
 
             val resolvedGenre = itunesMeta?.genre
-            val resolvedAlbum = album?.takeIf { it.isNotBlank() && !it.equals("Single", ignoreCase = true) }
+            val resolvedAlbum = effectiveAlbum?.takeIf { it.isNotBlank() && !it.equals("Single", ignoreCase = true) }
                 ?: itunesMeta?.album?.takeIf { it.isNotBlank() }
-                ?: album?.takeIf { it.isNotBlank() }
+                ?: effectiveAlbum?.takeIf { it.isNotBlank() }
                 ?: "Single"
-            val providedArtwork = if (!artworkUrl.isNullOrBlank()) {
-                InnerTubeParser.upgradeArtworkResolution(artworkUrl)
+            val providedArtwork = if (!effectiveArtworkUrl.isNullOrBlank()) {
+                InnerTubeParser.upgradeArtworkResolution(effectiveArtworkUrl)
             } else {
                 null
             }
             val bestArtworkUrl = providedArtwork ?: itunesMeta?.artworkUrl
 
-            // 3. Fetch Cover Artwork Bytes Upfront (prioritize verified provided artwork, fallback to iTunes)
-            var coverBytes: ByteArray? = null
-            if (!bestArtworkUrl.isNullOrBlank()) {
+            // 2. Fetch Cover Artwork Bytes Upfront (prioritize local streaming cache, then verified artwork, then iTunes)
+            var coverBytes: ByteArray? = cacheManager.getCachedCoverBytes(trackId)
+            if (coverBytes == null && isNetworkAvailable && !bestArtworkUrl.isNullOrBlank()) {
                 try {
                     val coverReq = Request.Builder()
                         .url(bestArtworkUrl)
@@ -158,7 +163,7 @@ class DownloadWorker(
                 }
             }
             val fallbackArtworkUrl = itunesMeta?.artworkUrl
-            if (coverBytes == null && !fallbackArtworkUrl.isNullOrBlank() && fallbackArtworkUrl != bestArtworkUrl) {
+            if (coverBytes == null && isNetworkAvailable && !fallbackArtworkUrl.isNullOrBlank() && fallbackArtworkUrl != bestArtworkUrl) {
                 try {
                     val fallbackReq = Request.Builder()
                         .url(fallbackArtworkUrl)
@@ -174,7 +179,7 @@ class DownloadWorker(
                 }
             }
 
-            // 4. Prepare Destination Folder
+            // 3. Prepare Destination Folder
             val targetStorage = entryPoint.onlineSettings().downloadStorage
             val musicDir = org.nov0caina.sounder.util.StorageVolumeHelper.getSounderDirForDestination(
                 context,
@@ -187,8 +192,8 @@ class DownloadWorker(
                 targetDir.mkdirs()
             }
 
-            val trackNumber = if (inputTrackNumber > 0) inputTrackNumber else (itunesMeta?.trackNumber ?: 0)
-            val year = if (inputYear > 0) inputYear else (itunesMeta?.year ?: 0)
+            val trackNumber = if (effectiveTrackNumber > 0) effectiveTrackNumber else (itunesMeta?.trackNumber ?: 0)
+            val year = if (effectiveYear > 0) effectiveYear else (itunesMeta?.year ?: 0)
 
             val sanitizedTitle = sanitizeFileName(resolvedTitle)
             val baseFileName = if (trackNumber > 0) {
@@ -196,156 +201,190 @@ class DownloadWorker(
             } else {
                 "$sanitizedArtist - $sanitizedTitle"
             }
-            val audioExtension = if (streamUrl.contains("itag=140") || streamUrl.contains("itag=18") || streamUrl.contains("mp4")) "m4a" else "opus"
-            val audioFile = File(targetDir, "$baseFileName.$audioExtension")
 
-            // 5. Download Audio Stream with Progress Tracking
-            val request = Request.Builder()
-                .url(streamUrl)
-                .header("User-Agent", "Mozilla/5.0")
-                .build()
+            // 4. Acquire Audio: promote directly from streaming cache when complete, otherwise stream over HTTPS
+            val acquiredAudio = CacheDownloadPromoter.acquireAudio(
+                trackId = trackId,
+                tempDir = context.cacheDir,
+                baseFileName = baseFileName,
+                isFullyCached = { id -> cacheManager.isTrackFullyCached(id) },
+                copyFromCache = { id, dest -> cacheManager.copyCachedAudioToFile(id, dest) },
+                detectExtension = { file ->
+                    StreamingCacheManager.detectAudioExtension(file, cachedEntity?.audioExtension ?: "opus")
+                },
+                networkDownload = {
+                    val quality = entryPoint.onlineSettings().audioQuality
+                    val streamUrl = entryPoint.innerTubeClient().resolveStreamUrl(trackId, quality, title, artist)
+                        ?: return@acquireAudio null
+                    val ext = if (streamUrl.contains("itag=140") || streamUrl.contains("itag=18") || streamUrl.contains("mp4")) {
+                        "m4a"
+                    } else {
+                        "opus"
+                    }
+                    val tempFile = File(context.cacheDir, "$baseFileName.$ext.tmp")
+                    val request = Request.Builder()
+                        .url(streamUrl)
+                        .header("User-Agent", "Mozilla/5.0")
+                        .build()
 
-            okHttpClient.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) {
-                    return@withContext Result.failure(
-                        workDataOf(KEY_ERROR to "HTTP error: ${response.code}")
-                    )
-                }
+                    var downloadOk = false
+                    okHttpClient.newCall(request).execute().use { response ->
+                        if (!response.isSuccessful) {
+                            L.w("HTTP error downloading %s: %d", trackId, response.code)
+                            return@use
+                        }
+                        val body = response.body ?: return@use
+                        val contentLength = body.contentLength()
+                        body.byteStream().use { input ->
+                            FileOutputStream(tempFile).use { output ->
+                                val buffer = ByteArray(8192)
+                                var bytesRead: Int
+                                var totalRead = 0L
+                                var lastReportedProgress = -1
 
-                val body = response.body ?: return@withContext Result.failure(
-                    workDataOf(KEY_ERROR to "Empty response body")
-                )
+                                while (input.read(buffer).also { bytesRead = it } != -1) {
+                                    if (isStopped) {
+                                        tempFile.delete()
+                                        return@use
+                                    }
 
-                val contentLength = body.contentLength()
-                val tempFile = File(context.cacheDir, "$baseFileName.$audioExtension.tmp")
+                                    output.write(buffer, 0, bytesRead)
+                                    totalRead += bytesRead
 
-                body.byteStream().use { input ->
-                    FileOutputStream(tempFile).use { output ->
-                        val buffer = ByteArray(8192)
-                        var bytesRead: Int
-                        var totalRead = 0L
-                        var lastReportedProgress = -1
-
-                        while (input.read(buffer).also { bytesRead = it } != -1) {
-                            if (isStopped) {
-                                tempFile.delete()
-                                return@withContext Result.failure(
-                                    workDataOf(KEY_ERROR to "Cancelled")
-                                )
-                            }
-
-                            output.write(buffer, 0, bytesRead)
-                            totalRead += bytesRead
-
-                            if (contentLength > 0) {
-                                val progress = ((totalRead * 95) / contentLength).toInt().coerceIn(0, 95)
-                                if (progress != lastReportedProgress && progress % 5 == 0) {
-                                    lastReportedProgress = progress
-                                    setProgress(workDataOf(KEY_PROGRESS to progress))
-                                    notificationManager.notify(
-                                        notificationId,
-                                        buildNotification(title, artist, progress, false)
-                                    )
+                                    if (contentLength > 0) {
+                                        val progress = ((totalRead * 95) / contentLength).toInt().coerceIn(0, 95)
+                                        if (progress != lastReportedProgress && progress % 5 == 0) {
+                                            lastReportedProgress = progress
+                                            setProgress(workDataOf(KEY_PROGRESS to progress))
+                                            notificationManager.notify(
+                                                notificationId,
+                                                buildNotification(title, artist, progress, false)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
+                        downloadOk = tempFile.exists() && tempFile.length() > 0L
+                    }
+                    if (downloadOk) {
+                        ResolvedDownloadAudio(tempFile = tempFile, audioExtension = ext, promotedFromCache = false)
+                    } else {
+                        tempFile.delete()
+                        null
                     }
                 }
+            ) ?: return@withContext Result.failure(
+                workDataOf(KEY_ERROR to if (isStopped) "Cancelled" else "Failed to acquire audio stream")
+            )
 
-                setProgress(workDataOf(KEY_PROGRESS to 95, "status" to "TAGGING"))
+            val tempFile = acquiredAudio.tempFile
+            val audioExtension = acquiredAudio.audioExtension
+            val audioFile = File(targetDir, "$baseFileName.$audioExtension")
 
-                // 5.1. Write metadata tags into the container via TagLib
-                try {
-                    TagLibJNI.writeTags(
-                        path = tempFile.absolutePath,
-                        title = resolvedTitle,
-                        artist = artist,
-                        album = resolvedAlbum,
-                        genre = resolvedGenre,
-                        coverData = coverBytes,
-                        track = trackNumber,
-                        year = year
-                    )
-                } catch (e: Throwable) {
-                    L.w(e, "TagLib writeTags failed on %s", tempFile.absolutePath)
-                }
+            setProgress(workDataOf(KEY_PROGRESS to 95, "status" to "TAGGING"))
 
-                // Copy to destination: try direct file copy first, fallback to MediaStore if restricted
-                var savedSuccessfully = false
-                try {
-                    if (audioFile.exists()) {
-                        audioFile.delete()
-                    }
-                    tempFile.copyTo(audioFile, overwrite = true)
-                    savedSuccessfully = true
-                } catch (e: Exception) {
-                    L.w(e, "Direct file copy failed, falling back to MediaStore insertion")
-                }
-
-                if (!savedSuccessfully) {
-                    try {
-                        val values = android.content.ContentValues().apply {
-                            put(android.provider.MediaStore.Audio.Media.DISPLAY_NAME, "$baseFileName.$audioExtension")
-                            put(android.provider.MediaStore.Audio.Media.TITLE, resolvedTitle)
-                            put(android.provider.MediaStore.Audio.Media.ARTIST, artist)
-                            put(android.provider.MediaStore.Audio.Media.ALBUM, resolvedAlbum)
-                            if (trackNumber > 0) {
-                                put(android.provider.MediaStore.Audio.Media.TRACK, trackNumber)
-                            }
-                            if (year > 0) {
-                                put(android.provider.MediaStore.Audio.Media.YEAR, year)
-                            }
-                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R && resolvedGenre != null) {
-                                put(android.provider.MediaStore.Audio.Media.GENRE, resolvedGenre)
-                            }
-                            put(android.provider.MediaStore.Audio.Media.MIME_TYPE, if (audioExtension == "m4a") "audio/mp4" else "audio/ogg")
-                            put(android.provider.MediaStore.Audio.Media.RELATIVE_PATH, "Music/Sounder/$sanitizedArtist/$sanitizedAlbum")
-                            put(android.provider.MediaStore.Audio.Media.IS_PENDING, 1)
-                        }
-                        val uri = context.contentResolver.insert(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
-                        if (uri != null) {
-                            context.contentResolver.openOutputStream(uri)?.use { out ->
-                                tempFile.inputStream().use { input -> input.copyTo(out) }
-                            }
-                            values.clear()
-                            values.put(android.provider.MediaStore.Audio.Media.IS_PENDING, 0)
-                            context.contentResolver.update(uri, values, null, null)
-                            savedSuccessfully = true
-                        }
-                    } catch (e: Exception) {
-                        L.e(e, "MediaStore insertion failed for %s", baseFileName)
-                    }
-                }
-                tempFile.delete()
+            // 5.1. Write metadata tags into the container via TagLib
+            try {
+                TagLibJNI.writeTags(
+                    path = tempFile.absolutePath,
+                    title = resolvedTitle,
+                    artist = artist,
+                    album = resolvedAlbum,
+                    genre = resolvedGenre,
+                    coverData = coverBytes,
+                    track = trackNumber,
+                    year = year
+                )
+            } catch (e: Throwable) {
+                L.w(e, "TagLib writeTags failed on %s", tempFile.absolutePath)
             }
 
-            // 6. Download Lyrics from LrcLib
+            // Copy to destination: try direct file copy first, fallback to MediaStore if restricted
+            var savedSuccessfully = false
             try {
-                withTimeoutOrNull(2000L) {
-                    val durationSec = if (durationMs > 0) (durationMs / 1000).toInt() else null
-                    val lyricsResult = entryPoint.lrcLibClient().getLyrics(
-                        trackName = resolvedTitle,
-                        artistName = artist,
-                        albumName = resolvedAlbum,
-                        durationSeconds = durationSec
-                    )
+                if (audioFile.exists()) {
+                    audioFile.delete()
+                }
+                tempFile.copyTo(audioFile, overwrite = true)
+                savedSuccessfully = true
+            } catch (e: Exception) {
+                L.w(e, "Direct file copy failed, falling back to MediaStore insertion")
+            }
 
-                    if (lyricsResult.hasSyncedLyrics) {
-                        val lrcFile = File(targetDir, "$baseFileName.lrc")
-                        val lrcContent = lyricsResult.syncedLyrics.joinToString("\n") { line ->
-                            val minutes = line.timeMs / 60_000
-                            val seconds = (line.timeMs % 60_000) / 1000
-                            val hundredths = (line.timeMs % 1000) / 10
-                            String.format("[%02d:%02d.%02d] %s", minutes, seconds, hundredths, line.text)
+            if (!savedSuccessfully) {
+                try {
+                    val values = android.content.ContentValues().apply {
+                        put(android.provider.MediaStore.Audio.Media.DISPLAY_NAME, "$baseFileName.$audioExtension")
+                        put(android.provider.MediaStore.Audio.Media.TITLE, resolvedTitle)
+                        put(android.provider.MediaStore.Audio.Media.ARTIST, artist)
+                        put(android.provider.MediaStore.Audio.Media.ALBUM, resolvedAlbum)
+                        if (trackNumber > 0) {
+                            put(android.provider.MediaStore.Audio.Media.TRACK, trackNumber)
                         }
-                        lrcFile.writeText(lrcContent)
-                    } else if (lyricsResult.hasPlainLyrics) {
-                        val txtFile = File(targetDir, "$baseFileName.lrc")
-                        txtFile.writeText(lyricsResult.plainLyrics.orEmpty())
+                        if (year > 0) {
+                            put(android.provider.MediaStore.Audio.Media.YEAR, year)
+                        }
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R && resolvedGenre != null) {
+                            put(android.provider.MediaStore.Audio.Media.GENRE, resolvedGenre)
+                        }
+                        put(android.provider.MediaStore.Audio.Media.MIME_TYPE, if (audioExtension == "m4a") "audio/mp4" else "audio/ogg")
+                        put(android.provider.MediaStore.Audio.Media.RELATIVE_PATH, "Music/Sounder/$sanitizedArtist/$sanitizedAlbum")
+                        put(android.provider.MediaStore.Audio.Media.IS_PENDING, 1)
+                    }
+                    val uri = context.contentResolver.insert(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
+                    if (uri != null) {
+                        context.contentResolver.openOutputStream(uri)?.use { out ->
+                            tempFile.inputStream().use { input -> input.copyTo(out) }
+                        }
+                        values.clear()
+                        values.put(android.provider.MediaStore.Audio.Media.IS_PENDING, 0)
+                        context.contentResolver.update(uri, values, null, null)
+                        savedSuccessfully = true
+                    }
+                } catch (e: Exception) {
+                    L.e(e, "MediaStore insertion failed for %s", baseFileName)
+                }
+            }
+            tempFile.delete()
+
+            // 6. Save Lyrics (reuse cached .lrc first, fallback to LrcLib when online)
+            try {
+                val cachedLrc = cacheManager.getCachedLyricsRaw(trackId)
+                if (!cachedLrc.isNullOrBlank()) {
+                    File(targetDir, "$baseFileName.lrc").writeText(cachedLrc)
+                } else if (isNetworkAvailable) {
+                    withTimeoutOrNull(2000L) {
+                        val durationSec = if (durationMs > 0) (durationMs / 1000).toInt() else null
+                        val lyricsResult = entryPoint.lrcLibClient().getLyrics(
+                            trackName = resolvedTitle,
+                            artistName = artist,
+                            albumName = resolvedAlbum,
+                            durationSeconds = durationSec
+                        )
+
+                        if (lyricsResult.hasSyncedLyrics) {
+                            val lrcFile = File(targetDir, "$baseFileName.lrc")
+                            val lrcContent = lyricsResult.syncedLyrics.joinToString("\n") { line ->
+                                val minutes = line.timeMs / 60_000
+                                val seconds = (line.timeMs % 60_000) / 1000
+                                val hundredths = (line.timeMs % 1000) / 10
+                                String.format("[%02d:%02d.%02d] %s", minutes, seconds, hundredths, line.text)
+                            }
+                            lrcFile.writeText(lrcContent)
+                        } else if (lyricsResult.hasPlainLyrics) {
+                            val txtFile = File(targetDir, "$baseFileName.lrc")
+                            txtFile.writeText(lyricsResult.plainLyrics.orEmpty())
+                        }
                     }
                 }
             } catch (e: Exception) {
                 L.w(e, "Could not save lyrics for %s", baseFileName)
+            }
+
+            // Free rotating cache slot when promoted to permanent download
+            if (acquiredAudio.promotedFromCache && savedSuccessfully) {
+                cacheManager.removeCachedTrack(trackId)
             }
 
             // 7. Save Artwork Cover to disk
