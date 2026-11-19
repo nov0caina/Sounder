@@ -37,6 +37,7 @@ import org.nov0caina.sounder.list.ListSettings
 import org.nov0caina.sounder.list.adapter.UpdateInstructions
 import org.nov0caina.sounder.music.MusicRepository
 import org.nov0caina.sounder.music.resolve
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
@@ -77,6 +78,7 @@ constructor(
     private val downloadManager: DownloadManager,
     private val onlineMusicRepository: OnlineMusicRepository,
     private val musicRepository: MusicRepository,
+    private val streamingCacheManager: StreamingCacheManager,
 ) : ViewModel(), PlaybackStateManager.Listener, PlaybackSettings.Listener {
     private var lastPositionJob: Job? = null
 
@@ -231,7 +233,8 @@ constructor(
         }
         return songs.filter { song ->
             if (song is OnlineSong) {
-                downloadManager.isDownloaded(song.onlineTrack.id)
+                downloadManager.isDownloaded(song.onlineTrack.id) ||
+                    streamingCacheManager.isTrackFullyCached(song.onlineTrack.id)
             } else {
                 true
             }
@@ -245,6 +248,11 @@ constructor(
             if (localPath != null && File(localPath).exists()) {
                 val localSong = OnlineSong(song.onlineTrack, Uri.fromFile(File(localPath)))
                 playWithImpl(localSong, with, ShuffleMode.IMPLICIT)
+                return
+            }
+            if (streamingCacheManager.isTrackFullyCached(song.onlineTrack.id)) {
+                val cachedSong = OnlineSong(song.onlineTrack, Uri.parse("sounder://stream/${song.onlineTrack.id}"))
+                playWithImpl(cachedSong, with, ShuffleMode.IMPLICIT)
                 return
             }
             if (!NetworkUtil.isConnected(context)) {
@@ -390,6 +398,12 @@ constructor(
                 val localSong = OnlineSong(song.onlineTrack, Uri.fromFile(File(localPath)))
                 val queue = playable.map { if (it.uid.toString() == song.uid.toString()) localSong else it }
                 playImpl(commandFactory.songFromPlaylist(localSong, playlist, queue, shuffle))
+                return
+            }
+            if (streamingCacheManager.isTrackFullyCached(song.onlineTrack.id)) {
+                val cachedSong = OnlineSong(song.onlineTrack, Uri.parse("sounder://stream/${song.onlineTrack.id}"))
+                val queue = playable.map { if (it.uid.toString() == song.uid.toString()) cachedSong else it }
+                playImpl(commandFactory.songFromPlaylist(cachedSong, playlist, queue, shuffle))
                 return
             }
             if (!NetworkUtil.isConnected(context)) {
@@ -546,7 +560,8 @@ constructor(
         if (song is OnlineSong && song.uri.scheme != "file") {
             val localPath = downloadManager.getDownloadedFilePath(song.onlineTrack.id)
             val isLocal = localPath != null && File(localPath).exists()
-            if (!isLocal && !NetworkUtil.isConnected(context)) {
+            val isCached = streamingCacheManager.isTrackFullyCached(song.onlineTrack.id)
+            if (!isLocal && !isCached && !NetworkUtil.isConnected(context)) {
                 L.w("Cannot play un-downloaded online song offline: %s", song.onlineTrack.title)
                 (offlinePlaybackWarning as MutableEvent<Unit>).put(Unit)
                 return

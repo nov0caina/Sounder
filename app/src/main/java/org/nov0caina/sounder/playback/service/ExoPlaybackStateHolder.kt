@@ -51,6 +51,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import org.nov0caina.sounder.image.ImageSettings
 import org.nov0caina.sounder.music.MusicRepository
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.playback.PlaybackSettings
 import org.nov0caina.sounder.playback.persist.PersistenceRepository
@@ -79,6 +80,7 @@ class ExoPlaybackStateHolder(
     private val replayGainProcessor: ReplayGainAudioProcessor,
     private val musicRepository: MusicRepository,
     private val imageSettings: ImageSettings,
+    private val streamingCacheManager: StreamingCacheManager,
 ) :
     PlaybackStateHolder,
     Player.Listener,
@@ -505,14 +507,32 @@ class ExoPlaybackStateHolder(
     override fun onPlaybackStateChanged(playbackState: Int) {
         super.onPlaybackStateChanged(playbackState)
 
-        if (playbackState == Player.STATE_ENDED && player.repeatMode == Player.REPEAT_MODE_OFF) {
-            goto(0)
-            player.pause()
+        if (playbackState == Player.STATE_READY) {
+            val mediaItem = player.currentMediaItem
+            val song = mediaItem?.song
+            if (song is OnlineSong && mediaItem.localConfiguration?.uri?.scheme != "file") {
+                val resolvedDuration = player.duration.takeIf { it != C.TIME_UNSET && it > 0L }
+                    ?: song.durationMs
+                streamingCacheManager.recordTrackPlayback(
+                    song.onlineTrack.copy(durationMs = resolvedDuration)
+                )
+            }
+        } else if (playbackState == Player.STATE_ENDED) {
+            streamingCacheManager.refreshCacheMetrics()
+            if (player.repeatMode == Player.REPEAT_MODE_OFF) {
+                goto(0)
+                player.pause()
+            }
         }
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         super.onMediaItemTransition(mediaItem, reason)
+
+        val song = mediaItem?.song
+        if (song is OnlineSong && mediaItem.localConfiguration?.uri?.scheme != "file") {
+            streamingCacheManager.recordTrackPlayback(song.onlineTrack)
+        }
 
         if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_AUTO) {
             playbackManager.ack(this, StateAck.IndexMoved)
@@ -618,11 +638,17 @@ class ExoPlaybackStateHolder(
 
     private fun Song.buildMediaItem(): MediaItem {
         var itemUri = uri
+        var customCacheKey: String? = null
         if (this is OnlineSong) {
             val sp = context.getSharedPreferences("sounder_downloads_store", Context.MODE_PRIVATE)
             val localPath = sp.getString(onlineTrack.id, null) ?: sp.getString("path_${onlineTrack.id}", null)
             if (localPath != null && java.io.File(localPath).exists()) {
                 itemUri = Uri.fromFile(java.io.File(localPath))
+            } else {
+                customCacheKey = StreamingCacheManager.cacheKeyFor(onlineTrack.id)
+                if (streamingCacheManager.isTrackFullyCached(onlineTrack.id)) {
+                    itemUri = Uri.parse("sounder://stream/${onlineTrack.id}")
+                }
             }
         }
         val extras = android.os.Bundle().apply {
@@ -633,6 +659,7 @@ class ExoPlaybackStateHolder(
             .build()
         return MediaItem.Builder()
             .setUri(itemUri)
+            .apply { if (customCacheKey != null) setCustomCacheKey(customCacheKey) }
             .setMediaMetadata(metadata)
             .setTag(this)
             .build()
@@ -698,6 +725,7 @@ class ExoPlaybackStateHolder(
         private val replayGainProcessor: ReplayGainAudioProcessor,
         private val musicRepository: MusicRepository,
         private val imageSettings: ImageSettings,
+        private val streamingCacheManager: StreamingCacheManager,
     ) {
         fun create(): ExoPlaybackStateHolder {
             // Since Auxio is a music player, only specify an audio renderer to save
@@ -742,6 +770,7 @@ class ExoPlaybackStateHolder(
                 replayGainProcessor,
                 musicRepository,
                 imageSettings,
+                streamingCacheManager,
             )
         }
     }

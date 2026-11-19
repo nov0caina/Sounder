@@ -9,6 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import org.nov0caina.sounder.online.db.CachedTrackDao
 import org.nov0caina.sounder.online.db.OnlineDatabase
 import org.nov0caina.sounder.online.db.OnlinePlaylistTrackDao
 import org.nov0caina.sounder.online.db.RecentArtistsDao
@@ -42,7 +43,9 @@ abstract class OnlineModule {
                 context,
                 OnlineDatabase::class.java,
                 "auxio_online.db"
-            ).fallbackToDestructiveMigration(true).build()
+            ).addMigrations(OnlineDatabase.MIGRATION_2_3)
+                .fallbackToDestructiveMigration(true)
+                .build()
         }
 
         @Provides
@@ -55,6 +58,12 @@ abstract class OnlineModule {
         @Singleton
         fun provideOnlinePlaylistTrackDao(database: OnlineDatabase): OnlinePlaylistTrackDao {
             return database.onlinePlaylistTrackDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideCachedTrackDao(database: OnlineDatabase): CachedTrackDao {
+            return database.cachedTrackDao()
         }
 
         @Provides

@@ -20,7 +20,9 @@ import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.DialogLyricsBinding
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.model.LyricsResult
+import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import com.google.android.material.bottomsheet.BackportBottomSheetBehavior
 import com.google.android.material.bottomsheet.BackportBottomSheetDialog
@@ -34,6 +36,7 @@ import timber.log.Timber as L
 class LyricsBottomSheetDialogFragment : ViewBindingBottomSheetDialogFragment<DialogLyricsBinding>() {
 
     @Inject lateinit var lrcLibClient: LrcLibClient
+    @Inject lateinit var streamingCacheManager: StreamingCacheManager
 
     private val playbackModel: PlaybackViewModel by activityViewModels()
     private var lyricLineAdapter: LyricLineAdapter? = null
@@ -109,7 +112,16 @@ class LyricsBottomSheetDialogFragment : ViewBindingBottomSheetDialogFragment<Dia
             binding.lyricsSongTitle.text = rawTitle
             binding.lyricsSongArtist.text = rawArtist
 
-            loadLyrics(context.applicationContext, cleanTitle, cleanArtist, rawAlbum, durationSec, song.uri.path)
+            val onlineTrackId = (song as? OnlineSong)?.onlineTrack?.id
+            loadLyrics(
+                context.applicationContext,
+                cleanTitle,
+                cleanArtist,
+                rawAlbum,
+                durationSec,
+                song.uri.path,
+                onlineTrackId,
+            )
         }
 
         collect(playbackModel.positionDs) { positionDs ->
@@ -197,7 +209,8 @@ class LyricsBottomSheetDialogFragment : ViewBindingBottomSheetDialogFragment<Dia
         cleanArtist: String,
         album: String?,
         durationSec: Int,
-        path: String?
+        path: String?,
+        onlineTrackId: String? = null,
     ) {
         val binding = requireBinding()
         binding.lyricsProgress.isVisible = true
@@ -209,7 +222,9 @@ class LyricsBottomSheetDialogFragment : ViewBindingBottomSheetDialogFragment<Dia
             val result = withContext(Dispatchers.IO) {
                 // 1. Check local offline LRC file first across storage volumes
                 checkOfflineLrcFile(appContext, cleanArtist, cleanTitle, album, path)
-                    // 2. Fetch from progressive LrcLib network client
+                    // 2. Check rotating streaming cache lyrics (zero-network offline parity)
+                    ?: onlineTrackId?.let { streamingCacheManager.getCachedLyrics(it) }
+                    // 3. Fetch from progressive LrcLib network client
                     ?: lrcLibClient.getLyrics(cleanTitle, cleanArtist, album, durationSec)
             }
 

@@ -1,9 +1,11 @@
 package org.nov0caina.sounder.online.model
 
 import android.net.Uri
+import java.io.File
 import java.io.InputStream
 import java.net.URL
 import java.util.UUID
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -23,12 +25,31 @@ import org.oxycblt.musikr.tag.ReplayGainAdjustment
 import org.oxycblt.musikr.tag.interpret.Naming
 
 class OnlineCover(
-    private val artworkUrl: String,
-    override val id: String
+    private val artworkUrl: String?,
+    override val id: String,
+    private val trackId: String? = null,
+    private val localCoverPath: String? = null,
 ) : Cover {
     override suspend fun open(): InputStream? {
+        val explicitFile = localCoverPath?.let { File(it) }
+        if (explicitFile != null && explicitFile.exists() && explicitFile.length() > 0L) {
+            return try {
+                explicitFile.inputStream()
+            } catch (_: Exception) {
+                null
+            }
+        }
+        val cachedFile = trackId?.let { StreamingCacheManager.findCachedCoverFile(it) }
+        if (cachedFile != null && cachedFile.exists() && cachedFile.length() > 0L) {
+            return try {
+                cachedFile.inputStream()
+            } catch (_: Exception) {
+                null
+            }
+        }
+        val url = artworkUrl?.takeIf { it.isNotBlank() } ?: return null
         return try {
-            URL(artworkUrl).openStream()
+            URL(url).openStream()
         } catch (e: Exception) {
             null
         }
@@ -106,9 +127,24 @@ class OnlineSong(
     override val addedMs: Long = System.currentTimeMillis()
 
     private val artistInstance = OnlineArtist(onlineTrack.artist)
-    override val cover: Cover? = onlineTrack.artworkUrl?.let { url ->
-        OnlineCover(url, "online_cover_${onlineTrack.id}")
-    }
+    override val cover: Cover? =
+        if (!onlineTrack.artworkUrl.isNullOrBlank() || !onlineTrack.localCoverPath.isNullOrBlank()) {
+            OnlineCover(
+                artworkUrl = onlineTrack.artworkUrl,
+                id = "online_cover_${onlineTrack.id}",
+                trackId = onlineTrack.id,
+                localCoverPath = onlineTrack.localCoverPath,
+            )
+        } else {
+            StreamingCacheManager.findCachedCoverFile(onlineTrack.id)?.let { file ->
+                OnlineCover(
+                    artworkUrl = null,
+                    id = "online_cover_${onlineTrack.id}",
+                    trackId = onlineTrack.id,
+                    localCoverPath = file.absolutePath,
+                )
+            }
+        }
 
     private val sanitizedAlbumTitle: String = run {
         val raw = onlineTrack.album?.trim()
