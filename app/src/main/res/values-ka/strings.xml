@@ -306,4 +306,22 @@
     <string name="set_online_downloads_desc">სტრიმინგის ხარისხის, ჩამოტვირთვებისა და მეხსიერების მართვა</string>
     <string name="set_streaming_category">სტრიმინგი</string>
     <string name="set_downloads_category">ჩამოტვირთვები</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">სტრიმინგის ქეშის ზომა</string>
+    <string name="set_clear_streaming_cache">სტრიმინგის ქეშის გასუფთავება</string>
+    <string name="fmt_streaming_cache_usage">გამოყენებულია %1$d მბ</string>
+    <string name="msg_streaming_cache_cleared">სტრიმინგის ქეში გასუფთავდა</string>
+    <string name="lbl_offline_backup">ოფლაინ რეზერვი</string>
+    <string name="offline_backup_subtitle">%1$d სიმღერა მზადაა ოფლაინ დასაკრავად</string>
+    <string name="offline_backup_storage_summary">%1$d სიმღერა • %2$d მბ ქეშში</string>
+    <string name="offline_backup_mode_badge">ოფლაინ რეჟიმი</string>
+    <string name="btn_play_all">ყველას დაკვრა</string>
+    <string name="btn_shuffle_play">არეული</string>
+    <string name="filter_chip_all">ყველა</string>
+    <string name="filter_chip_artists">შემსრულებლები</string>
+    <string name="filter_chip_albums">ალბომები</string>
+    <string name="lng_empty_offline_backup">მოუსმინეთ ონლაინ მუსიკას ოფლაინ რეზერვის ავტომატურად შესაქმნელად</string>
+    <string name="msg_offline_backup_ready">ოფლაინ ხართ. თქვენი ოფლაინ რეზერვი მზადაა დასაკრავად</string>
+    <string name="btn_listen">მოსმენა</string>
 </resources>

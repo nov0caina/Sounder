@@ -527,4 +527,22 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="set_online_downloads_desc">Konfigurer strøymekvalitet, nedlastingar og lagring</string>
     <string name="set_streaming_category">Strøyming</string>
     <string name="set_downloads_category">Nedlastingar</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Storleik på strøymebuffer</string>
+    <string name="set_clear_streaming_cache">Tøm strøymebuffer</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB brukt</string>
+    <string name="msg_streaming_cache_cleared">Strøymebuffer tømt</string>
+    <string name="lbl_offline_backup">Fråkopla reserve</string>
+    <string name="offline_backup_subtitle">%1$d songar klare til avspeling utan nett</string>
+    <string name="offline_backup_storage_summary">%1$d songar • %2$d MB bufrede</string>
+    <string name="offline_backup_mode_badge">Fråkopla modus</string>
+    <string name="btn_play_all">Spel alle</string>
+    <string name="btn_shuffle_play">Tilfeldig</string>
+    <string name="filter_chip_all">Alle</string>
+    <string name="filter_chip_artists">Artistar</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Lytt til musikk på nett for å byggja den fråkopla reserven automatisk</string>
+    <string name="msg_offline_backup_ready">Utan nett. Den fråkopla reserven din er klar til avspeling</string>
+    <string name="btn_listen">Lytt</string>
 </resources>

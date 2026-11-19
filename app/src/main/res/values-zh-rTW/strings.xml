@@ -524,4 +524,22 @@
     <string name="set_online_downloads_desc">設定串流音質、下載與儲存位置</string>
     <string name="set_streaming_category">串流</string>
     <string name="set_downloads_category">下載</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">串流快取大小</string>
+    <string name="set_clear_streaming_cache">清除串流快取</string>
+    <string name="fmt_streaming_cache_usage">已使用 %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">已清除串流快取</string>
+    <string name="lbl_offline_backup">離線音樂備份</string>
+    <string name="offline_backup_subtitle">%1$d 首歌曲可離線播放</string>
+    <string name="offline_backup_storage_summary">%1$d 首歌曲 • 已快取 %2$d MB</string>
+    <string name="offline_backup_mode_badge">離線模式</string>
+    <string name="btn_play_all">全部播放</string>
+    <string name="btn_shuffle_play">隨機播放</string>
+    <string name="filter_chip_all">全部</string>
+    <string name="filter_chip_artists">演出者</string>
+    <string name="filter_chip_albums">專輯</string>
+    <string name="lng_empty_offline_backup">聆聽線上音樂即可自動建立你的離線音樂備份</string>
+    <string name="msg_offline_backup_ready">目前離線。你的離線音樂備份已準備好播放</string>
+    <string name="btn_listen">立即聆聽</string>
 </resources>

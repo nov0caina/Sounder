@@ -495,4 +495,22 @@
     <string name="set_online_downloads_desc">ストリーミング音質、ダウンロード、保存先を設定</string>
     <string name="set_streaming_category">ストリーミング</string>
     <string name="set_downloads_category">ダウンロード</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">ストリーミングキャッシュ容量</string>
+    <string name="set_clear_streaming_cache">ストリーミングキャッシュを削除</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB 使用中</string>
+    <string name="msg_streaming_cache_cleared">ストリーミングキャッシュを削除しました</string>
+    <string name="lbl_offline_backup">オフラインバックアップ</string>
+    <string name="offline_backup_subtitle">%1$d 曲をオフラインで再生可能</string>
+    <string name="offline_backup_storage_summary">%1$d 曲 • %2$d MB キャッシュ済み</string>
+    <string name="offline_backup_mode_badge">オフラインモード</string>
+    <string name="btn_play_all">すべて再生</string>
+    <string name="btn_shuffle_play">シャッフル</string>
+    <string name="filter_chip_all">すべて</string>
+    <string name="filter_chip_artists">アーティスト</string>
+    <string name="filter_chip_albums">アルバム</string>
+    <string name="lng_empty_offline_backup">オンラインで音楽を聴くとオフラインバックアップが自動的に作成されます</string>
+    <string name="msg_offline_backup_ready">オフラインです。オフラインバックアップを再生できます</string>
+    <string name="btn_listen">聴く</string>
 </resources>

@@ -296,4 +296,22 @@
     <string name="set_online_downloads_desc">Nastavenie kvality streamovania, sťahovania a úložiska</string>
     <string name="set_streaming_category">Streamovanie</string>
     <string name="set_downloads_category">Stiahnuté</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Veľkosť vyrovnávacej pamäte streamovania</string>
+    <string name="set_clear_streaming_cache">Vymazať vyrovnávaciu pamäť streamovania</string>
+    <string name="fmt_streaming_cache_usage">Využité %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Vyrovnávacia pamäť streamovania vymazaná</string>
+    <string name="lbl_offline_backup">Offline záloha</string>
+    <string name="offline_backup_subtitle">%1$d skladieb pripravených na offline prehrávanie</string>
+    <string name="offline_backup_storage_summary">%1$d skladieb • %2$d MB v pamäti</string>
+    <string name="offline_backup_mode_badge">Offline režim</string>
+    <string name="btn_play_all">Prehrať všetko</string>
+    <string name="btn_shuffle_play">Náhodne</string>
+    <string name="filter_chip_all">Všetko</string>
+    <string name="filter_chip_artists">Interpreti</string>
+    <string name="filter_chip_albums">Albumy</string>
+    <string name="lng_empty_offline_backup">Počúvajte hudbu online a automaticky si vytvorte Offline zálohu</string>
+    <string name="msg_offline_backup_ready">Offline. Vaša Offline záloha je pripravená na prehrávanie</string>
+    <string name="btn_listen">Počúvať</string>
 </resources>

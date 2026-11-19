@@ -500,4 +500,22 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="set_online_downloads_desc">A streaming minőségének, a letöltéseknek és a tárhelynek a beállítása</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Letöltések</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Streamelési gyorsítótár mérete</string>
+    <string name="set_clear_streaming_cache">Streamelési gyorsítótár törlése</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB használatban</string>
+    <string name="msg_streaming_cache_cleared">Streamelési gyorsítótár törölve</string>
+    <string name="lbl_offline_backup">Offline tartalék</string>
+    <string name="offline_backup_subtitle">%1$d dal készen áll az offline lejátszásra</string>
+    <string name="offline_backup_storage_summary">%1$d dal • %2$d MB gyorsítótárban</string>
+    <string name="offline_backup_mode_badge">Offline mód</string>
+    <string name="btn_play_all">Összes lejátszása</string>
+    <string name="btn_shuffle_play">Keverés</string>
+    <string name="filter_chip_all">Összes</string>
+    <string name="filter_chip_artists">Előadók</string>
+    <string name="filter_chip_albums">Albumok</string>
+    <string name="lng_empty_offline_backup">Hallgass online zenét az Offline tartalék automatikus létrehozásához</string>
+    <string name="msg_offline_backup_ready">Offline. Az Offline tartalék készen áll a lejátszásra</string>
+    <string name="btn_listen">Hallgatás</string>
 </resources>

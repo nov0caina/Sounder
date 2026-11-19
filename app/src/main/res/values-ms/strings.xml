@@ -523,4 +523,22 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="set_online_downloads_desc">Konfigurasikan kualiti penstriman, muat turun dan storan</string>
     <string name="set_streaming_category">Penstriman</string>
     <string name="set_downloads_category">Muat Turun</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Saiz cache penstriman</string>
+    <string name="set_clear_streaming_cache">Kosongkan cache penstriman</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB digunakan</string>
+    <string name="msg_streaming_cache_cleared">Cache penstriman dikosongkan</string>
+    <string name="lbl_offline_backup">Sandaran Luar Talian</string>
+    <string name="offline_backup_subtitle">%1$d lagu sedia dimainkan di luar talian</string>
+    <string name="offline_backup_storage_summary">%1$d lagu • %2$d MB dalam cache</string>
+    <string name="offline_backup_mode_badge">Mod luar talian</string>
+    <string name="btn_play_all">Main semua</string>
+    <string name="btn_shuffle_play">Rombak</string>
+    <string name="filter_chip_all">Semua</string>
+    <string name="filter_chip_artists">Artis</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Dengar muzik dalam talian untuk membina Sandaran Luar Talian secara automatik</string>
+    <string name="msg_offline_backup_ready">Luar talian. Sandaran Luar Talian anda sedia dimainkan</string>
+    <string name="btn_listen">Dengar</string>
 </resources>

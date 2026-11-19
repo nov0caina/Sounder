@@ -535,4 +535,22 @@
     <string name="set_online_downloads_desc">Nustatykite transliacijos kokybę, atsisiuntimus ir saugyklą</string>
     <string name="set_streaming_category">Transliacija</string>
     <string name="set_downloads_category">Atsisiuntimai</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Srautinio perdavimo talpyklos dydis</string>
+    <string name="set_clear_streaming_cache">Išvalyti srautinio perdavimo talpyklą</string>
+    <string name="fmt_streaming_cache_usage">Naudojama %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Srautinio perdavimo talpykla išvalyta</string>
+    <string name="lbl_offline_backup">Atsarginė kopija neprisijungus</string>
+    <string name="offline_backup_subtitle">%1$d dainų paruošta klausytis neprisijungus</string>
+    <string name="offline_backup_storage_summary">%1$d dainų • %2$d MB talpykloje</string>
+    <string name="offline_backup_mode_badge">Režimas neprisijungus</string>
+    <string name="btn_play_all">Leisti visas</string>
+    <string name="btn_shuffle_play">Maišyti</string>
+    <string name="filter_chip_all">Visi</string>
+    <string name="filter_chip_artists">Atlikėjai</string>
+    <string name="filter_chip_albums">Albumai</string>
+    <string name="lng_empty_offline_backup">Klausykitės muzikos internetu, kad automatiškai sukurtumėte atsarginę kopiją</string>
+    <string name="msg_offline_backup_ready">Neprisijungus. Jūsų atsarginė kopija paruošta groti</string>
+    <string name="btn_listen">Klausytis</string>
 </resources>

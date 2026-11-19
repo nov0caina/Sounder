@@ -531,4 +531,22 @@ ATTENTION : Faites attention en contrôlant ce service, si vous le fermez puis e
     <string name="set_online_downloads_desc">Configurer la qualité de streaming, les téléchargements et le stockage</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Téléchargements</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Taille du cache de streaming</string>
+    <string name="set_clear_streaming_cache">Vider le cache de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d Mo utilisés</string>
+    <string name="msg_streaming_cache_cleared">Cache de streaming vidé</string>
+    <string name="lbl_offline_backup">Sauvegarde hors ligne</string>
+    <string name="offline_backup_subtitle">%1$d titres prêts à être écoutés hors ligne</string>
+    <string name="offline_backup_storage_summary">%1$d titres • %2$d Mo en cache</string>
+    <string name="offline_backup_mode_badge">Mode hors ligne</string>
+    <string name="btn_play_all">Tout lire</string>
+    <string name="btn_shuffle_play">Aléatoire</string>
+    <string name="filter_chip_all">Tous</string>
+    <string name="filter_chip_artists">Artistes</string>
+    <string name="filter_chip_albums">Albums</string>
+    <string name="lng_empty_offline_backup">Écoutez de la musique en ligne pour créer automatiquement votre sauvegarde hors ligne</string>
+    <string name="msg_offline_backup_ready">Hors ligne. Votre sauvegarde hors ligne est prête à être lue</string>
+    <string name="btn_listen">Écouter</string>
 </resources>

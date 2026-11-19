@@ -523,4 +523,22 @@
     <string name="set_online_downloads_desc">ຕັ້ງຄ່າຄຸນນະພາບສະຕຣີມມິງ, ການດາວໂຫຼດ ແລະ ບ່ອນເກັບຂໍ້ມູນ</string>
     <string name="set_streaming_category">ສະຕຣີມມິງ</string>
     <string name="set_downloads_category">ດາວໂຫຼດ</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">ຂະໜາດແຄຊ໌ສະຕຣີມມິງ</string>
+    <string name="set_clear_streaming_cache">ລ້າງແຄຊ໌ສະຕຣີມມິງ</string>
+    <string name="fmt_streaming_cache_usage">ໃຊ້ແລ້ວ %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">ລ້າງແຄຊ໌ສະຕຣີມມິງແລ້ວ</string>
+    <string name="lbl_offline_backup">ສຳຮອງເພງອອຟລາຍ</string>
+    <string name="offline_backup_subtitle">%1$d ເພງພ້ອມຫຼິ້ນແບບອອຟລາຍ</string>
+    <string name="offline_backup_storage_summary">%1$d ເພງ • ແຄຊ໌ %2$d MB</string>
+    <string name="offline_backup_mode_badge">ໂໝດອອຟລາຍ</string>
+    <string name="btn_play_all">ຫຼິ້ນທັງໝົດ</string>
+    <string name="btn_shuffle_play">ສຸ່ມຫຼິ້ນ</string>
+    <string name="filter_chip_all">ທັງໝົດ</string>
+    <string name="filter_chip_artists">ສິລະປິນ</string>
+    <string name="filter_chip_albums">ອັນລະບັ້ມ</string>
+    <string name="lng_empty_offline_backup">ຟັງເພງອອນລາຍເພື່ອສ້າງສຳຮອງເພງອອຟລາຍໂດຍອັດຕະໂນມັດ</string>
+    <string name="msg_offline_backup_ready">ອອຟລາຍ. ສຳຮອງເພງອອຟລາຍຂອງທ່ານພ້ອມຫຼິ້ນແລ້ວ</string>
+    <string name="btn_listen">ຟັງ</string>
 </resources>

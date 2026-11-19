@@ -415,4 +415,22 @@
     <string name="set_online_downloads_desc">Configura a calidade de streaming, descargas e almacenamento</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Descargas</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Tamaño da caché de streaming</string>
+    <string name="set_clear_streaming_cache">Limpar caché de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ocupados</string>
+    <string name="msg_streaming_cache_cleared">Caché de streaming limpa</string>
+    <string name="lbl_offline_backup">Respaldo Musical</string>
+    <string name="offline_backup_subtitle">%1$d cancións listas para escoitar sen conexión</string>
+    <string name="offline_backup_storage_summary">%1$d cancións • %2$d MB en caché</string>
+    <string name="offline_backup_mode_badge">Modo sen conexión</string>
+    <string name="btn_play_all">Reproducir todo</string>
+    <string name="btn_shuffle_play">Aleatorio</string>
+    <string name="filter_chip_all">Todos</string>
+    <string name="filter_chip_artists">Artistas</string>
+    <string name="filter_chip_albums">Álbums</string>
+    <string name="lng_empty_offline_backup">Escoita música en liña para crear automaticamente o teu Respaldo Musical</string>
+    <string name="msg_offline_backup_ready">Sen conexión. O teu Respaldo Musical está listo para reproducir</string>
+    <string name="btn_listen">Escoitar</string>
 </resources>

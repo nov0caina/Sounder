@@ -488,4 +488,22 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="set_online_downloads_desc">Konfigurera strömningskvalitet, nedladdningar och lagring</string>
     <string name="set_streaming_category">Strömning</string>
     <string name="set_downloads_category">Nedladdningar</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Cachestorlek för streaming</string>
+    <string name="set_clear_streaming_cache">Rensa streamingcache</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB används</string>
+    <string name="msg_streaming_cache_cleared">Streamingcache rensad</string>
+    <string name="lbl_offline_backup">Offline-reserv</string>
+    <string name="offline_backup_subtitle">%1$d låtar redo att spelas offline</string>
+    <string name="offline_backup_storage_summary">%1$d låtar • %2$d MB i cache</string>
+    <string name="offline_backup_mode_badge">Offlineläge</string>
+    <string name="btn_play_all">Spela alla</string>
+    <string name="btn_shuffle_play">Blanda</string>
+    <string name="filter_chip_all">Alla</string>
+    <string name="filter_chip_artists">Artister</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Lyssna på musik online för att automatiskt bygga din Offline-reserv</string>
+    <string name="msg_offline_backup_ready">Offline. Din Offline-reserv är redo att spelas</string>
+    <string name="btn_listen">Lyssna</string>
 </resources>

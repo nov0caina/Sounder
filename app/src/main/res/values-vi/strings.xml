@@ -190,4 +190,22 @@
     <string name="set_online_downloads_desc">Cấu hình chất lượng phát trực tuyến, tải xuống và bộ nhớ</string>
     <string name="set_streaming_category">Phát trực tuyến</string>
     <string name="set_downloads_category">Đã tải xuống</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Dung lượng bộ nhớ đệm phát trực tuyến</string>
+    <string name="set_clear_streaming_cache">Xóa bộ nhớ đệm phát trực tuyến</string>
+    <string name="fmt_streaming_cache_usage">Đã dùng %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Đã xóa bộ nhớ đệm phát trực tuyến</string>
+    <string name="lbl_offline_backup">Bản sao lưu ngoại tuyến</string>
+    <string name="offline_backup_subtitle">%1$d bài hát sẵn sàng phát ngoại tuyến</string>
+    <string name="offline_backup_storage_summary">%1$d bài hát • %2$d MB trong bộ nhớ đệm</string>
+    <string name="offline_backup_mode_badge">Chế độ ngoại tuyến</string>
+    <string name="btn_play_all">Phát tất cả</string>
+    <string name="btn_shuffle_play">Trộn bài</string>
+    <string name="filter_chip_all">Tất cả</string>
+    <string name="filter_chip_artists">Nghệ sĩ</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Nghe nhạc trực tuyến để tự động tạo Bản sao lưu ngoại tuyến</string>
+    <string name="msg_offline_backup_ready">Ngoại tuyến. Bản sao lưu ngoại tuyến đã sẵn sàng phát</string>
+    <string name="btn_listen">Nghe ngay</string>
 </resources>

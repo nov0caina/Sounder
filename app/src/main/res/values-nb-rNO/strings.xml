@@ -478,4 +478,22 @@ ADVARSEL: Vær varsom med å kontrollere denne tjenesten, hvis du lukker den og 
     <string name="set_online_downloads_desc">Konfigurer strømmekvalitet, nedlastinger og lagring</string>
     <string name="set_streaming_category">Strømming</string>
     <string name="set_downloads_category">Nedlastinger</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Størrelse på strømmebuffer</string>
+    <string name="set_clear_streaming_cache">Tøm strømmebuffer</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB brukt</string>
+    <string name="msg_streaming_cache_cleared">Strømmebuffer tømt</string>
+    <string name="lbl_offline_backup">Frakoblet reserve</string>
+    <string name="offline_backup_subtitle">%1$d sanger klare til avspilling uten nett</string>
+    <string name="offline_backup_storage_summary">%1$d sanger • %2$d MB bufret</string>
+    <string name="offline_backup_mode_badge">Frakoblet modus</string>
+    <string name="btn_play_all">Spill alle</string>
+    <string name="btn_shuffle_play">Tilfeldig</string>
+    <string name="filter_chip_all">Alle</string>
+    <string name="filter_chip_artists">Artister</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Lytt til musikk på nett for å bygge din frakoblede reserve automatisk</string>
+    <string name="msg_offline_backup_ready">Uten nett. Din frakoblede reserve er klar til avspilling</string>
+    <string name="btn_listen">Lytt</string>
 </resources>

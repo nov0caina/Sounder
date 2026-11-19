@@ -481,4 +481,22 @@
     <string name="set_online_downloads_desc">स्ट्रीमिंग गुणवत्ता, डाउनलोड और स्टोरेज कॉन्फ़िगर करें</string>
     <string name="set_streaming_category">स्ट्रीमिंग</string>
     <string name="set_downloads_category">डाउनलोड</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">स्ट्रीमिंग कैश आकार</string>
+    <string name="set_clear_streaming_cache">स्ट्रीमिंग कैश साफ़ करें</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB उपयोग में</string>
+    <string name="msg_streaming_cache_cleared">स्ट्रीमिंग कैश साफ़ हो गया</string>
+    <string name="lbl_offline_backup">ऑफ़लाइन बैकअप</string>
+    <string name="offline_backup_subtitle">%1$d गाने ऑफ़लाइन सुनने के लिए तैयार</string>
+    <string name="offline_backup_storage_summary">%1$d गाने • %2$d MB कैश में</string>
+    <string name="offline_backup_mode_badge">ऑफ़लाइन मोड</string>
+    <string name="btn_play_all">सभी चलाएं</string>
+    <string name="btn_shuffle_play">शफ़ल</string>
+    <string name="filter_chip_all">सभी</string>
+    <string name="filter_chip_artists">कलाकार</string>
+    <string name="filter_chip_albums">एल्बम</string>
+    <string name="lng_empty_offline_backup">अपना ऑफ़लाइन बैकअप अपने-आप बनाने के लिए ऑनलाइन संगीत सुनें</string>
+    <string name="msg_offline_backup_ready">ऑफ़लाइन। आपका ऑफ़लाइन बैकअप चलने के लिए तैयार है</string>
+    <string name="btn_listen">सुनें</string>
 </resources>

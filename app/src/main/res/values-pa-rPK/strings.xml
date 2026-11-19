@@ -204,4 +204,22 @@
     <string name="set_online_downloads_desc">اسٹریمنگ کوالٹی، ڈاؤن لوڈز تے اسٹوریج سیٹ کرو</string>
     <string name="set_streaming_category">اسٹریمنگ</string>
     <string name="set_downloads_category">ڈاؤن لوڈز</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">سٹریمنگ کیش سائز</string>
+    <string name="set_clear_streaming_cache">سٹریمنگ کیش صاف کرو</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ورتے گئے</string>
+    <string name="msg_streaming_cache_cleared">سٹریمنگ کیش صاف ہو گیا</string>
+    <string name="lbl_offline_backup">آف لائن بیک اپ</string>
+    <string name="offline_backup_subtitle">%1$d گانے آف لائن چلاون لئی تیار نیں</string>
+    <string name="offline_backup_storage_summary">%1$d گانے • %2$d MB کیش وچ</string>
+    <string name="offline_backup_mode_badge">آف لائن موڈ</string>
+    <string name="btn_play_all">سارے چلاؤ</string>
+    <string name="btn_shuffle_play">شفل</string>
+    <string name="filter_chip_all">سارے</string>
+    <string name="filter_chip_artists">فنکار</string>
+    <string name="filter_chip_albums">البمز</string>
+    <string name="lng_empty_offline_backup">اپنا آف لائن بیک اپ آپے بناؤن لئی آن لائن موسیقی سنو</string>
+    <string name="msg_offline_backup_ready">آف لائن۔ تہاڈا آف لائن بیک اپ چلاون لئی تیار اے</string>
+    <string name="btn_listen">سنو</string>
 </resources>

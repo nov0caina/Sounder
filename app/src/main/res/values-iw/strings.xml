@@ -494,4 +494,22 @@
     <string name="set_online_downloads_desc">הגדרת איכות הזרמה, הורדות ואחסון</string>
     <string name="set_streaming_category">הזרמה</string>
     <string name="set_downloads_category">הורדות</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">גודל מטמון ההזרמה</string>
+    <string name="set_clear_streaming_cache">נקה מטמון הזרמה</string>
+    <string name="fmt_streaming_cache_usage">%1$d מ״ב בשימוש</string>
+    <string name="msg_streaming_cache_cleared">מטמון ההזרמה נוקה</string>
+    <string name="lbl_offline_backup">גיבוי לא מקוון</string>
+    <string name="offline_backup_subtitle">%1$d שירים מוכנים להשמעה ללא אינטרנט</string>
+    <string name="offline_backup_storage_summary">%1$d שירים • %2$d מ״ב במטמון</string>
+    <string name="offline_backup_mode_badge">מצב לא מקוון</string>
+    <string name="btn_play_all">הפעל הכל</string>
+    <string name="btn_shuffle_play">אקראי</string>
+    <string name="filter_chip_all">הכל</string>
+    <string name="filter_chip_artists">אמנים</string>
+    <string name="filter_chip_albums">אלבומים</string>
+    <string name="lng_empty_offline_backup">האזן למוזיקה מקוונת כדי לבנות אוטומטית את הגיבוי הלא מקוון שלך</string>
+    <string name="msg_offline_backup_ready">אין חיבור. הגיבוי הלא מקוון שלך מוכן להשמעה</string>
+    <string name="btn_listen">האזן</string>
 </resources>

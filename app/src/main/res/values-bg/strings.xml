@@ -527,4 +527,22 @@
     <string name="set_online_downloads_desc">Настройка на качеството на стрийминг, изтеглянията и хранилището</string>
     <string name="set_streaming_category">Стрийминг</string>
     <string name="set_downloads_category">Изтегляния</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Размер на кеша за стрийминг</string>
+    <string name="set_clear_streaming_cache">Изчистване на кеша за стрийминг</string>
+    <string name="fmt_streaming_cache_usage">Използвани %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Кешът за стрийминг е изчистен</string>
+    <string name="lbl_offline_backup">Офлайн резерв</string>
+    <string name="offline_backup_subtitle">%1$d песни, готови за офлайн възпроизвеждане</string>
+    <string name="offline_backup_storage_summary">%1$d песни • %2$d MB в кеша</string>
+    <string name="offline_backup_mode_badge">Офлайн режим</string>
+    <string name="btn_play_all">Пусни всички</string>
+    <string name="btn_shuffle_play">Разбъркано</string>
+    <string name="filter_chip_all">Всички</string>
+    <string name="filter_chip_artists">Изпълнители</string>
+    <string name="filter_chip_albums">Албуми</string>
+    <string name="lng_empty_offline_backup">Слушайте музика онлайн, за да създадете автоматично Офлайн резерв</string>
+    <string name="msg_offline_backup_ready">Офлайн. Вашият Офлайн резерв е готов за слушане</string>
+    <string name="btn_listen">Слушай</string>
 </resources>

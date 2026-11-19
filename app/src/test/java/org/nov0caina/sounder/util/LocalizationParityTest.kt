@@ -154,6 +154,22 @@ class LocalizationParityTest {
             "lbl_edit_playlist",
             "lbl_choose_cover",
             "lbl_remove_cover",
+            "set_streaming_cache_size",
+            "set_clear_streaming_cache",
+            "fmt_streaming_cache_usage",
+            "msg_streaming_cache_cleared",
+            "lbl_offline_backup",
+            "offline_backup_subtitle",
+            "offline_backup_storage_summary",
+            "offline_backup_mode_badge",
+            "btn_play_all",
+            "btn_shuffle_play",
+            "filter_chip_all",
+            "filter_chip_artists",
+            "filter_chip_albums",
+            "lng_empty_offline_backup",
+            "msg_offline_backup_ready",
+            "btn_listen",
         )
 
         val placeholderPattern = Pattern.compile("%(\\d+\\\$)?[-#+ 0,(]*\\d*(?:\\.\\d+)?[a-zA-Z%]")

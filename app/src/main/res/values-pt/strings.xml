@@ -531,4 +531,22 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="set_online_downloads_desc">Configurar qualidade de streaming, downloads e armazenamento</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Downloads</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Tamanho do cache de streaming</string>
+    <string name="set_clear_streaming_cache">Limpar cache de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB usados</string>
+    <string name="msg_streaming_cache_cleared">Cache de streaming limpo</string>
+    <string name="lbl_offline_backup">Backup Offline</string>
+    <string name="offline_backup_subtitle">%1$d músicas prontas para ouvir offline</string>
+    <string name="offline_backup_storage_summary">%1$d músicas • %2$d MB em cache</string>
+    <string name="offline_backup_mode_badge">Modo offline</string>
+    <string name="btn_play_all">Reproduzir tudo</string>
+    <string name="btn_shuffle_play">Aleatório</string>
+    <string name="filter_chip_all">Todos</string>
+    <string name="filter_chip_artists">Artistas</string>
+    <string name="filter_chip_albums">Álbuns</string>
+    <string name="lng_empty_offline_backup">Ouça músicas online para criar automaticamente o seu Backup Offline</string>
+    <string name="msg_offline_backup_ready">Sem conexão. Seu Backup Offline está pronto para tocar</string>
+    <string name="btn_listen">Ouvir</string>
 </resources>

@@ -438,4 +438,22 @@
     <string name="set_online_downloads_desc">Configurează calitatea streamingului, descărcările și stocarea</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Descărcări</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Dimensiune cache streaming</string>
+    <string name="set_clear_streaming_cache">Golește cache-ul de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB utilizați</string>
+    <string name="msg_streaming_cache_cleared">Cache-ul de streaming a fost golit</string>
+    <string name="lbl_offline_backup">Backup offline</string>
+    <string name="offline_backup_subtitle">%1$d melodii gata de redare offline</string>
+    <string name="offline_backup_storage_summary">%1$d melodii • %2$d MB în cache</string>
+    <string name="offline_backup_mode_badge">Mod offline</string>
+    <string name="btn_play_all">Redă tot</string>
+    <string name="btn_shuffle_play">Amestecare</string>
+    <string name="filter_chip_all">Toate</string>
+    <string name="filter_chip_artists">Artiști</string>
+    <string name="filter_chip_albums">Albume</string>
+    <string name="lng_empty_offline_backup">Ascultă muzică online pentru a crea automat Backup-ul offline</string>
+    <string name="msg_offline_backup_ready">Fără conexiune. Backup-ul offline este gata de redare</string>
+    <string name="btn_listen">Ascultă</string>
 </resources>

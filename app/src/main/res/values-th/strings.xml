@@ -314,4 +314,22 @@
     <string name="set_online_downloads_desc">ตั้งค่าคุณภาพการสตรีม การดาวน์โหลด และพื้นที่จัดเก็บ</string>
     <string name="set_streaming_category">สตรีมมิง</string>
     <string name="set_downloads_category">ดาวน์โหลด</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">ขนาดแคชสตรีมมิง</string>
+    <string name="set_clear_streaming_cache">ล้างแคชสตรีมมิง</string>
+    <string name="fmt_streaming_cache_usage">ใช้ไปแล้ว %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">ล้างแคชสตรีมมิงแล้ว</string>
+    <string name="lbl_offline_backup">เพลงสำรองออฟไลน์</string>
+    <string name="offline_backup_subtitle">%1$d เพลงพร้อมเล่นแบบออฟไลน์</string>
+    <string name="offline_backup_storage_summary">%1$d เพลง • แคช %2$d MB</string>
+    <string name="offline_backup_mode_badge">โหมดออฟไลน์</string>
+    <string name="btn_play_all">เล่นทั้งหมด</string>
+    <string name="btn_shuffle_play">สุ่มเพลง</string>
+    <string name="filter_chip_all">ทั้งหมด</string>
+    <string name="filter_chip_artists">ศิลปิน</string>
+    <string name="filter_chip_albums">อัลบั้ม</string>
+    <string name="lng_empty_offline_backup">ฟังเพลงออนไลน์เพื่อสร้างเพลงสำรองออฟไลน์โดยอัตโนมัติ</string>
+    <string name="msg_offline_backup_ready">ออฟไลน์ เพลงสำรองออฟไลน์ของคุณพร้อมเล่นแล้ว</string>
+    <string name="btn_listen">ฟังเลย</string>
 </resources>

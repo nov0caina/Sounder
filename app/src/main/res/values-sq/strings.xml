@@ -516,4 +516,22 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="set_online_downloads_desc">Konfiguroni cilësinë e transmetimit, shkarkimet dhe ruajtjen</string>
     <string name="set_streaming_category">Transmetimi</string>
     <string name="set_downloads_category">Shkarkimet</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Madhësia e memories së transmetimit</string>
+    <string name="set_clear_streaming_cache">Pastro memorien e transmetimit</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB në përdorim</string>
+    <string name="msg_streaming_cache_cleared">Memoria e transmetimit u pastrua</string>
+    <string name="lbl_offline_backup">Rezerva Offline</string>
+    <string name="offline_backup_subtitle">%1$d këngë gati për t\'u luajtur offline</string>
+    <string name="offline_backup_storage_summary">%1$d këngë • %2$d MB në memorie</string>
+    <string name="offline_backup_mode_badge">Modaliteti offline</string>
+    <string name="btn_play_all">Luaj të gjitha</string>
+    <string name="btn_shuffle_play">Përziej</string>
+    <string name="filter_chip_all">Të gjitha</string>
+    <string name="filter_chip_artists">Artistët</string>
+    <string name="filter_chip_albums">Albumet</string>
+    <string name="lng_empty_offline_backup">Dëgjo muzikë online për të ndërtuar automatikisht Rezervën Offline</string>
+    <string name="msg_offline_backup_ready">Offline. Rezerva juaj Offline është gati për t\'u luajtur</string>
+    <string name="btn_listen">Dëgjo</string>
 </resources>

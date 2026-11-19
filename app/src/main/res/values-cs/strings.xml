@@ -535,4 +535,22 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="set_online_downloads_desc">Nastavení kvality streamování, stahování a úložiště</string>
     <string name="set_streaming_category">Streamování</string>
     <string name="set_downloads_category">Stahování</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Velikost mezipaměti streamování</string>
+    <string name="set_clear_streaming_cache">Vymazat mezipaměť streamování</string>
+    <string name="fmt_streaming_cache_usage">Využito %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Mezipaměť streamování vymazána</string>
+    <string name="lbl_offline_backup">Offline záloha</string>
+    <string name="offline_backup_subtitle">%1$d skladeb připraveno k offline přehrávání</string>
+    <string name="offline_backup_storage_summary">%1$d skladeb • %2$d MB v mezipaměti</string>
+    <string name="offline_backup_mode_badge">Offline režim</string>
+    <string name="btn_play_all">Přehrát vše</string>
+    <string name="btn_shuffle_play">Náhodně</string>
+    <string name="filter_chip_all">Vše</string>
+    <string name="filter_chip_artists">Interpreti</string>
+    <string name="filter_chip_albums">Alba</string>
+    <string name="lng_empty_offline_backup">Poslouchejte hudbu online a automaticky si vytvořte Offline zálohu</string>
+    <string name="msg_offline_backup_ready">Offline. Vaše Offline záloha je připravena k přehrávání</string>
+    <string name="btn_listen">Poslouchat</string>
 </resources>

@@ -527,4 +527,22 @@ HOIATUS: Ole selle teenuse kasutamisel hoolikas - kui sa ta sulged ja siis proov
     <string name="set_online_downloads_desc">Seadista voogedastuse kvaliteet, allalaadimised ja salvestusruum</string>
     <string name="set_streaming_category">Voogedastus</string>
     <string name="set_downloads_category">Allalaadimised</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Voogedastuse vahemälu suurus</string>
+    <string name="set_clear_streaming_cache">Tühjenda voogedastuse vahemälu</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB kasutatud</string>
+    <string name="msg_streaming_cache_cleared">Voogedastuse vahemälu tühjendatud</string>
+    <string name="lbl_offline_backup">Võrguühenduseta varukoopia</string>
+    <string name="offline_backup_subtitle">%1$d lugu valmis võrguühenduseta esitamiseks</string>
+    <string name="offline_backup_storage_summary">%1$d lugu • %2$d MB vahemälus</string>
+    <string name="offline_backup_mode_badge">Võrguühenduseta režiim</string>
+    <string name="btn_play_all">Esita kõik</string>
+    <string name="btn_shuffle_play">Juhuesitus</string>
+    <string name="filter_chip_all">Kõik</string>
+    <string name="filter_chip_artists">Esitajad</string>
+    <string name="filter_chip_albums">Albumid</string>
+    <string name="lng_empty_offline_backup">Kuula muusikat võrgus, et luua automaatselt võrguühenduseta varukoopia</string>
+    <string name="msg_offline_backup_ready">Ühendus puudub. Sinu võrguühenduseta varukoopia on esitamiseks valmis</string>
+    <string name="btn_listen">Kuula</string>
 </resources>

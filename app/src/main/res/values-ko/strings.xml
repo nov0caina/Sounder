@@ -498,4 +498,22 @@
     <string name="set_online_downloads_desc">스트리밍 음질, 다운로드 및 저장소 설정</string>
     <string name="set_streaming_category">스트리밍</string>
     <string name="set_downloads_category">다운로드</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">스트리밍 캐시 크기</string>
+    <string name="set_clear_streaming_cache">스트리밍 캐시 지우기</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB 사용 중</string>
+    <string name="msg_streaming_cache_cleared">스트리밍 캐시를 지웠습니다</string>
+    <string name="lbl_offline_backup">오프라인 백업</string>
+    <string name="offline_backup_subtitle">%1$d곡을 오프라인으로 재생할 수 있습니다</string>
+    <string name="offline_backup_storage_summary">%1$d곡 • %2$d MB 캐시됨</string>
+    <string name="offline_backup_mode_badge">오프라인 모드</string>
+    <string name="btn_play_all">모두 재생</string>
+    <string name="btn_shuffle_play">셔플</string>
+    <string name="filter_chip_all">전체</string>
+    <string name="filter_chip_artists">아티스트</string>
+    <string name="filter_chip_albums">앨범</string>
+    <string name="lng_empty_offline_backup">온라인 음악을 감상하면 오프라인 백업이 자동으로 만들어집니다</string>
+    <string name="msg_offline_backup_ready">오프라인 상태입니다. 오프라인 백업을 바로 재생할 수 있습니다</string>
+    <string name="btn_listen">감상하기</string>
 </resources>

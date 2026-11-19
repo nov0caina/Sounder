@@ -683,4 +683,22 @@
     <string name="lbl_update_managed_by_fdroid">Sounder updates are managed by your F-Droid client.</string>
     <string name="lbl_open_fdroid">Open F-Droid</string>
     <string name="err_update_check_failed">Unable to check for updates. Check your connection.</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Streaming cache size</string>
+    <string name="set_clear_streaming_cache">Clear streaming cache</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB used</string>
+    <string name="msg_streaming_cache_cleared">Streaming cache cleared</string>
+    <string name="lbl_offline_backup">Offline Backup</string>
+    <string name="offline_backup_subtitle">%1$d songs ready to play offline</string>
+    <string name="offline_backup_storage_summary">%1$d songs • %2$d MB cached</string>
+    <string name="offline_backup_mode_badge">Offline mode</string>
+    <string name="btn_play_all">Play all</string>
+    <string name="btn_shuffle_play">Shuffle</string>
+    <string name="filter_chip_all">All</string>
+    <string name="filter_chip_artists">Artists</string>
+    <string name="filter_chip_albums">Albums</string>
+    <string name="lng_empty_offline_backup">Listen to online music to automatically build your Offline Backup</string>
+    <string name="msg_offline_backup_ready">Offline. Your Offline Backup is ready to play</string>
+    <string name="btn_listen">Listen</string>
 </resources>

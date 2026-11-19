@@ -531,4 +531,22 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="set_online_downloads_desc">Podesite kvalitetu strujanja, preuzimanja i pohranu</string>
     <string name="set_streaming_category">Strujanje</string>
     <string name="set_downloads_category">Preuzimanja</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Veličina predmemorije streaminga</string>
+    <string name="set_clear_streaming_cache">Očisti predmemoriju streaminga</string>
+    <string name="fmt_streaming_cache_usage">Korišteno %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Predmemorija streaminga je očišćena</string>
+    <string name="lbl_offline_backup">Izvanmrežna pričuva</string>
+    <string name="offline_backup_subtitle">%1$d pjesama spremno za izvanmrežnu reprodukciju</string>
+    <string name="offline_backup_storage_summary">%1$d pjesama • %2$d MB u predmemoriji</string>
+    <string name="offline_backup_mode_badge">Izvanmrežni način</string>
+    <string name="btn_play_all">Reproduciraj sve</string>
+    <string name="btn_shuffle_play">Nasumično</string>
+    <string name="filter_chip_all">Sve</string>
+    <string name="filter_chip_artists">Izvođači</string>
+    <string name="filter_chip_albums">Albumi</string>
+    <string name="lng_empty_offline_backup">Slušajte glazbu online za automatsko stvaranje izvanmrežne pričuve</string>
+    <string name="msg_offline_backup_ready">Izvan mreže. Vaša izvanmrežna pričuva spremna je za reprodukciju</string>
+    <string name="btn_listen">Slušaj</string>
 </resources>

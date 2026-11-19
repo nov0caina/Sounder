@@ -19,6 +19,18 @@
             app:summary="@string/set_prefer_studio_audio_desc"
             app:title="@string/set_prefer_studio_audio" />
 
+        <ListPreference
+            app:defaultValue="300"
+            app:entries="@array/entries_streaming_cache_size"
+            app:entryValues="@array/values_streaming_cache_size"
+            app:key="@string/set_key_streaming_cache_size"
+            app:summary="%s"
+            app:title="@string/set_streaming_cache_size" />
+
+        <Preference
+            app:key="@string/set_key_clear_streaming_cache"
+            app:title="@string/set_clear_streaming_cache" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/set_downloads_category">

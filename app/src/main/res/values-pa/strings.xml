@@ -474,4 +474,22 @@
     <string name="set_online_downloads_desc">ਸਟ੍ਰੀਮਿੰਗ ਕੁਆਲਿਟੀ, ਡਾਊਨਲੋਡ ਅਤੇ ਸਟੋਰੇਜ ਕੌਂਫਿਗਰ ਕਰੋ</string>
     <string name="set_streaming_category">ਸਟ੍ਰੀਮਿੰਗ</string>
     <string name="set_downloads_category">ਡਾਊਨਲੋਡ</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">ਸਟ੍ਰੀਮਿੰਗ ਕੈਸ਼ ਆਕਾਰ</string>
+    <string name="set_clear_streaming_cache">ਸਟ੍ਰੀਮਿੰਗ ਕੈਸ਼ ਸਾਫ਼ ਕਰੋ</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ਵਰਤੇ ਗਏ</string>
+    <string name="msg_streaming_cache_cleared">ਸਟ੍ਰੀਮਿੰਗ ਕੈਸ਼ ਸਾਫ਼ ਹੋ ਗਿਆ</string>
+    <string name="lbl_offline_backup">ਔਫਲਾਈਨ ਬੈਕਅੱਪ</string>
+    <string name="offline_backup_subtitle">%1$d ਗਾਣੇ ਔਫਲਾਈਨ ਚਲਾਉਣ ਲਈ ਤਿਆਰ</string>
+    <string name="offline_backup_storage_summary">%1$d ਗਾਣੇ • %2$d MB ਕੈਸ਼ ਵਿੱਚ</string>
+    <string name="offline_backup_mode_badge">ਔਫਲਾਈਨ ਮੋਡ</string>
+    <string name="btn_play_all">ਸਾਰੇ ਚਲਾਓ</string>
+    <string name="btn_shuffle_play">ਸ਼ਫ਼ਲ</string>
+    <string name="filter_chip_all">ਸਾਰੇ</string>
+    <string name="filter_chip_artists">ਕਲਾਕਾਰ</string>
+    <string name="filter_chip_albums">ਐਲਬਮਾਂ</string>
+    <string name="lng_empty_offline_backup">ਆਪਣਾ ਔਫਲਾਈਨ ਬੈਕਅੱਪ ਆਪਣੇ-ਆਪ ਬਣਾਉਣ ਲਈ ਔਨਲਾਈਨ ਸੰਗੀਤ ਸੁਣੋ</string>
+    <string name="msg_offline_backup_ready">ਔਫਲਾਈਨ। ਤੁਹਾਡਾ ਔਫਲਾਈਨ ਬੈਕਅੱਪ ਚੱਲਣ ਲਈ ਤਿਆਰ ਹੈ</string>
+    <string name="btn_listen">ਸੁਣੋ</string>
 </resources>

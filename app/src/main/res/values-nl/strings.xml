@@ -500,4 +500,22 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="set_online_downloads_desc">Streamingkwaliteit, downloads en opslag configureren</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Downloads</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Grootte streamingcache</string>
+    <string name="set_clear_streaming_cache">Streamingcache wissen</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB gebruikt</string>
+    <string name="msg_streaming_cache_cleared">Streamingcache gewist</string>
+    <string name="lbl_offline_backup">Offline back-up</string>
+    <string name="offline_backup_subtitle">%1$d nummers klaar om offline af te spelen</string>
+    <string name="offline_backup_storage_summary">%1$d nummers • %2$d MB in cache</string>
+    <string name="offline_backup_mode_badge">Offlinemodus</string>
+    <string name="btn_play_all">Alles afspelen</string>
+    <string name="btn_shuffle_play">Shuffle</string>
+    <string name="filter_chip_all">Alle</string>
+    <string name="filter_chip_artists">Artiesten</string>
+    <string name="filter_chip_albums">Albums</string>
+    <string name="lng_empty_offline_backup">Luister naar online muziek om automatisch je Offline back-up op te bouwen</string>
+    <string name="msg_offline_backup_ready">Offline. Je Offline back-up staat klaar om af te spelen</string>
+    <string name="btn_listen">Luisteren</string>
 </resources>

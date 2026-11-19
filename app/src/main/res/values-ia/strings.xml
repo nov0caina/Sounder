@@ -384,4 +384,22 @@
     <string name="set_online_downloads_desc">Configurar le qualitate de streaming, discargamentos e immagazinage</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Discargamentos</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Dimension del cache de streaming</string>
+    <string name="set_clear_streaming_cache">Vacuar le cache de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB usate</string>
+    <string name="msg_streaming_cache_cleared">Cache de streaming vacuate</string>
+    <string name="lbl_offline_backup">Reserva sin connexion</string>
+    <string name="offline_backup_subtitle">%1$d cantos preste pro reproducer sin connexion</string>
+    <string name="offline_backup_storage_summary">%1$d cantos • %2$d MB in cache</string>
+    <string name="offline_backup_mode_badge">Modo sin connexion</string>
+    <string name="btn_play_all">Reproducer toto</string>
+    <string name="btn_shuffle_play">Aleatori</string>
+    <string name="filter_chip_all">Totes</string>
+    <string name="filter_chip_artists">Artistas</string>
+    <string name="filter_chip_albums">Albums</string>
+    <string name="lng_empty_offline_backup">Ascolta musica in linea pro crear automaticamente tu Reserva sin connexion</string>
+    <string name="msg_offline_backup_ready">Sin connexion. Tu Reserva sin connexion es preste pro reproducer</string>
+    <string name="btn_listen">Ascoltar</string>
 </resources>

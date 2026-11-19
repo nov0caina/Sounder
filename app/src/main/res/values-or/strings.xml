@@ -194,4 +194,22 @@
     <string name="set_online_downloads_desc">ଷ୍ଟ୍ରିମିଂ ଗୁଣବତ୍ତା, ଡାଉନଲୋଡ୍ ଏବଂ ଷ୍ଟୋରେଜ୍ କନଫିଗର୍ କରନ୍ତୁ</string>
     <string name="set_streaming_category">ଷ୍ଟ୍ରିମିଂ</string>
     <string name="set_downloads_category">ଡାଉନଲୋଡ୍</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">ଷ୍ଟ୍ରିମିଂ କ୍ୟାଶ୍ ଆକାର</string>
+    <string name="set_clear_streaming_cache">ଷ୍ଟ୍ରିମିଂ କ୍ୟାଶ୍ ସଫା କରନ୍ତୁ</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ବ୍ୟବହୃତ</string>
+    <string name="msg_streaming_cache_cleared">ଷ୍ଟ୍ରିମିଂ କ୍ୟାଶ୍ ସଫା ହେଲା</string>
+    <string name="lbl_offline_backup">ଅଫଲାଇନ୍ ବ୍ୟାକଅପ୍</string>
+    <string name="offline_backup_subtitle">%1$d ଗୀତ ଅଫଲାଇନ୍ ବଜାଇବାକୁ ପ୍ରସ୍ତୁତ</string>
+    <string name="offline_backup_storage_summary">%1$d ଗୀତ • %2$d MB କ୍ୟାଶ୍ ହୋଇଛି</string>
+    <string name="offline_backup_mode_badge">ଅଫଲାଇନ୍ ମୋଡ୍</string>
+    <string name="btn_play_all">ସବୁ ବଜାନ୍ତୁ</string>
+    <string name="btn_shuffle_play">ସଫଲ୍</string>
+    <string name="filter_chip_all">ସବୁ</string>
+    <string name="filter_chip_artists">କଳାକାର</string>
+    <string name="filter_chip_albums">ଆଲବମ୍</string>
+    <string name="lng_empty_offline_backup">ଆପଣଙ୍କ ଅଫଲାଇନ୍ ବ୍ୟାକଅପ୍ ସ୍ୱୟଂଚାଳିତ ଭାବେ ତିଆରି କରିବାକୁ ଅନଲାଇନ୍ ସଙ୍ଗୀତ ଶୁଣନ୍ତୁ</string>
+    <string name="msg_offline_backup_ready">ଅଫଲାଇନ୍। ଆପଣଙ୍କ ଅଫଲାଇନ୍ ବ୍ୟାକଅପ୍ ବଜାଇବାକୁ ପ୍ରସ୍ତୁତ ଅଛି</string>
+    <string name="btn_listen">ଶୁଣନ୍ତୁ</string>
 </resources>

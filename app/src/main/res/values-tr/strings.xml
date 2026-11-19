@@ -533,4 +533,22 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="set_online_downloads_desc">Yayın kalitesini, indirmeleri ve depolama alanını yapılandırın</string>
     <string name="set_streaming_category">Yayın</string>
     <string name="set_downloads_category">İndirilenler</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Akış önbellek boyutu</string>
+    <string name="set_clear_streaming_cache">Akış önbelleğini temizle</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB kullanılıyor</string>
+    <string name="msg_streaming_cache_cleared">Akış önbelleği temizlendi</string>
+    <string name="lbl_offline_backup">Çevrimdışı Yedek</string>
+    <string name="offline_backup_subtitle">%1$d şarkı çevrimdışı çalmaya hazır</string>
+    <string name="offline_backup_storage_summary">%1$d şarkı • %2$d MB önbellekte</string>
+    <string name="offline_backup_mode_badge">Çevrimdışı mod</string>
+    <string name="btn_play_all">Tümünü çal</string>
+    <string name="btn_shuffle_play">Karıştır</string>
+    <string name="filter_chip_all">Tümü</string>
+    <string name="filter_chip_artists">Sanatçılar</string>
+    <string name="filter_chip_albums">Albümler</string>
+    <string name="lng_empty_offline_backup">Çevrimdışı Yedeğini otomatik oluşturmak için çevrimiçi müzik dinle</string>
+    <string name="msg_offline_backup_ready">Çevrimdışı. Çevrimdışı Yedeğin çalmaya hazır</string>
+    <string name="btn_listen">Dinle</string>
 </resources>

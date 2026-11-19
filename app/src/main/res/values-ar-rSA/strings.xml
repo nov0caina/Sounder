@@ -194,4 +194,22 @@
     <string name="set_online_downloads_desc">ضبط جودة البث والتنزيلات ومساحة التخزين</string>
     <string name="set_streaming_category">البث</string>
     <string name="set_downloads_category">التنزيلات</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">حجم ذاكرة التخزين المؤقت للبث</string>
+    <string name="set_clear_streaming_cache">مسح ذاكرة التخزين المؤقت للبث</string>
+    <string name="fmt_streaming_cache_usage">%1$d ميجابايت مستخدمة</string>
+    <string name="msg_streaming_cache_cleared">تم مسح ذاكرة التخزين المؤقت للبث</string>
+    <string name="lbl_offline_backup">النسخ الاحتياطي دون اتصال</string>
+    <string name="offline_backup_subtitle">%1$d أغنية جاهزة للتشغيل دون اتصال</string>
+    <string name="offline_backup_storage_summary">%1$d أغنية • %2$d ميجابايت مخزنة</string>
+    <string name="offline_backup_mode_badge">وضع عدم الاتصال</string>
+    <string name="btn_play_all">تشغيل الكل</string>
+    <string name="btn_shuffle_play">عشوائي</string>
+    <string name="filter_chip_all">الكل</string>
+    <string name="filter_chip_artists">الفنانون</string>
+    <string name="filter_chip_albums">الألبومات</string>
+    <string name="lng_empty_offline_backup">استمع إلى الموسيقى عبر الإنترنت لإنشاء النسخة الاحتياطية تلقائيا</string>
+    <string name="msg_offline_backup_ready">دون اتصال. النسخة الاحتياطية جاهزة للتشغيل</string>
+    <string name="btn_listen">استماع</string>
 </resources>

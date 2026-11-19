@@ -520,4 +520,22 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="set_online_downloads_desc">Ffurfweddu ansawdd ffrydio, lawrlwythiadau a storfa</string>
     <string name="set_streaming_category">Ffrydio</string>
     <string name="set_downloads_category">Lawrlwythiadau</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Maint storfa ffrydio</string>
+    <string name="set_clear_streaming_cache">Clirio storfa ffrydio</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB wedi\'i ddefnyddio</string>
+    <string name="msg_streaming_cache_cleared">Storfa ffrydio wedi\'i chlirio</string>
+    <string name="lbl_offline_backup">Copi Wrth Gefn All-lein</string>
+    <string name="offline_backup_subtitle">%1$d o ganeuon yn barod i\'w chwarae all-lein</string>
+    <string name="offline_backup_storage_summary">%1$d o ganeuon • %2$d MB yn y storfa</string>
+    <string name="offline_backup_mode_badge">Modd all-lein</string>
+    <string name="btn_play_all">Chwarae pob un</string>
+    <string name="btn_shuffle_play">Cymysgu</string>
+    <string name="filter_chip_all">Pob un</string>
+    <string name="filter_chip_artists">Artistiaid</string>
+    <string name="filter_chip_albums">Albwmau</string>
+    <string name="lng_empty_offline_backup">Gwrandewch ar gerddoriaeth ar-lein i greu eich Copi Wrth Gefn All-lein yn awtomatig</string>
+    <string name="msg_offline_backup_ready">All-lein. Mae eich Copi Wrth Gefn All-lein yn barod i\'w chwarae</string>
+    <string name="btn_listen">Gwrando</string>
 </resources>

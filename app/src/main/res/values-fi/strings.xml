@@ -527,4 +527,22 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="set_online_downloads_desc">Määritä suoratoiston laatu, lataukset ja tallennustila</string>
     <string name="set_streaming_category">Suoratoisto</string>
     <string name="set_downloads_category">Lataukset</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Suoratoiston välimuistin koko</string>
+    <string name="set_clear_streaming_cache">Tyhjennä suoratoiston välimuisti</string>
+    <string name="fmt_streaming_cache_usage">%1$d Mt käytössä</string>
+    <string name="msg_streaming_cache_cleared">Suoratoiston välimuisti tyhjennetty</string>
+    <string name="lbl_offline_backup">Offline-varmuuskopio</string>
+    <string name="offline_backup_subtitle">%1$d kappaletta valmiina offline-toistoon</string>
+    <string name="offline_backup_storage_summary">%1$d kappaletta • %2$d Mt välimuistissa</string>
+    <string name="offline_backup_mode_badge">Offline-tila</string>
+    <string name="btn_play_all">Toista kaikki</string>
+    <string name="btn_shuffle_play">Sekoita</string>
+    <string name="filter_chip_all">Kaikki</string>
+    <string name="filter_chip_artists">Artistit</string>
+    <string name="filter_chip_albums">Albumit</string>
+    <string name="lng_empty_offline_backup">Kuuntele musiikkia verkossa luodaksesi Offline-varmuuskopion automaattisesti</string>
+    <string name="msg_offline_backup_ready">Offline. Offline-varmuuskopiosi on valmis toistettavaksi</string>
+    <string name="btn_listen">Kuuntele</string>
 </resources>

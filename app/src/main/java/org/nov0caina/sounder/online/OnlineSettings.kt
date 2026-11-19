@@ -31,12 +31,17 @@ interface OnlineSettings : Settings<OnlineSettings.Listener> {
     val preferStudioAudio: Boolean
     val downloadStorage: StorageDestination
     fun setDownloadStorage(destination: StorageDestination)
+    val streamingCacheSizeMb: Int
+    val streamingCacheSizeBytes: Long
+        get() = streamingCacheSizeMb.toLong() * 1024L * 1024L
+    fun setStreamingCacheSizeMb(sizeMb: Int)
 
     interface Listener {
         fun onAudioQualityChanged() {}
         fun onWifiOnlyDownloadsChanged() {}
         fun onDownloadStorageChanged() {}
         fun onPreferStudioAudioChanged() {}
+        fun onStreamingCacheSizeChanged() {}
     }
 }
 
@@ -44,6 +49,12 @@ interface OnlineSettings : Settings<OnlineSettings.Listener> {
 class OnlineSettingsImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : Settings.Impl<OnlineSettings.Listener>(context), OnlineSettings {
+
+    companion object {
+        const val MIN_STREAMING_CACHE_MB = 100
+        const val MAX_STREAMING_CACHE_MB = 700
+        const val DEFAULT_STREAMING_CACHE_MB = 300
+    }
 
     override val audioQuality: AudioQuality
         get() {
@@ -82,12 +93,28 @@ class OnlineSettingsImpl @Inject constructor(
         sharedPreferences.edit().putString(key, destination.name).apply()
     }
 
+    override val streamingCacheSizeMb: Int
+        get() {
+            val key = context.getString(R.string.set_key_streaming_cache_size)
+            val parsed = sharedPreferences.getString(key, DEFAULT_STREAMING_CACHE_MB.toString())
+                ?.toIntOrNull()
+                ?: DEFAULT_STREAMING_CACHE_MB
+            return parsed.coerceIn(MIN_STREAMING_CACHE_MB, MAX_STREAMING_CACHE_MB)
+        }
+
+    override fun setStreamingCacheSizeMb(sizeMb: Int) {
+        val key = context.getString(R.string.set_key_streaming_cache_size)
+        val clamped = sizeMb.coerceIn(MIN_STREAMING_CACHE_MB, MAX_STREAMING_CACHE_MB)
+        sharedPreferences.edit().putString(key, clamped.toString()).apply()
+    }
+
     override fun onSettingChanged(key: String, listener: OnlineSettings.Listener) {
         when (key) {
             context.getString(R.string.set_key_online_quality) -> listener.onAudioQualityChanged()
             context.getString(R.string.set_key_wifi_only_downloads) -> listener.onWifiOnlyDownloadsChanged()
             context.getString(R.string.set_key_download_storage) -> listener.onDownloadStorageChanged()
             context.getString(R.string.set_key_prefer_studio_audio) -> listener.onPreferStudioAudioChanged()
+            context.getString(R.string.set_key_streaming_cache_size) -> listener.onStreamingCacheSizeChanged()
         }
     }
 }

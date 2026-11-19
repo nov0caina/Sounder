@@ -535,4 +535,22 @@ UWAGA: Zachowaj ostrożność przy korzystaniu z tej opcji. Jeśli ją zamkniesz
     <string name="set_online_downloads_desc">Skonfiguruj jakość streamingu, pobieranie i pamięć</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Pobrane</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Rozmiar pamięci podręcznej streamingu</string>
+    <string name="set_clear_streaming_cache">Wyczyść pamięć podręczną streamingu</string>
+    <string name="fmt_streaming_cache_usage">Zajęto %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Wyczyszczono pamięć podręczną streamingu</string>
+    <string name="lbl_offline_backup">Kopia offline</string>
+    <string name="offline_backup_subtitle">%1$d utworów gotowych do odtwarzania offline</string>
+    <string name="offline_backup_storage_summary">%1$d utworów • %2$d MB w pamięci</string>
+    <string name="offline_backup_mode_badge">Tryb offline</string>
+    <string name="btn_play_all">Odtwórz wszystko</string>
+    <string name="btn_shuffle_play">Losowo</string>
+    <string name="filter_chip_all">Wszystkie</string>
+    <string name="filter_chip_artists">Wykonawcy</string>
+    <string name="filter_chip_albums">Albumy</string>
+    <string name="lng_empty_offline_backup">Słuchaj muzyki online, aby automatycznie utworzyć Kopię offline</string>
+    <string name="msg_offline_backup_ready">Brak sieci. Twoja Kopia offline jest gotowa do odtwarzania</string>
+    <string name="btn_listen">Słuchaj</string>
 </resources>

@@ -523,4 +523,22 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="set_online_downloads_desc">Atur kualitas streaming, unduhan, dan penyimpanan</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Unduhan</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Ukuran cache streaming</string>
+    <string name="set_clear_streaming_cache">Hapus cache streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB digunakan</string>
+    <string name="msg_streaming_cache_cleared">Cache streaming dibersihkan</string>
+    <string name="lbl_offline_backup">Cadangan Offline</string>
+    <string name="offline_backup_subtitle">%1$d lagu siap diputar secara offline</string>
+    <string name="offline_backup_storage_summary">%1$d lagu • %2$d MB di cache</string>
+    <string name="offline_backup_mode_badge">Mode offline</string>
+    <string name="btn_play_all">Putar semua</string>
+    <string name="btn_shuffle_play">Acak</string>
+    <string name="filter_chip_all">Semua</string>
+    <string name="filter_chip_artists">Artis</string>
+    <string name="filter_chip_albums">Album</string>
+    <string name="lng_empty_offline_backup">Dengarkan musik online untuk membuat Cadangan Offline secara otomatis</string>
+    <string name="msg_offline_backup_ready">Offline. Cadangan Offline Anda siap diputar</string>
+    <string name="btn_listen">Dengarkan</string>
 </resources>

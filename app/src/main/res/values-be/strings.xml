@@ -494,4 +494,22 @@
     <string name="set_online_downloads_desc">Налада якасці трансляцыі, спамповак і сховішча</string>
     <string name="set_streaming_category">Стрымінг</string>
     <string name="set_downloads_category">Спампоўкі</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Памер кэша стрымінгу</string>
+    <string name="set_clear_streaming_cache">Ачысціць кэш стрымінгу</string>
+    <string name="fmt_streaming_cache_usage">Занята %1$d МБ</string>
+    <string name="msg_streaming_cache_cleared">Кэш стрымінгу ачышчаны</string>
+    <string name="lbl_offline_backup">Афлайн-рэзерв</string>
+    <string name="offline_backup_subtitle">%1$d трэкаў гатовыя да прайгравання афлайн</string>
+    <string name="offline_backup_storage_summary">%1$d трэкаў • %2$d МБ у кэшы</string>
+    <string name="offline_backup_mode_badge">Афлайн-рэжым</string>
+    <string name="btn_play_all">Слухаць усё</string>
+    <string name="btn_shuffle_play">Перамяшаць</string>
+    <string name="filter_chip_all">Усе</string>
+    <string name="filter_chip_artists">Выканаўцы</string>
+    <string name="filter_chip_albums">Альбомы</string>
+    <string name="lng_empty_offline_backup">Слухайце музыку анлайн, каб аўтаматычна стварыць Афлайн-рэзерв</string>
+    <string name="msg_offline_backup_ready">Няма сеткі. Ваш Афлайн-рэзерв гатовы да прайгравання</string>
+    <string name="btn_listen">Слухаць</string>
 </resources>

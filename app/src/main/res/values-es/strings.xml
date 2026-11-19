@@ -531,4 +531,22 @@ ADVERTENCIA: Ten cuidado al controlar este servicio, si lo cierras y luego inten
     <string name="set_online_downloads_desc">Configura la calidad de streaming, descargas y almacenamiento</string>
     <string name="set_streaming_category">Streaming</string>
     <string name="set_downloads_category">Descargas</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Tamaño de caché de streaming</string>
+    <string name="set_clear_streaming_cache">Limpiar caché de streaming</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ocupados</string>
+    <string name="msg_streaming_cache_cleared">Caché de streaming limpiada</string>
+    <string name="lbl_offline_backup">Respaldo Musical</string>
+    <string name="offline_backup_subtitle">%1$d canciones listas para escuchar sin internet</string>
+    <string name="offline_backup_storage_summary">%1$d canciones • %2$d MB en caché</string>
+    <string name="offline_backup_mode_badge">Modo sin conexión</string>
+    <string name="btn_play_all">Reproducir todo</string>
+    <string name="btn_shuffle_play">Aleatorio</string>
+    <string name="filter_chip_all">Todos</string>
+    <string name="filter_chip_artists">Artistas</string>
+    <string name="filter_chip_albums">Álbumes</string>
+    <string name="lng_empty_offline_backup">Escucha música online para crear automáticamente tu Respaldo Musical</string>
+    <string name="msg_offline_backup_ready">Sin conexión. Tu Respaldo Musical está listo para reproducir</string>
+    <string name="btn_listen">Escuchar</string>
 </resources>

@@ -531,4 +531,22 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="set_online_downloads_desc">Configura la qualitat de reproducció, les baixades i l\'emmagatzematge</string>
     <string name="set_streaming_category">Reproducció en línia</string>
     <string name="set_downloads_category">Baixades</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Mida de la memòria cau de reproducció</string>
+    <string name="set_clear_streaming_cache">Buida la memòria cau de reproducció</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ocupats</string>
+    <string name="msg_streaming_cache_cleared">Memòria cau de reproducció buidada</string>
+    <string name="lbl_offline_backup">Còpia musical fora de línia</string>
+    <string name="offline_backup_subtitle">%1$d cançons llestes per escoltar sense connexió</string>
+    <string name="offline_backup_storage_summary">%1$d cançons • %2$d MB en memòria cau</string>
+    <string name="offline_backup_mode_badge">Mode fora de línia</string>
+    <string name="btn_play_all">Reprodueix-ho tot</string>
+    <string name="btn_shuffle_play">Aleatori</string>
+    <string name="filter_chip_all">Tots</string>
+    <string name="filter_chip_artists">Artistes</string>
+    <string name="filter_chip_albums">Àlbums</string>
+    <string name="lng_empty_offline_backup">Escolta música en línia per crear automàticament la teva còpia musical fora de línia</string>
+    <string name="msg_offline_backup_ready">Sense connexió. La teva còpia musical està llesta per reproduir</string>
+    <string name="btn_listen">Escolta</string>
 </resources>

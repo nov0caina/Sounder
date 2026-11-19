@@ -279,4 +279,22 @@
     <string name="set_online_downloads_desc">സ്ട്രീമിംഗ് നിലവാരം, ഡൗൺലോഡുകൾ, സ്റ്റോറേജ് എന്നിവ ക്രമീകരിക്കുക</string>
     <string name="set_streaming_category">സ്ട്രീമിംഗ്</string>
     <string name="set_downloads_category">ഡൗൺലോഡുകൾ</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">സ്ട്രീമിംഗ് കാഷെ വലുപ്പം</string>
+    <string name="set_clear_streaming_cache">സ്ട്രീമിംഗ് കാഷെ മായ്ക്കുക</string>
+    <string name="fmt_streaming_cache_usage">%1$d MB ഉപയോഗിച്ചു</string>
+    <string name="msg_streaming_cache_cleared">സ്ട്രീമിംഗ് കാഷെ മായ്ച്ചു</string>
+    <string name="lbl_offline_backup">ഓഫ്‌ലൈൻ ബാക്കപ്പ്</string>
+    <string name="offline_backup_subtitle">%1$d പാട്ടുകൾ ഓഫ്‌ലൈനായി കേൾക്കാൻ തയ്യാർ</string>
+    <string name="offline_backup_storage_summary">%1$d പാട്ടുകൾ • %2$d MB കാഷെയിൽ</string>
+    <string name="offline_backup_mode_badge">ഓഫ്‌ലൈൻ മോഡ്</string>
+    <string name="btn_play_all">എല്ലാം പ്ലേ ചെയ്യുക</string>
+    <string name="btn_shuffle_play">ഷഫിൾ</string>
+    <string name="filter_chip_all">എല്ലാം</string>
+    <string name="filter_chip_artists">കലാകാരന്മാർ</string>
+    <string name="filter_chip_albums">ആൽബങ്ങൾ</string>
+    <string name="lng_empty_offline_backup">നിങ്ങളുടെ ഓഫ്‌ലൈൻ ബാക്കപ്പ് സ്വയം നിർമ്മിക്കാൻ ഓൺലൈൻ സംഗീതം കേൾക്കുക</string>
+    <string name="msg_offline_backup_ready">ഓഫ്‌ലൈൻ. നിങ്ങളുടെ ഓഫ്‌ലൈൻ ബാക്കപ്പ് കേൾക്കാൻ തയ്യാറാണ്</string>
+    <string name="btn_listen">കേൾക്കുക</string>
 </resources>

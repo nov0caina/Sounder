@@ -211,4 +211,22 @@
     <string name="set_online_downloads_desc">Подесите квалитет стримовања, преузимања и складиште</string>
     <string name="set_streaming_category">Стримовање</string>
     <string name="set_downloads_category">Преузимања</string>
+
+    <!-- Streaming Cache & Offline Backup -->
+    <string name="set_streaming_cache_size">Veličina keša striminga</string>
+    <string name="set_clear_streaming_cache">Očisti keš striminga</string>
+    <string name="fmt_streaming_cache_usage">Korišćeno %1$d MB</string>
+    <string name="msg_streaming_cache_cleared">Keš striminga je očišćen</string>
+    <string name="lbl_offline_backup">Oflajn rezerva</string>
+    <string name="offline_backup_subtitle">%1$d pesama spremno za oflajn reprodukciju</string>
+    <string name="offline_backup_storage_summary">%1$d pesama • %2$d MB u kešu</string>
+    <string name="offline_backup_mode_badge">Oflajn režim</string>
+    <string name="btn_play_all">Pusti sve</string>
+    <string name="btn_shuffle_play">Nasumično</string>
+    <string name="filter_chip_all">Sve</string>
+    <string name="filter_chip_artists">Izvođači</string>
+    <string name="filter_chip_albums">Albumi</string>
+    <string name="lng_empty_offline_backup">Slušajte muziku onlajn da biste automatski kreirali Oflajn rezervu</string>
+    <string name="msg_offline_backup_ready">Oflajn. Vaša Oflajn rezerva je spremna za reprodukciju</string>
+    <string name="btn_listen">Slušaj</string>
 </resources>
