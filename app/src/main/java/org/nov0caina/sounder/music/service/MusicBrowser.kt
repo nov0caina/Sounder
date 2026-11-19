@@ -211,6 +211,7 @@ private constructor(
                     MusicType.GENRES -> homeGenerator.genres().map { it.toMediaItem(context) }
                     MusicType.PLAYLISTS -> homeGenerator.playlists().map { it.toMediaItem(context) }
                     MusicType.DOWNLOADS -> homeGenerator.downloads().map { it.toMediaItem(context) }
+                    MusicType.OFFLINE_BACKUP -> emptyList()
                 }
         }
 

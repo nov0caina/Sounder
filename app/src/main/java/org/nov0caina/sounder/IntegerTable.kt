@@ -93,6 +93,8 @@ object IntegerTable {
     const val MUSIC_MODE_PLAYLISTS = 0xA107
     /** MusicMode.DOWNLOADS */
     const val MUSIC_MODE_DOWNLOADS = 0xA10F
+    /** MusicMode.OFFLINE_BACKUP */
+    const val MUSIC_MODE_OFFLINE_BACKUP = 0xA12B
     /** Sort.Mode.ByName */
     const val SORT_BY_NAME = 0xA10C
     /** Sort.Mode.ByArtist */

@@ -11,9 +11,17 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.nov0caina.sounder.online.cache.OfflineBackupFilter
+import org.nov0caina.sounder.online.cache.OfflineBackupFilterMode
+import org.nov0caina.sounder.online.cache.OfflineBackupFilterState
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.download.DownloadItem
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.HomeFeedData
@@ -25,6 +33,7 @@ import org.nov0caina.sounder.online.model.QuickAccessItem
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.playback.state.ShuffleMode
 import org.nov0caina.sounder.util.NetworkUtil
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -33,7 +42,8 @@ import timber.log.Timber as L
 class HomeFeedViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: OnlineMusicRepository,
-    private val downloadManager: DownloadManager
+    private val downloadManager: DownloadManager,
+    private val streamingCacheManager: StreamingCacheManager,
 ) : ViewModel() {
 
     private val _feedData = MutableStateFlow(HomeFeedData())
@@ -73,8 +83,81 @@ class HomeFeedViewModel @Inject constructor(
     private val _loadingTrackId = MutableStateFlow<String?>(null)
     val loadingTrackId: StateFlow<String?> = _loadingTrackId.asStateFlow()
 
+    val offlineBackupTracks: StateFlow<List<OnlineTrack>> =
+        streamingCacheManager.observePlayableCachedTracks()
+            .map { entities -> entities.map { it.toOnlineTrack() } }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private val _offlineBackupFilter = MutableStateFlow(OfflineBackupFilterState())
+    val offlineBackupFilter: StateFlow<OfflineBackupFilterState> = _offlineBackupFilter.asStateFlow()
+
+    val filteredOfflineBackupTracks: StateFlow<List<OnlineTrack>> =
+        combine(offlineBackupTracks, offlineBackupFilter) { tracks, filter ->
+            OfflineBackupFilter.filterTracks(tracks, filter)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    val cacheSizeBytes: StateFlow<Long> = streamingCacheManager.cacheSizeBytes
+
     init {
         loadFeed()
+        observeNetworkChanges()
+    }
+
+    private fun observeNetworkChanges() {
+        viewModelScope.launch {
+            NetworkUtil.observeConnectivity(context).collect { connected ->
+                if (!connected) {
+                    _isOffline.value = true
+                    _isLoading.value = false
+                } else {
+                    val wasOffline = _isOffline.value
+                    _isOffline.value = false
+                    val hasExistingData = _feedData.value.trendingTracks.isNotEmpty() ||
+                        _feedData.value.trendingAlbums.isNotEmpty() ||
+                        _feedData.value.popularArtists.isNotEmpty()
+                    if (wasOffline || !hasExistingData) {
+                        val categoryQuery = if (_selectedMood.value == "all") null else _selectedMood.value
+                        loadFeed(force = !hasExistingData, category = categoryQuery)
+                    }
+                }
+            }
+        }
+    }
+
+    fun selectBackupFilterMode(mode: OfflineBackupFilterMode) {
+        _offlineBackupFilter.value = OfflineBackupFilterState(mode = mode, selectedValue = null)
+    }
+
+    fun selectBackupFilterValue(value: String?) {
+        val current = _offlineBackupFilter.value
+        val nextValue = if (current.selectedValue.equals(value, ignoreCase = true)) null else value
+        _offlineBackupFilter.value = current.copy(selectedValue = nextValue)
+    }
+
+    fun playOfflineBackup(
+        startTrack: OnlineTrack? = null,
+        shuffle: Boolean = false,
+        playbackModel: PlaybackViewModel,
+    ) {
+        val visibleTracks = filteredOfflineBackupTracks.value.ifEmpty { offlineBackupTracks.value }
+        if (visibleTracks.isEmpty()) return
+
+        val queue = visibleTracks.map { track ->
+            val localFile = downloadManager.getDownloadedFile(track)
+            if (localFile != null && localFile.exists()) {
+                OnlineSong(track, Uri.fromFile(localFile))
+            } else {
+                OnlineSong(track, Uri.parse("sounder://stream/${track.id}"))
+            }
+        }
+        val targetSong = if (startTrack != null) {
+            queue.firstOrNull { (it as? OnlineSong)?.onlineTrack?.id == startTrack.id } ?: queue.first()
+        } else if (shuffle) {
+            queue.random()
+        } else {
+            queue.first()
+        }
+        playbackModel.play(targetSong, queue, if (shuffle) ShuffleMode.ON else ShuffleMode.OFF)
     }
 
     fun selectMood(moodId: String) {
@@ -201,6 +284,10 @@ class HomeFeedViewModel @Inject constructor(
         if (localSong != null) {
             return localSong
         }
+        if (streamingCacheManager.isTrackFullyCached(track.id)) {
+            val resolvedDuration = if (track.durationMs > 0) track.durationMs else 0L
+            return OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse("sounder://stream/${track.id}"))
+        }
         val targetUri = when {
             !streamUrl.isNullOrBlank() -> Uri.parse(streamUrl)
             !track.streamUrl.isNullOrBlank() -> Uri.parse(track.streamUrl)
@@ -219,6 +306,10 @@ class HomeFeedViewModel @Inject constructor(
         val localSong = downloadManager.findSongInLibrary(track)
         if (localSong != null) {
             return localSong
+        }
+        if (streamingCacheManager.isTrackFullyCached(track.id)) {
+            val resolvedDuration = if (track.durationMs > 0) track.durationMs else 0L
+            return OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse("sounder://stream/${track.id}"))
         }
         val streamInfo = repository.resolveStreamInfo(track.id, title = track.title, artist = track.artist)
         if (streamInfo != null && streamInfo.url.isNotBlank()) {
@@ -390,6 +481,13 @@ class HomeFeedViewModel @Inject constructor(
                 val localSong = downloadManager.findSongInLibrary(track)
                 if (localSong != null) {
                     playbackModel.addToQueue(localSong)
+                    onEnqueued?.invoke()
+                    return@launch
+                }
+                if (streamingCacheManager.isTrackFullyCached(track.id)) {
+                    val resolvedDuration = if (track.durationMs > 0) track.durationMs else 0L
+                    val cachedSong = OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse("sounder://stream/${track.id}"))
+                    playbackModel.addToQueue(cachedSong)
                     onEnqueued?.invoke()
                     return@launch
                 }

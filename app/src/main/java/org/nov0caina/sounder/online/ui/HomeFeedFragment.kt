@@ -70,6 +70,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
     private var trendingAlbumsAdapter: OnlineAlbumCardAdapter? = null
     private var popularArtistsAdapter: RecentArtistsAdapter? = null
     private var quickPicksAdapter: QuickPicksColumnAdapter? = null
+    private var offlineBackupAdapter: OnlineTrackAdapter? = null
     private var currentHeroTrack: OnlineTrack? = null
     private var trendingTouchHelper: ItemTouchHelper? = null
     private var quickPicksTouchHelper: ItemTouchHelper? = null
@@ -249,6 +250,62 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             onRetry = { feedModel.loadFeed(force = true) }
         )
 
+        // Offline Backup ("Respaldo Musical") setup for network disconnection
+        binding.homeOfflineBackupLayout.offlineBackupModeBadge.isVisible = true
+        offlineBackupAdapter = OnlineTrackAdapter(
+            onPlayClick = { track ->
+                if (isTrackPlaying(track)) {
+                    playbackModel.togglePlaying()
+                } else {
+                    feedModel.playOfflineBackup(startTrack = track, shuffle = false, playbackModel = playbackModel)
+                }
+            },
+            onDownloadClick = { track -> handleDownloadTrack(track) },
+            isDownloaded = { track -> feedModel.isDownloaded(track) },
+            isDownloading = { track -> feedModel.isEnqueuedOrDownloading(track) },
+            isCurrentlyLoading = { trackId -> feedModel.loadingTrackId.value == trackId },
+            isCurrentlyPlaying = { track -> isTrackPlaying(track) },
+            onTrackLongClick = { track -> openSongMenu(track) }
+        )
+        binding.homeOfflineBackupLayout.offlineBackupRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = offlineBackupAdapter
+        }
+        binding.homeOfflineBackupLayout.offlineBackupPlayAllBtn.setOnClickListener {
+            feedModel.playOfflineBackup(startTrack = null, shuffle = false, playbackModel = playbackModel)
+        }
+        binding.homeOfflineBackupLayout.offlineBackupShuffleBtn.setOnClickListener {
+            feedModel.playOfflineBackup(startTrack = null, shuffle = true, playbackModel = playbackModel)
+        }
+        OfflineBackupUiBinder.bindFilterChips(
+            binding = binding.homeOfflineBackupLayout,
+            onModeSelected = { mode -> feedModel.selectBackupFilterMode(mode) }
+        )
+
+        // Collect Offline Backup tracks & filters
+        collect(feedModel.offlineBackupTracks) { allCached ->
+            binding.homeOfflineBackupLayout.offlineBackupSubtitle.text =
+                getString(R.string.offline_backup_subtitle, allCached.size)
+            OfflineBackupUiBinder.renderFilterState(
+                binding = binding.homeOfflineBackupLayout,
+                allTracks = allCached,
+                state = feedModel.offlineBackupFilter.value,
+                onValueSelected = { value -> feedModel.selectBackupFilterValue(value) }
+            )
+            updateViewState(feedModel.feedData.value, feedModel.isLoading.value, feedModel.isOffline.value, feedModel.error.value)
+        }
+        collect(feedModel.offlineBackupFilter) { filterState ->
+            OfflineBackupUiBinder.renderFilterState(
+                binding = binding.homeOfflineBackupLayout,
+                allTracks = feedModel.offlineBackupTracks.value,
+                state = filterState,
+                onValueSelected = { value -> feedModel.selectBackupFilterValue(value) }
+            )
+        }
+        collect(feedModel.filteredOfflineBackupTracks) { filtered ->
+            offlineBackupAdapter?.submitList(filtered)
+        }
+
         // Collect feed data
         collect(feedModel.feedData) { data ->
             val hasData = data.trendingTracks.isNotEmpty() ||
@@ -325,11 +382,13 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         collect(feedModel.downloads) {
             trendingTracksAdapter?.notifyDataSetChanged()
             quickPicksAdapter?.notifyDataSetChanged()
+            offlineBackupAdapter?.notifyDataSetChanged()
         }
 
         collect(musicModel.indexingState) {
             trendingTracksAdapter?.notifyDataSetChanged()
             quickPicksAdapter?.notifyDataSetChanged()
+            offlineBackupAdapter?.notifyDataSetChanged()
         }
 
         // Collect playback song & playing state to refresh UI play/pause indicators
@@ -375,17 +434,27 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         val hasData = data.trendingTracks.isNotEmpty() ||
             data.trendingAlbums.isNotEmpty() ||
             data.popularArtists.isNotEmpty()
+        val hasOfflineBackup = feedModel.offlineBackupTracks.value.isNotEmpty()
 
-        if (!hasData && (isLoading || error == null) && !isOffline) {
+        if (isOffline && hasOfflineBackup) {
+            // Disconnected with cached streaming tracks: present "Respaldo Musical" directly
+            stopSkeletonPulse()
+            b.homeLoadingLayout.isVisible = false
+            b.homeOfflineLayout.root.isVisible = false
+            b.homeOfflineBackupLayout.root.isVisible = true
+            b.homeFeedScroll.isVisible = false
+        } else if (!hasData && (isLoading || error == null) && !isOffline) {
             // Still loading initial data on cold start: show pulsing skeleton
             b.homeLoadingLayout.isVisible = true
             b.homeOfflineLayout.root.isVisible = false
+            b.homeOfflineBackupLayout.root.isVisible = false
             b.homeFeedScroll.isVisible = false
             startSkeletonPulse()
         } else if ((isOffline || error != null) && !hasData) {
-            // Offline or network error and no cached data: show humorous offline screen
+            // Offline with empty cache or network error with no data: show standard offline screen
             stopSkeletonPulse()
             b.homeLoadingLayout.isVisible = false
+            b.homeOfflineBackupLayout.root.isVisible = false
             b.homeOfflineLayout.root.isVisible = true
             b.homeFeedScroll.isVisible = false
 
@@ -400,6 +469,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             stopSkeletonPulse()
             b.homeLoadingLayout.isVisible = false
             b.homeOfflineLayout.root.isVisible = false
+            b.homeOfflineBackupLayout.root.isVisible = false
             b.homeFeedScroll.isVisible = true
         }
     }
@@ -437,6 +507,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         Snackbar.make(requireView(), getString(R.string.download_queued, track.title), Snackbar.LENGTH_SHORT).show()
         trendingTracksAdapter?.notifyDataSetChanged()
         quickPicksAdapter?.notifyDataSetChanged()
+        offlineBackupAdapter?.notifyDataSetChanged()
     }
 
     private fun revealContent() {
@@ -444,6 +515,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         stopSkeletonPulse()
         b.homeLoadingLayout.isVisible = false
         b.homeOfflineLayout.root.isVisible = false
+        b.homeOfflineBackupLayout.root.isVisible = false
         b.homeFeedScroll.isVisible = true
     }
 
@@ -545,6 +617,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         quickAccessAdapter?.notifyDataSetChanged()
         trendingTracksAdapter?.notifyDataSetChanged()
         quickPicksAdapter?.notifyDataSetChanged()
+        offlineBackupAdapter?.notifyDataSetChanged()
         updateHeroPlayButton(currentHeroTrack)
     }
 
@@ -720,6 +793,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         trendingAlbumsAdapter = null
         popularArtistsAdapter = null
         quickPicksAdapter = null
+        offlineBackupAdapter = null
         currentHeroTrack = null
     }
 }

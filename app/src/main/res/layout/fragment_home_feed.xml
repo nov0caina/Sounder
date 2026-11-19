@@ -317,6 +317,14 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
+        <!-- Offline Backup ("Respaldo Musical") Layout shown when disconnected with cached tracks -->
+        <include
+            android:id="@+id/home_offline_backup_layout"
+            layout="@layout/layout_offline_backup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
     </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -58,19 +58,23 @@ sealed class Tab(open val type: MusicType) {
         // MusicMode for this tab.
 
         /** The maximum index that a well-formed tab sequence should be. */
-        const val MAX_SEQUENCE_IDX = 5
+        const val MAX_SEQUENCE_IDX = 6
 
         /** The total number of configurable library tabs. */
-        const val NUM_ITEMS = 6
+        const val NUM_ITEMS = 7
+
+        /** Legacy 6-tab maximum sequence index used prior to adding Offline Backup. */
+        private const val LEGACY_6_MAX_SEQUENCE_IDX = 5
 
         /** Legacy 5-tab maximum sequence index used prior to adding Recent Downloads. */
-        private const val LEGACY_MAX_SEQUENCE_IDX = 4
+        private const val LEGACY_5_MAX_SEQUENCE_IDX = 4
 
         /**
-         * The default tab sequence, in integer form. This represents a set of six visible tabs
-         * ordered as "Song", "Album", "Artist", "Genre", "Playlists", and "Recent Downloads".
+         * The default tab sequence, in integer form. This represents a set of seven visible tabs
+         * ordered as "Song", "Album", "Artist", "Genre", "Playlists", "Recent Downloads",
+         * and "Offline Backup".
          */
-        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1100_1101
+        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1100_1101_1110
 
         /** Maps between the integer code in the tab sequence and it's [MusicType]. */
         private val MODE_TABLE =
@@ -81,6 +85,7 @@ sealed class Tab(open val type: MusicType) {
                 MusicType.GENRES,
                 MusicType.PLAYLISTS,
                 MusicType.DOWNLOADS,
+                MusicType.OFFLINE_BACKUP,
             )
 
         /**
@@ -121,21 +126,33 @@ sealed class Tab(open val type: MusicType) {
          * @return An array of [Tab]s corresponding to the sequence.
          */
         fun fromIntCode(intCode: Int): Array<Tab>? {
-            // Try parsing as a full 6-tab sequence first.
-            val sixTabs = parseChunks(intCode, MAX_SEQUENCE_IDX)
-            if (sixTabs.size == MODE_TABLE.size) {
-                return sixTabs.toTypedArray()
+            // Try parsing as a full 7-tab sequence first.
+            val sevenTabs = parseChunks(intCode, MAX_SEQUENCE_IDX)
+            if (sevenTabs.size == MODE_TABLE.size) {
+                return sevenTabs.toTypedArray()
             }
 
-            // Fallback for legacy 5-tab sequences where the top 4-bit chunk is 0
-            // and shifts 16..0 contain the 5 legacy tabs without DOWNLOADS.
+            // Fallback for legacy 6-tab sequences where the top 4-bit chunk is 0
+            // and shifts 20..0 contain the 6 tabs without OFFLINE_BACKUP.
             if (intCode.ushr(MAX_SEQUENCE_IDX * 4) and 0b1111 == 0) {
-                val fiveTabs = parseChunks(intCode, LEGACY_MAX_SEQUENCE_IDX)
+                val sixTabs = parseChunks(intCode, LEGACY_6_MAX_SEQUENCE_IDX)
                 if (
-                    fiveTabs.size == LEGACY_MAX_SEQUENCE_IDX + 1 &&
-                        fiveTabs.none { it.type == MusicType.DOWNLOADS }
+                    sixTabs.size == LEGACY_6_MAX_SEQUENCE_IDX + 1 &&
+                        sixTabs.none { it.type == MusicType.OFFLINE_BACKUP }
                 ) {
-                    return (fiveTabs + Visible(MusicType.DOWNLOADS)).toTypedArray()
+                    return (sixTabs + Visible(MusicType.OFFLINE_BACKUP)).toTypedArray()
+                }
+            }
+
+            // Fallback for legacy 5-tab sequences where the top 8 bits are 0
+            // and shifts 16..0 contain the 5 legacy tabs without DOWNLOADS or OFFLINE_BACKUP.
+            if (intCode.ushr(LEGACY_6_MAX_SEQUENCE_IDX * 4) and 0xFF == 0) {
+                val fiveTabs = parseChunks(intCode, LEGACY_5_MAX_SEQUENCE_IDX)
+                if (
+                    fiveTabs.size == LEGACY_5_MAX_SEQUENCE_IDX + 1 &&
+                        fiveTabs.none { it.type == MusicType.DOWNLOADS || it.type == MusicType.OFFLINE_BACKUP }
+                ) {
+                    return (fiveTabs + Visible(MusicType.DOWNLOADS) + Visible(MusicType.OFFLINE_BACKUP)).toTypedArray()
                 }
             }
 

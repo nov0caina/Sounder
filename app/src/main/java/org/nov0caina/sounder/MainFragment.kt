@@ -30,6 +30,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.R as MR
@@ -46,6 +47,7 @@ import java.lang.reflect.Method
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
+import kotlinx.coroutines.launch
 import org.nov0caina.sounder.databinding.FragmentMainBinding
 import org.nov0caina.sounder.detail.DetailViewModel
 import org.nov0caina.sounder.detail.Show
@@ -55,6 +57,11 @@ import org.nov0caina.sounder.list.ListViewModel
 import org.nov0caina.sounder.music.IndexingState
 import org.nov0caina.sounder.music.MusicType
 import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.online.cache.OfflineNoticeAnchor
+import org.nov0caina.sounder.online.cache.OfflineNotificationPolicy
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
+import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.playback.OpenPanel
 import org.nov0caina.sounder.playback.PlaybackBottomSheetBehavior
 import org.nov0caina.sounder.playback.PlaybackViewModel
@@ -62,6 +69,7 @@ import org.nov0caina.sounder.playback.queue.QueueBottomSheetBehavior
 import org.nov0caina.sounder.ui.DialogAwareNavigationListener
 import org.nov0caina.sounder.ui.UISettings
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.util.NetworkUtil
 import org.nov0caina.sounder.util.collect
 import org.nov0caina.sounder.util.collectImmediately
 import org.nov0caina.sounder.util.context
@@ -101,7 +109,10 @@ class MainFragment :
     private var normalCornerSize = 0f
     private var maxScaleXDistance = 0f
     private var sheetRising: Boolean? = null
+    private var lastKnownOnlineState: Boolean? = null
     @Inject lateinit var uiSettings: UISettings
+    @Inject lateinit var streamingCacheManager: StreamingCacheManager
+    @Inject lateinit var downloadManager: DownloadManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -295,6 +306,18 @@ class MainFragment :
             if (it != null) {
                 playbackModel.offlinePlaybackWarning.consume()
                 showOfflinePlaybackSnackbar()
+            }
+        }
+
+        // Monitor network connectivity transitions for contextual Offline Backup banner
+        lastKnownOnlineState = NetworkUtil.isConnected(requireContext())
+        viewLifecycleOwner.lifecycleScope.launch {
+            NetworkUtil.observeConnectivity(requireContext()).collect { isNowOnline ->
+                val wasOnline = lastKnownOnlineState ?: isNowOnline
+                lastKnownOnlineState = isNowOnline
+                if (wasOnline && !isNowOnline) {
+                    handleConnectivityLost()
+                }
             }
         }
     }
@@ -741,6 +764,79 @@ class MainFragment :
         snackbar.show()
     }
 
+    private suspend fun handleConnectivityLost() {
+        val binding = binding ?: return
+        val hasCachedTracks = streamingCacheManager.getPlayableCachedTracks().isNotEmpty()
+        val currentSong = playbackModel.song.value
+        val isPlaying = playbackModel.isPlaying.value
+        val isCurrentTrackLocalOrDownloaded = when {
+            currentSong == null -> false
+            currentSong !is OnlineSong -> true
+            currentSong.uri.scheme == "file" -> true
+            downloadManager.isDownloaded(currentSong.onlineTrack.id) -> true
+            else -> false
+        }
+        val destId = try {
+            binding.exploreNavHost.findNavController().currentDestination?.id
+        } catch (_: Exception) {
+            null
+        }
+        val isOnOnlineScreen = destId in ONLINE_SCREEN_DESTINATIONS
+
+        val shouldShow = OfflineNotificationPolicy.shouldShowOfflineBackupNotice(
+            wasOnline = true,
+            isNowOnline = false,
+            hasCachedTracks = hasCachedTracks,
+            isPlaying = isPlaying,
+            isCurrentTrackLocalOrDownloaded = isCurrentTrackLocalOrDownloaded,
+            isOnOnlineScreen = isOnOnlineScreen,
+        )
+        if (!shouldShow) return
+
+        showOfflineBackupReadySnackbar()
+    }
+
+    private fun showOfflineBackupReadySnackbar() {
+        val binding = binding ?: return
+        val playbackSheetBehavior =
+            binding.playbackSheet.coordinatorLayoutBehavior as PlaybackBottomSheetBehavior
+        val isMiniPlayerCollapsedVisible =
+            playbackSheetBehavior.state == BackportBottomSheetBehavior.STATE_COLLAPSED &&
+                binding.playbackSheet.isVisible
+
+        val snackbar = Snackbar.make(
+            binding.root,
+            R.string.msg_offline_backup_ready,
+            Snackbar.LENGTH_LONG
+        )
+        when (
+            OfflineNotificationPolicy.selectAnchor(
+                isPlaybackBarCollapsedVisible = isMiniPlayerCollapsedVisible,
+                isBottomNavVisible = binding.mainBottomNav.isVisible,
+            )
+        ) {
+            OfflineNoticeAnchor.PLAYBACK_MINI_PLAYER -> {
+                snackbar.anchorView = binding.playbackBarFragment
+            }
+            OfflineNoticeAnchor.BOTTOM_NAV -> {
+                snackbar.anchorView = binding.mainBottomNav
+            }
+            OfflineNoticeAnchor.NONE -> Unit
+        }
+        snackbar.setAction(R.string.btn_listen) {
+            tryClosePlaybackPanel()
+            if (binding.mainBottomNav.selectedItemId != R.id.nav_home) {
+                binding.mainBottomNav.selectedItemId = R.id.nav_home
+            } else {
+                val navController = binding.exploreNavHost.findNavController()
+                if (navController.currentDestination?.id != R.id.home_feed_fragment) {
+                    navController.navigateSafe(InnerDirections.actionGlobalHomeFeed())
+                }
+            }
+        }
+        snackbar.show()
+    }
+
     private fun tryOpenPlaybackPanel() {
         val binding = requireBinding()
         val playbackSheetBehavior =
@@ -941,6 +1037,13 @@ class MainFragment :
     }
 
     private companion object {
+        val ONLINE_SCREEN_DESTINATIONS = setOf(
+            R.id.home_feed_fragment,
+            R.id.discover_fragment,
+            R.id.online_artist_fragment,
+            R.id.online_album_fragment,
+        )
+
         val FAB_HIDE_FROM_USER_FIELD: Method by
             lazyReflectedMethod(
                 FloatingActionButton::class,

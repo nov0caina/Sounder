@@ -49,6 +49,7 @@ import org.nov0caina.sounder.detail.Show
 import org.nov0caina.sounder.home.list.AlbumListFragment
 import org.nov0caina.sounder.home.list.ArtistListFragment
 import org.nov0caina.sounder.home.list.GenreListFragment
+import org.nov0caina.sounder.home.list.OfflineBackupListFragment
 import org.nov0caina.sounder.home.list.PlaylistListFragment
 import org.nov0caina.sounder.home.list.RecentDownloadsListFragment
 import org.nov0caina.sounder.home.list.SongListFragment
@@ -255,7 +256,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                         MusicType.ARTISTS -> HomeFragmentDirections.sortArtists()
                         MusicType.GENRES -> HomeFragmentDirections.sortGenres()
                         MusicType.PLAYLISTS -> HomeFragmentDirections.sortPlaylists()
-                        MusicType.DOWNLOADS -> null
+                        MusicType.DOWNLOADS, MusicType.OFFLINE_BACKUP -> null
                     }
                 if (directions != null) {
                     findNavController().navigateSafe(directions)
@@ -534,7 +535,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         val binding = requireBinding()
 
         binding.homeNormalToolbar.menu.findItem(R.id.action_sort)?.isVisible =
-            tabType != MusicType.DOWNLOADS
+            tabType != MusicType.DOWNLOADS && tabType != MusicType.OFFLINE_BACKUP
 
         // Update the scrolling view in AppBarLayout to align with the current tab's
         // scrolling state. This prevents the lift state from being confused as one
@@ -547,6 +548,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                 MusicType.GENRES -> R.id.home_genre_recycler
                 MusicType.PLAYLISTS -> R.id.home_playlist_recycler
                 MusicType.DOWNLOADS -> R.id.home_downloads_recycler
+                MusicType.OFFLINE_BACKUP -> R.id.home_offline_backup_recycler
             }
     }
 
@@ -741,6 +743,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
                 MusicType.GENRES -> GenreListFragment()
                 MusicType.PLAYLISTS -> PlaylistListFragment()
                 MusicType.DOWNLOADS -> RecentDownloadsListFragment()
+                MusicType.OFFLINE_BACKUP -> OfflineBackupListFragment()
             }
     }
 }

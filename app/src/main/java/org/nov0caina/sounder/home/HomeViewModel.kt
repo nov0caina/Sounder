@@ -201,6 +201,7 @@ constructor(
                 downloadsInstructions.put(instructions)
                 downloadsList.value = homeGenerator.downloads()
             }
+            MusicType.OFFLINE_BACKUP -> Unit
         }
     }
 

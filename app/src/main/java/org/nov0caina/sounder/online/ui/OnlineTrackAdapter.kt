@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
 import coil3.util.CoilUtils
+import java.io.File
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemOnlineTrackBinding
+import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.util.getAttrColorCompat
 
@@ -85,10 +87,16 @@ class OnlineTrackAdapter(
             }
             binding.onlineTrackSubtitle.text = subtitle
 
-            // Artwork loading via Coil
+            // Artwork loading via Coil (prefer local cached cover file for zero-network offline parity)
             CoilUtils.dispose(binding.onlineTrackImage)
             binding.onlineTrackImage.setImageDrawable(null)
-            if (!track.artworkUrl.isNullOrBlank()) {
+            val localCoverFile = track.localCoverPath?.let { File(it) }?.takeIf { it.exists() && it.length() > 0L }
+                ?: StreamingCacheManager.findCachedCoverFile(track.id)
+            if (localCoverFile != null) {
+                binding.onlineTrackImage.load(localCoverFile) {
+                    crossfade(true)
+                }
+            } else if (!track.artworkUrl.isNullOrBlank()) {
                 binding.onlineTrackImage.load(track.artworkUrl) {
                     crossfade(true)
                 }

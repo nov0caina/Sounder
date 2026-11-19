@@ -116,6 +116,7 @@ class TabViewHolder private constructor(private val binding: ItemTabBinding) :
                     MusicType.GENRES -> R.string.lbl_genres
                     MusicType.PLAYLISTS -> R.string.lbl_playlists
                     MusicType.DOWNLOADS -> R.string.lbl_recent_downloads
+                    MusicType.OFFLINE_BACKUP -> R.string.lbl_offline_backup
                 }
             )
 

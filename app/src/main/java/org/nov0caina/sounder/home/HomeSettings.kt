@@ -123,10 +123,14 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
         const val OLD_KEY_LIB_TABS = "auxio_lib_tabs"
 
         fun migrateTabsIfNeeded(tabs: Array<Tab>): Array<Tab> {
-            if (tabs.any { it.type == MusicType.DOWNLOADS }) {
-                return tabs
+            var result = tabs
+            if (result.none { it.type == MusicType.DOWNLOADS }) {
+                result += Tab.Visible(MusicType.DOWNLOADS)
             }
-            return tabs + Tab.Visible(MusicType.DOWNLOADS)
+            if (result.none { it.type == MusicType.OFFLINE_BACKUP }) {
+                result += Tab.Visible(MusicType.OFFLINE_BACKUP)
+            }
+            return result
         }
 
         fun reorderVisibleTabs(
