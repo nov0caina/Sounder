@@ -71,10 +71,10 @@ sealed class Tab(open val type: MusicType) {
 
         /**
          * The default tab sequence, in integer form. This represents a set of seven visible tabs
-         * ordered as "Song", "Album", "Artist", "Genre", "Playlists", "Recent Downloads",
-         * and "Offline Backup".
+         * ordered as "Song", "Album", "Artist", "Genre", "Offline Backup", "Recent Downloads",
+         * and "Playlists".
          */
-        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1100_1101_1110
+        const val SEQUENCE_DEFAULT = 0b1000_1001_1010_1011_1110_1101_1100
 
         /** Maps between the integer code in the tab sequence and it's [MusicType]. */
         private val MODE_TABLE =
@@ -140,7 +140,7 @@ sealed class Tab(open val type: MusicType) {
                     sixTabs.size == LEGACY_6_MAX_SEQUENCE_IDX + 1 &&
                         sixTabs.none { it.type == MusicType.OFFLINE_BACKUP }
                 ) {
-                    return (sixTabs + Visible(MusicType.OFFLINE_BACKUP)).toTypedArray()
+                    return insertOfflineBackupBetweenGenresAndDownloads(sixTabs).toTypedArray()
                 }
             }
 
@@ -152,12 +152,32 @@ sealed class Tab(open val type: MusicType) {
                     fiveTabs.size == LEGACY_5_MAX_SEQUENCE_IDX + 1 &&
                         fiveTabs.none { it.type == MusicType.DOWNLOADS || it.type == MusicType.OFFLINE_BACKUP }
                 ) {
-                    return (fiveTabs + Visible(MusicType.DOWNLOADS) + Visible(MusicType.OFFLINE_BACKUP)).toTypedArray()
+                    val withDownloads = fiveTabs + Visible(MusicType.DOWNLOADS)
+                    return insertOfflineBackupBetweenGenresAndDownloads(withDownloads).toTypedArray()
                 }
             }
 
             L.e("Sequence size was invalid for intCode $intCode")
             return null
+        }
+
+        internal fun insertOfflineBackupBetweenGenresAndDownloads(
+            tabs: List<Tab>,
+            offlineTab: Tab = Visible(MusicType.OFFLINE_BACKUP),
+        ): List<Tab> {
+            val withoutOffline = tabs.filterNot { it.type == MusicType.OFFLINE_BACKUP }.toMutableList()
+            val genresIdx = withoutOffline.indexOfFirst { it.type == MusicType.GENRES }
+            val downloadsIdx = withoutOffline.indexOfFirst { it.type == MusicType.DOWNLOADS }
+            val targetIdx = when {
+                genresIdx != -1 && downloadsIdx != -1 -> {
+                    if (genresIdx < downloadsIdx) downloadsIdx else genresIdx + 1
+                }
+                downloadsIdx != -1 -> downloadsIdx
+                genresIdx != -1 -> genresIdx + 1
+                else -> withoutOffline.size
+            }.coerceIn(0, withoutOffline.size)
+            withoutOffline.add(targetIdx, offlineTab)
+            return withoutOffline
         }
 
         private fun parseChunks(intCode: Int, maxIdx: Int): List<Tab> {

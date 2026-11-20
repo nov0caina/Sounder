@@ -27,7 +27,7 @@ class TabTest {
     }
 
     @Test
-    fun `Tab default sequence decodes to all 7 visible tabs including DOWNLOADS and OFFLINE_BACKUP`() {
+    fun `Tab default sequence places OFFLINE_BACKUP between GENRES and DOWNLOADS`() {
         assertEquals(6, Tab.MAX_SEQUENCE_IDX)
         assertEquals(7, Tab.NUM_ITEMS)
 
@@ -38,9 +38,9 @@ class TabTest {
             Tab.Visible(MusicType.ALBUMS),
             Tab.Visible(MusicType.ARTISTS),
             Tab.Visible(MusicType.GENRES),
-            Tab.Visible(MusicType.PLAYLISTS),
-            Tab.Visible(MusicType.DOWNLOADS),
             Tab.Visible(MusicType.OFFLINE_BACKUP),
+            Tab.Visible(MusicType.DOWNLOADS),
+            Tab.Visible(MusicType.PLAYLISTS),
         )
         assertArrayEquals(expected, tabs)
     }
@@ -82,7 +82,7 @@ class TabTest {
     }
 
     @Test
-    fun `Legacy 6-tab bitmask automatically migrates by appending Visible OFFLINE_BACKUP`() {
+    fun `Legacy 6-tab bitmask automatically migrates by inserting Visible OFFLINE_BACKUP between GENRES and DOWNLOADS`() {
         val legacy6Default = 0b1000_1001_1010_1011_1100_1101
         val migrated = Tab.fromIntCode(legacy6Default)
         assertNotNull(migrated)
@@ -93,14 +93,14 @@ class TabTest {
             Tab.Visible(MusicType.ARTISTS),
             Tab.Visible(MusicType.GENRES),
             Tab.Visible(MusicType.PLAYLISTS),
-            Tab.Visible(MusicType.DOWNLOADS),
             Tab.Visible(MusicType.OFFLINE_BACKUP),
+            Tab.Visible(MusicType.DOWNLOADS),
         )
         assertArrayEquals(expected, migrated)
     }
 
     @Test
-    fun `Legacy 5-tab bitmask automatically migrates by appending DOWNLOADS and OFFLINE_BACKUP`() {
+    fun `Legacy 5-tab bitmask automatically migrates by inserting OFFLINE_BACKUP between GENRES and DOWNLOADS`() {
         val legacy5Default = 0b1000_1001_1010_1011_1100
         val migrated = Tab.fromIntCode(legacy5Default)
         assertNotNull(migrated)
@@ -111,14 +111,14 @@ class TabTest {
             Tab.Visible(MusicType.ARTISTS),
             Tab.Visible(MusicType.GENRES),
             Tab.Visible(MusicType.PLAYLISTS),
-            Tab.Visible(MusicType.DOWNLOADS),
             Tab.Visible(MusicType.OFFLINE_BACKUP),
+            Tab.Visible(MusicType.DOWNLOADS),
         )
         assertArrayEquals(expected, migrated)
     }
 
     @Test
-    fun `HomeSettings migrateTabsIfNeeded appends DOWNLOADS and OFFLINE_BACKUP when missing`() {
+    fun `HomeSettings migrateTabsIfNeeded and positionOfflineBackup place OFFLINE_BACKUP between GENRES and DOWNLOADS`() {
         val fiveTabs = arrayOf<Tab>(
             Tab.Visible(MusicType.PLAYLISTS),
             Tab.Visible(MusicType.SONGS),
@@ -129,12 +129,28 @@ class TabTest {
 
         val migrated = HomeSettingsImpl.migrateTabsIfNeeded(fiveTabs)
         assertEquals(7, migrated.size)
-        assertEquals(Tab.Visible(MusicType.DOWNLOADS), migrated[5])
-        assertEquals(Tab.Visible(MusicType.OFFLINE_BACKUP), migrated[6])
+        assertEquals(Tab.Visible(MusicType.OFFLINE_BACKUP), migrated[5])
+        assertEquals(Tab.Visible(MusicType.DOWNLOADS), migrated[6])
 
         // Calling again is idempotent
         val migratedAgain = HomeSettingsImpl.migrateTabsIfNeeded(migrated)
         assertArrayEquals(migrated, migratedAgain)
+
+        // Existing 7-tab layout with Offline Backup after Downloads also reorders cleanly
+        val existingCustom = arrayOf<Tab>(
+            Tab.Visible(MusicType.SONGS),
+            Tab.Visible(MusicType.PLAYLISTS),
+            Tab.Visible(MusicType.ALBUMS),
+            Tab.Visible(MusicType.ARTISTS),
+            Tab.Visible(MusicType.GENRES),
+            Tab.Visible(MusicType.DOWNLOADS),
+            Tab.Visible(MusicType.OFFLINE_BACKUP),
+        )
+        val reordered = HomeSettingsImpl.positionOfflineBackupBetweenGenresAndDownloads(existingCustom)
+        val genresIdx = reordered.indexOfFirst { it.type == MusicType.GENRES }
+        val offlineIdx = reordered.indexOfFirst { it.type == MusicType.OFFLINE_BACKUP }
+        val downloadsIdx = reordered.indexOfFirst { it.type == MusicType.DOWNLOADS }
+        assertTrue(genresIdx < offlineIdx && offlineIdx < downloadsIdx)
     }
 
     @Test

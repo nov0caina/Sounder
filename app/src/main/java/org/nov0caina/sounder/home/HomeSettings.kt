@@ -94,14 +94,22 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
             val rawCode = sharedPreferences.getInt(homeTabsKey, Tab.SEQUENCE_DEFAULT)
             val parsed = Tab.fromIntCode(rawCode)
             if (parsed != null) {
-                val migrated = migrateTabsIfNeeded(parsed)
+                var migrated = migrateTabsIfNeeded(parsed)
+                if (!sharedPreferences.getBoolean(KEY_OFFLINE_BACKUP_ORDER_MIGRATED_V1, false)) {
+                    migrated = positionOfflineBackupBetweenGenresAndDownloads(migrated)
+                }
                 val migratedCode = Tab.toIntCode(migrated)
-                if (migratedCode != rawCode) {
-                    L.d("Migrating 5-tab home sequence to 6-tab sequence")
-                    sharedPreferences.edit {
+                sharedPreferences.edit {
+                    if (migratedCode != rawCode) {
+                        L.d("Migrating home tab sequence to place Offline Backup between Genres and Recent Downloads")
                         putInt(homeTabsKey, migratedCode)
                     }
+                    putBoolean(KEY_OFFLINE_BACKUP_ORDER_MIGRATED_V1, true)
                 }
+            }
+        } else {
+            sharedPreferences.edit {
+                putBoolean(KEY_OFFLINE_BACKUP_ORDER_MIGRATED_V1, true)
             }
         }
     }
@@ -121,16 +129,24 @@ class HomeSettingsImpl @Inject constructor(@ApplicationContext context: Context)
 
     companion object {
         const val OLD_KEY_LIB_TABS = "auxio_lib_tabs"
+        private const val KEY_OFFLINE_BACKUP_ORDER_MIGRATED_V1 = "sounder_offline_backup_tab_order_v1"
 
         fun migrateTabsIfNeeded(tabs: Array<Tab>): Array<Tab> {
-            var result = tabs
-            if (result.none { it.type == MusicType.DOWNLOADS }) {
-                result += Tab.Visible(MusicType.DOWNLOADS)
+            var list = tabs.toList()
+            if (list.none { it.type == MusicType.DOWNLOADS }) {
+                list = list + Tab.Visible(MusicType.DOWNLOADS)
             }
-            if (result.none { it.type == MusicType.OFFLINE_BACKUP }) {
-                result += Tab.Visible(MusicType.OFFLINE_BACKUP)
+            if (list.none { it.type == MusicType.OFFLINE_BACKUP }) {
+                list = Tab.insertOfflineBackupBetweenGenresAndDownloads(list)
             }
-            return result
+            return list.toTypedArray()
+        }
+
+        fun positionOfflineBackupBetweenGenresAndDownloads(tabs: Array<Tab>): Array<Tab> {
+            val existingOffline = tabs.firstOrNull { it.type == MusicType.OFFLINE_BACKUP }
+                ?: Tab.Visible(MusicType.OFFLINE_BACKUP)
+            return Tab.insertOfflineBackupBetweenGenresAndDownloads(tabs.toList(), existingOffline)
+                .toTypedArray()
         }
 
         fun reorderVisibleTabs(
