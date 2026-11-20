@@ -530,4 +530,8 @@
     <string name="set_exclude_voice_notes_desc">ຂ້າມບັນທຶກສຽງ ແລະ ສຽງຂໍ້ຄວາມ (WhatsApp, Telegram ແລະອື່ນໆ)</string>
     <string name="set_scan_device_desc">ຄົ້ນຫາໂຟນເດີເພງ ແລະ ອັບເດດຄັງເພງ</string>
     <string name="msg_scanning_device_music">ກຳລັງສະແກນເພງໃນອຸປະກອນ…</string>
+    <string name="header_top_picks">ເພງແນະນຳ</string>
+    <string name="header_more_songs">ເພງເພີ່ມເຕີມ</string>
+    <string name="desc_navigate_back">ກັບຄືນ</string>
+    <string name="desc_song_options">ຕົວເລືອກເພງ</string>
 </resources>

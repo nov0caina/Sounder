@@ -506,4 +506,8 @@
     <string name="set_exclude_voice_notes_desc">ਵੌਇਸ ਰਿਕਾਰਡਿੰਗ ਅਤੇ ਮੈਸੇਜਿੰਗ ਆਡੀਓ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ (WhatsApp, Telegram ਆਦਿ)</string>
     <string name="set_scan_device_desc">ਸੰਗੀਤ ਫੋਲਡਰ ਲੱਭੋ ਅਤੇ ਲਾਇਬ੍ਰੇਰੀ ਅੱਪਡੇਟ ਕਰੋ</string>
     <string name="msg_scanning_device_music">ਡੀਵਾਈਸ ਦਾ ਸੰਗੀਤ ਸਕੈਨ ਹੋ ਰਿਹਾ ਹੈ…</string>
+    <string name="header_top_picks">ਚੋਟੀ ਦੀਆਂ ਚੋਣਾਂ</string>
+    <string name="header_more_songs">ਹੋਰ ਗੀਤ</string>
+    <string name="desc_navigate_back">ਪਿੱਛੇ ਜਾਓ</string>
+    <string name="desc_song_options">ਗੀਤ ਵਿਕਲਪ</string>
 </resources>

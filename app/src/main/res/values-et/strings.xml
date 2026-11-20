@@ -534,4 +534,8 @@ HOIATUS: Ole selle teenuse kasutamisel hoolikas - kui sa ta sulged ja siis proov
     <string name="set_exclude_voice_notes_desc">Eira helisalvestisi ja sõnumirakenduste helisid (WhatsApp, Telegram jne)</string>
     <string name="set_scan_device_desc">Leia muusikakaustad ja värskenda kogu</string>
     <string name="msg_scanning_device_music">Seadme muusika skannimine…</string>
+    <string name="header_top_picks">Parimad valikud</string>
+    <string name="header_more_songs">Veel lugusid</string>
+    <string name="desc_navigate_back">Mine tagasi</string>
+    <string name="desc_song_options">Loo valikud</string>
 </resources>

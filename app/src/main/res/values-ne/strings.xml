@@ -283,4 +283,8 @@
     <string name="set_locations_desc">सङ्गीत भएका स्थानीय फोल्डरहरू छान्नुहोस्</string>
     <string name="set_scan_device_desc">सङ्गीत फोल्डर फेला पारी लाइब्रेरी अपडेट गर्नुहोस्</string>
     <string name="msg_scanning_device_music">उपकरणको सङ्गीत स्क्यान हुँदैछ…</string>
+    <string name="header_top_picks">शीर्ष छनोटहरू</string>
+    <string name="header_more_songs">थप गीतहरू</string>
+    <string name="desc_navigate_back">पछाडि जानुहोस्</string>
+    <string name="desc_song_options">गीत विकल्पहरू</string>
 </resources>

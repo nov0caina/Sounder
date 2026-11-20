@@ -538,4 +538,8 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="set_exclude_voice_notes_desc">Ignora gravacions de veu i àudios de missatgeria (WhatsApp, Telegram, etc.)</string>
     <string name="set_scan_device_desc">Detecta carpetes de música i actualitza la biblioteca</string>
     <string name="msg_scanning_device_music">Escanejant la música del dispositiu…</string>
+    <string name="header_top_picks">Selecció destacada</string>
+    <string name="header_more_songs">Més cançons</string>
+    <string name="desc_navigate_back">Torna enrere</string>
+    <string name="desc_song_options">Opcions de la cançó</string>
 </resources>

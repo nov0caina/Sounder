@@ -345,4 +345,8 @@
     <string name="set_locations_desc">აირჩიეთ ლოკალური საქაღალდეები თქვენი მუსიკით</string>
     <string name="set_scan_device_desc">პოულობს მუსიკის საქაღალდეებს და ანახლებს ბიბლიოთეკას</string>
     <string name="msg_scanning_device_music">მიმდინარეობს მოწყობილობის მუსიკის სკანირება…</string>
+    <string name="header_top_picks">რჩეული ტრეკები</string>
+    <string name="header_more_songs">მეტი სიმღერა</string>
+    <string name="desc_navigate_back">უკან დაბრუნება</string>
+    <string name="desc_song_options">სიმღერის პარამეტრები</string>
 </resources>

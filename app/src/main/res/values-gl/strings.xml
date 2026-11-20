@@ -447,4 +447,8 @@
     <string name="set_exclude_voice_notes_desc">Ignorar gravacións de voz e audios de mensaxería (WhatsApp, Telegram, etc.)</string>
     <string name="set_scan_device_desc">Detecta cartafoles de música e actualiza a biblioteca</string>
     <string name="msg_scanning_device_music">Escaneando a música do dispositivo…</string>
+    <string name="header_top_picks">Selección destacada</string>
+    <string name="header_more_songs">Máis cancións</string>
+    <string name="desc_navigate_back">Volver</string>
+    <string name="desc_song_options">Opcións da canción</string>
 </resources>

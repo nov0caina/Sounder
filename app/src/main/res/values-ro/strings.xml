@@ -468,4 +468,8 @@
     <string name="set_exclude_voice_notes_desc">Ignoră înregistrările vocale și audio din mesagerie (WhatsApp, Telegram etc.)</string>
     <string name="set_scan_device_desc">Detectează dosarele muzicale și actualizează biblioteca</string>
     <string name="msg_scanning_device_music">Se scanează muzica de pe dispozitiv…</string>
+    <string name="header_top_picks">Selecții de top</string>
+    <string name="header_more_songs">Mai multe melodii</string>
+    <string name="desc_navigate_back">Înapoi</string>
+    <string name="desc_song_options">Opțiuni melodie</string>
 </resources>

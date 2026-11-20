@@ -540,4 +540,8 @@
     <string name="set_exclude_voice_notes_desc">Ігнорувати голосові записи та аудіо з месенджерів (WhatsApp, Telegram тощо)</string>
     <string name="set_scan_device_desc">Знаходить теки з музикою та оновлює медіатеку</string>
     <string name="msg_scanning_device_music">Сканування музики на пристрої…</string>
+    <string name="header_top_picks">Найкраще</string>
+    <string name="header_more_songs">Більше пісень</string>
+    <string name="desc_navigate_back">Назад</string>
+    <string name="desc_song_options">Параметри пісні</string>
 </resources>

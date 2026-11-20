@@ -251,4 +251,8 @@
     <string name="set_locations_desc">Изаберите локалне фасцикле са вашом музиком</string>
     <string name="set_scan_device_desc">Открива музичке фасцикле и ажурира библиотеку</string>
     <string name="msg_scanning_device_music">Скенирање музике на уређају…</string>
+    <string name="header_top_picks">Најбољи избор</string>
+    <string name="header_more_songs">Још песама</string>
+    <string name="desc_navigate_back">Назад</string>
+    <string name="desc_song_options">Опције песме</string>
 </resources>

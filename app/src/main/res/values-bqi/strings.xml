@@ -315,4 +315,8 @@
     <string name="set_locations_desc">پوشه‌یل محلی که آرنگ دارن نه پسند بکنین</string>
     <string name="set_scan_device_desc">پیدا کردن پوشه‌یل آرنگ و بروزرسانی کتاوهووه</string>
     <string name="msg_scanning_device_music">هونی آرنگ دستگاه نه میگرده…</string>
+    <string name="header_top_picks">بهترین انتخاب‌ها</string>
+    <string name="header_more_songs">آهنگ‌های بیشتر</string>
+    <string name="desc_navigate_back">بازگشت به عقب</string>
+    <string name="desc_song_options">گزینه‌های آهنگ</string>
 </resources>

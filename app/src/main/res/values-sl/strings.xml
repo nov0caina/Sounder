@@ -508,4 +508,8 @@
     <string name="set_exclude_voice_notes_desc">Prezri glasovne posnetke in zvoke sporočil (WhatsApp, Telegram itd.)</string>
     <string name="set_scan_device_desc">Zazna glasbene mape in posodobi knjižnico</string>
     <string name="msg_scanning_device_music">Pregledovanje glasbe v napravi…</string>
+    <string name="header_top_picks">Najboljši izbor</string>
+    <string name="header_more_songs">Več skladb</string>
+    <string name="desc_navigate_back">Nazaj</string>
+    <string name="desc_song_options">Možnosti skladbe</string>
 </resources>

@@ -542,4 +542,8 @@
     <string name="set_exclude_voice_notes_desc">Игнорировать записи диктофона и сообщения (WhatsApp, Telegram и др.)</string>
     <string name="set_scan_device_desc">Находит папки с музыкой и обновляет медиатеку</string>
     <string name="msg_scanning_device_music">Сканирование музыки на устройстве…</string>
+    <string name="header_top_picks">Лучшее</string>
+    <string name="header_more_songs">Ещё треки</string>
+    <string name="desc_navigate_back">Назад</string>
+    <string name="desc_song_options">Параметры трека</string>
 </resources>

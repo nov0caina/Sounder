@@ -534,4 +534,8 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="set_exclude_voice_notes_desc">Sprachaufnahmen und Messenger-Audios ignorieren (WhatsApp, Telegram usw.)</string>
     <string name="set_scan_device_desc">Musikordner erkennen und Bibliothek aktualisieren</string>
     <string name="msg_scanning_device_music">Gerätemusik wird gescannt…</string>
+    <string name="header_top_picks">Top-Auswahl</string>
+    <string name="header_more_songs">Weitere Titel</string>
+    <string name="desc_navigate_back">Zurück</string>
+    <string name="desc_song_options">Titeloptionen</string>
 </resources>

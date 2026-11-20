@@ -234,4 +234,8 @@
     <string name="set_locations_desc">ଆପଣଙ୍କ ସଙ୍ଗୀତ ଥିବା ସ୍ଥାନୀୟ ଫୋଲ୍ଡର୍ ବାଛନ୍ତୁ</string>
     <string name="set_scan_device_desc">ସଙ୍ଗୀତ ଫୋଲ୍ଡର୍ ଖୋଜେ ଏବଂ ଲାଇବ୍ରେରୀ ଅପଡେଟ୍ କରେ</string>
     <string name="msg_scanning_device_music">ଡିଭାଇସ୍ ସଙ୍ଗୀତ ସ୍କାନ୍ ହେଉଛି…</string>
+    <string name="header_top_picks">ଶ୍ରେଷ୍ଠ ପସନ୍ଦ</string>
+    <string name="header_more_songs">ଅଧିକ ଗୀତ</string>
+    <string name="desc_navigate_back">ପଛକୁ ଯାଆନ୍ତୁ</string>
+    <string name="desc_song_options">ଗୀତ ବିକଳ୍ପଗୁଡ଼ିକ</string>
 </resources>

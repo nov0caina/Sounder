@@ -526,4 +526,8 @@
     <string name="set_exclude_voice_notes_desc">Ігнараваць галасавыя запісы і паведамленні (WhatsApp, Telegram і інш.)</string>
     <string name="set_scan_device_desc">Знаходзіць папкі з музыкай і абнаўляе медыятэку</string>
     <string name="msg_scanning_device_music">Сканаванне музыкі на прыладзе…</string>
+    <string name="header_top_picks">Лепшыя выбары</string>
+    <string name="header_more_songs">Больш песень</string>
+    <string name="desc_navigate_back">Вярнуцца назад</string>
+    <string name="desc_song_options">Параметры песні</string>
 </resources>

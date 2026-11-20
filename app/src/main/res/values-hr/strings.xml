@@ -538,4 +538,8 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="set_exclude_voice_notes_desc">Zanemari glasovne snimke i audio iz poruka (WhatsApp, Telegram itd.)</string>
     <string name="set_scan_device_desc">Pronalazi glazbene mape i ažurira biblioteku</string>
     <string name="msg_scanning_device_music">Skeniranje glazbe na uređaju…</string>
+    <string name="header_top_picks">Najbolji odabir</string>
+    <string name="header_more_songs">Više pjesama</string>
+    <string name="desc_navigate_back">Natrag</string>
+    <string name="desc_song_options">Opcije pjesme</string>
 </resources>

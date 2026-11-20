@@ -519,4 +519,8 @@
     <string name="set_exclude_voice_notes_desc">音声録音やメッセージアプリの音声を無視する (WhatsApp、Telegram など)</string>
     <string name="set_scan_device_desc">音楽フォルダを検出してライブラリを更新</string>
     <string name="msg_scanning_device_music">デバイスの音楽をスキャンしています…</string>
+    <string name="header_top_picks">おすすめ</string>
+    <string name="header_more_songs">その他の曲</string>
+    <string name="desc_navigate_back">戻る</string>
+    <string name="desc_song_options">曲のオプション</string>
 </resources>

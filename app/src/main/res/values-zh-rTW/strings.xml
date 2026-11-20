@@ -531,4 +531,8 @@
     <string name="set_exclude_voice_notes_desc">略過錄音和通訊軟體語音（WhatsApp、Telegram 等）</string>
     <string name="set_scan_device_desc">偵測音樂資料夾並更新音樂庫</string>
     <string name="msg_scanning_device_music">正在掃描裝置音樂…</string>
+    <string name="header_top_picks">精選推薦</string>
+    <string name="header_more_songs">更多歌曲</string>
+    <string name="desc_navigate_back">返回</string>
+    <string name="desc_song_options">歌曲選項</string>
 </resources>

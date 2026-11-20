@@ -513,4 +513,8 @@
     <string name="set_exclude_voice_notes_desc">वॉइस रिकॉर्डिंग और मैसेजिंग ऑडियो अनदेखा करें (WhatsApp, Telegram आदि)</string>
     <string name="set_scan_device_desc">संगीत फ़ोल्डर खोजें और लाइब्रेरी अपडेट करें</string>
     <string name="msg_scanning_device_music">डिवाइस का संगीत स्कैन हो रहा है…</string>
+    <string name="header_top_picks">शीर्ष पसंद</string>
+    <string name="header_more_songs">अधिक गाने</string>
+    <string name="desc_navigate_back">वापस जाएं</string>
+    <string name="desc_song_options">गाने के विकल्प</string>
 </resources>

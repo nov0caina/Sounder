@@ -534,4 +534,8 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="set_exclude_voice_notes_desc">Ohita äänitteet ja viestisovellusten äänet (WhatsApp, Telegram jne.)</string>
     <string name="set_scan_device_desc">Etsi musiikkikansiot ja päivitä kirjasto</string>
     <string name="msg_scanning_device_music">Skannataan laitteen musiikkia…</string>
+    <string name="header_top_picks">Suositellut</string>
+    <string name="header_more_songs">Lisää kappaleita</string>
+    <string name="desc_navigate_back">Palaa takaisin</string>
+    <string name="desc_song_options">Kappaleen asetukset</string>
 </resources>

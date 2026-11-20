@@ -689,4 +689,8 @@
     <string name="lng_empty_offline_backup">Listen to online music to automatically build your Offline Backup</string>
     <string name="msg_offline_backup_ready">Offline. Your Offline Backup is ready to play</string>
     <string name="btn_listen">Listen</string>
+    <string name="header_top_picks">Top picks</string>
+    <string name="header_more_songs">More songs</string>
+    <string name="desc_navigate_back">Navigate back</string>
+    <string name="desc_song_options">Song options</string>
 </resources>

@@ -530,4 +530,8 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="set_exclude_voice_notes_desc">Spraakopnamen en berichtenaudio negeren (WhatsApp, Telegram, enz.)</string>
     <string name="set_scan_device_desc">Muziekmappen detecteren en bibliotheek bijwerken</string>
     <string name="msg_scanning_device_music">Apparaatmuziek scannen…</string>
+    <string name="header_top_picks">Topkeuzes</string>
+    <string name="header_more_songs">Meer nummers</string>
+    <string name="desc_navigate_back">Ga terug</string>
+    <string name="desc_song_options">Nummeropties</string>
 </resources>

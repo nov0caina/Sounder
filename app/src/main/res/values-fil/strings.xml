@@ -316,4 +316,8 @@
     <string name="set_locations_desc">Piliin ang mga lokal na folder na may musika</string>
     <string name="set_scan_device_desc">Maghanap ng mga folder ng musika at i-update ang library</string>
     <string name="msg_scanning_device_music">Ini-scan ang musika sa device…</string>
+    <string name="header_top_picks">Mga nangungunang pili</string>
+    <string name="header_more_songs">Higit pang mga kanta</string>
+    <string name="desc_navigate_back">Bumalik</string>
+    <string name="desc_song_options">Mga opsyon sa kanta</string>
 </resources>

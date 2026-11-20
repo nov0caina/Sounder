@@ -235,4 +235,8 @@
     <string name="set_locations_desc">तुमचे संगीत असलेले स्थानिक फोल्डर निवडा</string>
     <string name="set_scan_device_desc">संगीत फोल्डर शोधा आणि लायब्ररी अपडेट करा</string>
     <string name="msg_scanning_device_music">डिव्हाइसवरील संगीत स्कॅन करत आहे…</string>
+    <string name="header_top_picks">सर्वोत्तम निवडी</string>
+    <string name="header_more_songs">अधिक गाणी</string>
+    <string name="desc_navigate_back">मागे जा</string>
+    <string name="desc_song_options">गाण्याचे पर्याय</string>
 </resources>

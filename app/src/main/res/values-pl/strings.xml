@@ -542,4 +542,8 @@ UWAGA: Zachowaj ostrożność przy korzystaniu z tej opcji. Jeśli ją zamkniesz
     <string name="set_exclude_voice_notes_desc">Ignoruj nagrania głosowe i audio z komunikatorów (WhatsApp, Telegram itp.)</string>
     <string name="set_scan_device_desc">Wykryj foldery z muzyką i odśwież bibliotekę</string>
     <string name="msg_scanning_device_music">Skanowanie muzyki na urządzeniu…</string>
+    <string name="header_top_picks">Najlepsze utwory</string>
+    <string name="header_more_songs">Więcej utworów</string>
+    <string name="desc_navigate_back">Wróć</string>
+    <string name="desc_song_options">Opcje utworu</string>
 </resources>

@@ -542,4 +542,8 @@
     <string name="set_exclude_voice_notes_desc">Nepaisyti balso įrašų ir susirašinėjimo programėlių garso (WhatsApp, Telegram ir kt.)</string>
     <string name="set_scan_device_desc">Raskite muzikos aplankus ir atnaujinkite biblioteką</string>
     <string name="msg_scanning_device_music">Nuskaitoma įrenginio muzika…</string>
+    <string name="header_top_picks">Geriausi pasirinkimai</string>
+    <string name="header_more_songs">Daugiau dainų</string>
+    <string name="desc_navigate_back">Grįžti atgal</string>
+    <string name="desc_song_options">Dainos parinktys</string>
 </resources>

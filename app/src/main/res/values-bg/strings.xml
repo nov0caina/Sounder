@@ -534,4 +534,8 @@
     <string name="set_exclude_voice_notes_desc">Игнорирай гласови записи и аудио от чатове (WhatsApp, Telegram и др.)</string>
     <string name="set_scan_device_desc">Открива музикални папки и обновява библиотеката</string>
     <string name="msg_scanning_device_music">Сканиране на музиката в устройството…</string>
+    <string name="header_top_picks">Топ предложения</string>
+    <string name="header_more_songs">Още песни</string>
+    <string name="desc_navigate_back">Назад</string>
+    <string name="desc_song_options">Опции за песента</string>
 </resources>

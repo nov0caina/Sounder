@@ -537,4 +537,8 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="set_exclude_voice_notes_desc">Anwybyddu recordiadau llais a sain negeseuon (WhatsApp, Telegram, ac ati)</string>
     <string name="set_scan_device_desc">Canfod ffolderi cerddoriaeth a diweddaru\'r llyfrgell</string>
     <string name="msg_scanning_device_music">Yn sganio cerddoriaeth y ddyfais…</string>
+    <string name="header_top_picks">Dewisiadau gorau</string>
+    <string name="header_more_songs">Rhagor o ganeuon</string>
+    <string name="desc_navigate_back">Nôl</string>
+    <string name="desc_song_options">Opsiynau cân</string>
 </resources>

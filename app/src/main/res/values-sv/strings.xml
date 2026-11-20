@@ -520,4 +520,8 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="set_exclude_voice_notes_desc">Ignorera röstinspelningar och meddelandeljud (WhatsApp, Telegram m.m.)</string>
     <string name="set_scan_device_desc">Hitta musikmappar och uppdatera ditt bibliotek</string>
     <string name="msg_scanning_device_music">Skannar enhetens musik…</string>
+    <string name="header_top_picks">Toppval</string>
+    <string name="header_more_songs">Fler låtar</string>
+    <string name="desc_navigate_back">Gå tillbaka</string>
+    <string name="desc_song_options">Låtalternativ</string>
 </resources>

@@ -530,4 +530,8 @@
     <string name="set_exclude_voice_notes_desc">忽略录音和即时通讯语音（WhatsApp、Telegram 等）</string>
     <string name="set_scan_device_desc">自动检测音乐文件夹并更新音乐库</string>
     <string name="msg_scanning_device_music">正在扫描设备音乐…</string>
+    <string name="header_top_picks">精选推荐</string>
+    <string name="header_more_songs">更多歌曲</string>
+    <string name="desc_navigate_back">返回</string>
+    <string name="desc_song_options">歌曲选项</string>
 </resources>

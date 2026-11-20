@@ -524,4 +524,8 @@
     <string name="set_exclude_voice_notes_desc">음성 녹음 및 메신저 오디오 무시 (WhatsApp, Telegram 등)</string>
     <string name="set_scan_device_desc">음악 폴더를 감지하고 라이브러리 업데이트</string>
     <string name="msg_scanning_device_music">기기의 음악을 스캔하는 중…</string>
+    <string name="header_top_picks">추천 곡</string>
+    <string name="header_more_songs">더 많은 곡</string>
+    <string name="desc_navigate_back">뒤로 가기</string>
+    <string name="desc_song_options">곡 옵션</string>
 </resources>

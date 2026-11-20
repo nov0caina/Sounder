@@ -336,4 +336,8 @@
     <string name="set_locations_desc">Vyberte miestne priečinky s vašou hudbou</string>
     <string name="set_scan_device_desc">Nájde hudobné priečinky a aktualizuje knižnicu</string>
     <string name="msg_scanning_device_music">Prehľadávanie hudby v zariadení…</string>
+    <string name="header_top_picks">Najlepší výber</string>
+    <string name="header_more_songs">Ďalšie skladby</string>
+    <string name="desc_navigate_back">Späť</string>
+    <string name="desc_song_options">Možnosti skladby</string>
 </resources>

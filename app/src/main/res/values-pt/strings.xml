@@ -538,4 +538,8 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="set_exclude_voice_notes_desc">Ignorar gravações de voz e áudios de mensagens (WhatsApp, Telegram, etc.)</string>
     <string name="set_scan_device_desc">Deteta pastas de música e atualiza a biblioteca</string>
     <string name="msg_scanning_device_music">A procurar música no dispositivo…</string>
+    <string name="header_top_picks">Melhores escolhas</string>
+    <string name="header_more_songs">Mais músicas</string>
+    <string name="desc_navigate_back">Voltar</string>
+    <string name="desc_song_options">Opções da música</string>
 </resources>

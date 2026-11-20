@@ -344,4 +344,8 @@
     <string name="set_locations_desc">Επιλέξτε τοπικούς φακέλους με τη μουσική σας</string>
     <string name="set_scan_device_desc">Εντοπίζει φακέλους μουσικής και ενημερώνει τη βιβλιοθήκη</string>
     <string name="msg_scanning_device_music">Σάρωση μουσικής συσκευής…</string>
+    <string name="header_top_picks">Κορυφαίες επιλογές</string>
+    <string name="header_more_songs">Περισσότερα τραγούδια</string>
+    <string name="desc_navigate_back">Επιστροφή</string>
+    <string name="desc_song_options">Επιλογές τραγουδιού</string>
 </resources>

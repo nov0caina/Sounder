@@ -534,4 +534,8 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="set_exclude_voice_notes_desc">Səs yazıları və mesajlaşma səslərini nəzərə alma (WhatsApp, Telegram və s.)</string>
     <string name="set_scan_device_desc">Musiqi qovluqlarını tapır və kitabxananı yeniləyir</string>
     <string name="msg_scanning_device_music">Cihazdakı musiqilər skan edilir…</string>
+    <string name="header_top_picks">Ən yaxşı seçimlər</string>
+    <string name="header_more_songs">Daha çox mahnı</string>
+    <string name="desc_navigate_back">Geri qayıt</string>
+    <string name="desc_song_options">Mahnı seçimləri</string>
 </resources>

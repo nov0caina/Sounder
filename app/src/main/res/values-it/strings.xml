@@ -536,4 +536,8 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="set_exclude_voice_notes_desc">Ignora registrazioni vocali e audio di messaggistica (WhatsApp, Telegram, ecc.)</string>
     <string name="set_scan_device_desc">Rileva cartelle musicali e aggiorna la libreria</string>
     <string name="msg_scanning_device_music">Scansione della musica del dispositivo…</string>
+    <string name="header_top_picks">Scelte migliori</string>
+    <string name="header_more_songs">Altri brani</string>
+    <string name="desc_navigate_back">Torna indietro</string>
+    <string name="desc_song_options">Opzioni brano</string>
 </resources>

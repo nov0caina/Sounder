@@ -524,4 +524,8 @@
     <string name="set_exclude_voice_notes_desc">התעלם מהקלטות קול והודעות שמע (WhatsApp, Telegram וכו׳)</string>
     <string name="set_scan_device_desc">מאתר תיקיות מוזיקה ומעדכן את הספרייה</string>
     <string name="msg_scanning_device_music">סורק מוזיקה במכשיר…</string>
+    <string name="header_top_picks">הבחירות המובילות</string>
+    <string name="header_more_songs">שירים נוספים</string>
+    <string name="desc_navigate_back">חזרה אחורה</string>
+    <string name="desc_song_options">אפשרויות שיר</string>
 </resources>

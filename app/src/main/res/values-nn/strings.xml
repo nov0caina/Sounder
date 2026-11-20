@@ -534,4 +534,8 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="set_exclude_voice_notes_desc">Ignorer taleopptak og meldingslyd (WhatsApp, Telegram osb.)</string>
     <string name="set_scan_device_desc">Finn musikkmapper og oppdater biblioteket</string>
     <string name="msg_scanning_device_music">Skannar musikk på eininga…</string>
+    <string name="header_top_picks">Toppval</string>
+    <string name="header_more_songs">Fleire songar</string>
+    <string name="desc_navigate_back">Gå tilbake</string>
+    <string name="desc_song_options">Songalternativ</string>
 </resources>

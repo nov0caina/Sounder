@@ -244,4 +244,8 @@
     <string name="set_locations_desc">اپنے سنگیت والے مقامی فولڈر چُنو</string>
     <string name="set_scan_device_desc">سنگیت فولڈر لبھو تے لائبریری اپڈیٹ کرو</string>
     <string name="msg_scanning_device_music">ڈیوائس دا سنگیت سکین ہو رہیا اے…</string>
+    <string name="header_top_picks">بہترین انتخاب</string>
+    <string name="header_more_songs">ہور گانے</string>
+    <string name="desc_navigate_back">واپس جاؤ</string>
+    <string name="desc_song_options">گانے دے متبادل</string>
 </resources>

@@ -532,4 +532,8 @@
     <string name="set_exclude_voice_notes_desc">குரல் பதிவுகள் மற்றும் செய்தி ஆடியோவைப் புறக்கணி (WhatsApp, Telegram போன்றவை)</string>
     <string name="set_scan_device_desc">இசைக் கோப்புறைகளைக் கண்டறிந்து நூலகத்தைப் புதுப்பி</string>
     <string name="msg_scanning_device_music">சாதன இசை ஸ்கேன் செய்யப்படுகிறது…</string>
+    <string name="header_top_picks">சிறந்த தேர்வுகள்</string>
+    <string name="header_more_songs">மேலும் பாடல்கள்</string>
+    <string name="desc_navigate_back">பின்செல்</string>
+    <string name="desc_song_options">பாடல் விருப்பங்கள்</string>
 </resources>

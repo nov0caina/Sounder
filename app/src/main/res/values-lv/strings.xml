@@ -229,4 +229,8 @@
     <string name="set_locations_desc">Izvēlieties vietējās mapes ar mūziku</string>
     <string name="set_scan_device_desc">Atrod mūzikas mapes un atjaunina bibliotēku</string>
     <string name="msg_scanning_device_music">Skenē ierīces mūziku…</string>
+    <string name="header_top_picks">Labākās izvēles</string>
+    <string name="header_more_songs">Vairāk dziesmu</string>
+    <string name="desc_navigate_back">Atpakaļ</string>
+    <string name="desc_song_options">Dziesmas opcijas</string>
 </resources>

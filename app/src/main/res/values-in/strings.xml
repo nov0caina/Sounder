@@ -532,4 +532,8 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="set_exclude_voice_notes_desc">Abaikan rekaman suara dan audio pesan (WhatsApp, Telegram, dll.)</string>
     <string name="set_scan_device_desc">Deteksi folder musik dan perbarui pustaka Anda</string>
     <string name="msg_scanning_device_music">Memindai musik perangkat…</string>
+    <string name="header_top_picks">Pilihan teratas</string>
+    <string name="header_more_songs">Lagu lainnya</string>
+    <string name="desc_navigate_back">Kembali</string>
+    <string name="desc_song_options">Opsi lagu</string>
 </resources>

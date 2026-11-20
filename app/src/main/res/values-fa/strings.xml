@@ -530,4 +530,8 @@
     <string name="set_exclude_voice_notes_desc">نادیده گرفتن ضبط صدا و صداهای پیام‌رسان‌ها (WhatsApp، Telegram و غیره)</string>
     <string name="set_scan_device_desc">یافتن پوشه‌های موسیقی و به‌روزرسانی کتابخانه</string>
     <string name="msg_scanning_device_music">در حال اسکن موسیقی دستگاه…</string>
+    <string name="header_top_picks">برترین انتخاب‌ها</string>
+    <string name="header_more_songs">آهنگ‌های بیشتر</string>
+    <string name="desc_navigate_back">بازگشت</string>
+    <string name="desc_song_options">گزینه‌های آهنگ</string>
 </resources>

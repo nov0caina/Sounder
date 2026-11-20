@@ -530,4 +530,8 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="set_exclude_voice_notes_desc">Abaikan rakaman suara dan audio pemesejan (WhatsApp, Telegram, dll.)</string>
     <string name="set_scan_device_desc">Kesan folder muzik dan kemas kini pustaka anda</string>
     <string name="msg_scanning_device_music">Mengimbas muzik peranti…</string>
+    <string name="header_top_picks">Pilihan utama</string>
+    <string name="header_more_songs">Lagi lagu</string>
+    <string name="desc_navigate_back">Kembali</string>
+    <string name="desc_song_options">Pilihan lagu</string>
 </resources>

@@ -542,4 +542,8 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="set_exclude_voice_notes_desc">Ignorovat hlasové záznamy a audio ze zpráv (WhatsApp, Telegram atd.)</string>
     <string name="set_scan_device_desc">Najde hudební složky a aktualizuje knihovnu</string>
     <string name="msg_scanning_device_music">Prohledávání hudby v zařízení…</string>
+    <string name="header_top_picks">Nejlepší výběr</string>
+    <string name="header_more_songs">Další skladby</string>
+    <string name="desc_navigate_back">Zpět</string>
+    <string name="desc_song_options">Možnosti skladby</string>
 </resources>

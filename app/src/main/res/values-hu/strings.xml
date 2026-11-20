@@ -528,4 +528,8 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="set_exclude_voice_notes_desc">Hangfelvételek és üzenetküldő hangok mellőzése (WhatsApp, Telegram stb.)</string>
     <string name="set_scan_device_desc">Zenei mappák keresése és könyvtár frissítése</string>
     <string name="msg_scanning_device_music">Eszköz zenéinek keresése…</string>
+    <string name="header_top_picks">Kiemelt válogatás</string>
+    <string name="header_more_songs">További dalok</string>
+    <string name="desc_navigate_back">Vissza</string>
+    <string name="desc_song_options">Dal beállításai</string>
 </resources>

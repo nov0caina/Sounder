@@ -550,4 +550,8 @@
     <string name="set_exclude_voice_notes_desc">تجاهل التسجيلات الصوتية ورسائل التطبيقات (WhatsApp، Telegram، إلخ)</string>
     <string name="set_scan_device_desc">يكتشف مجلدات الموسيقى ويحدّث مكتبتك</string>
     <string name="msg_scanning_device_music">جارٍ فحص موسيقى الجهاز…</string>
+    <string name="header_top_picks">أفضل الاختيارات</string>
+    <string name="header_more_songs">المزيد من الأغاني</string>
+    <string name="desc_navigate_back">الرجوع للخلف</string>
+    <string name="desc_song_options">خيارات الأغنية</string>
 </resources>
