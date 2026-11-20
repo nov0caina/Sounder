@@ -1,8 +1,10 @@
 package org.nov0caina.sounder.online.repository
 
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +35,10 @@ interface OnlineMusicRepository {
 
     suspend fun search(query: String): List<OnlineTrack>
     suspend fun searchCategorized(query: String): OnlineSearchResult
+    suspend fun searchCategorized(query: String, isCategory: Boolean): OnlineSearchResult =
+        searchCategorized(query)
+    suspend fun searchCategorized(query: String, isCategory: Boolean, forceRefresh: Boolean): OnlineSearchResult =
+        searchCategorized(query, isCategory)
     suspend fun queryCategorized(query: String): OnlineSearchResult
     suspend fun recordRecentArtist(artist: RecentArtist)
     suspend fun browseArtist(browseId: String): OnlineArtistDetail
@@ -69,17 +75,26 @@ class OnlineMusicRepositoryImpl @Inject constructor(
     override val isSearching: StateFlow<Boolean> = _isSearching.asStateFlow()
 
     private val trackCache = ConcurrentHashMap<String, OnlineTrack>()
+    private val searchCache = ConcurrentHashMap<String, OnlineSearchResult>()
+    private val activeSearchSeq = AtomicLong(0L)
 
     override suspend fun search(query: String): List<OnlineTrack> {
         return searchCategorized(query).tracks
     }
 
-    override suspend fun queryCategorized(query: String): OnlineSearchResult {
+    override suspend fun queryCategorized(query: String): OnlineSearchResult =
+        queryCategorized(query, isCategory = false)
+
+    private suspend fun queryCategorized(query: String, isCategory: Boolean): OnlineSearchResult {
         if (query.isBlank()) return OnlineSearchResult()
         return try {
-            val result = client.searchCategorized(query)
+            val result = client.searchCategorized(query, isCategory = isCategory)
             result.tracks.forEach { track ->
                 trackCache[track.id] = track
+            }
+            if (result.tracks.isNotEmpty() || result.artists.isNotEmpty()) {
+                val cacheKey = "${isCategory}|${query.trim().lowercase()}"
+                searchCache[cacheKey] = result
             }
             result
         } catch (e: Exception) {
@@ -88,26 +103,70 @@ class OnlineMusicRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchCategorized(query: String): OnlineSearchResult {
+    override suspend fun searchCategorized(query: String): OnlineSearchResult =
+        searchCategorized(query, isCategory = false, forceRefresh = false)
+
+    override suspend fun searchCategorized(query: String, isCategory: Boolean): OnlineSearchResult =
+        searchCategorized(query, isCategory = isCategory, forceRefresh = false)
+
+    override suspend fun searchCategorized(
+        query: String,
+        isCategory: Boolean,
+        forceRefresh: Boolean
+    ): OnlineSearchResult {
+        val requestId = activeSearchSeq.incrementAndGet()
         if (query.isBlank()) {
+            _isSearching.value = false
             _searchResults.value = emptyList()
             _categorizedResults.value = OnlineSearchResult()
             return OnlineSearchResult()
         }
 
+        val cacheKey = "${isCategory}|${query.trim().lowercase()}"
+        if (!forceRefresh) {
+            searchCache[cacheKey]?.let { cached ->
+                _searchResults.value = cached.tracks
+                _categorizedResults.value = cached
+                _isSearching.value = false
+                return cached
+            }
+        } else {
+            searchCache.remove(cacheKey)
+        }
+
         _isSearching.value = true
-        _searchResults.value = emptyList()
-        _categorizedResults.value = OnlineSearchResult()
+        if (!forceRefresh) {
+            _searchResults.value = emptyList()
+            _categorizedResults.value = OnlineSearchResult()
+        }
         return try {
-            val result = queryCategorized(query)
-            _searchResults.value = result.tracks
-            _categorizedResults.value = result
-            result
+            var latestResult = OnlineSearchResult()
+            client.searchCategorizedProgressive(query, isCategory = isCategory).collect { partial ->
+                latestResult = partial
+                partial.tracks.forEach { track ->
+                    trackCache[track.id] = track
+                }
+                if (partial.tracks.isNotEmpty() || partial.artists.isNotEmpty()) {
+                    searchCache[cacheKey] = partial
+                }
+                if (activeSearchSeq.get() == requestId) {
+                    _searchResults.value = partial.tracks
+                    _categorizedResults.value = partial
+                    if (partial.tracks.isNotEmpty() || partial.artists.isNotEmpty()) {
+                        _isSearching.value = false
+                    }
+                }
+            }
+            latestResult
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             L.w(e, "Failed to perform online search for query: %s", query)
             OnlineSearchResult()
         } finally {
-            _isSearching.value = false
+            if (activeSearchSeq.get() == requestId) {
+                _isSearching.value = false
+            }
         }
     }
 

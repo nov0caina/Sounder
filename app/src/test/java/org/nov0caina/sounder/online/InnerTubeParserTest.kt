@@ -1137,4 +1137,17 @@ class InnerTubeParserTest {
         assertEquals(0, albumDetail.tracks.size)
         assertEquals("MPSP_podcast_show_123", albumDetail.id)
     }
+
+    @Test
+    fun testLowQualityChannelFilterExcludesRandomSubscribersWhileKeepingVerifiedArtists() {
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Metallica", "75.8M monthly audience"))
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Bloodywood", "317K oyentes mensuales"))
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Queen", "10M Subscribers"))
+
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("HeavyPulse Metal", "2 subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Heavy Metal Songs", "79 subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Acordes de Metal", "114 suscriptores"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Metal Scar Radio", "17.9K subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Acordes de Metal Pro", "200K subscribers"))
+    }
 }

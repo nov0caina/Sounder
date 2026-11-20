@@ -41,6 +41,51 @@ object InnerTubeParser {
         "audiobook", "audiolibro"
     )
 
+    private val AUDIENCE_METRIC_KEYWORDS = listOf(
+        "monthly audience", "monthly listener", "oyentes mensuales", "oyentes",
+        "auditeurs", "hörer", "listeners", "ascoltatori", "ouvintes"
+    )
+
+    private val SUBSCRIBER_METRIC_KEYWORDS = listOf(
+        "subscriber", "subscribers", "suscriptor", "suscriptores", "abonnés", "abonnenten", "inscritos"
+    )
+
+    private val GENERIC_CHANNEL_NAME_REGEX = Regex(
+        """(?i)(\b(songs?|canciones|acordes|radio|karaoke|tutorial|lyrics?|playlist|compilaci[oó]n|fm|tv)\b|[-_\s]ia$)"""
+    )
+
+    internal fun parseMetricCount(text: String?): Double? {
+        if (text.isNullOrBlank()) return null
+        val match = Regex("""(?i)(\d+(?:[.,]\d+)?)\s*([kmb]|mil)?""").find(text.replace(",", "")) ?: return null
+        val rawNum = match.groupValues[1].toDoubleOrNull() ?: return null
+        return when (match.groupValues[2].lowercase()) {
+            "k", "mil" -> rawNum * 1_000.0
+            "m" -> rawNum * 1_000_000.0
+            "b" -> rawNum * 1_000_000_000.0
+            else -> rawNum
+        }
+    }
+
+    internal fun hasMonthlyAudienceMetric(subtitle: String?): Boolean {
+        if (subtitle.isNullOrBlank()) return false
+        val lower = subtitle.lowercase()
+        return AUDIENCE_METRIC_KEYWORDS.any { lower.contains(it) }
+    }
+
+    internal fun isLowQualityUserChannel(name: String, subtitle: String?): Boolean {
+        if (name.isBlank()) return true
+        if (hasMonthlyAudienceMetric(subtitle)) return false
+
+        val lowerSub = subtitle?.lowercase().orEmpty()
+        val hasSubscriberMetric = SUBSCRIBER_METRIC_KEYWORDS.any { lowerSub.contains(it) }
+        if (hasSubscriberMetric) {
+            val count = parseMetricCount(lowerSub) ?: 0.0
+            if (count < 50_000.0) return true
+            if (GENERIC_CHANNEL_NAME_REGEX.containsMatchIn(name.trim())) return true
+        }
+        return false
+    }
+
 
     /**
      * Parses search response JSON into categorized artists and tracks.
@@ -115,6 +160,99 @@ object InnerTubeParser {
         )
     }
 
+    /**
+     * Extracts the next search continuation token from an initial YouTube Music search response.
+     */
+    fun extractSearchContinuationToken(jsonString: String): String? {
+        return try {
+            val root = JSONObject(jsonString)
+            val tabs = root.optJSONObject("contents")
+                ?.optJSONObject("tabbedSearchResultsRenderer")
+                ?.optJSONArray("tabs") ?: return null
+            if (tabs.length() == 0) return null
+            val sectionListContents = tabs.getJSONObject(0)
+                .optJSONObject("tabRenderer")
+                ?.optJSONObject("content")
+                ?.optJSONObject("sectionListRenderer")
+                ?.optJSONArray("contents") ?: return null
+
+            for (i in 0 until sectionListContents.length()) {
+                val section = sectionListContents.getJSONObject(i)
+                val shelf = section.optJSONObject("musicShelfRenderer")
+                    ?: section.optJSONObject("itemSectionRenderer")
+                        ?.optJSONArray("contents")
+                        ?.optJSONObject(0)
+                        ?.optJSONObject("musicShelfRenderer")
+                val token = extractContinuationFromShelf(shelf)
+                if (!token.isNullOrBlank()) return token
+            }
+            null
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    /**
+     * Parses a search continuation response JSON into results and an optional subsequent token.
+     */
+    fun parseSearchContinuation(jsonString: String, preferStudio: Boolean = true): Pair<OnlineSearchResult, String?> {
+        val artists = mutableListOf<OnlineArtistSummary>()
+        val tracks = mutableListOf<OnlineTrack>()
+        val seenArtistIds = mutableSetOf<String>()
+        val seenTrackIds = mutableSetOf<String>()
+        var nextToken: String? = null
+
+        try {
+            val root = JSONObject(jsonString)
+            val shelfContinuation = root.optJSONObject("continuationContents")
+                ?.optJSONObject("musicShelfContinuation")
+            if (shelfContinuation != null) {
+                nextToken = extractContinuationFromShelf(shelfContinuation)
+                val contents = shelfContinuation.optJSONArray("contents")
+                if (contents != null) {
+                    for (j in 0 until contents.length()) {
+                        val renderer = contents.getJSONObject(j)
+                            .optJSONObject("musicResponsiveListItemRenderer") ?: continue
+                        parseSearchListItem(renderer, artists, seenArtistIds, tracks, seenTrackIds)
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            L.w(e, "Failed to parse search continuation response")
+        }
+
+        val result = OnlineSearchResult(
+            artists = artists,
+            tracks = if (preferStudio) prioritizeStudioTracks(tracks, true) else tracks
+        )
+        return result to nextToken
+    }
+
+    private fun extractContinuationFromShelf(shelf: JSONObject?): String? {
+        if (shelf == null) return null
+        val continuations = shelf.optJSONArray("continuations")
+        if (continuations != null) {
+            for (i in 0 until continuations.length()) {
+                val token = continuations.optJSONObject(i)
+                    ?.optJSONObject("nextContinuationData")
+                    ?.optString("continuation")
+                if (!token.isNullOrBlank()) return token
+            }
+        }
+        val contents = shelf.optJSONArray("contents")
+        if (contents != null) {
+            for (i in contents.length() - 1 downTo 0) {
+                val token = contents.optJSONObject(i)
+                    ?.optJSONObject("continuationItemRenderer")
+                    ?.optJSONObject("continuationEndpoint")
+                    ?.optJSONObject("continuationCommand")
+                    ?.optString("token")
+                if (!token.isNullOrBlank()) return token
+            }
+        }
+        return null
+    }
+
     private fun parseCardShelf(
         card: JSONObject,
         artists: MutableList<OnlineArtistSummary>,
@@ -164,9 +302,12 @@ object InnerTubeParser {
         } else null
 
         if (isArtist && !browseId.isNullOrBlank()) {
-            if (seenArtistIds.add(browseId)) {
-                val subtitle = subtitleParts.filterNot { it.equals("Artist", ignoreCase = true) || it.equals("Artista", ignoreCase = true) }.joinToString(" • ")
-                artists.add(OnlineArtistSummary(id = browseId, name = title, avatarUrl = thumbUrl, subtitle = subtitle.ifBlank { null }))
+            val subtitle = subtitleParts
+                .filterNot { it.equals("Artist", ignoreCase = true) || it.equals("Artista", ignoreCase = true) }
+                .joinToString(" • ")
+                .ifBlank { null }
+            if (!isLowQualityUserChannel(title, subtitle) && seenArtistIds.add(browseId)) {
+                artists.add(OnlineArtistSummary(id = browseId, name = title, avatarUrl = thumbUrl, subtitle = subtitle))
             }
         }
     }
@@ -246,7 +387,11 @@ object InnerTubeParser {
             !title.equals("Varios Artistas", ignoreCase = true)
 
         if (isArtist && !browseId.isNullOrBlank()) {
-            if (seenArtistIds.add(browseId)) {
+            val subtitle = subtitleParts
+                .filterNot { it.equals("Artist", ignoreCase = true) || it.equals("Artista", ignoreCase = true) }
+                .joinToString(" • ")
+                .ifBlank { null }
+            if (!isLowQualityUserChannel(title, subtitle) && seenArtistIds.add(browseId)) {
                 val thumbnails = renderer.optJSONObject("thumbnail")
                     ?.optJSONObject("musicThumbnailRenderer")
                     ?.optJSONObject("thumbnail")
@@ -255,8 +400,7 @@ object InnerTubeParser {
                     upgradeArtworkResolution(thumbnails.getJSONObject(thumbnails.length() - 1).optString("url"))
                 } else null
 
-                val subtitle = subtitleParts.filterNot { it.equals("Artist", ignoreCase = true) || it.equals("Artista", ignoreCase = true) }.joinToString(" • ")
-                artists.add(OnlineArtistSummary(id = browseId, name = title, avatarUrl = thumbUrl, subtitle = subtitle.ifBlank { null }))
+                artists.add(OnlineArtistSummary(id = browseId, name = title, avatarUrl = thumbUrl, subtitle = subtitle))
             }
             return
         }

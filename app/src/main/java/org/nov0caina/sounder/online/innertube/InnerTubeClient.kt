@@ -4,9 +4,13 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -39,62 +43,342 @@ open class InnerTubeClient(
     private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
 
     /**
-     * Executes a multi-category search returning both matching artists and tracks,
-     * enriched by concurrently querying for dedicated artists to expand the artist catalog.
+     * Executes a multi-category search returning both verified artists and expanded tracks.
      */
-    open suspend fun searchCategorized(query: String): OnlineSearchResult = withContext(Dispatchers.IO) {
-        if (query.isBlank()) return@withContext OnlineSearchResult()
+    open suspend fun searchCategorized(query: String): OnlineSearchResult =
+        searchCategorized(query, isCategory = false)
+
+    /**
+     * Executes an enriched multi-category search returning verified music artists and expanded
+     * tracks via concurrent general, dedicated artist, and dedicated song queries.
+     */
+    open suspend fun searchCategorized(query: String, isCategory: Boolean): OnlineSearchResult =
+        searchCategorizedProgressive(query, isCategory = isCategory).lastOrNull() ?: OnlineSearchResult()
+
+    /**
+     * Two-phase progressive search flow:
+     * - Phase 1 runs a single parallel burst (primary + artists page 1 + songs) with zero
+     *   sequential continuations or browseArtist calls for fast ~0.5s first paint.
+     * - Phase 2 enriches artists (continuations, category seeds, related artists graph) and
+     *   additional category tracks in the background without disturbing Phase 1 ordering.
+     */
+    open fun searchCategorizedProgressive(
+        query: String,
+        isCategory: Boolean = false
+    ): Flow<OnlineSearchResult> = flow {
+        if (query.isBlank()) {
+            emit(OnlineSearchResult())
+            return@flow
+        }
+
+        val cleanQuery = query
+            .replace(Regex("(?i)\\b(artists|artistas|composers|canciones|songs|music|musica)\\b"), "")
+            .replace(Regex("\\s+"), " ")
+            .trim()
+            .ifBlank { query.trim() }
+
+        val primaryQuery = if (isCategory) cleanQuery else query
 
         try {
-            coroutineScope {
-                val primaryDeferred = async { fetchSearchPayload(query) }
-
-                val cleanArtistQuery = query
-                    .replace(Regex("(?i)\\b(artists|artistas|composers|canciones|songs|music|musica)\\b"), "")
-                    .replace(Regex("\\s+"), " ")
-                    .trim()
-                    .ifBlank { query.trim() }
-
-                val artistsDeferred = async {
-                    fetchSearchPayload(cleanArtistQuery, params = "EgWKAQIgAWoKEAkQChAFEAMQBA==")
-                }
-
-                val primaryResult = primaryDeferred.await()
-                val artistsResult = try {
-                    artistsDeferred.await()
-                } catch (e: Exception) {
-                    L.w(e, "Dedicated artist query failed for: %s", cleanArtistQuery)
-                    null
-                }
-
-                val mergedArtists = mutableListOf<OnlineArtistSummary>()
-                val seenArtistIds = mutableSetOf<String>()
-
-                // 1. Prioritize verified artists from primary search (e.g. top MusicCardShelf exact match)
-                for (artist in primaryResult.artists) {
-                    if (!artist.avatarUrl.isNullOrBlank() && seenArtistIds.add(artist.id)) {
-                        mergedArtists.add(artist)
-                    }
-                }
-
-                // 2. Add verified artists from dedicated artist search
-                if (artistsResult != null) {
-                    for (artist in artistsResult.artists) {
-                        if (!artist.avatarUrl.isNullOrBlank() && seenArtistIds.add(artist.id)) {
-                            mergedArtists.add(artist)
+            val (primaryResult, artistsPage1, songsResult) = withContext(Dispatchers.IO) {
+                coroutineScope {
+                    val primaryDeferred = async { fetchSearchPayload(primaryQuery) }
+                    val artistsPage1Deferred = async {
+                        try {
+                            fetchSearchPayload(cleanQuery, params = PARAMS_ARTISTS)
+                        } catch (e: Exception) {
+                            L.w(e, "Dedicated artist query failed for: %s", cleanQuery)
+                            null
                         }
                     }
+                    val songsDeferred = async {
+                        try {
+                            val songQuery = if (isCategory) "$cleanQuery top songs" else query
+                            fetchSearchPayload(songQuery, params = PARAMS_SONGS)
+                        } catch (e: Exception) {
+                            L.w(e, "Dedicated songs query failed for: %s", query)
+                            null
+                        }
+                    }
+                    Triple(
+                        primaryDeferred.await(),
+                        artistsPage1Deferred.await(),
+                        songsDeferred.await()
+                    )
                 }
-
-                OnlineSearchResult(
-                    artists = mergedArtists,
-                    tracks = primaryResult.tracks
-                )
             }
+
+            val seenArtistIds = mutableSetOf<String>()
+            val seenArtistNames = mutableSetOf<String>()
+
+            fun addVerifiedInto(target: MutableList<OnlineArtistSummary>, artist: OnlineArtistSummary) {
+                if (artist.avatarUrl.isNullOrBlank()) return
+                if (InnerTubeParser.isLowQualityUserChannel(artist.name, artist.subtitle)) return
+                val normName = artist.name.trim().lowercase()
+                if (seenArtistIds.add(artist.id) && seenArtistNames.add(normName)) {
+                    target.add(artist)
+                }
+            }
+
+            fun rankArtistGroup(list: List<OnlineArtistSummary>, preserveFirst: Boolean): List<OnlineArtistSummary> {
+                if (list.size <= 1 || !isCategory) return list
+                val head = if (preserveFirst) listOf(list.first()) else emptyList()
+                val tail = if (preserveFirst) list.drop(1) else list
+                val sortedTail = tail.sortedByDescending { artist ->
+                    val hasAud = InnerTubeParser.hasMonthlyAudienceMetric(artist.subtitle)
+                    val count = InnerTubeParser.parseMetricCount(artist.subtitle) ?: 0.0
+                    (if (hasAud) 1_000_000_000_000.0 else 0.0) + count
+                }
+                return head + sortedTail
+            }
+
+            val phase1Artists = mutableListOf<OnlineArtistSummary>()
+            for (artist in primaryResult.artists) {
+                addVerifiedInto(phase1Artists, artist)
+            }
+            val page1Dedicated = artistsPage1?.artists.orEmpty()
+            for (artist in page1Dedicated.filter { InnerTubeParser.hasMonthlyAudienceMetric(it.subtitle) }) {
+                addVerifiedInto(phase1Artists, artist)
+            }
+            for (artist in page1Dedicated.filterNot { InnerTubeParser.hasMonthlyAudienceMetric(it.subtitle) }) {
+                addVerifiedInto(phase1Artists, artist)
+            }
+
+            val rankedPhase1Artists = rankArtistGroup(phase1Artists, preserveFirst = true)
+            val phase1Tracks = mergeUniqueTracks(
+                primaryResult.tracks,
+                songsResult?.tracks.orEmpty()
+            )
+            val phase1Result = OnlineSearchResult(
+                artists = rankedPhase1Artists,
+                tracks = phase1Tracks
+            )
+
+            val emittedPhase1 = phase1Result.artists.isNotEmpty() || phase1Result.tracks.isNotEmpty()
+            if (emittedPhase1) {
+                emit(phase1Result)
+            }
+
+            // Phase 2: silent background enrichment for additional tracks and >= 50 artists
+            val enrichedResult = withContext(Dispatchers.IO) {
+                coroutineScope {
+                    val categoryArtistQueries = if (isCategory) categoryArtistSeeds(cleanQuery) else emptyList()
+                    val categoryArtistsDeferred = categoryArtistQueries.map { seed ->
+                        async {
+                            try {
+                                fetchSearchPayload(seed, params = PARAMS_ARTISTS)
+                            } catch (_: Exception) {
+                                OnlineSearchResult()
+                            }
+                        }
+                    }
+                    val extraCategorySongsDeferred = if (isCategory) {
+                        async {
+                            try {
+                                fetchSearchPayload("$cleanQuery hits", params = PARAMS_SONGS)
+                            } catch (e: Exception) {
+                                L.w(e, "Extra category songs query failed for: %s", cleanQuery)
+                                null
+                            }
+                        }
+                    } else null
+
+                    val continuationToken = latestArtistContinuationToken.remove(cleanQuery to PARAMS_ARTISTS)
+                    val continuationPageDeferred = if (!continuationToken.isNullOrBlank() && rankedPhase1Artists.size < MIN_TARGET_ARTISTS) {
+                        async {
+                            try {
+                                fetchSearchContinuation(continuationToken)
+                            } catch (_: Exception) {
+                                OnlineSearchResult() to null
+                            }
+                        }
+                    } else null
+
+                    val extraCategoryArtistResults = categoryArtistsDeferred.map { it.await() }
+                    val extraCategorySongsResult = extraCategorySongsDeferred?.await()
+                    val (contPage1, contToken2) = continuationPageDeferred?.await() ?: (OnlineSearchResult() to null)
+
+                    val phase2Tracks = mergeUniqueTracks(
+                        phase1Tracks,
+                        extraCategorySongsResult?.tracks.orEmpty()
+                    )
+
+                    val phase2Extras = mutableListOf<OnlineArtistSummary>()
+                    val allExtraArtists = buildList {
+                        addAll(contPage1.artists)
+                        extraCategoryArtistResults.forEach { addAll(it.artists) }
+                    }
+                    for (artist in allExtraArtists.filter { InnerTubeParser.hasMonthlyAudienceMetric(it.subtitle) }) {
+                        addVerifiedInto(phase2Extras, artist)
+                    }
+                    for (artist in allExtraArtists.filterNot { InnerTubeParser.hasMonthlyAudienceMetric(it.subtitle) }) {
+                        addVerifiedInto(phase2Extras, artist)
+                    }
+
+                    // Fetch a second continuation page only if still below target
+                    if (!contToken2.isNullOrBlank() && (rankedPhase1Artists.size + phase2Extras.size) < MIN_TARGET_ARTISTS) {
+                        try {
+                            val (contPage2, _) = fetchSearchContinuation(contToken2)
+                            for (artist in contPage2.artists) {
+                                addVerifiedInto(phase2Extras, artist)
+                            }
+                        } catch (_: Exception) {
+                        }
+                    }
+
+                    // Expand via browseArtist + relatedArtists graph only if still below target
+                    if ((rankedPhase1Artists.size + phase2Extras.size) < MIN_TARGET_ARTISTS) {
+                        val combinedSoFar = rankedPhase1Artists + phase2Extras
+                        val trackArtistIds = phase2Tracks
+                            .mapNotNull { it.artistId?.takeIf { id -> id.startsWith("UC") } }
+                            .distinct()
+                        val seedBrowseIds = (combinedSoFar.take(6).map { it.id } + trackArtistIds)
+                            .distinct()
+                            .take(14)
+
+                        val artistDetails = seedBrowseIds.map { artistId ->
+                            async {
+                                try {
+                                    browseArtist(artistId)
+                                } catch (_: Exception) {
+                                    null
+                                }
+                            }
+                        }.mapNotNull { it.await() }
+
+                        for (detail in artistDetails) {
+                            val avatar = detail.avatarUrl
+                            val name = detail.name.takeIf { it.isNotBlank() && it != "Unknown Artist" }
+                            if (!avatar.isNullOrBlank() && name != null) {
+                                addVerifiedInto(
+                                    phase2Extras,
+                                    OnlineArtistSummary(
+                                        id = detail.id,
+                                        name = name,
+                                        avatarUrl = avatar,
+                                        subtitle = detail.subscribers,
+                                    )
+                                )
+                            }
+                            for (related in detail.relatedArtists) {
+                                addVerifiedInto(phase2Extras, related)
+                            }
+                        }
+
+                        if ((rankedPhase1Artists.size + phase2Extras.size) < MIN_TARGET_ARTISTS && seedBrowseIds.isNotEmpty()) {
+                            val alreadyChecked = seedBrowseIds.toSet()
+                            val secondHopIds = (rankedPhase1Artists + phase2Extras)
+                                .map { it.id }
+                                .filter { it.startsWith("UC") && it !in alreadyChecked }
+                                .take(8)
+
+                            val hopDetails = secondHopIds.map { artistId ->
+                                async {
+                                    try {
+                                        browseArtist(artistId)
+                                    } catch (_: Exception) {
+                                        null
+                                    }
+                                }
+                            }.mapNotNull { it.await() }
+
+                            for (detail in hopDetails) {
+                                for (related in detail.relatedArtists) {
+                                    addVerifiedInto(phase2Extras, related)
+                                }
+                            }
+                        }
+                    }
+
+                    val rankedPhase2Extras = rankArtistGroup(phase2Extras, preserveFirst = false)
+                    OnlineSearchResult(
+                        artists = rankedPhase1Artists + rankedPhase2Extras,
+                        tracks = phase2Tracks
+                    )
+                }
+            }
+
+            val changedAfterPhase1 = enrichedResult.artists.size != phase1Result.artists.size ||
+                enrichedResult.tracks.size != phase1Result.tracks.size
+            if (!emittedPhase1 || changedAfterPhase1) {
+                emit(enrichedResult)
+            }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             L.w(e, "Error executing enriched search for query: %s", query)
-            fetchSearchPayload(query)
+            emit(withContext(Dispatchers.IO) { fetchSearchPayload(query) })
         }
+    }
+
+    private fun mergeUniqueTracks(vararg sources: List<OnlineTrack>): List<OnlineTrack> {
+        val merged = mutableListOf<OnlineTrack>()
+        val seenIds = mutableSetOf<String>()
+        val seenTitleArtists = mutableSetOf<String>()
+        for (source in sources) {
+            for (track in source) {
+                val primaryArtist = track.artist.split(",", "&", "feat.", "ft.")
+                    .firstOrNull()?.trim()?.lowercase().orEmpty()
+                val dedupSignature = "${track.title.trim().lowercase()}|$primaryArtist"
+                if (seenIds.add(track.id) && seenTitleArtists.add(dedupSignature)) {
+                    merged.add(track)
+                }
+            }
+        }
+        return merged
+    }
+
+    private fun categoryArtistSeeds(cleanQuery: String): List<String> =
+        when (cleanQuery.lowercase()) {
+            "focus" -> listOf("ambient instrumental", "lofi study", "classical piano", "post rock")
+            "chill" -> listOf("chillout", "lofi beats", "downtempo ambient")
+            "workout" -> listOf("electronic workout", "rock workout", "hip hop fitness")
+            "party" -> listOf("dance pop", "electronic dance", "club hits")
+            "metal" -> listOf("heavy metal", "thrash metal", "symphonic metal")
+            "rock" -> listOf("classic rock", "alternative rock", "hard rock")
+            else -> listOf("$cleanQuery band", "top $cleanQuery")
+        }
+
+    private val latestArtistContinuationToken = java.util.concurrent.ConcurrentHashMap<Pair<String, String?>, String>()
+
+    open internal suspend fun fetchSearchContinuation(continuation: String): Pair<OnlineSearchResult, String?> =
+        withContext(Dispatchers.IO) {
+            if (continuation.isBlank()) return@withContext OnlineSearchResult() to null
+            try {
+                val requestBodyJson = JSONObject().apply {
+                    put("context", JSONObject().apply {
+                        put("client", JSONObject().apply {
+                            put("clientName", "WEB_REMIX")
+                            put("clientVersion", "1.20240101.01.00")
+                            put("hl", "en")
+                            put("gl", "US")
+                        })
+                    })
+                    put("continuation", continuation)
+                }
+                val request = Request.Builder()
+                    .url("https://music.youtube.com/youtubei/v1/search")
+                    .post(requestBodyJson.toString().toRequestBody(jsonMediaType))
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                    .header("Referer", "https://music.youtube.com/")
+                    .build()
+
+                httpClient.newCall(request).execute().use { response ->
+                    if (!response.isSuccessful) return@withContext OnlineSearchResult() to null
+                    val body = response.body?.string() ?: return@withContext OnlineSearchResult() to null
+                    val preferStudio = onlineSettings?.preferStudioAudio ?: true
+                    return@withContext InnerTubeParser.parseSearchContinuation(body, preferStudio)
+                }
+            } catch (e: Exception) {
+                L.w(e, "Error fetching search continuation")
+                return@withContext OnlineSearchResult() to null
+            }
+        }
+
+    companion object {
+        const val PARAMS_ARTISTS = "EgWKAQIgAWoKEAkQChAFEAMQBA=="
+        const val PARAMS_SONGS = "EgWKAQIIAWoKEAkQChAFEAMQBA=="
+        const val MIN_TARGET_ARTISTS = 55
     }
 
     open internal suspend fun fetchSearchPayload(query: String, params: String? = null): OnlineSearchResult = withContext(Dispatchers.IO) {
@@ -131,6 +415,10 @@ open class InnerTubeClient(
 
             val responseBody = response.body?.string() ?: return@withContext OnlineSearchResult()
             val preferStudio = onlineSettings?.preferStudioAudio ?: true
+            val nextToken = InnerTubeParser.extractSearchContinuationToken(responseBody)
+            if (!nextToken.isNullOrBlank()) {
+                latestArtistContinuationToken[query to params] = nextToken
+            }
             return@withContext InnerTubeParser.parseMultiCategorySearch(responseBody, preferStudio)
         } catch (e: Exception) {
             L.w(e, "Error executing search for query: %s", query)
