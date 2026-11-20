@@ -1,11 +1,8 @@
 package org.nov0caina.sounder.online.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
@@ -25,8 +22,73 @@ class OnlineTrackAdapter(
     private val isCurrentlyLoading: (String) -> Boolean,
     private val isCurrentlyPlaying: (OnlineTrack) -> Boolean = { false },
     private val showRanking: Boolean = false,
-    private val onTrackLongClick: ((OnlineTrack) -> Unit)? = null
-) : ListAdapter<OnlineTrack, OnlineTrackAdapter.ViewHolder>(DiffCallback) {
+    private val onTrackLongClick: ((OnlineTrack) -> Unit)? = null,
+    private val onTrackMenuClick: ((OnlineTrack) -> Unit)? = onTrackLongClick
+) : RecyclerView.Adapter<OnlineTrackAdapter.ViewHolder>() {
+
+    private var items: List<OnlineTrack> = emptyList()
+
+    val currentList: List<OnlineTrack>
+        get() = items
+
+    var compactMode: Boolean = false
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
+    fun submitList(newList: List<OnlineTrack>?, commitCallback: Runnable? = null) {
+        val target = newList ?: emptyList()
+        val old = items
+        if (old === target) {
+            commitCallback?.run()
+            return
+        }
+
+        when {
+            old.isEmpty() && target.isEmpty() -> {
+                commitCallback?.run()
+                return
+            }
+            old.isEmpty() -> {
+                items = target
+                notifyItemRangeInserted(0, target.size)
+            }
+            target.isEmpty() -> {
+                val count = old.size
+                items = emptyList()
+                notifyItemRangeRemoved(0, count)
+            }
+            isIdPrefix(old, target) -> {
+                val start = old.size
+                items = target
+                notifyItemRangeInserted(start, target.size - start)
+            }
+            isIdPrefix(target, old) -> {
+                val removeStart = target.size
+                val removeCount = old.size - target.size
+                items = target
+                notifyItemRangeRemoved(removeStart, removeCount)
+            }
+            else -> {
+                items = target
+                notifyDataSetChanged()
+            }
+        }
+        commitCallback?.run()
+    }
+
+    private fun isIdPrefix(shorter: List<OnlineTrack>, longer: List<OnlineTrack>): Boolean {
+        if (shorter.size >= longer.size) return false
+        for (i in shorter.indices) {
+            if (shorter[i].id != longer[i].id) return false
+        }
+        return true
+    }
+
+    override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemOnlineTrackBinding.inflate(
@@ -38,7 +100,7 @@ class OnlineTrackAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), position)
+        holder.bind(items[position], position)
     }
 
     inner class ViewHolder(
@@ -50,7 +112,7 @@ class OnlineTrackAdapter(
             val loading = isCurrentlyLoading(track.id)
             val playing = isCurrentlyPlaying(track)
 
-            if (showRanking) {
+            if (showRanking && !compactMode) {
                 binding.onlineTrackRank.isVisible = true
                 val rankNumber = position + 1
                 binding.onlineTrackRank.text = rankNumber.toString()
@@ -104,15 +166,30 @@ class OnlineTrackAdapter(
                 binding.onlineTrackImage.setImageResource(R.drawable.ic_song_24)
             }
 
-            // Stream loading & playing state
+            // Stream loading & playing state (in compact mode hide redundant play button when idle)
             binding.onlineTrackLoading.isVisible = loading
-            binding.onlineTrackPlayButton.isVisible = !loading
+            binding.onlineTrackPlayButton.isVisible = !loading && !compactMode
             binding.onlineTrackPlayButton.setIconResource(if (playing) R.drawable.ic_pause_24 else R.drawable.ic_play_24)
             binding.onlineTrackPlayButton.contentDescription = context.getString(if (playing) R.string.btn_pause else R.string.btn_play)
 
             binding.onlineTrackPlayButton.setOnClickListener {
                 onPlayClick(track)
             }
+
+            binding.onlineTrackMenuButton.isVisible = compactMode && onTrackMenuClick != null
+            binding.onlineTrackMenuButton.setOnClickListener {
+                onTrackMenuClick?.invoke(track)
+            }
+
+            val vPad = context.resources.getDimensionPixelSize(
+                if (compactMode) R.dimen.spacing_small else R.dimen.spacing_mid_medium
+            )
+            binding.root.setPadding(
+                binding.root.paddingLeft,
+                vPad,
+                binding.root.paddingRight,
+                vPad
+            )
 
             // Download button state
             val downloaded = isDownloaded(track)
@@ -154,14 +231,6 @@ class OnlineTrackAdapter(
                 binding.root.setOnLongClickListener(null)
             }
         }
-    }
-
-    private object DiffCallback : DiffUtil.ItemCallback<OnlineTrack>() {
-        override fun areItemsTheSame(oldItem: OnlineTrack, newItem: OnlineTrack): Boolean =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: OnlineTrack, newItem: OnlineTrack): Boolean =
-            oldItem == newItem
     }
 }
 

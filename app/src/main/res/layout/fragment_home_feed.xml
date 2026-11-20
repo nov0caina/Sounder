@@ -43,12 +43,17 @@
         android:clipToPadding="false"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/home_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/home_feed_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:visibility="gone"
             android:paddingBottom="@dimen/recycler_fab_space_normal">
 
             <LinearLayout
@@ -297,6 +302,8 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <!-- Loading Skeleton Layout (shown on initial load) -->
         <FrameLayout

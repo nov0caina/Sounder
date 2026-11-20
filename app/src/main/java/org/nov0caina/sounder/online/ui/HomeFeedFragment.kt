@@ -53,6 +53,7 @@ import org.nov0caina.sounder.ui.ViewBindingFragment
 import org.nov0caina.sounder.util.NetworkUtil
 import org.nov0caina.sounder.util.StoragePermissionHelper
 import org.nov0caina.sounder.util.collect
+import org.nov0caina.sounder.util.getAttrColorCompat
 import org.nov0caina.sounder.util.navigateSafe
 import org.nov0caina.sounder.util.showToast
 
@@ -250,6 +251,19 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             onRetry = { feedModel.loadFeed(force = true) }
         )
 
+        val ctx = requireContext()
+        binding.homeSwipeRefresh.setColorSchemeColors(
+            ctx.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary).defaultColor
+        )
+        binding.homeSwipeRefresh.setProgressBackgroundColorSchemeColor(
+            ctx.getAttrColorCompat(com.google.android.material.R.attr.colorSurfaceContainerHigh).defaultColor
+        )
+        binding.homeSwipeRefresh.setOnRefreshListener {
+            val mood = feedModel.selectedMood.value
+            val catQuery = if (mood == "all") null else feedModel.availableMoods.find { it.id == mood }?.query ?: mood
+            feedModel.loadFeed(force = true, category = catQuery)
+        }
+
         // Offline Backup ("Respaldo Musical") setup for network disconnection
         binding.homeOfflineBackupLayout.offlineBackupModeBadge.isVisible = true
         offlineBackupAdapter = OnlineTrackAdapter(
@@ -364,7 +378,11 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
 
         // Collect loading state
         collect(feedModel.isLoading) { loading ->
-            binding.homeFeedProgress.isVisible = loading
+            val b = binding ?: return@collect
+            if (!loading) {
+                b.homeSwipeRefresh.isRefreshing = false
+            }
+            b.homeFeedProgress.isVisible = loading && !b.homeSwipeRefresh.isRefreshing
             updateViewState(feedModel.feedData.value, loading, feedModel.isOffline.value, feedModel.error.value)
         }
 
@@ -442,13 +460,13 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             b.homeLoadingLayout.isVisible = false
             b.homeOfflineLayout.root.isVisible = false
             b.homeOfflineBackupLayout.root.isVisible = true
-            b.homeFeedScroll.isVisible = false
+            b.homeSwipeRefresh.isVisible = false
         } else if (!hasData && (isLoading || error == null) && !isOffline) {
             // Still loading initial data on cold start: show pulsing skeleton
             b.homeLoadingLayout.isVisible = true
             b.homeOfflineLayout.root.isVisible = false
             b.homeOfflineBackupLayout.root.isVisible = false
-            b.homeFeedScroll.isVisible = false
+            b.homeSwipeRefresh.isVisible = false
             startSkeletonPulse()
         } else if ((isOffline || error != null) && !hasData) {
             // Offline with empty cache or network error with no data: show standard offline screen
@@ -456,7 +474,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             b.homeLoadingLayout.isVisible = false
             b.homeOfflineBackupLayout.root.isVisible = false
             b.homeOfflineLayout.root.isVisible = true
-            b.homeFeedScroll.isVisible = false
+            b.homeSwipeRefresh.isVisible = false
 
             val proposal = OfflineStateHelper.getNextProposal(requireContext())
             OfflineStateHelper.applyProposal(
@@ -470,7 +488,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             b.homeLoadingLayout.isVisible = false
             b.homeOfflineLayout.root.isVisible = false
             b.homeOfflineBackupLayout.root.isVisible = false
-            b.homeFeedScroll.isVisible = true
+            b.homeSwipeRefresh.isVisible = true
         }
     }
 
@@ -516,7 +534,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         b.homeLoadingLayout.isVisible = false
         b.homeOfflineLayout.root.isVisible = false
         b.homeOfflineBackupLayout.root.isVisible = false
-        b.homeFeedScroll.isVisible = true
+        b.homeSwipeRefresh.isVisible = true
     }
 
     private fun updateTopCharts(allTracks: List<OnlineTrack>, isExpanded: Boolean) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
@@ -23,14 +24,77 @@ import org.nov0caina.sounder.online.model.RecentArtist
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.playback.state.ShuffleMode
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
+
+sealed interface DiscoverQueryState {
+    data object Idle : DiscoverQueryState
+    data class Search(val query: String) : DiscoverQueryState
+    data class Category(val title: String, val apiQuery: String) : DiscoverQueryState
+}
+
+internal class DiscoverQueryCoordinator(
+    private val repository: OnlineMusicRepository
+) {
+    private val _activeQueryState = MutableStateFlow<DiscoverQueryState>(DiscoverQueryState.Idle)
+    val activeQueryState: StateFlow<DiscoverQueryState> = _activeQueryState.asStateFlow()
+
+    private var searchJob: Job? = null
+
+    fun search(scope: CoroutineScope, query: String, forceRefresh: Boolean = false) {
+        val trimmed = query.trim()
+        if (trimmed.isEmpty()) {
+            clearSearch(scope)
+            return
+        }
+        _activeQueryState.value = DiscoverQueryState.Search(trimmed)
+        searchJob?.cancel()
+        searchJob = scope.launch {
+            repository.searchCategorized(trimmed, isCategory = false, forceRefresh = forceRefresh)
+        }
+    }
+
+    fun selectCategory(scope: CoroutineScope, title: String, apiQuery: String, forceRefresh: Boolean = false) {
+        val trimmedQuery = apiQuery.trim()
+        if (trimmedQuery.isEmpty()) {
+            clearSearch(scope)
+            return
+        }
+        _activeQueryState.value = DiscoverQueryState.Category(
+            title = title.trim(),
+            apiQuery = trimmedQuery
+        )
+        searchJob?.cancel()
+        searchJob = scope.launch {
+            repository.searchCategorized(trimmedQuery, isCategory = true, forceRefresh = forceRefresh)
+        }
+    }
+
+    fun retryActiveQuery(scope: CoroutineScope, forceRefresh: Boolean = false) {
+        when (val current = _activeQueryState.value) {
+            is DiscoverQueryState.Search -> search(scope, current.query, forceRefresh = forceRefresh)
+            is DiscoverQueryState.Category -> selectCategory(scope, current.title, current.apiQuery, forceRefresh = forceRefresh)
+            DiscoverQueryState.Idle -> Unit
+        }
+    }
+
+    fun clearSearch(scope: CoroutineScope) {
+        _activeQueryState.value = DiscoverQueryState.Idle
+        searchJob?.cancel()
+        searchJob = scope.launch {
+            repository.searchCategorized("")
+        }
+    }
+}
 
 @HiltViewModel
 class DiscoverViewModel @Inject constructor(
     private val repository: OnlineMusicRepository,
     private val downloadManager: DownloadManager
 ) : ViewModel() {
+
+    private val queryCoordinator = DiscoverQueryCoordinator(repository)
 
     val searchResults: StateFlow<List<OnlineTrack>> = repository.searchResults
     val categorizedResults: StateFlow<OnlineSearchResult> = repository.categorizedResults
@@ -44,28 +108,22 @@ class DiscoverViewModel @Inject constructor(
     private val _loadingTrackId = MutableStateFlow<String?>(null)
     val loadingTrackId: StateFlow<String?> = _loadingTrackId.asStateFlow()
 
-    private var searchJob: Job? = null
+    val activeQueryState: StateFlow<DiscoverQueryState> = queryCoordinator.activeQueryState
 
-    fun search(query: String) {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            repository.searchCategorized(query)
-        }
-    }
+    fun search(query: String) = queryCoordinator.search(viewModelScope, query)
+
+    fun selectCategory(title: String, apiQuery: String) =
+        queryCoordinator.selectCategory(viewModelScope, title, apiQuery)
 
     fun selectGenre(genre: GenreItem) {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            repository.searchCategorized(genre.query)
-        }
+        selectCategory(title = genre.name, apiQuery = genre.query)
     }
 
-    fun clearSearch() {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            repository.searchCategorized("")
-        }
-    }
+    fun retryActiveQuery() = queryCoordinator.retryActiveQuery(viewModelScope, forceRefresh = false)
+
+    fun refreshActiveQuery() = queryCoordinator.retryActiveQuery(viewModelScope, forceRefresh = true)
+
+    fun clearSearch() = queryCoordinator.clearSearch(viewModelScope)
 
     fun recordRecentArtist(artist: RecentArtist) {
         viewModelScope.launch {
@@ -143,6 +201,52 @@ class DiscoverViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 L.e(e, "Failed to resolve stream and play online track %s", track.title)
+            } finally {
+                _loadingTrackId.value = null
+            }
+        }
+    }
+
+    fun playAllTracks(
+        tracks: List<OnlineTrack>,
+        playbackModel: PlaybackViewModel,
+        shuffle: Boolean = false,
+    ) {
+        if (tracks.isEmpty()) return
+        val starter = if (shuffle) tracks.random() else tracks.first()
+        viewModelScope.launch {
+            _loadingTrackId.value = starter.id
+            try {
+                val targetSong = resolveToPlayableSong(starter)
+                val queue = tracks.map { t ->
+                    if (t.id == starter.id) targetSong else toSong(t)
+                }
+                val finalQueue = if (queue.any { it.uid.toString() == targetSong.uid.toString() }) {
+                    queue
+                } else {
+                    listOf(targetSong) + queue
+                }
+                playbackModel.play(
+                    targetSong,
+                    finalQueue,
+                    if (shuffle) ShuffleMode.ON else ShuffleMode.OFF,
+                )
+
+                launch(Dispatchers.IO) {
+                    tracks.filter { it.id != starter.id }.take(20).forEach { t ->
+                        try {
+                            if (downloadManager.getDownloadedFile(t)?.exists() != true &&
+                                downloadManager.findSongInLibrary(t) == null
+                            ) {
+                                repository.resolveStreamInfo(t.id, title = t.title, artist = t.artist)
+                            }
+                        } catch (e: Exception) {
+                            L.w(e, "Prefetch failed for track %s", t.title)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                L.e(e, "Failed to start playback for track collection")
             } finally {
                 _loadingTrackId.value = null
             }
