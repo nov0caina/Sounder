@@ -225,12 +225,6 @@
     <string name="lng_empty_genres">Your genres will show up here.</string>
     <string name="lng_empty_playlists">Your playlists will show up here.</string>
     <string name="lng_empty_downloads">Your recent downloads will show up here.</string>
-    <string name="lng_file_picker">Load music from the folders that you select. Slower, but more reliable. Requires the vanilla file manager app to be installed.</string>
-    <string name="lng_system_database">Load music that the Android OS automatically detects. Faster, but less reliable. No support for filesystem-dependent features like cover.jpg.</string>
-    <string name="lng_grant_storage_anyway">Granting external storage permissions can fix issues on some devices.</string>
-    <string name="lng_grant_storage_required">Grant external storage permissions to enable this option.</string>
-    <string name="lng_include_folders">Music outside of the selected folders will be ignored.</string>
-    <string name="lng_exclude_folders">Music inside the selected folders will be ignored.</string>
 
     <!-- Settings namespace | Settings-related labels -->
     <eat-comment />
@@ -277,12 +271,12 @@
     <string name="set_music">Music</string>
     <string name="set_observing">Automatic reloading</string>
     <string name="set_observing_desc">Reload the music library whenever it changes (requires persistent notification)</string>
-    <string name="set_saf_multithread">Multithread File Exploration</string>
-    <string name="set_saf_multithread_desc">Can be faster, but may behave worse with some devices or 3rd-party app folders</string>
-    <string name="set_exclude_non_music">Exclude non-music</string>
-    <string name="set_exclude_non_music_desc">Ignore audio files that are not music, such as podcasts</string>
-    <string name="set_with_hidden">Include hidden files</string>
-    <string name="set_with_hidden_desc">Include audio files that are hidden (ex. .cache)</string>
+    <string name="set_exclude_non_music">Exclude ringtones &amp; tones</string>
+    <string name="set_exclude_non_music_desc">Ignore ringtones, alarms, notifications, and non-music audio</string>
+    <string name="set_exclude_short_audio">Exclude short audio</string>
+    <string name="set_exclude_short_audio_desc">Ignore audio clips shorter than 30 seconds</string>
+    <string name="set_exclude_voice_notes">Exclude voice notes</string>
+    <string name="set_exclude_voice_notes_desc">Ignore voice recordings and messaging audio (WhatsApp, Telegram, etc.)</string>
     <string name="set_separators">Multi-value separators</string>
     <string name="set_separators_desc">Configure characters that denote multiple tag values</string>
     <string name="set_separators_comma">Comma (,)</string>
@@ -329,29 +323,25 @@
     <string name="set_pre_amp_warning">Warning: Changing the pre-amp to a high positive value may result in peaking on some audio tracks.</string>
 
     <string name="set_library">Library</string>
-    <string name="set_locations">Music sources</string>
-    <string name="set_locations_desc">Manage where music should be loaded from</string>
-    <string name="set_load_from">Load from</string>
-    <string name="set_file_picker">File picker</string>
-    <string name="set_system_database">System</string>
-    <string name="set_grant_storage_anyway">Storage access recommended</string>
+    <string name="set_locations">Music folders</string>
+    <string name="set_locations_desc">Select local folders with your music</string>
+    <string name="lbl_scan_device">Scan entire device</string>
+    <string name="set_scan_device_desc">Detect music folders and update your library</string>
+    <string name="msg_scanning_device_music">Scanning device music…</string>
+    <string name="lbl_select_folders">Select folders</string>
+    <string name="set_detected_folders">Detected music folders</string>
+    <string name="lbl_rescan_folders">Rescan</string>
+    <string name="desc_rescan_folders">Rescan music folders</string>
+    <string name="lbl_choose_another_folder">Choose another folder…</string>
+    <string name="lbl_folder_always_included">Always included</string>
+    <string name="lbl_custom_folder">Custom folder</string>
+    <string name="lbl_no_music_folders_found">No music folders found</string>
+    <string name="lng_no_music_folders_found">No folders with music were found on this device.</string>
+    <string name="lng_grant_storage_discover">Grant audio access to automatically find music folders on your device.</string>
+    <string name="set_filter_settings">Filter settings</string>
     <string name="set_grant_storage">Storage access required</string>
-    <string name="set_folders_to_load">Folders to load</string>
-    <string name="set_folders_to_ignore">Folders to ignore</string>
-    <string name="set_filtered_folders">Filtered folders</string>
-    <string name="set_filter_mode">Filter mode</string>
-    <string name="set_include">Include</string>
-    <string name="set_exclude">Exclude</string>
-    <string name="set_extra_settings">More settings</string>
     <string name="set_fs_cache">Use file-system cache</string>
     <string name="set_fs_cache_desc">Improves loading times, but can prevent new music from being added</string>
-    <string name="set_excluded_locations">Excluded folders</string>
-    <string name="set_excluded_locations_desc">Manage folders to exclude from music loading</string>
-    <string name="set_reindex">Refresh music</string>
-    <string name="set_reindex_desc">Reload the music library, using cached tags when possible</string>
-    <!-- Different from "Reload music" -->
-    <string name="set_rescan">Rescan music</string>
-    <string name="set_rescan_desc">Clear the tag cache and fully reload the music library (slower, but more complete)</string>
 
     <!-- Error Namespace | Error Labels -->
     <string name="err_index_failed">Music loading failed</string>
@@ -362,7 +352,6 @@
     <string name="err_no_app">No app found that can handle this task</string>
     <!-- No folders in the "Music Folders" setting -->
     <string name="err_bad_location">This folder is not supported</string>
-    <string name="lbl_no_folders">No folders</string>
 
     <!-- Description Namespace | Accessibility Strings -->
 
@@ -380,7 +369,6 @@
     <string name="desc_queue_bar">Open the queue</string>
     <string name="desc_tab_handle">Move this tab</string>
     <string name="desc_clear_search">Clear search query</string>
-    <string name="desc_add_folder">Add folder</string>
     <string name="desc_music_location_delete">Remove folder</string>
 
     <string name="desc_auxio_icon">Sounder icon</string>
@@ -577,9 +565,9 @@
     <string name="dlg_storage_manager_perm_msg">To delete songs, albums, lyrics, and covers directly from your device storage, Sounder requires permission to manage files.</string>
     <string name="btn_open_settings">Open Settings</string>
     <string name="err_delete_failed">Failed to delete file. Please check storage permissions.</string>
-    <string name="set_direct_deletion">Direct Deletion without Confirmation</string>
-    <string name="set_direct_deletion_desc">Allow Sounder to delete songs and albums instantly without showing the system prompt on each deletion (requires All Files Access).</string>
-    <string name="set_direct_deletion_enabled_desc">Active: Songs and albums are deleted immediately without system dialogs.</string>
+    <string name="set_direct_deletion">Direct deletion</string>
+    <string name="set_direct_deletion_desc">Delete songs without system confirmation</string>
+    <string name="set_direct_deletion_enabled_desc">Active: deletes files without prompts</string>
     <string name="lbl_remove_from_playlist">Remove from this playlist</string>
     <string name="lng_removed_from_playlist">Song removed from playlist</string>
 

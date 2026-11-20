@@ -18,7 +18,9 @@
  
 package org.nov0caina.sounder.home
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.DragEvent
@@ -28,6 +30,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuCompat
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -94,6 +97,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
     private var homePagerAdapter: HomePagerAdapter? = null
     private var isSettingUpPager: Boolean = false
     private var isDraggingTab: Boolean = false
+    private var pendingDeviceScanAfterPermission: Boolean = false
 
     private val tabSelectedListener =
         object : TabLayout.OnTabSelectedListener {
@@ -130,8 +134,18 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
 
         // Have to set up the permission launcher before the view is shown
         storagePermissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-                musicModel.refresh()
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                val runPendingScan = pendingDeviceScanAfterPermission
+                pendingDeviceScanAfterPermission = false
+                if (runPendingScan) {
+                    if (isGranted) {
+                        musicModel.scanAndIndexDeviceMusic()
+                    } else {
+                        requireContext().showToast(R.string.lng_grant_storage_discover)
+                    }
+                } else {
+                    musicModel.refresh()
+                }
             }
 
         getContentLauncher =
@@ -205,12 +219,14 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         // --- VIEWMODEL SETUP ---
         collect(homeModel.recreateTabs.flow, ::handleRecreate)
         collect(homeModel.chooseMusicLocations.flow, ::handleChooseFolders)
+        collect(homeModel.scanDeviceMusic.flow, ::handleScanDevice)
         collectImmediately(homeModel.currentTabType, ::updateCurrentTab)
         collect(listModel.menu.flow, ::handleMenu)
         collectImmediately(listModel.selected, ::updateSelection)
         collectImmediately(musicModel.indexingState, ::updateIndexerState)
         collect(musicModel.playlistDecision.flow, ::handlePlaylistDecision)
         collectImmediately(musicModel.playlistMessage.flow, ::handlePlaylistMessage)
+        collect(musicModel.deviceScanMessage.flow, ::handleDeviceScanMessage)
         collect(playbackModel.playbackDecision.flow, ::handlePlaybackDecision)
     }
 
@@ -568,6 +584,36 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         }
         findNavController().navigateSafe(HomeFragmentDirections.chooseLocations())
         homeModel.chooseMusicLocations.consume()
+    }
+
+    private fun handleScanDevice(unit: Unit?) {
+        if (unit == null) {
+            return
+        }
+        homeModel.scanDeviceMusic.consume()
+        val permission =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_AUDIO
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
+        if (
+            ContextCompat.checkSelfPermission(requireContext(), permission) ==
+                PackageManager.PERMISSION_GRANTED
+        ) {
+            musicModel.scanAndIndexDeviceMusic()
+        } else {
+            pendingDeviceScanAfterPermission = true
+            storagePermissionLauncher?.launch(permission)
+        }
+    }
+
+    private fun handleDeviceScanMessage(messageRes: Int?) {
+        if (messageRes == null) {
+            return
+        }
+        requireContext().showToast(messageRes)
+        musicModel.deviceScanMessage.consume()
     }
 
     private fun updateIndexerState(state: IndexingState?) {

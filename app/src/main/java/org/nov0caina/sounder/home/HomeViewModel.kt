@@ -163,6 +163,9 @@ constructor(
     val chooseMusicLocations: Event<Unit>
         field = MutableEvent<Unit>()
 
+    val scanDeviceMusic: Event<Unit>
+        field = MutableEvent<Unit>()
+
     init {
         homeGenerator.attach()
     }
@@ -297,6 +300,10 @@ constructor(
 
     fun startChooseMusicLocations() {
         chooseMusicLocations.put(Unit)
+    }
+
+    fun startScanDevice() {
+        scanDeviceMusic.put(Unit)
     }
 
     fun showSettings() {

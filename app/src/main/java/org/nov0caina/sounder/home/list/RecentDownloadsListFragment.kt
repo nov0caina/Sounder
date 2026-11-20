@@ -196,6 +196,7 @@ class RecentDownloadsListFragment :
         binding.homeRecycler.isInvisible = isEmpty
         binding.homeNoMusic.isInvisible = !isEmpty
         binding.homeNoMusicAction.isVisible = false
+        binding.homeNoMusicSecondaryAction.isVisible = false
     }
 
     private fun updateSelection(selection: List<Music>) {

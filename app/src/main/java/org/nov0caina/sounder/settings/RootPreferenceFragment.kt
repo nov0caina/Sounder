@@ -19,6 +19,7 @@
 package org.nov0caina.sounder.settings
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -28,6 +29,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.music.MusicViewModel
+import org.nov0caina.sounder.music.locations.DeviceMusicScanLauncher
 import org.nov0caina.sounder.settings.ui.WrappedDialogPreference
 import org.nov0caina.sounder.util.StoragePermissionHelper
 import org.nov0caina.sounder.util.navigateSafe
@@ -42,6 +44,7 @@ import timber.log.Timber as L
 @AndroidEntryPoint
 class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
     private val musicModel: MusicViewModel by activityViewModels()
+    private val deviceScanLauncher = DeviceMusicScanLauncher(this) { musicModel }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,11 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
         returnTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        deviceScanLauncher.observeMessages()
     }
 
     override fun onResume() {
@@ -121,8 +129,7 @@ class RootPreferenceFragment : BasePreferenceFragment(R.xml.preferences_root) {
                     context.showToast(R.string.set_direct_deletion_enabled_desc)
                 }
             }
-            getString(R.string.set_key_reindex) -> musicModel.refresh()
-            getString(R.string.set_key_rescan) -> musicModel.rescan()
+            getString(R.string.set_key_scan_device) -> deviceScanLauncher.launch()
             else -> return super.onPreferenceTreeClick(preference)
         }
 

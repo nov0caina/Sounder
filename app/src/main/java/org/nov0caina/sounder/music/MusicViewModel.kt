@@ -33,6 +33,7 @@ import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.image.PlaylistCoverManager
 import org.nov0caina.sounder.list.ListSettings
+import org.nov0caina.sounder.music.locations.LocationMode
 import org.nov0caina.sounder.online.OnlineSettings
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineSong
@@ -45,6 +46,8 @@ import org.oxycblt.musikr.Library
 import org.oxycblt.musikr.Music
 import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
+import org.oxycblt.musikr.fs.mediastore.MediaStore
+import org.oxycblt.musikr.fs.mediastore.MusicFolderScanner
 import org.oxycblt.musikr.playlist.ExportConfig
 import org.oxycblt.musikr.playlist.ExternalPlaylistManager
 import timber.log.Timber as L
@@ -90,6 +93,9 @@ constructor(
 
     val playlistMessage: Event<PlaylistMessage>
         field = MutableEvent<PlaylistMessage>()
+
+    val deviceScanMessage: Event<Int>
+        field = MutableEvent<Int>()
 
     companion object {
         const val FAVORITES_NAME = "Likes"
@@ -514,6 +520,42 @@ constructor(
             L.d("Launching addition dialog for songs=${songs.size}")
             org.nov0caina.sounder.music.decision.PlaylistPickerViewModel.pendingOnlineSongs = songs
             playlistDecision.put(PlaylistDecision.Add(songs))
+        }
+    }
+
+    /**
+     * Discover authentic local music folders (omitting voice notes, ringtones, alarms,
+     * notifications, and clips shorter than 30 seconds) and trigger indexing immediately.
+     */
+    fun scanAndIndexDeviceMusic() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentQuery = musicSettings.mediaStoreQuery
+            val discovered =
+                MusicFolderScanner.from(context)
+                    .scan(
+                        excludeNonMusic = currentQuery.excludeNonMusic,
+                        excludeVoiceNotes = currentQuery.excludeVoiceNotes,
+                        excludeShortAudio = currentQuery.excludeShortAudio,
+                    )
+            if (discovered.isEmpty()) {
+                L.d("No authentic music folders found during device scan")
+                deviceScanMessage.put(R.string.lng_no_music_folders_found)
+                return@launch
+            }
+
+            val nonSounderLocations =
+                discovered.filterNot { it.isSounderManaged }.map { it.location }
+            musicSettings.mediaStoreQuery =
+                MediaStore.Query(
+                    mode = MediaStore.FilterMode.INCLUDE,
+                    filtered = nonSounderLocations,
+                    excludeNonMusic = currentQuery.excludeNonMusic,
+                    excludeVoiceNotes = currentQuery.excludeVoiceNotes,
+                    excludeShortAudio = currentQuery.excludeShortAudio,
+                )
+            musicSettings.locationMode = LocationMode.MEDIA_STORE
+            deviceScanMessage.put(R.string.msg_scanning_device_music)
+            musicSettings.forceLocationUpdate()
         }
     }
 

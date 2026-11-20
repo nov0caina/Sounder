@@ -35,21 +35,19 @@
     <PreferenceCategory app:title="@string/set_library">
 
         <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+            app:icon="@drawable/ic_folder_24"
             app:key="@string/set_key_music_dirs"
             app:summary="@string/set_locations_desc"
             app:title="@string/set_locations" />
 
         <Preference
-            app:key="@string/set_key_reindex"
-            app:summary="@string/set_reindex_desc"
-            app:title="@string/set_reindex" />
+            app:icon="@drawable/ic_search_24"
+            app:key="@string/set_key_scan_device"
+            app:summary="@string/set_scan_device_desc"
+            app:title="@string/lbl_scan_device" />
 
         <Preference
-            app:key="@string/set_key_rescan"
-            app:summary="@string/set_rescan_desc"
-            app:title="@string/set_rescan" />
-
-        <Preference
+            app:icon="@drawable/ic_delete_24"
             app:key="@string/set_key_direct_deletion"
             app:summary="@string/set_direct_deletion_desc"
             app:title="@string/set_direct_deletion" />

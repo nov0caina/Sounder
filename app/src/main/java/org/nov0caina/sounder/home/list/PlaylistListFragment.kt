@@ -168,13 +168,21 @@ class PlaylistListFragment :
         if (!hasPlaylists) {
             if (!empty) {
                 binding.homeNoMusicAction.isVisible = true
+                binding.homeNoMusicAction.setIconResource(R.drawable.ic_add_24)
                 binding.homeNoMusicAction.text = getString(R.string.lbl_new_playlist)
                 binding.homeNoMusicAction.setOnClickListener { musicModel.createPlaylist() }
+                binding.homeNoMusicSecondaryAction.isVisible = false
             } else {
-                binding.homeNoMusicAction.isVisible =
+                val canShowActions =
                     indexingState == null || (empty && indexingState is IndexingState.Completed)
-                binding.homeNoMusicAction.text = getString(R.string.set_locations)
-                binding.homeNoMusicAction.setOnClickListener { homeModel.startChooseMusicLocations() }
+                binding.homeNoMusicAction.isVisible = canShowActions
+                binding.homeNoMusicAction.setIconResource(R.drawable.ic_search_24)
+                binding.homeNoMusicAction.text = getString(R.string.lbl_scan_device)
+                binding.homeNoMusicAction.setOnClickListener { homeModel.startScanDevice() }
+                binding.homeNoMusicSecondaryAction.isVisible = canShowActions
+                binding.homeNoMusicSecondaryAction.setOnClickListener {
+                    homeModel.startChooseMusicLocations()
+                }
             }
         }
     }

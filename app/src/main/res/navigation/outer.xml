@@ -66,6 +66,9 @@
         <action
             android:id="@+id/separators_settings"
             app:destination="@id/separators_dialog" />
+        <action
+            android:id="@+id/music_locations_settings"
+            app:destination="@id/music_locations_dialog" />
     </fragment>
 
     <fragment

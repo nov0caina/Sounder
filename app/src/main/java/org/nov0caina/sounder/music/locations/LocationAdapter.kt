@@ -18,96 +18,63 @@
  
 package org.nov0caina.sounder.music.locations
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemMusicLocationBinding
 import org.nov0caina.sounder.databinding.ItemNoLocationsBinding
 import org.nov0caina.sounder.util.context
+import org.nov0caina.sounder.util.getPlural
 import org.nov0caina.sounder.util.inflater
 import org.oxycblt.musikr.fs.Location
-import timber.log.Timber as L
+import org.oxycblt.musikr.fs.mediastore.DiscoveredMusicFolder
 
-class LocationAdapter<T : Location>(private val listener: Listener) :
+sealed interface FolderItem {
+    data class Discovered(
+        val folder: DiscoveredMusicFolder,
+        val isSelected: Boolean,
+    ) : FolderItem
+
+    data class Custom(val location: Location.Opened) : FolderItem
+}
+
+class LocationAdapter(private val listener: Listener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val _locations = mutableListOf<T>()
-    val locations: List<T> = _locations
+    private val _items = mutableListOf<FolderItem>()
 
-    override fun getItemCount() = if (locations.isEmpty()) 1 else locations.size
+    override fun getItemCount() = if (_items.isEmpty()) 1 else _items.size
 
-    override fun getItemViewType(position: Int): Int {
-        return if (locations.isEmpty()) VIEW_TYPE_EMPTY else VIEW_TYPE_LOCATION
-    }
+    override fun getItemViewType(position: Int): Int =
+        if (_items.isEmpty()) VIEW_TYPE_EMPTY else VIEW_TYPE_LOCATION
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             VIEW_TYPE_EMPTY -> EmptyLocationViewHolder.from(parent)
-            VIEW_TYPE_LOCATION -> LocationViewHolder.from<T>(parent)
+            VIEW_TYPE_LOCATION -> LocationViewHolder.from(parent)
             else -> throw IllegalArgumentException("Unknown view type: $viewType")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is LocationViewHolder<*> -> {
-                @Suppress("UNCHECKED_CAST")
-                (holder as LocationViewHolder<T>).bind(locations[position], listener)
-            }
+            is LocationViewHolder -> holder.bind(_items[position], listener)
             is EmptyLocationViewHolder -> holder.bind()
         }
     }
 
-    fun add(location: T) {
-        if (_locations.contains(location)) return
-        L.d("Adding $location")
-        val wasEmpty = _locations.isEmpty()
-        _locations.add(location)
-        if (wasEmpty) {
-            notifyItemChanged(0)
-        } else {
-            notifyItemInserted(_locations.lastIndex)
-        }
-    }
-
-    fun addAll(locations: List<T>) {
-        L.d("Adding ${locations.size} locations")
-        val wasEmpty = _locations.isEmpty()
-        val oldSize = _locations.size
-        _locations.addAll(locations)
-        if (wasEmpty && locations.isNotEmpty()) {
-            notifyItemChanged(0)
-        } else if (locations.isNotEmpty()) {
-            notifyItemRangeInserted(oldSize, locations.size)
-        }
-    }
-
-    fun remove(location: T) {
-        L.d("Removing $location")
-        val idx = _locations.indexOf(location)
-        _locations.removeAt(idx)
-        if (_locations.isEmpty()) {
-            notifyItemChanged(0)
-        } else {
-            notifyItemRemoved(idx)
-        }
-    }
-
-    fun clear() {
-        L.d("Clearing all locations")
-        val wasEmpty = _locations.isEmpty()
-        val oldSize = _locations.size
-        _locations.clear()
-        if (!wasEmpty) {
-            if (oldSize == 1) {
-                notifyItemChanged(0)
-            } else {
-                notifyDataSetChanged()
-            }
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitItems(items: List<FolderItem>) {
+        _items.clear()
+        _items.addAll(items)
+        notifyDataSetChanged()
     }
 
     interface Listener {
-        fun onRemoveLocation(location: Location)
+        fun onToggleDiscovered(folder: DiscoveredMusicFolder, isChecked: Boolean)
+
+        fun onRemoveCustom(location: Location.Opened)
     }
 
     companion object {
@@ -116,23 +83,65 @@ class LocationAdapter<T : Location>(private val listener: Listener) :
     }
 }
 
-class LocationViewHolder<T : Location>(private val binding: ItemMusicLocationBinding) :
+class LocationViewHolder(private val binding: ItemMusicLocationBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(location: T, listener: LocationAdapter.Listener) {
-        binding.locationPath.text = location.path.resolve(binding.context)
-        binding.locationDelete.setOnClickListener { listener.onRemoveLocation(location) }
+    fun bind(item: FolderItem, listener: LocationAdapter.Listener) {
+        val context = binding.context
+        when (item) {
+            is FolderItem.Discovered -> {
+                val folder = item.folder
+                binding.locationName.text = folder.displayName
+                binding.locationPath.text = folder.path.resolve(context)
+                val songCountText = context.getPlural(R.plurals.fmt_song_count, folder.songCount)
+                binding.locationSubtitle.text =
+                    if (folder.isSounderManaged) {
+                        "$songCountText · ${context.getString(R.string.lbl_folder_always_included)}"
+                    } else {
+                        songCountText
+                    }
+
+                binding.locationDelete.isVisible = false
+                binding.locationDelete.setOnClickListener(null)
+
+                binding.locationCheckbox.isVisible = true
+                binding.locationCheckbox.setOnCheckedChangeListener(null)
+                if (folder.isSounderManaged) {
+                    binding.locationCheckbox.isChecked = true
+                    binding.locationCheckbox.isEnabled = false
+                    binding.root.isClickable = false
+                    binding.root.setOnClickListener(null)
+                } else {
+                    binding.locationCheckbox.isEnabled = true
+                    binding.locationCheckbox.isChecked = item.isSelected
+                    binding.locationCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                        listener.onToggleDiscovered(folder, isChecked)
+                    }
+                    binding.root.isClickable = true
+                    binding.root.setOnClickListener { binding.locationCheckbox.toggle() }
+                }
+            }
+            is FolderItem.Custom -> {
+                val location = item.location
+                binding.locationName.text = location.path.name ?: location.path.resolve(context)
+                binding.locationPath.text = location.path.resolve(context)
+                binding.locationSubtitle.setText(R.string.lbl_custom_folder)
+
+                binding.locationCheckbox.setOnCheckedChangeListener(null)
+                binding.locationCheckbox.isVisible = false
+
+                binding.locationDelete.isVisible = true
+                binding.locationDelete.setOnClickListener { listener.onRemoveCustom(location) }
+
+                binding.root.isClickable = false
+                binding.root.setOnClickListener(null)
+            }
+        }
     }
 
     companion object {
-        /**
-         * Create a new instance.
-         *
-         * @param parent The parent to inflate this instance from.
-         * @return A new instance.
-         */
-        fun <T : Location> from(parent: ViewGroup) =
-            LocationViewHolder<T>(
+        fun from(parent: ViewGroup) =
+            LocationViewHolder(
                 ItemMusicLocationBinding.inflate(parent.context.inflater, parent, false)
             )
     }
@@ -142,16 +151,10 @@ class EmptyLocationViewHolder(private val binding: ItemNoLocationsBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind() {
-        binding.locationPath.text = binding.context.getString(R.string.lbl_no_folders)
+        binding.locationPath.setText(R.string.lbl_no_music_folders_found)
     }
 
     companion object {
-        /**
-         * Create a new instance.
-         *
-         * @param parent The parent to inflate this instance from.
-         * @return A new instance.
-         */
         fun from(parent: ViewGroup) =
             EmptyLocationViewHolder(
                 ItemNoLocationsBinding.inflate(parent.context.inflater, parent, false)

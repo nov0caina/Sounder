@@ -83,7 +83,10 @@ class ArtistListFragment :
         }
         binding.homeNoMusicMsg.text = getString(R.string.lng_empty_artists)
 
-        binding.homeNoMusicAction.setOnClickListener { homeModel.startChooseMusicLocations() }
+        binding.homeNoMusicAction.setOnClickListener { homeModel.startScanDevice() }
+        binding.homeNoMusicSecondaryAction.setOnClickListener {
+            homeModel.startChooseMusicLocations()
+        }
 
         collectImmediately(homeModel.artistList, ::updateArtists)
         collectImmediately(homeModel.empty, musicModel.indexingState, ::updateNoMusicIndicator)
@@ -150,8 +153,10 @@ class ArtistListFragment :
         val binding = requireBinding()
         binding.homeRecycler.isInvisible = empty
         binding.homeNoMusic.isInvisible = !empty
-        binding.homeNoMusicAction.isVisible =
+        val canShowActions =
             indexingState == null || (empty && indexingState is IndexingState.Completed)
+        binding.homeNoMusicAction.isVisible = canShowActions
+        binding.homeNoMusicSecondaryAction.isVisible = canShowActions
     }
 
     private fun updateSelection(selection: List<Music>) {

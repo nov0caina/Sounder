@@ -3,6 +3,18 @@
     app:title="@string/set_content">
     <PreferenceCategory app:title="@string/set_music">
 
+        <org.nov0caina.sounder.settings.ui.WrappedDialogPreference
+            app:icon="@drawable/ic_folder_24"
+            app:key="@string/set_key_music_dirs"
+            app:summary="@string/set_locations_desc"
+            app:title="@string/set_locations" />
+
+        <Preference
+            app:icon="@drawable/ic_search_24"
+            app:key="@string/set_key_scan_device"
+            app:summary="@string/set_scan_device_desc"
+            app:title="@string/lbl_scan_device" />
+
         <SwitchPreferenceCompat
             app:defaultValue="false"
             app:key="@string/set_key_observing"
