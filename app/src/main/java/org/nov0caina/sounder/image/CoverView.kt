@@ -29,6 +29,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.Size
+import android.util.TypedValue
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -57,10 +58,11 @@ import javax.inject.Inject
 import kotlin.math.min
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.image.coil.GalleryCoverCollection
+import org.nov0caina.sounder.image.coil.GridCoverComposition
 import org.nov0caina.sounder.image.coil.RoundedRectTransformation
 import org.nov0caina.sounder.image.coil.SmatteringCoverComposition
 import org.nov0caina.sounder.image.coil.SquareCropTransformation
-import org.nov0caina.sounder.image.coil.StackCoverComposition
+import org.nov0caina.sounder.image.coil.extractOrderedDistinctCovers
 import org.nov0caina.sounder.music.resolveName
 import org.nov0caina.sounder.ui.Effect
 import org.nov0caina.sounder.ui.Spatial
@@ -427,18 +429,16 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
      * Bind a [Playlist]'s image to this view.
      *
      * @param playlist the [Playlist] to bind.
+     * @param orderedSongs Optional ordered list of songs to source cover artwork from.
      */
-    fun bind(playlist: Playlist) =
-        // Playlists are organized in a straight diagonal stack to give the appearance of an
-        // "orderly" pile of covers, unless a custom playlist cover has been configured.
+    fun bind(playlist: Playlist, orderedSongs: List<Song> = playlist.songs) =
         bindImpl(
-            { size ->
+            { _ ->
                 val resolvedName = playlist.resolveName(context)
                 PlaylistCoverManager.getCoverFile(context, resolvedName)
-                    ?: StackCoverComposition(
-                        playlist.covers,
-                        responsiveCornerRatio(size),
-                        playlist.uid.toString().hashCode(),
+                    ?: GridCoverComposition(
+                        extractOrderedDistinctCovers(orderedSongs),
+                        gridGapPx(),
                         backgroundColor(),
                     )
             },
@@ -453,7 +453,7 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
      * @param songs The [Song]s to bind.
      * @param desc The content description to describe the bound data.
      * @param errorRes The resource of the error drawable to use if the cover cannot be loaded.
-     * @param uidSeed A seed for the z-order of the stack, to keep the visual consistent.
+     * @param uidSeed Unused legacy parameter preserved for binary/source compatibility.
      */
     fun bind(
         songs: List<Song>,
@@ -462,11 +462,10 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
         uidSeed: Int = songs.hashCode(),
     ) =
         bindImpl(
-            { size ->
-                StackCoverComposition(
-                    CoverCollection.from(songs.mapNotNull { it.cover }),
-                    responsiveCornerRatio(size),
-                    uidSeed,
+            { _ ->
+                GridCoverComposition(
+                    extractOrderedDistinctCovers(songs),
+                    gridGapPx(),
                     backgroundColor(),
                 )
             },
@@ -559,6 +558,13 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
         }
         return cornerRadius / minSize
     }
+
+    private fun gridGapPx(): Float =
+        TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            1.5f,
+            resources.displayMetrics,
+        ).coerceAtLeast(1f)
 
     private fun backgroundColor(): Int = context.getColorCompat(R.color.sel_cover_bg).defaultColor
 

@@ -44,6 +44,8 @@ class CoilModule {
         smatteringFetcherFactory: SmatteringCompositionFetcher.Factory,
         stackKeyer: StackCompositionFetcher.Keyer,
         stackFetcherFactory: StackCompositionFetcher.Factory,
+        gridKeyer: GridCompositionFetcher.Keyer,
+        gridFetcherFactory: GridCompositionFetcher.Factory,
     ) =
         ImageLoader.Builder(context)
             .components {
@@ -55,6 +57,8 @@ class CoilModule {
                 add(smatteringFetcherFactory)
                 add(stackKeyer)
                 add(stackFetcherFactory)
+                add(gridKeyer)
+                add(gridFetcherFactory)
             }
             // Use our own crossfade with error drawable support
             .transitionFactory(ErrorCrossfadeTransitionFactory())

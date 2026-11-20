@@ -343,16 +343,14 @@ class PlaylistDetailFragment :
         binding.detailEditToolbar.title =
             getString(R.string.fmt_editing, resolvedName)
 
+        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(resolvedName))
+            .distinctBy { it.uid.toString() }
+
         if (editedPlaylist != null) {
             L.d("Binding edited playlist image")
-            binding.detailCover.bind(
-                editedPlaylist,
-                binding.context.getString(R.string.desc_playlist_image, resolvedName),
-                R.drawable.ic_playlist_24,
-                playlist.uid.toString().hashCode(),
-            )
+            binding.detailCover.bind(playlist, editedPlaylist)
         } else {
-            binding.detailCover.bind(playlist)
+            binding.detailCover.bind(playlist, allSongs)
         }
 
         binding.detailType.text = binding.context.getString(R.string.lbl_playlist)
@@ -360,8 +358,6 @@ class PlaylistDetailFragment :
         // Nothing about a playlist is applicable to the sub-head text.
         binding.detailSubhead.isVisible = false
 
-        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlist.name.resolve(requireContext())))
-            .distinctBy { it.uid.toString() }
         val songs = editedPlaylist ?: allSongs
         val durationMs = songs.sumOf { it.durationMs }
         // The song count of the playlist maps to the info text.

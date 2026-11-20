@@ -25,7 +25,7 @@ import org.oxycblt.musikr.tag.ReplayGainAdjustment
 import org.oxycblt.musikr.tag.interpret.Naming
 
 class OnlineCover(
-    private val artworkUrl: String?,
+    val artworkUrl: String?,
     override val id: String,
     private val trackId: String? = null,
     private val localCoverPath: String? = null,

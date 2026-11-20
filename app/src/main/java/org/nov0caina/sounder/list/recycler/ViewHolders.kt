@@ -326,6 +326,10 @@ class PlaylistViewHolder private constructor(private val binding: ItemParentBind
                 override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist) =
                     oldItem.name == newItem.name &&
                         oldItem.songs.size == newItem.songs.size &&
+                        org.nov0caina.sounder.image.coil.extractOrderedDistinctCovers(oldItem.songs)
+                            .map { it.id } ==
+                            org.nov0caina.sounder.image.coil.extractOrderedDistinctCovers(newItem.songs)
+                                .map { it.id } &&
                         org.nov0caina.sounder.image.PlaylistCoverManager.getCoverSignature(
                             oldItem.name.raw
                         ) ==
