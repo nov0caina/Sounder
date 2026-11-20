@@ -94,7 +94,7 @@
     <string name="set_cover_mode_high_quality">Падвышанай якасці (павольная загрузка)</string>
     <string name="set_replay_gain_mode_dynamic">Аддайце перавагу альбому, калі ён гучыць</string>
     <string name="set_pre_amp_without">Карэкціроўка без тэгаў</string>
-    <string name="set_locations">Тэчкі з музыкай</string>
+    <string name="set_locations">Папкі з музыкай</string>
     <string name="set_headset_autoplay">Аўтапрайграванне гарнітуры</string>
     <string name="set_audio_desc">Наладзьце гук і паводзіны прайгравання</string>
     <string name="set_headset_autoplay_desc">Заўсёды пачынаць гульню, калі падключана гарнітура (можа працаваць не на ўсіх прыладах)</string>
@@ -110,11 +110,7 @@
     <string name="set_replay_gain_mode_album">Аддайце перавагу альбому</string>
     <string name="set_pre_amp">Папярэдні ўзмацняльнік ReplayGain</string>
     <string name="set_library">Бібліятэка</string>
-    <string name="set_locations_desc">Кіруйце месцам загрузкі музыкі</string>
-    <string name="set_rescan">Перасканаваць музыку</string>
-    <string name="set_reindex">Абнавіць музыку</string>
-    <string name="set_reindex_desc">Перазагрузіце музычную бібліятэку, выкарыстоўваючы па магчымасці кэшаваныя тэгі</string>
-    <string name="set_rescan_desc">Ачысціце кэш тэгаў і цалкам перазагрузіце музычную бібліятэку (павольней, але больш поўна)</string>
+    <string name="set_locations_desc">Выберыце лакальныя папкі з вашай музыкай</string>
     <string name="err_index_failed">Памылка загрузкі музыкі</string>
     <string name="err_bad_location">Гэтая папка не падтрымліваецца</string>
     <string name="desc_track_number">Кампазіцыя %d</string>
@@ -196,7 +192,7 @@
     <string name="cdc_aac">Прасунуты аўдыё кодэк (AAC)</string>
     <string name="fmt_list">%1$s, %2$s</string>
     <string name="cdc_flac">Свабодны аўдыё кодэк без страты якасці (FLAC)</string>
-    <string name="set_exclude_non_music">Выключыць іншыя гукавыя файлы</string>
+    <string name="set_exclude_non_music">Выключаць рынгтоны і сігналы</string>
     <string name="set_round_mode_desc">Ўключыць закругленыя вуглы на дадатковых элементах інтэрфейсу (патрабуецца закругленне вокладак альбомаў)</string>
     <string name="set_personalize_desc">Наладзьце элементы кіравання і паводзіны карыстацкага інтэрфейсу</string>
     <string name="set_display">Экран</string>
@@ -210,7 +206,7 @@
     <string name="set_content_desc">Кіруйце загрузкай музыкі і малюнкаў</string>
     <string name="set_play_in_parent_with">Пры прайграванні з дэталяў прадмета</string>
     <string name="set_play_song_none">Гуляць з паказанага прадмета</string>
-    <string name="set_exclude_non_music_desc">Ігнаруйце аўдыяфайлы, якія не з\'яўляюцца музыкай, напрыклад, падкасты</string>
+    <string name="set_exclude_non_music_desc">Ігнараваць рынгтоны, будзільнікі, апавяшчэнні і іншае немузычнае аўдыя</string>
     <string name="set_play_song_from_artist">Гуляць ад выканаўцы</string>
     <string name="set_play_song_from_genre">Гуляць з жанру</string>
     <string name="set_keep_shuffle">Запамінаць перамешванне</string>
@@ -423,9 +419,9 @@
     <string name="search_online_hint">Поиск треков, исполнителей, альбомов…</string>
     <string name="set_auto_download_favorites">Автоскачивание любимых треков</string>
     <string name="set_auto_download_favorites_desc">Автоматически скачивать треки в фоновом режиме при добавлении в Любимые</string>
-    <string name="set_direct_deletion">Прямое удаление без подтверждения</string>
-    <string name="set_direct_deletion_desc">Разрешить Sounder удалять треки и альбомы сразу без системных запросов (требуется доступ ко всем файлам).</string>
-    <string name="set_direct_deletion_enabled_desc">Включено: треки и альбомы удаляются мгновенно без диалоговых окон системы.</string>
+    <string name="set_direct_deletion">Прамое выдаленне</string>
+    <string name="set_direct_deletion_desc">Выдаляць трэкі без сістэмнага пацверджання</string>
+    <string name="set_direct_deletion_enabled_desc">Актыўна: выдаляе файлы без запытаў</string>
     <string name="set_download_storage">Место для скачивания</string>
     <string name="set_download_storage_internal">Внутренняя память</string>
     <string name="set_download_storage_sd">SD-карта</string>
@@ -512,4 +508,22 @@
     <string name="lng_empty_offline_backup">Слухайце музыку анлайн, каб аўтаматычна стварыць Афлайн-рэзерв</string>
     <string name="msg_offline_backup_ready">Няма сеткі. Ваш Афлайн-рэзерв гатовы да прайгравання</string>
     <string name="btn_listen">Слухаць</string>
+    <string name="lbl_scan_device">Сканаваць усю прыладу</string>
+    <string name="lbl_select_folders">Выбраць папкі</string>
+    <string name="set_detected_folders">Знойдзеныя папкі з музыкай</string>
+    <string name="lbl_rescan_folders">Шукаць зноў</string>
+    <string name="desc_rescan_folders">Паўторна знайсці папкі з музыкай</string>
+    <string name="lbl_choose_another_folder">Выбраць іншую папку…</string>
+    <string name="lbl_folder_always_included">Заўсёды ўключана</string>
+    <string name="lbl_custom_folder">Карыстальніцкая папка</string>
+    <string name="lbl_no_music_folders_found">Папкі з музыкай не знойдзены</string>
+    <string name="lng_no_music_folders_found">На гэтай прыладзе не знойдзена папак з музыкай.</string>
+    <string name="lng_grant_storage_discover">Дайце доступ да аўдыя для аўтаматычнага пошуку папак з музыкай.</string>
+    <string name="set_filter_settings">Налады фільтрацыі</string>
+    <string name="set_exclude_short_audio">Выключаць кароткае аўдыя</string>
+    <string name="set_exclude_short_audio_desc">Ігнараваць аўдыяфайлы карацей за 30 секунд</string>
+    <string name="set_exclude_voice_notes">Выключаць галасавыя нататкі</string>
+    <string name="set_exclude_voice_notes_desc">Ігнараваць галасавыя запісы і паведамленні (WhatsApp, Telegram і інш.)</string>
+    <string name="set_scan_device_desc">Знаходзіць папкі з музыкай і абнаўляе медыятэку</string>
+    <string name="msg_scanning_device_music">Сканаванне музыкі на прыладзе…</string>
 </resources>

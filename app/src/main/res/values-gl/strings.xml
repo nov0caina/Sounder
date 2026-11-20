@@ -50,7 +50,7 @@
     <string name="lbl_play_next">Reproducir seguinte</string>
     <string name="lbl_queue">Cola</string>
     <string name="lbl_queue_add">Engadir á cola</string>
-    <string name="set_exclude_non_music">Excluir o que non é música</string>
+    <string name="set_exclude_non_music">Excluír tons e alarmas</string>
     <string name="lbl_artist_details">Ir ao artista</string>
     <string name="lbl_shuffle_shortcut_short">Mesturar</string>
     <string name="lbl_shuffle_shortcut_long">Mesturar todo</string>
@@ -86,7 +86,7 @@
     <string name="set_play_song_from_all">Reproducir dende todas as cancións</string>
     <string name="set_play_song_from_album">Reproducir dende álbum</string>
     <string name="set_observing">Recarga automática</string>
-    <string name="set_exclude_non_music_desc">Ignorar arquivos de audio que non sexan música, como os pódcasts</string>
+    <string name="set_exclude_non_music_desc">Ignorar tons de chamada, alarmas, notificacións e audio non musical</string>
     <string name="lbl_all_songs">Todas as cancións</string>
     <string name="lbl_song_detail">Ver as propiedades</string>
     <string name="lbl_props">Propiedades da canción</string>
@@ -104,7 +104,7 @@
     </plurals>
     <string name="set_audio">Son</string>
     <string name="set_cover_mode_high_quality">Alta calidade</string>
-    <string name="set_locations">Cartafois de música</string>
+    <string name="set_locations">Cartafoles de música</string>
     <string name="err_bad_location">Este cartafol non está soportado</string>
     <string name="desc_play_pause">Reproducir ou pausar</string>
     <string name="desc_skip_next">Saltar á seguinte canción</string>
@@ -153,10 +153,6 @@
     <string name="set_pre_amp_without">Axuste sen etiquetas</string>
     <string name="set_pre_amp_warning">Advertencia: O cambio do pre-amp a un valor alto positivo pode resultar en picos en nalgunhas pistas.</string>
     <string name="set_library">Biblioteca</string>
-    <string name="set_reindex">Actualizar música</string>
-    <string name="set_reindex_desc">Recargar a biblioteca de música, utilizando as etiquetas na caché cando sexa posible</string>
-    <string name="set_rescan">Volver a escanear a música</string>
-    <string name="set_rescan_desc">Borrar a caché das etiquetas a recargar completamente a biblioteca de música (máis lento, pero máis completo)</string>
     <string name="desc_change_repeat">Cambiar o modo de repetición</string>
     <string name="desc_shuffle">Activar ou desactivar a mezcla</string>
     <string name="desc_exit">Deter a reprodución</string>
@@ -219,7 +215,7 @@
     </plurals>
     <string name="set_separators_plus">Máis (+)</string>
     <string name="set_intelligent_sorting_desc">Ignorar palabras como \"the\" ao ordenar por nome (funciona mellor con música en inglés)</string>
-    <string name="set_locations_desc">Xestionar dende onde se carga a música</string>
+    <string name="set_locations_desc">Escolle os cartafoles locais coa túa música</string>
     <string name="set_repeat_pause_desc">Pausar cando se repite unha canción</string>
     <string name="def_track">Ningunha pista</string>
     <string name="desc_skip_prev">Saltar á última canción</string>
@@ -342,9 +338,9 @@
     <string name="search_online_hint">Buscar cancións, artistas ou álbums…</string>
     <string name="set_auto_download_favorites">Baixar curtidas automaticamente</string>
     <string name="set_auto_download_favorites_desc">Baixar músicas automaticamente em segundo plano ao curti-las</string>
-    <string name="set_direct_deletion">Exclusão direta sem confirmação</string>
-    <string name="set_direct_deletion_desc">Permitir que o Sounder exclua músicas e álbuns instantaneamente sem prompt do sistema (requer Acesso a todos os arquivos).</string>
-    <string name="set_direct_deletion_enabled_desc">Ativo: Músicas e álbuns são excluídos imediatamente sem avisos do sistema.</string>
+    <string name="set_direct_deletion">Eliminación directa</string>
+    <string name="set_direct_deletion_desc">Elimina cancións sen confirmación do sistema</string>
+    <string name="set_direct_deletion_enabled_desc">Activo: elimina ficheiros sen avisos</string>
     <string name="set_download_storage">Local de download</string>
     <string name="set_download_storage_internal">Armazenamento interno</string>
     <string name="set_download_storage_sd">Cartão SD</string>
@@ -433,4 +429,22 @@
     <string name="lng_empty_offline_backup">Escoita música en liña para crear automaticamente o teu Respaldo Musical</string>
     <string name="msg_offline_backup_ready">Sen conexión. O teu Respaldo Musical está listo para reproducir</string>
     <string name="btn_listen">Escoitar</string>
+    <string name="lbl_scan_device">Escanear todo o dispositivo</string>
+    <string name="lbl_select_folders">Seleccionar cartafoles</string>
+    <string name="set_detected_folders">Cartafoles de música detectados</string>
+    <string name="lbl_rescan_folders">Volver buscar</string>
+    <string name="desc_rescan_folders">Volver buscar cartafoles de música</string>
+    <string name="lbl_choose_another_folder">Escoller outro cartafol…</string>
+    <string name="lbl_folder_always_included">Sempre incluído</string>
+    <string name="lbl_custom_folder">Cartafol personalizado</string>
+    <string name="lbl_no_music_folders_found">Non se atoparon cartafoles de música</string>
+    <string name="lng_no_music_folders_found">Non se atoparon cartafoles con música neste dispositivo.</string>
+    <string name="lng_grant_storage_discover">Concede acceso ao audio para atopar automaticamente cartafoles de música no teu dispositivo.</string>
+    <string name="set_filter_settings">Opcións de filtrado</string>
+    <string name="set_exclude_short_audio">Excluír audios curtos</string>
+    <string name="set_exclude_short_audio_desc">Ignorar clips de audio de menos de 30 segundos</string>
+    <string name="set_exclude_voice_notes">Excluír notas de voz</string>
+    <string name="set_exclude_voice_notes_desc">Ignorar gravacións de voz e audios de mensaxería (WhatsApp, Telegram, etc.)</string>
+    <string name="set_scan_device_desc">Detecta cartafoles de música e actualiza a biblioteca</string>
+    <string name="msg_scanning_device_music">Escaneando a música do dispositivo…</string>
 </resources>

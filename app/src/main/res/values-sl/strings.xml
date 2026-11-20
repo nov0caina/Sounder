@@ -43,11 +43,9 @@
     <string name="lbl_playlists">Seznami predvajanja</string>
     <string name="lng_search_library">Išči v knjižnici…</string>
     <string name="set_play_in_parent_with">Ko se predvaja iz podrobnosti elementa</string>
-    <string name="set_reindex">Ponovno naloži glasbo</string>
     <string name="lbl_remix_group">Remiksi</string>
     <string name="set_pre_amp_warning">Opozorilo: Sprememba pred-ojačevalca na visoko pozitivno vrednost lahko privede do preseganja na nekaterih avdio posnetkih.</string>
     <string name="def_date">Ni datuma</string>
-    <string name="set_reindex_desc">Ponovno naloži glasbeno knjižnico, uporabi predpomnjene oznake, kadar je mogoče</string>
     <string name="err_no_app">Najdena ni bila nobena aplikacija, ki bi lahko opravila to nalogo</string>
     <string name="lbl_cancel">Prekliči</string>
     <string name="fmt_def_playlist">Seznam predvajanja %d</string>
@@ -76,7 +74,7 @@
     <string name="lng_playlist_created">Seznam predavanja ustvarjen</string>
     <string name="fmt_lib_total_duration">Celoten čas predvajanja: %s</string>
     <string name="set_repeat_pause">Pavza ob ponavljanju</string>
-    <string name="set_locations">Mape za glasbo</string>
+    <string name="set_locations">Mape z glasbo</string>
     <string name="set_keep_shuffle">Zapomni si naključno predvajanje</string>
     <string name="lbl_artist_details">Pojdi na izvajalca</string>
     <string name="fmt_lib_song_count">Naloženih pesmi: %d</string>
@@ -107,7 +105,6 @@
     <string name="lbl_play">Predvajaj</string>
     <string name="lbl_indexing">Nalaganje glasbe</string>
     <string name="lbl_date">Datum</string>
-    <string name="set_rescan_desc">Izprazni predpomnilnik oznak in popolnoma ponovno naloži glasbeno knjižnico (počasneje, vendar bolj popolno)</string>
     <string name="set_pre_amp_desc">Pred-ojačevalec se uporablja na obstoječi prilagoditvi med predvajanjem</string>
     <string name="set_play_song_from_album">Predvajaj iz albuma</string>
     <string name="set_music">Glasba</string>
@@ -193,7 +190,7 @@
     <string name="desc_tab_handle">Premakni ta zavihek</string>
     <string name="lbl_song">Pesem</string>
     <string name="desc_genre_image">Slika žanra za %s</string>
-    <string name="set_locations_desc">Nastavitev virov za nalaganje glasbe</string>
+    <string name="set_locations_desc">Izberite lokalne mape z vašo glasbo</string>
     <string name="lbl_mixes">DJ Miksi</string>
     <string name="lbl_confirm_delete_playlist">Odstrani seznam predvajanja?</string>
     <string name="clr_blue">Modra</string>
@@ -217,11 +214,11 @@
     <string name="desc_auxio_icon">Sounder ikona</string>
     <string name="desc_track_number">Skladba %d</string>
     <string name="lbl_filter">Filtriraj</string>
-    <string name="set_exclude_non_music_desc">Prezri avdio datoteke, ki niso glasba, na primer podkaste</string>
+    <string name="set_exclude_non_music_desc">Prezri zvonjenja, alarme, obvestila in neglasbeni zvok</string>
     <string name="lbl_soundtrack">Glasbena podlaga</string>
     <string name="lbl_reset">Ponastavi nastavitve</string>
     <string name="lbl_report">Prijavi napako</string>
-    <string name="set_exclude_non_music">Izključi ne-glasbo</string>
+    <string name="set_exclude_non_music">Izključi zvonjenja in tone</string>
     <string name="lbl_play_next">Predvajaj naslednje</string>
     <string name="lbl_artists">Izvajalci</string>
     <string name="lbl_track">Skladba</string>
@@ -256,7 +253,6 @@
     <string name="lbl_singles">Singli</string>
     <string name="lng_widget">Pregled in nadzor predvajanja glasbe</string>
     <string name="set_black_mode_desc">Uporabite čisto črno temo</string>
-    <string name="set_rescan">Ponovno preglej glasbeno knjižnico</string>
     <string name="lbl_licenses">Licence</string>
     <string name="lbl_format">Format</string>
     <string name="set_content">Vsebina</string>
@@ -405,9 +401,9 @@
     <string name="search_online_hint">Pretraži pjesme, izvođače ili albume…</string>
     <string name="set_auto_download_favorites">Automatski preuzmi omiljene pjesme</string>
     <string name="set_auto_download_favorites_desc">Automatski preuzimaj pjesme u pozadini kada ih označiš sa Sviđa mi se</string>
-    <string name="set_direct_deletion">Izravno brisanje bez potvrde</string>
-    <string name="set_direct_deletion_desc">Dopusti Sounderu trenutno brisanje pjesama i albuma bez upita sustava (zahtijeva pristup svim datotekama).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktivno: Pjesme i albumi brišu se odmah bez dijaloških okvira.</string>
+    <string name="set_direct_deletion">Neposredno brisanje</string>
+    <string name="set_direct_deletion_desc">Briše skladbe brez sistemske potrditve</string>
+    <string name="set_direct_deletion_enabled_desc">Aktivno: briše datoteke brez pozivov</string>
     <string name="set_download_storage">Mjesto preuzimanja</string>
     <string name="set_download_storage_internal">Unutarnja pohrana</string>
     <string name="set_download_storage_sd">SD kartica</string>
@@ -494,4 +490,22 @@
     <string name="lng_empty_offline_backup">Poslušajte spletno glasbo za samodejno ustvarjanje varnostne kopije brez povezave</string>
     <string name="msg_offline_backup_ready">Brez povezave. Vaša varnostna kopija je pripravljena za predvajanje</string>
     <string name="btn_listen">Poslušaj</string>
+    <string name="lbl_scan_device">Preglej celotno napravo</string>
+    <string name="lbl_select_folders">Izberi mape</string>
+    <string name="set_detected_folders">Zaznane mape z glasbo</string>
+    <string name="lbl_rescan_folders">Ponovno preišči</string>
+    <string name="desc_rescan_folders">Ponovno preišči mape z glasbo</string>
+    <string name="lbl_choose_another_folder">Izberi drugo mapo…</string>
+    <string name="lbl_folder_always_included">Vedno vključeno</string>
+    <string name="lbl_custom_folder">Mapa po meri</string>
+    <string name="lbl_no_music_folders_found">Ni najdenih map z glasbo</string>
+    <string name="lng_no_music_folders_found">V tej napravi ni bilo najdenih map z glasbo.</string>
+    <string name="lng_grant_storage_discover">Dovolite dostop do zvoka za samodejno iskanje map z glasbo.</string>
+    <string name="set_filter_settings">Nastavitve filtrov</string>
+    <string name="set_exclude_short_audio">Izključi kratke posnetke</string>
+    <string name="set_exclude_short_audio_desc">Prezri zvočne posnetke, krajše od 30 sekund</string>
+    <string name="set_exclude_voice_notes">Izključi glasovna sporočila</string>
+    <string name="set_exclude_voice_notes_desc">Prezri glasovne posnetke in zvoke sporočil (WhatsApp, Telegram itd.)</string>
+    <string name="set_scan_device_desc">Zazna glasbene mape in posodobi knjižnico</string>
+    <string name="msg_scanning_device_music">Pregledovanje glasbe v napravi…</string>
 </resources>

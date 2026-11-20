@@ -135,7 +135,6 @@
     <string name="set_playback">Reproduction</string>
     <string name="set_remember_pause">Rememorar le pausa</string>
     <string name="set_locations">Dossieres de musica</string>
-    <string name="set_reindex">Actualisar le musica</string>
     <string name="err_index_failed">Falleva le carga del musica</string>
     <string name="err_bad_location">Iste dossier non es supportate</string>
     <string name="desc_track_number">Tracia %d</string>
@@ -199,7 +198,6 @@
     <string name="lbl_import_playlist">Importar lista de reproduction</string>
     <string name="set_content_desc">Controlar le cargamento del musica e imagines</string>
     <string name="set_pre_amp_without">Adjustamento sin etiquettas</string>
-    <string name="set_rescan">Rescannar le musica</string>
     <string name="desc_clear_search">Rader le requestas de recerca</string>
     <string name="desc_artist_image">Imagine de artista pro %s</string>
     <string name="desc_playlist_image">Imagine del lista de reproduction pro %s</string>
@@ -312,9 +310,9 @@
     <string name="search_online_hint">Cerca brani, artisti o album…</string>
     <string name="set_auto_download_favorites">Scarica automaticamente i Preferiti</string>
     <string name="set_auto_download_favorites_desc">Scarica automaticamente i brani in background quando metti «Mi piace»</string>
-    <string name="set_direct_deletion">Eliminazione diretta senza conferma</string>
-    <string name="set_direct_deletion_desc">Consenti a Sounder di eliminare brani e album all\'istante senza prompt di sistema (richiede Accesso a tutti i file).</string>
-    <string name="set_direct_deletion_enabled_desc">Attivo: I brani e gli album vengono eliminati subito senza finestre di conferma.</string>
+    <string name="set_direct_deletion">Deletion directe</string>
+    <string name="set_direct_deletion_desc">Deler cantos sin confirmation del systema</string>
+    <string name="set_direct_deletion_enabled_desc">Active: dele files sin avisos</string>
     <string name="set_download_storage">Percorso di download</string>
     <string name="set_download_storage_internal">Memoria interna</string>
     <string name="set_download_storage_sd">Scheda SD</string>
@@ -402,4 +400,25 @@
     <string name="lng_empty_offline_backup">Ascolta musica in linea pro crear automaticamente tu Reserva sin connexion</string>
     <string name="msg_offline_backup_ready">Sin connexion. Tu Reserva sin connexion es preste pro reproducer</string>
     <string name="btn_listen">Ascoltar</string>
+    <string name="lbl_scan_device">Scannar tote le dispositivo</string>
+    <string name="lbl_select_folders">Seliger dossieres</string>
+    <string name="set_detected_folders">Dossieres de musica detegite</string>
+    <string name="lbl_rescan_folders">Rescannar</string>
+    <string name="desc_rescan_folders">Recercar dossieres de musica</string>
+    <string name="lbl_choose_another_folder">Eliger un altere dossier…</string>
+    <string name="lbl_folder_always_included">Sempre includite</string>
+    <string name="lbl_custom_folder">Dossier personalisate</string>
+    <string name="lbl_no_music_folders_found">Nulle dossier de musica trovate</string>
+    <string name="lng_no_music_folders_found">Nulle dossier con musica ha essite trovate sur iste dispositivo.</string>
+    <string name="lng_grant_storage_discover">Concede accesso audio pro trovar automaticamente dossieres de musica.</string>
+    <string name="set_filter_settings">Parametros de filtro</string>
+    <string name="set_exclude_short_audio">Excluder audio curte</string>
+    <string name="set_exclude_short_audio_desc">Ignorar clips audio plus curte que 30 secundas</string>
+    <string name="set_exclude_voice_notes">Excluder notas vocal</string>
+    <string name="set_exclude_voice_notes_desc">Ignorar registrationes vocal e audio de messageria (WhatsApp, Telegram, etc.)</string>
+    <string name="set_exclude_non_music">Excluder sonerias e tonos</string>
+    <string name="set_exclude_non_music_desc">Ignorar sonerias, alarmas, notificationes e audio non musical</string>
+    <string name="set_locations_desc">Selige le dossieres local con tu musica</string>
+    <string name="set_scan_device_desc">Detege dossieres de musica e actualisa le bibliotheca</string>
+    <string name="msg_scanning_device_music">Scannante musica del dispositivo…</string>
 </resources>

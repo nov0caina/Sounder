@@ -117,18 +117,16 @@
     <string name="set_replay_gain_mode_track">Voorkeur track</string>
     <string name="set_replay_gain_mode_album">Voorkeur album</string>
     <string name="set_pre_amp_desc">De voorversterker wordt toegepast op de bestaande afstelling tijdens weergave</string>
-    <string name="set_locations">Muziek mappen</string>
+    <string name="set_locations">Muziekmappen</string>
     <string name="set_pre_amp">ReplayGain voorversterker</string>
-    <string name="set_locations_desc">Beheer waarvan muziek moet worden geladen</string>
+    <string name="set_locations_desc">Selecteer lokale mappen met je muziek</string>
     <string name="fmt_lib_total_duration">Totale duur: %s</string>
     <string name="lbl_shuffle_shortcut_long">Shuffle alles</string>
     <string name="lbl_ok">OK</string>
     <string name="set_headset_autoplay_desc">Start altijd met afspelen wanneer een headset is aangesloten (werkt mogelijk niet op alle apparaten)</string>
     <string name="desc_shuffle">Schakel shuffle aan of uit</string>
-    <string name="set_reindex_desc">Laad de muziekbibliotheek opnieuw, indien mogelijk met behulp van gecashte tags</string>
     <string name="fmt_indexing">Uw muziekbibliotheek wordt geladen… (%1$d/%2$d)</string>
     <string name="set_repeat_pause_desc">Pauze wanneer een nummer wordt herhaald</string>
-    <string name="set_reindex">Muziek opnieuw laden</string>
     <string name="set_pre_amp_with">Aanpassing met tags</string>
     <string name="set_pre_amp_without">Aanpassing zonder tags</string>
     <string name="def_playback">Geen muziek wordt afgespeeld</string>
@@ -256,12 +254,10 @@
     <string name="lng_playlist_deleted">Afspeellijst verwijderd</string>
     <string name="set_action_mode_next">Naar volgende</string>
     <string name="set_observing_desc">Laad de muziekbibliotheek opnieuw wanneer deze wordt gewijzigd (vereist permanente melding)</string>
-    <string name="set_exclude_non_music">Sluit niet-muziek uit</string>
-    <string name="set_exclude_non_music_desc">Negeer audiobestanden die geen muziek zijn, zoals podcasts</string>
+    <string name="set_exclude_non_music">Beltonen &amp; geluiden uitsluiten</string>
+    <string name="set_exclude_non_music_desc">Beltonen, wekkers, meldingen en niet-muziekaudio negeren</string>
     <string name="set_cover_mode">Albumhoezen</string>
     <string name="set_playback">Afspelen</string>
-    <string name="set_rescan">Scan muziek opnieuw</string>
-    <string name="set_rescan_desc">Wis de tag-cache en laad de muziekbibliotheek opnieuw (langzamer, maar vollediger)</string>
     <string name="def_disc">Geen schijf</string>
     <string name="fmt_editing">%s bewerken</string>
     <string name="set_replay_gain_mode_off">Uit</string>
@@ -312,7 +308,6 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="cdc_unknown">Onbekend</string>
     <string name="lng_empty_songs">Je nummers zullen hier worden weergegeven.</string>
     <string name="lng_empty_playlists">Je afspeellijsten zullen hier worden weergegeven.</string>
-    <string name="set_with_hidden">Inclusief verborgen bestanden</string>
     <string name="lbl_github">Meld een probleem met GitHub</string>
     <string name="lbl_email">Stuur een e-mail</string>
     <string name="lng_empty_albums">Je albums zullen hier worden weergegeven.</string>
@@ -323,7 +318,6 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="set_cover_mode_save_space">Ruimte besparen</string>
     <string name="lbl_feedback">Feedback</string>
     <string name="lbl_start_playback">Afspelen</string>
-    <string name="set_with_hidden_desc">Inclusief audiobestanden die verborgen zijn (excl. .cache)</string>
     <string name="lbl_go_to_online_profile">Ga naar online profiel</string>
     <string name="err_artist_not_found_online">Online artiestenprofiel niet gevonden</string>
 
@@ -429,9 +423,9 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="search_online_hint">Zoek nummers, artiesten of albums…</string>
     <string name="set_auto_download_favorites">Favorieten automatisch downloaden</string>
     <string name="set_auto_download_favorites_desc">Nummers automatisch downloaden op de achtergrond wanneer je ze leuk vindt</string>
-    <string name="set_direct_deletion">Direct verwijderen zonder bevestiging</string>
-    <string name="set_direct_deletion_desc">Sounder toestaan nummers en albums direct te verwijderen zonder systeemdialoog (vereist toegang tot alle bestanden).</string>
-    <string name="set_direct_deletion_enabled_desc">Actief: Nummers en albums worden direct verwijderd zonder bevestigingsvenster.</string>
+    <string name="set_direct_deletion">Direct verwijderen</string>
+    <string name="set_direct_deletion_desc">Nummers verwijderen zonder systeembevestiging</string>
+    <string name="set_direct_deletion_enabled_desc">Actief: verwijdert bestanden zonder meldingen</string>
     <string name="set_download_storage">Downloadlocatie</string>
     <string name="set_download_storage_internal">Interne opslag</string>
     <string name="set_download_storage_sd">SD-kaart</string>
@@ -518,4 +512,22 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="lng_empty_offline_backup">Luister naar online muziek om automatisch je Offline back-up op te bouwen</string>
     <string name="msg_offline_backup_ready">Offline. Je Offline back-up staat klaar om af te spelen</string>
     <string name="btn_listen">Luisteren</string>
+    <string name="lbl_scan_device">Heel apparaat scannen</string>
+    <string name="lbl_select_folders">Mappen selecteren</string>
+    <string name="set_detected_folders">Gevonden muziekmappen</string>
+    <string name="lbl_rescan_folders">Opnieuw zoeken</string>
+    <string name="desc_rescan_folders">Muziekmappen opnieuw scannen</string>
+    <string name="lbl_choose_another_folder">Andere map kiezen…</string>
+    <string name="lbl_folder_always_included">Altijd inbegrepen</string>
+    <string name="lbl_custom_folder">Aangepaste map</string>
+    <string name="lbl_no_music_folders_found">Geen muziekmappen gevonden</string>
+    <string name="lng_no_music_folders_found">Er zijn geen mappen met muziek op dit apparaat gevonden.</string>
+    <string name="lng_grant_storage_discover">Geef audiotoegang om automatisch muziekmappen op je apparaat te vinden.</string>
+    <string name="set_filter_settings">Filterinstellingen</string>
+    <string name="set_exclude_short_audio">Korte audio uitsluiten</string>
+    <string name="set_exclude_short_audio_desc">Audioclips korter dan 30 seconden negeren</string>
+    <string name="set_exclude_voice_notes">Spraakberichten uitsluiten</string>
+    <string name="set_exclude_voice_notes_desc">Spraakopnamen en berichtenaudio negeren (WhatsApp, Telegram, enz.)</string>
+    <string name="set_scan_device_desc">Muziekmappen detecteren en bibliotheek bijwerken</string>
+    <string name="msg_scanning_device_music">Apparaatmuziek scannen…</string>
 </resources>

@@ -149,7 +149,7 @@
     <string name="set_play_in_parent_with">Când redai din detaliile elementului</string>
     <string name="set_behavior">Comportament</string>
     <string name="lbl_new_playlist">Listă de redare nouă</string>
-    <string name="set_exclude_non_music_desc">Ignoră fișiere audio care nu sunt muzică, precum podcasturi</string>
+    <string name="set_exclude_non_music_desc">Ignoră tonurile de apel, alarmele, notificările și fișierele non-muzicale</string>
     <string name="set_separators_plus">Plus (+)</string>
     <string name="lbl_song">Melodie</string>
     <string name="lng_playlist_created">Listă de redare creată</string>
@@ -169,7 +169,7 @@
     <string name="set_cover_mode_high_quality">Calitate mare</string>
     <string name="set_separators_semicolon">Punct și virgulă (;)</string>
     <string name="lbl_edit">Editează</string>
-    <string name="set_exclude_non_music">Exclude non-muzică</string>
+    <string name="set_exclude_non_music">Exclude tonuri de apel și alerte</string>
     <string name="lng_playlist_added">Adăugată în lista de redare</string>
     <string name="set_observing">Reîncărcare automată</string>
     <string name="set_separators_comma">Virgulă (,)</string>
@@ -186,8 +186,6 @@
     <string name="lbl_empty_playlist">Playlist gol</string>
     <string name="set_separators_warning">Atenție: Folosirea acestei setări poate rezulta în unele taguri interpretate greșit ca având mai multe valori. \nPoți rezolva asta punând un backslash (\\) înaintea caracterelor de separare nedorite.</string>
     <string name="set_headset_autoplay_desc">Pornește mereu redarea când niște căști sunt conectate (s-ar putea să nu meargă pe toate dispozitivele)</string>
-    <string name="set_rescan">Rescanează muzica</string>
-    <string name="set_rescan_desc">Șterge memoria cache cu taguri și reîncarcă biblioteca de muzică de tot (mai încet, dar mai complet)</string>
     <string name="fmt_lib_song_count">Cântece încărcate %d</string>
     <string name="clr_cyan">Bleu</string>
     <string name="def_playback">Nicio melodie redată</string>
@@ -210,7 +208,7 @@
     <string name="desc_playlist_image">Imagine playlist pentru %s</string>
     <string name="def_artist">Artist necunoscut</string>
     <string name="set_separators_desc">Configurează caracterele care denotă mai multe valori de taguri</string>
-    <string name="set_locations">Foldere cu muzică</string>
+    <string name="set_locations">Dosare de muzică</string>
     <string name="def_song_count">Fără cântece</string>
     <string name="desc_artist_image">Imagine artist pentru %s</string>
     <string name="lng_playlist_imported">Playlist importat</string>
@@ -228,8 +226,7 @@
     <string name="set_repeat_pause">Pauză la repetare</string>
     <string name="set_audio_desc">Configurează sunetul și comportamentul redării</string>
     <string name="def_track">Fără track</string>
-    <string name="set_locations_desc">Configurează de unde se încarcă muzica</string>
-    <string name="set_reindex">Reîncarcă muzica</string>
+    <string name="set_locations_desc">Selectează dosarele locale cu muzica ta</string>
     <string name="desc_album_cover">Copertă album pentru %s</string>
     <string name="def_genre">Gen necunoscut</string>
     <string name="def_disc">Fără disc</string>
@@ -243,7 +240,6 @@
     <string name="fmt_selected">%d Selectate</string>
     <string name="fmt_lib_album_count">Albume încărcate %d</string>
     <string name="lbl_import_playlist">Importă playlist</string>
-    <string name="set_reindex_desc">Reîncarcă biblioteca cu muzică, folosind taguri din memoria cache</string>
     <string name="lbl_error_info">Informații despre eroare</string>
     <string name="lbl_copied">Copiat</string>
     <string name="lbl_report">Raportează</string>
@@ -259,8 +255,6 @@
     <string name="lbl_import">Importă</string>
     <string name="err_import_failed">Nu se poate importa un playlist din acest fișier</string>
     <string name="lbl_parent_detail">Vizualizează</string>
-    <string name="set_system_database">Sistem</string>
-    <string name="lng_system_database">Încarcă muzica detectată automat de sistemul de operare Android. Este mai rapid, dar mai puțin fiabil. Nu suportă funcții dependente de sistemul de fișiere, cum ar fi cover.jpg.</string>
     <string name="lbl_go_to_online_profile">Accesează profilul online</string>
     <string name="err_artist_not_found_online">Profilul online al artistului nu a fost găsit</string>
 
@@ -366,9 +360,9 @@
     <string name="search_online_hint">Caută melodii, artiști sau albume…</string>
     <string name="set_auto_download_favorites">Descarcă automat melodiile favorite</string>
     <string name="set_auto_download_favorites_desc">Descarcă automat melodiile în fundal atunci când le adaugi la Favorite</string>
-    <string name="set_direct_deletion">Ștergere directă fără confirmare</string>
-    <string name="set_direct_deletion_desc">Permite Sounder să șteargă melodii și albume instant fără confirmare de sistem (necesită Acces la toate fișierele).</string>
-    <string name="set_direct_deletion_enabled_desc">Activ: Melodiile și albumele se șterg imediat fără dialoguri de sistem.</string>
+    <string name="set_direct_deletion">Ștergere directă</string>
+    <string name="set_direct_deletion_desc">Șterge piese fără confirmarea sistemului</string>
+    <string name="set_direct_deletion_enabled_desc">Activ: șterge fișiere fără confirmări</string>
     <string name="set_download_storage">Locație de descărcare</string>
     <string name="set_download_storage_internal">Stocare internă</string>
     <string name="set_download_storage_sd">Card SD</string>
@@ -456,4 +450,22 @@
     <string name="lng_empty_offline_backup">Ascultă muzică online pentru a crea automat Backup-ul offline</string>
     <string name="msg_offline_backup_ready">Fără conexiune. Backup-ul offline este gata de redare</string>
     <string name="btn_listen">Ascultă</string>
+    <string name="lbl_scan_device">Scanează tot dispozitivul</string>
+    <string name="lbl_select_folders">Selectează dosare</string>
+    <string name="set_detected_folders">Dosare muzicale detectate</string>
+    <string name="lbl_rescan_folders">Rescanează</string>
+    <string name="desc_rescan_folders">Caută din nou dosare muzicale</string>
+    <string name="lbl_choose_another_folder">Alege alt dosar…</string>
+    <string name="lbl_folder_always_included">Inclus mereu</string>
+    <string name="lbl_custom_folder">Dosar personalizat</string>
+    <string name="lbl_no_music_folders_found">Nu s-au găsit dosare cu muzică</string>
+    <string name="lng_no_music_folders_found">Nu s-au găsit dosare cu muzică pe acest dispozitiv.</string>
+    <string name="lng_grant_storage_discover">Acordă acces la audio pentru a găsi automat dosarele cu muzică.</string>
+    <string name="set_filter_settings">Setări de filtrare</string>
+    <string name="set_exclude_short_audio">Exclude sunetele scurte</string>
+    <string name="set_exclude_short_audio_desc">Ignoră fișierele audio mai scurte de 30 de secunde</string>
+    <string name="set_exclude_voice_notes">Exclude mesajele vocale</string>
+    <string name="set_exclude_voice_notes_desc">Ignoră înregistrările vocale și audio din mesagerie (WhatsApp, Telegram etc.)</string>
+    <string name="set_scan_device_desc">Detectează dosarele muzicale și actualizează biblioteca</string>
+    <string name="msg_scanning_device_music">Se scanează muzica de pe dispozitiv…</string>
 </resources>

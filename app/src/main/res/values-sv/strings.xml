@@ -122,8 +122,8 @@
     <string name="set_content_desc">Kontrollera hur musik och bilder laddas in</string>
     <string name="set_music">Musik</string>
     <string name="set_observing">Automatisk omladdning</string>
-    <string name="set_exclude_non_music">Inkludera bara musik</string>
-    <string name="set_exclude_non_music_desc">Ignorera ljudfiler som inte är musik, t.ex. podkaster</string>
+    <string name="set_exclude_non_music">Uteslut ringsignaler &amp; toner</string>
+    <string name="set_exclude_non_music_desc">Ignorera ringsignaler, alarm, aviseringar och icke-musikljud</string>
     <string name="set_separators">Värdeavskiljare</string>
     <string name="set_separators_plus">Plus (+)</string>
     <string name="set_intelligent_sorting">Intelligent sortering</string>
@@ -164,8 +164,6 @@
     <string name="set_cover_mode">Albumomslag</string>
     <string name="set_cover_mode_balanced">Snabbt</string>
     <string name="set_library">Bibliotek</string>
-    <string name="set_reindex">Uppdatera musik</string>
-    <string name="set_reindex_desc">Läs in musik på nytt, vid möjlighet med användning av cachade etiketter</string>
     <string name="desc_clear_search">Rensa sökfrågan</string>
     <string name="desc_music_location_delete">Ta bort mapp</string>
     <string name="desc_genre_image">Genrebild för %s</string>
@@ -193,9 +191,7 @@
     <string name="set_pre_amp_without">Justering utan etiketter</string>
     <string name="set_locations">Musikmappar</string>
     <string name="set_pre_amp_warning">Varning: Att ändra förförstärkaren till ett högt positivt värde kan leda till ett förhöjt ljudtryck på vissa ljudspår.</string>
-    <string name="set_locations_desc">Hantera var musik läses in ifrån</string>
-    <string name="set_rescan">Skanna om musik</string>
-    <string name="set_rescan_desc">Rensa etikettbiblioteket och ladda komplett om musikbiblioteket (långsammare, men mer komplett)</string>
+    <string name="set_locations_desc">Välj lokala mappar med din musik</string>
     <string name="err_index_failed">Musikinläsning misslyckades</string>
     <string name="err_no_app">Ingen lämplig app kunde hittas</string>
     <string name="err_bad_location">Denna mapp stöds inte</string>
@@ -417,9 +413,9 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="search_online_hint">Sök efter låtar, artister eller album…</string>
     <string name="set_auto_download_favorites">Ladda ned Favoriter automatiskt</string>
     <string name="set_auto_download_favorites_desc">Ladda automatiskt ned låtar i bakgrunden när du gillar dem</string>
-    <string name="set_direct_deletion">Direkt radering utan bekräftelse</string>
-    <string name="set_direct_deletion_desc">Tillåt Sounder att radera låtar och album direkt utan systemfråga (kräver åtkomst till alla filer).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktiv: Låtar och album raderas direkt utan bekräftelsedialog.</string>
+    <string name="set_direct_deletion">Direkt radering</string>
+    <string name="set_direct_deletion_desc">Radera låtar utan systembekräftelse</string>
+    <string name="set_direct_deletion_enabled_desc">Aktiv: raderar filer utan frågor</string>
     <string name="set_download_storage">Nedladdningsplats</string>
     <string name="set_download_storage_internal">Intern lagring</string>
     <string name="set_download_storage_sd">SD-kort</string>
@@ -506,4 +502,22 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="lng_empty_offline_backup">Lyssna på musik online för att automatiskt bygga din Offline-reserv</string>
     <string name="msg_offline_backup_ready">Offline. Din Offline-reserv är redo att spelas</string>
     <string name="btn_listen">Lyssna</string>
+    <string name="lbl_scan_device">Skanna hela enheten</string>
+    <string name="lbl_select_folders">Välj mappar</string>
+    <string name="set_detected_folders">Hittade musikmappar</string>
+    <string name="lbl_rescan_folders">Sök igen</string>
+    <string name="desc_rescan_folders">Sök efter musikmappar igen</string>
+    <string name="lbl_choose_another_folder">Välj en annan mapp…</string>
+    <string name="lbl_folder_always_included">Alltid inkluderad</string>
+    <string name="lbl_custom_folder">Anpassad mapp</string>
+    <string name="lbl_no_music_folders_found">Inga musikmappar hittades</string>
+    <string name="lng_no_music_folders_found">Inga mappar med musik hittades på den här enheten.</string>
+    <string name="lng_grant_storage_discover">Ge ljudåtkomst för att automatiskt hitta musikmappar på din enhet.</string>
+    <string name="set_filter_settings">Filterinställningar</string>
+    <string name="set_exclude_short_audio">Uteslut korta ljud</string>
+    <string name="set_exclude_short_audio_desc">Ignorera ljudklipp kortare än 30 sekunder</string>
+    <string name="set_exclude_voice_notes">Uteslut röstmeddelanden</string>
+    <string name="set_exclude_voice_notes_desc">Ignorera röstinspelningar och meddelandeljud (WhatsApp, Telegram m.m.)</string>
+    <string name="set_scan_device_desc">Hitta musikmappar och uppdatera ditt bibliotek</string>
+    <string name="msg_scanning_device_music">Skannar enhetens musik…</string>
 </resources>

@@ -94,7 +94,7 @@
     <string name="set_content">תוכן</string>
     <string name="set_observing">טעינה מחדש אוטומטית</string>
     <string name="set_observing_desc">טעינת הספרייה מחדש בכל פעם שהיא משתנה (דורש התראה קבועה)</string>
-    <string name="set_exclude_non_music_desc">התעלמות מקבצי אודיו שאינם מוזיקה, כמו הסכתים</string>
+    <string name="set_exclude_non_music_desc">התעלם מרינגטונים, התראות, שעונים מעוררים ושמע שאינו מוזיקה</string>
     <string name="set_separators">מפרידים רבי-ערכים</string>
     <string name="set_separators_comma">פסיק (,)</string>
     <string name="set_separators_semicolon">נקודה-פסיק (;)</string>
@@ -137,7 +137,7 @@
     <string name="set_bar_action">פעולת סרגל השמעה מותאמת אישית</string>
     <string name="set_content_desc">הגדרת אופן טעינת מוזיקה ותמונות</string>
     <string name="set_music">מוזיקה</string>
-    <string name="set_exclude_non_music">אי-הכללת תוכן שאינו מוזיקה</string>
+    <string name="set_exclude_non_music">אל תכלול רינגטונים וצלילים</string>
     <string name="set_separators_desc">התאמת תווים המציינים ערכי תגית מרובים</string>
     <string name="set_separators_slash">קו נטוי (/)</string>
     <string name="set_separators_warning">אזהרה: השימוש בהגדרה זו עלול לגרום לחלק מהתגיות להיות מפורשות באופן שגוי כבעלות מספר ערכים. ניתן לפתור זאת על ידי הכנסת קו נטוי אחורי (\\) לפני תווים מפרידים לא רצויים.</string>
@@ -163,8 +163,6 @@
     <string name="lbl_edit">עריכה</string>
     <string name="clr_orange">כתום</string>
     <string name="set_locations">תיקיות מוזיקה</string>
-    <string name="set_reindex_desc">טעינה מחדש של ספריית המוזיקה, במידה וניתן ייעשה שימוש בתגיות מהמטמון</string>
-    <string name="set_rescan">סריקת מוסיקה מחדש</string>
     <string name="desc_queue_bar">פתיחת התור</string>
     <string name="fmt_lib_total_duration">משך כולל: %s</string>
     <string name="fmt_def_playlist">רשימת השמעה %d</string>
@@ -194,7 +192,7 @@
     <string name="clr_dynamic">דינמי</string>
     <string name="fmt_indexing">המוזיקה שלך בטעינה… (‎%1$d/%2$d)</string>
     <string name="fmt_disc_no">דיסק %d</string>
-    <string name="set_locations_desc">ניהול המקומות שמהם תיטען מוזיקה</string>
+    <string name="set_locations_desc">בחר את התיקיות המקומיות עם המוזיקה שלך</string>
     <string name="def_song_count">אין שירים</string>
     <string name="clr_pink">ורוד</string>
     <string name="lng_playlist_created">נוצרה רשימת השמעה</string>
@@ -203,7 +201,6 @@
         <item quantity="two">שני אומנים</item>
         <item quantity="other">%d אומנים</item>
     </plurals>
-    <string name="set_reindex">רענון מוזיקה</string>
     <string name="err_index_failed">אירע כשל בטעינה מוזיקה</string>
     <string name="desc_no_cover">עטיפת אלבום</string>
     <plurals name="fmt_song_count">
@@ -239,7 +236,6 @@
     <string name="set_intelligent_sorting">מיון חכם</string>
     <string name="lbl_parent_detail">הצגה</string>
     <string name="set_square_covers">הכרחת עטיפות אלבום מרובעות</string>
-    <string name="set_rescan_desc">ריקון מטמון התגיות וטעינת ספריית המוזיקה מחדש במלואה (איטי יותר, אך יותר שלם)</string>
     <string name="lbl_sort_mode">מיון על פי</string>
     <string name="lbl_sort_direction">כיוון</string>
     <string name="set_square_covers_desc">חיתוך כל עטיפות האלבומים ליחס של 1:1</string>
@@ -313,9 +309,7 @@
     <string name="lng_empty_albums">האלבומים שלך יופיעו כאן.</string>
     <string name="lng_empty_artists">האמנים שלך יופיעו כאן.</string>
     <string name="lng_empty_playlists">הפלייליסטים שלך יופיעו כאן.</string>
-    <string name="set_with_hidden">כלול קבצים מוסתרים</string>
     <string name="lng_empty_genres">הז\'אנרים שלך יופיעו כאן.</string>
-    <string name="set_with_hidden_desc">כלול קובצי אודיו מוסתרים (לדוגמה .cache)</string>
     <string name="set_cover_mode_as_is">כפי שהוא</string>
     <string name="set_cover_mode_save_space">חיסכון מקום</string>
     <string name="lbl_go_to_online_profile">מעבר לפרופיל מקוון</string>
@@ -423,9 +417,9 @@
     <string name="search_online_hint">ابحث عن أغانٍ، فنانين أو ألبومات…</string>
     <string name="set_auto_download_favorites">تنزيل الأغاني المفضلة تلقائياً</string>
     <string name="set_auto_download_favorites_desc">تنزيل الأغاني تلقائياً في الخلفية عند الإعجاب بها</string>
-    <string name="set_direct_deletion">حذف مباشر دون تأكيد</string>
-    <string name="set_direct_deletion_desc">السماح لـ Sounder بحذف الأغاني والألبومات فوراً دون مطالبات النظام (يتطلب إذن الوصول إلى جميع الملفات).</string>
-    <string name="set_direct_deletion_enabled_desc">نشط: يتم حذف الأغاني والألبومات فوراً دون مربعات حوار النظام.</string>
+    <string name="set_direct_deletion">מחיקה ישירה</string>
+    <string name="set_direct_deletion_desc">מחק שירים ללא אישור מערכת</string>
+    <string name="set_direct_deletion_enabled_desc">פעיל: מוחק קבצים ללא אישורים</string>
     <string name="set_download_storage">موقع التنزيل</string>
     <string name="set_download_storage_internal">وحدة التخزين الداخلية</string>
     <string name="set_download_storage_sd">بطاقة SD</string>
@@ -512,4 +506,22 @@
     <string name="lng_empty_offline_backup">האזן למוזיקה מקוונת כדי לבנות אוטומטית את הגיבוי הלא מקוון שלך</string>
     <string name="msg_offline_backup_ready">אין חיבור. הגיבוי הלא מקוון שלך מוכן להשמעה</string>
     <string name="btn_listen">האזן</string>
+    <string name="lbl_scan_device">סרוק את כל המכשיר</string>
+    <string name="lbl_select_folders">בחר תיקיות</string>
+    <string name="set_detected_folders">תיקיות מוזיקה שזוהו</string>
+    <string name="lbl_rescan_folders">סרוק שוב</string>
+    <string name="desc_rescan_folders">חפש שוב תיקיות מוזיקה</string>
+    <string name="lbl_choose_another_folder">בחר תיקייה אחרת…</string>
+    <string name="lbl_folder_always_included">נכללת תמיד</string>
+    <string name="lbl_custom_folder">תיקייה מותאמת אישית</string>
+    <string name="lbl_no_music_folders_found">לא נמצאו תיקיות מוזיקה</string>
+    <string name="lng_no_music_folders_found">לא נמצאו תיקיות עם מוזיקה במכשיר זה.</string>
+    <string name="lng_grant_storage_discover">אפשר גישה לשמע כדי למצוא תיקיות מוזיקה באופן אוטומטי.</string>
+    <string name="set_filter_settings">הגדרות סינון</string>
+    <string name="set_exclude_short_audio">אל תכלול שמע קצר</string>
+    <string name="set_exclude_short_audio_desc">התעלם מקטעי שמע קצרים מ-30 שניות</string>
+    <string name="set_exclude_voice_notes">אל תכלול הודעות קוליות</string>
+    <string name="set_exclude_voice_notes_desc">התעלם מהקלטות קול והודעות שמע (WhatsApp, Telegram וכו׳)</string>
+    <string name="set_scan_device_desc">מאתר תיקיות מוזיקה ומעדכן את הספרייה</string>
+    <string name="msg_scanning_device_music">סורק מוזיקה במכשיר…</string>
 </resources>

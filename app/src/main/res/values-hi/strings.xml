@@ -73,7 +73,7 @@
     <string name="set_action_mode_next">अगले पर जाएं</string>
     <string name="set_action_mode_repeat">रिपीट मोड</string>
     <string name="set_content_desc">संगीत और छवियों को लोड करने के तरीके को नियंत्रित करें</string>
-    <string name="set_exclude_non_music">गैर-संगीत को बाहर रखें</string>
+    <string name="set_exclude_non_music">रिंगटोन और टोन बाहर रखें</string>
     <string name="set_observing">स्वचालित पुनः लोडिंग</string>
     <string name="fmt_db_pos">+%.1f dB</string>
     <string name="fmt_def_playlist">प्लेलिस्ट %d</string>
@@ -84,7 +84,7 @@
     <string name="set_play_song_none">दिखाए गए आइटम से चलाएँ</string>
     <string name="set_play_in_list_with">लाइब्रेरी से चलाते समय</string>
     <string name="set_observing_desc">संगीत लाइब्रेरी को फिर से लोड करें जब भी यह बदलता है (स्थाई नोटीफिकेशन की आवश्यकता होती है)</string>
-    <string name="set_exclude_non_music_desc">ऑडियो फ़ाइलों को अनदेखा करें जो संगीत नहीं हैं, जैसे कि पॉडकास्ट</string>
+    <string name="set_exclude_non_music_desc">रिंगटोन, अलार्म, नोटिफ़िकेशन और गैर-संगीत ऑडियो अनदेखा करें</string>
     <string name="lbl_compilation_live">लाइव संकलन</string>
     <string name="lbl_compilation_remix">रीमिक्स संकलन</string>
     <string name="lbl_version">संस्करण</string>
@@ -217,7 +217,7 @@
     <string name="clr_grey">स्लेटी</string>
     <string name="desc_playlist_image">%s के लिए प्लेलिस्ट छवि</string>
     <string name="def_date">तिथि नहीं</string>
-    <string name="set_locations_desc">प्रबंधित करें कि संगीत कहाँ से लोड किया जाना चाहिए</string>
+    <string name="set_locations_desc">अपने संगीत वाले स्थानीय फ़ोल्डर चुनें</string>
     <string name="desc_artist_image">%s के लिए कलाकार छवि</string>
     <string name="cdc_mp4">MPEG-4 ऑडियो</string>
     <string name="set_images">छवियां</string>
@@ -226,8 +226,6 @@
     <string name="set_pre_amp_desc">प्री-एम्प को प्लेबैक के दौरान मौजूदा समायोजन पर लागू किया जाता है</string>
     <string name="set_pre_amp_without">टैग के बिना समायोजन</string>
     <string name="set_library">लाईब्रेरी</string>
-    <string name="set_reindex">संगीत रिफ्रेश करें</string>
-    <string name="set_rescan">संगीत पुनः स्कैन करें</string>
     <string name="desc_queue_bar">कतार खोलें</string>
     <string name="clr_red">लाल</string>
     <string name="lbl_song">गीत</string>
@@ -245,7 +243,6 @@
     <string name="set_square_covers">वर्गीकृत एल्बम कवर फोर्स करें</string>
     <string name="set_audio_desc">ध्वनि और प्लेबैक व्यवहार कॉन्फ़िगर करें</string>
     <string name="set_pre_amp_warning">चेतावनी: प्री-एम्प को उच्च सकारात्मक मान में बदलने से कुछ ऑडियो ट्रैक पर आवाज फट सकती है।</string>
-    <string name="set_reindex_desc">जब संभव हो तो कैश्ड टैग का उपयोग करके संगीत लाइब्रेरी को पुनः लोड करें</string>
     <string name="err_no_app">कोई ऐप नहीं मिला जो इस कार्य को संभाल सके</string>
     <string name="def_artist">अज्ञात कलाकार</string>
     <string name="desc_tab_handle">इस टैब को स्थानांतरित करें</string>
@@ -254,7 +251,6 @@
     <string name="set_cover_mode">एल्बम कवर</string>
     <string name="set_rewind_prev">वापस जाने से पहले रिवाइंड करें</string>
     <string name="set_replay_gain_mode_track">ट्रैक को प्राथमिकता दें</string>
-    <string name="set_rescan_desc">टैग कैश साफ़ करें और संगीत लाइब्रेरी को पूरी तरह पुनः लोड करें (धीमी, लेकिन अधिक पूर्ण)</string>
     <string name="clr_brown">भूरा</string>
     <string name="clr_yellow">पीला</string>
     <string name="clr_lime">नींबू रंग</string>
@@ -410,9 +406,9 @@
     <string name="search_online_hint">गाने, कलाकार या एल्बम खोजें…</string>
     <string name="set_auto_download_favorites">पसंदीदा गाने स्वतः डाउनलोड करें</string>
     <string name="set_auto_download_favorites_desc">पसंद करने पर पृष्ठभूमि में गाने स्वचालित रूप से डाउनलोड करें</string>
-    <string name="set_direct_deletion">बिना पुष्टि के सीधा हटाना</string>
-    <string name="set_direct_deletion_desc">सिस्टम प्रॉम्प्ट के बिना गानों और एल्बमों को तुरंत हटाने की अनुमति दें (सभी फ़ाइलों तक पहुँच आवश्यक)।</string>
-    <string name="set_direct_deletion_enabled_desc">सक्रिय: बिना किसी संवाद के गाने और एल्बम तुरंत हटा दिए जाते हैं।</string>
+    <string name="set_direct_deletion">सीधे हटाएं</string>
+    <string name="set_direct_deletion_desc">सिस्टम पुष्टि के बिना गाने हटाएं</string>
+    <string name="set_direct_deletion_enabled_desc">सक्रिय: बिना पूछे फ़ाइलें हटाता है</string>
     <string name="set_download_storage">डाउनलोड स्थान</string>
     <string name="set_download_storage_internal">आंतरिक स्टोरेज</string>
     <string name="set_download_storage_sd">एसडी कार्ड</string>
@@ -499,4 +495,22 @@
     <string name="lng_empty_offline_backup">अपना ऑफ़लाइन बैकअप अपने-आप बनाने के लिए ऑनलाइन संगीत सुनें</string>
     <string name="msg_offline_backup_ready">ऑफ़लाइन। आपका ऑफ़लाइन बैकअप चलने के लिए तैयार है</string>
     <string name="btn_listen">सुनें</string>
+    <string name="lbl_scan_device">पूरा डिवाइस स्कैन करें</string>
+    <string name="lbl_select_folders">फ़ोल्डर चुनें</string>
+    <string name="set_detected_folders">पहचाने गए संगीत फ़ोल्डर</string>
+    <string name="lbl_rescan_folders">फिर से स्कैन करें</string>
+    <string name="desc_rescan_folders">संगीत फ़ोल्डर फिर से खोजें</string>
+    <string name="lbl_choose_another_folder">दूसरा फ़ोल्डर चुनें…</string>
+    <string name="lbl_folder_always_included">हमेशा शामिल</string>
+    <string name="lbl_custom_folder">कस्टम फ़ोल्डर</string>
+    <string name="lbl_no_music_folders_found">कोई संगीत फ़ोल्डर नहीं मिला</string>
+    <string name="lng_no_music_folders_found">इस डिवाइस पर संगीत वाला कोई फ़ोल्डर नहीं मिला।</string>
+    <string name="lng_grant_storage_discover">संगीत फ़ोल्डर अपने आप खोजने के लिए ऑडियो एक्सेस की अनुमति दें।</string>
+    <string name="set_filter_settings">फ़िल्टर सेटिंग्स</string>
+    <string name="set_exclude_short_audio">छोटे ऑडियो बाहर रखें</string>
+    <string name="set_exclude_short_audio_desc">30 सेकंड से छोटे ऑडियो क्लिप अनदेखा करें</string>
+    <string name="set_exclude_voice_notes">वॉइस नोट्स बाहर रखें</string>
+    <string name="set_exclude_voice_notes_desc">वॉइस रिकॉर्डिंग और मैसेजिंग ऑडियो अनदेखा करें (WhatsApp, Telegram आदि)</string>
+    <string name="set_scan_device_desc">संगीत फ़ोल्डर खोजें और लाइब्रेरी अपडेट करें</string>
+    <string name="msg_scanning_device_music">डिवाइस का संगीत स्कैन हो रहा है…</string>
 </resources>

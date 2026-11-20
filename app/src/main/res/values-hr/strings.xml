@@ -80,10 +80,8 @@
     <string name="set_play_in_list_with">Kada se reproducira iz zbirke</string>
     <string name="set_play_in_parent_with">Kada se reproducira iz detalja predmeta</string>
     <string name="set_play_song_from_all">Reproduciraj iz svih pjesama</string>
-    <string name="set_reindex">Aktualiziraj glazbu</string>
-    <string name="set_reindex_desc">Ponovo učitaj glazbenu biblioteku, koristeći predmemorirane oznake kada je to moguće</string>
-    <string name="set_locations">Izvori glazbe</string>
-    <string name="set_locations_desc">Upravljaj odakle će se glazba učitati</string>
+    <string name="set_locations">Glazbene mape</string>
+    <string name="set_locations_desc">Odaberite lokalne mape s vašom glazbom</string>
     <string name="set_observing">Automatsko ponovno učitavanje</string>
     <string name="set_observing_desc">Ponovo učitaj svoju zbirku glazbe čim se dogode promjene (zahtijeva stalno obavještavanje)</string>
     <string name="err_index_failed">Greška u učitvanju glazbe</string>
@@ -204,11 +202,11 @@
     <string name="set_action_mode_repeat">Način ponavljanja</string>
     <string name="set_hide_collaborators">Sakrij suradnike</string>
     <string name="set_cover_mode_off">Isključeno</string>
-    <string name="set_exclude_non_music">Isključi sve što nije glazba</string>
+    <string name="set_exclude_non_music">Isključi melodije i tonove</string>
     <string name="set_play_song_from_artist">Reproduciraj iz izvođača</string>
     <string name="set_cover_mode_high_quality">Visoka kvaliteta</string>
     <string name="set_cover_mode_balanced">Srednja kvaliteta</string>
-    <string name="set_exclude_non_music_desc">Zanemari sve audio datoteke koje nisu glazba, npr. podcast datoteke</string>
+    <string name="set_exclude_non_music_desc">Zanemari melodije zvona, alarme, obavijesti i neglazbeni zvuk</string>
     <string name="set_separators_warning">Upozorenje: Korištenje ove postavke može dovesti do pogrešnog tumačenja nekih oznaka kao da imaju više vrijednosti. To možeš riješiti postavljanjem obrnute kose crte (\\) ispred neželjenih znakova rastavljanja.</string>
     <string name="set_cover_mode">Omoti albuma</string>
     <string name="set_hide_collaborators_desc">Prikaži samo izvođače koji su izravno navedeni na albumu</string>
@@ -217,8 +215,6 @@
         <item quantity="few">%d izvođača</item>
         <item quantity="other">%d izvođača</item>
     </plurals>
-    <string name="set_rescan">Ponovo pretraži glazbu</string>
-    <string name="set_rescan_desc">Izbriši predmemoriju oznaka i ponovo potpuno učitaj glazbenu biblioteku (sporije, ali potpunije)</string>
     <string name="fmt_selected">Odabrano: %d</string>
     <string name="set_play_song_from_genre">Reproduciraj iz žanra</string>
     <string name="lbl_wiki">Wiki</string>
@@ -316,33 +312,10 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="lng_empty_playlists">Tvoji popisi pjesama će se ovdje prikazati.</string>
     <string name="lng_empty_genres">Tvoji žanrovi će se ovdje prikazati.</string>
     <string name="lng_play_next">Pjesma će se sljedeća svirati</string>
-    <string name="lng_file_picker">Učitaj glazbu iz odabranih mapa. Sporije, ali pouzdanije. Zahtijeva instalaciju obične aplikacije za upravljanje datotekama.</string>
-    <string name="lng_system_database">Učitaj glazbu koju Android OS automatski prepoznaje. Brže, ali manje pouzdano. Nema podrške za funkcije koje ovise o datotečnom sustavu poput cover.jpg.</string>
-    <string name="lng_grant_storage_anyway">Davanje dozvola za eksterno spremište može riješiti probleme na nekim uređajima.</string>
-    <string name="lng_grant_storage_required">Za aktiviranje ove opcije dodijeli dozvole za eksterno spremište.</string>
-    <string name="lng_include_folders">Glazba izvan odabranih mapa će se ignorirati.</string>
-    <string name="lng_exclude_folders">Glazba unutar odabranih mapa će se ignorirati.</string>
-    <string name="set_with_hidden">Uključuje skrivene datoteke</string>
-    <string name="set_with_hidden_desc">Uključi skrivene audio datoteke (npr. .cache)</string>
     <string name="set_cover_mode_as_is">Nepromijenjeno</string>
-    <string name="set_load_from">Učitaj iz</string>
-    <string name="set_file_picker">Birač datotka</string>
-    <string name="set_system_database">Sustav</string>
-    <string name="set_grant_storage_anyway">Preporučuje se pristup spremištu</string>
     <string name="set_grant_storage">Potreban je pristup spremištu</string>
-    <string name="set_folders_to_load">Mape za učitavanje</string>
-    <string name="set_folders_to_ignore">Mape za zanemariti</string>
-    <string name="set_filtered_folders">Filtrirane mape</string>
-    <string name="set_filter_mode">Modus filtra</string>
-    <string name="set_include">Uključi</string>
-    <string name="set_exclude">Isključi</string>
-    <string name="set_extra_settings">Više postavki</string>
     <string name="set_fs_cache">Koristi predmemoriju datotečnog sustava</string>
     <string name="set_fs_cache_desc">Poboljšava vrijeme učitavanja, ali može spriječiti dodavanje nove glazbe</string>
-    <string name="set_excluded_locations">Isključene mape</string>
-    <string name="set_excluded_locations_desc">Upravljaj mapama iz kojih se neće učitavati glazba</string>
-    <string name="lbl_no_folders">Nema mapa</string>
-    <string name="desc_add_folder">Dodaj mapu</string>
     <plurals name="fmt_seconds">
         <item quantity="one">%d sekunda</item>
         <item quantity="few">%d sekunde</item>
@@ -350,11 +323,9 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     </plurals>
     <string name="set_task_exit">Uvijek zatvori aplikaciju pri zatvaranju</string>
     <string name="set_task_exit_desc">Zaustavi reprodukciju kada se ukloni iz popisa nedavnih, čak i ako se reproducira</string>
-    <string name="set_saf_multithread_desc">Brže, ali ne uspijeva na nekim uređajima</string>
     <string name="err_share_too_large">Ovo je preveliko za dijeljenje</string>
     <string name="err_share_failed">Ovo nije moguće dijeliti</string>
     <string name="fmt_lib_total_size">Ukupna veličina: %s</string>
-    <string name="set_saf_multithread">Višeprocesno istraživanje datoteka</string>
     <string name="lbl_go_to_online_profile">Idi na mrežni profil</string>
     <string name="err_artist_not_found_online">Mrežni profil izvođača nije pronađen</string>
 
@@ -460,9 +431,9 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="search_online_hint">Pretraži pjesme, izvođače ili albume…</string>
     <string name="set_auto_download_favorites">Automatski preuzmi omiljene pjesme</string>
     <string name="set_auto_download_favorites_desc">Automatski preuzimaj pjesme u pozadini kada ih označiš sa Sviđa mi se</string>
-    <string name="set_direct_deletion">Izravno brisanje bez potvrde</string>
-    <string name="set_direct_deletion_desc">Dopusti Sounderu trenutno brisanje pjesama i albuma bez upita sustava (zahtijeva pristup svim datotekama).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktivno: Pjesme i albumi brišu se odmah bez dijaloških okvira.</string>
+    <string name="set_direct_deletion">Izravno brisanje</string>
+    <string name="set_direct_deletion_desc">Briše pjesme bez potvrde sustava</string>
+    <string name="set_direct_deletion_enabled_desc">Aktivno: briše datoteke bez upita</string>
     <string name="set_download_storage">Mjesto preuzimanja</string>
     <string name="set_download_storage_internal">Unutarnja pohrana</string>
     <string name="set_download_storage_sd">SD kartica</string>
@@ -549,4 +520,22 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="lng_empty_offline_backup">Slušajte glazbu online za automatsko stvaranje izvanmrežne pričuve</string>
     <string name="msg_offline_backup_ready">Izvan mreže. Vaša izvanmrežna pričuva spremna je za reprodukciju</string>
     <string name="btn_listen">Slušaj</string>
+    <string name="lbl_scan_device">Skeniraj cijeli uređaj</string>
+    <string name="lbl_select_folders">Odaberi mape</string>
+    <string name="set_detected_folders">Otkrivene mape s glazbom</string>
+    <string name="lbl_rescan_folders">Traži ponovno</string>
+    <string name="desc_rescan_folders">Ponovno potraži mape s glazbom</string>
+    <string name="lbl_choose_another_folder">Odaberi drugu mapu…</string>
+    <string name="lbl_folder_always_included">Uvijek uključeno</string>
+    <string name="lbl_custom_folder">Prilagođena mapa</string>
+    <string name="lbl_no_music_folders_found">Nisu pronađene mape s glazbom</string>
+    <string name="lng_no_music_folders_found">Na ovom uređaju nisu pronađene mape s glazbom.</string>
+    <string name="lng_grant_storage_discover">Odobrite pristup zvuku za automatsko pronalaženje mapa s glazbom.</string>
+    <string name="set_filter_settings">Postavke filtara</string>
+    <string name="set_exclude_short_audio">Isključi kratke audiozapise</string>
+    <string name="set_exclude_short_audio_desc">Zanemari audiozapise kraće od 30 sekundi</string>
+    <string name="set_exclude_voice_notes">Isključi glasovne poruke</string>
+    <string name="set_exclude_voice_notes_desc">Zanemari glasovne snimke i audio iz poruka (WhatsApp, Telegram itd.)</string>
+    <string name="set_scan_device_desc">Pronalazi glazbene mape i ažurira biblioteku</string>
+    <string name="msg_scanning_device_music">Skeniranje glazbe na uređaju…</string>
 </resources>

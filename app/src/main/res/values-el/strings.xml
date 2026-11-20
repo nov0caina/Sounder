@@ -114,7 +114,6 @@
     <string name="lbl_sample_rate">Pυθμός δειγματοληψίας</string>
     <string name="lng_indexing">Φόρτωση της μουσικής συλλογής σας…</string>
     <string name="lbl_observing">Παρακολούθηση της μουσικής συλλογής σας</string>
-    <string name="set_reindex">Επαναφόρτωση μουσικής</string>
     <string name="lbl_soundtrack">Σάουντρακ</string>
     <string name="lbl_live_group">Ζωντανά</string>
     <string name="set_locations">Φάκελοι μουσικής</string>
@@ -229,9 +228,9 @@
     <string name="search_online_hint">Hae kappaleita, artisteja tai albumeita…</string>
     <string name="set_auto_download_favorites">Lataa suosikit automaattisesti</string>
     <string name="set_auto_download_favorites_desc">Lataa kappaleet automaattisesti taustalla, kun tykkäät niistä</string>
-    <string name="set_direct_deletion">Suora poisto ilman vahvistusta</string>
-    <string name="set_direct_deletion_desc">Salli Sounderin poistaa kappaleita ja albumeita heti ilman järjestelmäkehotteita (vaatii Kaikkien tiedostojen käyttöoikeuden).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktiivinen: Kappaleet ja albumit poistetaan välittömästi.</string>
+    <string name="set_direct_deletion">Άμεση διαγραφή</string>
+    <string name="set_direct_deletion_desc">Διαγραφή τραγουδιών χωρίς επιβεβαίωση συστήματος</string>
+    <string name="set_direct_deletion_enabled_desc">Ενεργό: διαγράφει αρχεία χωρίς ειδοποιήσεις</string>
     <string name="set_download_storage">Latauskansio</string>
     <string name="set_download_storage_internal">Sisäinen tallennustila</string>
     <string name="set_download_storage_sd">SD-kortti</string>
@@ -324,4 +323,25 @@
     <string name="lng_empty_offline_backup">Ακούστε μουσική online για να δημιουργηθεί αυτόματα η Εφεδρεία εκτός σύνδεσης</string>
     <string name="msg_offline_backup_ready">Εκτός σύνδεσης. Η Εφεδρεία εκτός σύνδεσης είναι έτοιμη</string>
     <string name="btn_listen">Ακρόαση</string>
+    <string name="lbl_scan_device">Σάρωση όλης της συσκευής</string>
+    <string name="lbl_select_folders">Επιλογή φακέλων</string>
+    <string name="set_detected_folders">Εντοπισμένοι φάκελοι μουσικής</string>
+    <string name="lbl_rescan_folders">Νέα σάρωση</string>
+    <string name="desc_rescan_folders">Νέα αναζήτηση φακέλων μουσικής</string>
+    <string name="lbl_choose_another_folder">Επιλογή άλλου φακέλου…</string>
+    <string name="lbl_folder_always_included">Πάντα συμπεριλαμβάνεται</string>
+    <string name="lbl_custom_folder">Προσαρμοσμένος φάκελος</string>
+    <string name="lbl_no_music_folders_found">Δεν βρέθηκαν φάκελοι μουσικής</string>
+    <string name="lng_no_music_folders_found">Δεν βρέθηκαν φάκελοι με μουσική σε αυτή τη συσκευή.</string>
+    <string name="lng_grant_storage_discover">Παραχωρήστε πρόσβαση ήχου για αυτόματη εύρεση φακέλων μουσικής.</string>
+    <string name="set_filter_settings">Ρυθμίσεις φίλτρων</string>
+    <string name="set_exclude_short_audio">Εξαίρεση σύντομου ήχου</string>
+    <string name="set_exclude_short_audio_desc">Παράβλεψη αρχείων ήχου διάρκειας κάτω των 30 δευτερολέπτων</string>
+    <string name="set_exclude_voice_notes">Εξαίρεση φωνητικών σημειώσεων</string>
+    <string name="set_exclude_voice_notes_desc">Παράβλεψη ηχογραφήσεων φωνής και ήχων μηνυμάτων (WhatsApp, Telegram κ.λπ.)</string>
+    <string name="set_exclude_non_music">Εξαίρεση ήχων κλήσης &amp; τόνων</string>
+    <string name="set_exclude_non_music_desc">Παράβλεψη ήχων κλήσης, ξυπνητηριών, ειδοποιήσεων και μη μουσικού ήχου</string>
+    <string name="set_locations_desc">Επιλέξτε τοπικούς φακέλους με τη μουσική σας</string>
+    <string name="set_scan_device_desc">Εντοπίζει φακέλους μουσικής και ενημερώνει τη βιβλιοθήκη</string>
+    <string name="msg_scanning_device_music">Σάρωση μουσικής συσκευής…</string>
 </resources>

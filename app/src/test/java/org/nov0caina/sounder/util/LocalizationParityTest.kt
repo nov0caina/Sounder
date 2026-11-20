@@ -170,7 +170,65 @@ class LocalizationParityTest {
             "lng_empty_offline_backup",
             "msg_offline_backup_ready",
             "btn_listen",
+            "lbl_scan_device",
+            "lbl_select_folders",
+            "set_detected_folders",
+            "lbl_rescan_folders",
+            "desc_rescan_folders",
+            "lbl_choose_another_folder",
+            "lbl_folder_always_included",
+            "lbl_custom_folder",
+            "lbl_no_music_folders_found",
+            "lng_no_music_folders_found",
+            "lng_grant_storage_discover",
+            "set_filter_settings",
+            "set_exclude_short_audio",
+            "set_exclude_short_audio_desc",
+            "set_exclude_voice_notes",
+            "set_exclude_voice_notes_desc",
+            "set_exclude_non_music",
+            "set_exclude_non_music_desc",
+            "set_locations",
+            "set_locations_desc",
+            "set_scan_device_desc",
+            "msg_scanning_device_music",
         )
+
+        val removedLegacyKeys = listOf(
+            "lng_file_picker",
+            "lng_system_database",
+            "lng_grant_storage_anyway",
+            "lng_grant_storage_required",
+            "lng_include_folders",
+            "lng_exclude_folders",
+            "set_saf_multithread",
+            "set_saf_multithread_desc",
+            "set_with_hidden",
+            "set_with_hidden_desc",
+            "set_load_from",
+            "set_file_picker",
+            "set_system_database",
+            "set_grant_storage_anyway",
+            "set_folders_to_load",
+            "set_folders_to_ignore",
+            "set_filtered_folders",
+            "set_filter_mode",
+            "set_include",
+            "set_exclude",
+            "set_extra_settings",
+            "set_excluded_locations",
+            "set_excluded_locations_desc",
+            "lbl_no_folders",
+            "desc_add_folder",
+            "set_reindex",
+            "set_reindex_desc",
+            "set_rescan",
+            "set_rescan_desc",
+        )
+
+        for (legacyKey in removedLegacyKeys) {
+            assertFalse("Removed legacy key '$legacyKey' still in values/strings.xml", baseStrings.containsKey(legacyKey))
+        }
 
         val placeholderPattern = Pattern.compile("%(\\d+\\\$)?[-#+ 0,(]*\\d*(?:\\.\\d+)?[a-zA-Z%]")
         fun extractTokens(text: String): List<String> {
@@ -191,6 +249,12 @@ class LocalizationParityTest {
                     "Placeholder mismatch for '$key' in ${dir.name}",
                     extractTokens(baseStrings[key] ?: ""),
                     extractTokens(value ?: ""),
+                )
+            }
+            for (legacyKey in removedLegacyKeys) {
+                assertFalse(
+                    "Removed legacy key '$legacyKey' still in ${dir.name}",
+                    localeStrings.containsKey(legacyKey),
                 )
             }
         }

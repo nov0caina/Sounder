@@ -97,7 +97,7 @@
     <string name="set_accent">ფერები</string>
     <string name="set_observing">ავტომატური ჩატვირთვა</string>
     <string name="set_images">სურათები</string>
-    <string name="set_locations">მუსიკის წყაროები</string>
+    <string name="set_locations">მუსიკის საქაღალდეები</string>
     <string name="desc_skip_prev">ბოლო სიმღერაზე გადასვლა</string>
     <string name="lbl_library_counts">სტატისტიკა</string>
     <string name="lbl_licenses">ლიცენზიები</string>
@@ -231,9 +231,9 @@
     <string name="search_online_hint">Hae kappaleita, artisteja tai albumeita…</string>
     <string name="set_auto_download_favorites">Lataa suosikit automaattisesti</string>
     <string name="set_auto_download_favorites_desc">Lataa kappaleet automaattisesti taustalla, kun tykkäät niistä</string>
-    <string name="set_direct_deletion">Suora poisto ilman vahvistusta</string>
-    <string name="set_direct_deletion_desc">Salli Sounderin poistaa kappaleita ja albumeita heti ilman järjestelmäkehotteita (vaatii Kaikkien tiedostojen käyttöoikeuden).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktiivinen: Kappaleet ja albumit poistetaan välittömästi.</string>
+    <string name="set_direct_deletion">პირდაპირი წაშლა</string>
+    <string name="set_direct_deletion_desc">სიმღერების წაშლა სისტემური დასტურის გარეშე</string>
+    <string name="set_direct_deletion_enabled_desc">აქტიურია: ფაილებს კითხვის გარეშე შლის</string>
     <string name="set_download_storage">Latauskansio</string>
     <string name="set_download_storage_internal">Sisäinen tallennustila</string>
     <string name="set_download_storage_sd">SD-kortti</string>
@@ -324,4 +324,25 @@
     <string name="lng_empty_offline_backup">მოუსმინეთ ონლაინ მუსიკას ოფლაინ რეზერვის ავტომატურად შესაქმნელად</string>
     <string name="msg_offline_backup_ready">ოფლაინ ხართ. თქვენი ოფლაინ რეზერვი მზადაა დასაკრავად</string>
     <string name="btn_listen">მოსმენა</string>
+    <string name="lbl_scan_device">მთელი მოწყობილობის სკანირება</string>
+    <string name="lbl_select_folders">საქაღალდეების არჩევა</string>
+    <string name="set_detected_folders">აღმოჩენილი მუსიკის საქაღალდეები</string>
+    <string name="lbl_rescan_folders">ხელახლა ძებნა</string>
+    <string name="desc_rescan_folders">მუსიკის საქაღალდეების ხელახლა ძებნა</string>
+    <string name="lbl_choose_another_folder">სხვა საქაღალდის არჩევა…</string>
+    <string name="lbl_folder_always_included">ყოველთვის ჩართულია</string>
+    <string name="lbl_custom_folder">მორგებული საქაღალდე</string>
+    <string name="lbl_no_music_folders_found">მუსიკის საქაღალდეები ვერ მოიძებნა</string>
+    <string name="lng_no_music_folders_found">ამ მოწყობილობაზე მუსიკის შემცველი საქაღალდეები ვერ მოიძებნა.</string>
+    <string name="lng_grant_storage_discover">მიეცით აუდიოზე წვდომა მუსიკის საქაღალდეების ავტომატურად საპოვნელად.</string>
+    <string name="set_filter_settings">ფილტრის პარამეტრები</string>
+    <string name="set_exclude_short_audio">მოკლე აუდიოს გამოტოვება</string>
+    <string name="set_exclude_short_audio_desc">30 წამზე მოკლე აუდიოკლიპების იგნორირება</string>
+    <string name="set_exclude_voice_notes">ხმოვანი შეტყობინებების გამოტოვება</string>
+    <string name="set_exclude_voice_notes_desc">ხმოვანი ჩანაწერებისა და მესენჯერის აუდიოს იგნორირება (WhatsApp, Telegram და სხვ.)</string>
+    <string name="set_exclude_non_music">ზარებისა და ტონების გამოტოვება</string>
+    <string name="set_exclude_non_music_desc">ზარის მელოდიების, მაღვიძარების, შეტყობინებებისა და არამუსიკალური აუდიოს იგნორირება</string>
+    <string name="set_locations_desc">აირჩიეთ ლოკალური საქაღალდეები თქვენი მუსიკით</string>
+    <string name="set_scan_device_desc">პოულობს მუსიკის საქაღალდეებს და ანახლებს ბიბლიოთეკას</string>
+    <string name="msg_scanning_device_music">მიმდინარეობს მოწყობილობის მუსიკის სკანირება…</string>
 </resources>

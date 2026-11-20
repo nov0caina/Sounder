@@ -68,13 +68,12 @@
     <string name="set_personalize">個人仕様</string>
     <string name="set_display">ディスプレイ</string>
     <string name="set_music">音楽</string>
-    <string name="set_exclude_non_music_desc">音楽でないオーディオファイルを無視</string>
+    <string name="set_exclude_non_music_desc">着信音、アラーム、通知音、音楽以外の音声を無視する</string>
     <string name="set_separators_comma">カンマ (,)</string>
     <string name="set_separators_and">アンパサンド (&amp;)</string>
     <string name="set_replay_gain_mode_album">アルバムを優先</string>
     <string name="set_replay_gain_mode_track">トラックを優先</string>
-    <string name="set_locations_desc">音楽の読み込み元を管理</string>
-    <string name="set_reindex">音楽の再読み込み</string>
+    <string name="set_locations_desc">音楽があるローカルフォルダを選択</string>
     <string name="err_bad_location">このフォルダはサポートされていません</string>
     <string name="desc_track_number">トラック %d</string>
     <string name="desc_play_pause">再生またはポーズ</string>
@@ -123,7 +122,6 @@
     <string name="lbl_live_group">ライブ</string>
     <string name="lbl_size">ファイルサイズ</string>
     <string name="lbl_licenses">使用許諾</string>
-    <string name="set_reindex_desc">可能な場合、キャッシュされたタグを用いて音楽ライブラリを再読み込み</string>
     <string name="fmt_lib_genre_count">読み込みが完了したジャンル数: %d</string>
     <string name="fmt_db_neg">-%.1f デシベル</string>
     <string name="fmt_lib_album_count">読み込みが完了したアルバム数: %d</string>
@@ -140,10 +138,9 @@
     <string name="set_play_song_from_artist">アーティストから再生</string>
     <string name="set_play_in_list_with">ライブラリからの再生時</string>
     <string name="set_play_in_parent_with">アイテム詳細からの再生時</string>
-    <string name="set_exclude_non_music">音楽以外を除外</string>
+    <string name="set_exclude_non_music">着信音・通知音を除外</string>
     <string name="err_no_app">このタスクを実行できるアプリが見つかりません</string>
     <string name="set_content">コンテンツ</string>
-    <string name="set_rescan">音楽の再スキャン</string>
     <string name="cdc_aac">高度なオーディオ コーデック (AAC)</string>
     <string name="cdc_flac">品質を損なうことのない無料のオーディオ コーデック (FLAC)</string>
     <string name="clr_grey">グレイ</string>
@@ -227,7 +224,6 @@
     <string name="set_replay_gain_mode">ラウドネスイコライゼーション</string>
     <string name="set_separators_warning">警告: この設定を使用すると、一部のタグが複数の値を持つと誤って解釈される場合があります。 これは、不要な区切り文字の前にバックスラッシュ (\\) を付けることで解決できます。</string>
     <string name="set_pre_amp_desc">プリアンプは、再生中に既存の調整に適用されます</string>
-    <string name="set_rescan_desc">タグ キャッシュをクリアし、音楽ライブラリを完全にリロードします (遅くなりますが、より完全になります)</string>
     <string name="set_pre_amp">ReplayGain プリアンプ</string>
     <string name="fmt_list">%1$s、%2$s</string>
     <string name="set_personalize_desc">UI コントロールと動作をカスタマイズする</string>
@@ -298,8 +294,6 @@
     <string name="lbl_replaygain_track">ReplayGainトラック調整</string>
     <string name="lbl_github">GitHubで問題を報告する</string>
     <string name="lng_empty_playlists">プレイリストはここに表示されます</string>
-    <string name="set_with_hidden">非表示のファイルを含む</string>
-    <string name="set_with_hidden_desc">非表示のオーディオファイルを含める（例：.cache）</string>
     <string name="set_remember_pause">再開時に一時停止を記憶</string>
     <string name="set_remember_pause_desc">キューをスキップまたは編集しても、再生/一時停止を維持する</string>
     <string name="cdc_unknown">不明</string>
@@ -313,12 +307,6 @@
     <string name="lbl_path_style_absolute">絶対的</string>
     <string name="lbl_path_style_relative">相対的</string>
     <string name="lng_play_next">この曲は次に再生されます</string>
-    <string name="lng_file_picker">選択したフォルダから音楽を読み込みます。処理速度は遅くなりますが、より確実に動作します。標準ファイルマネージャーアプリが必要です。</string>
-    <string name="lng_system_database">Androidが自動検出した音楽を読み込みます。高速ですが、確実性はやや低くなります。cover.jpgなどのファイルシステム依存機能は利用できません。</string>
-    <string name="lng_grant_storage_anyway">外部ストレージへのアクセス権限を許可すると、一部の端末で発生する問題を解決できる場合があります。</string>
-    <string name="lng_grant_storage_required">このオプションを利用するには、外部ストレージへのアクセス権限を許可してください。</string>
-    <string name="lng_include_folders">選択したフォルダー以外に保存されている音楽は読み込まれません。</string>
-    <string name="lng_exclude_folders">選択したフォルダー内の音楽は読み込まれません。</string>
     <string name="lbl_go_to_online_profile">オンラインプロフィールへ移動</string>
     <string name="err_artist_not_found_online">アーティストのオンラインプロフィールが見つかりません</string>
 
@@ -424,9 +412,9 @@
     <string name="search_online_hint">曲、アーティスト、アルバムを検索…</string>
     <string name="set_auto_download_favorites">お気に入りを自動ダウンロード</string>
     <string name="set_auto_download_favorites_desc">曲をお気に入りに追加した際、バックグラウンドで自動的にダウンロードします</string>
-    <string name="set_direct_deletion">確認なしで直接削除</string>
-    <string name="set_direct_deletion_desc">システムの確認ダイアログを表示せずに、曲やアルバムを即座に削除することを許可します（全ファイルへのアクセス権限が必要）。</string>
-    <string name="set_direct_deletion_enabled_desc">有効：ダイアログなしで即座にファイルが削除されます。</string>
+    <string name="set_direct_deletion">直接削除</string>
+    <string name="set_direct_deletion_desc">システム確認なしで曲をすぐ削除</string>
+    <string name="set_direct_deletion_enabled_desc">有効：確認ダイアログなしで削除します</string>
     <string name="set_download_storage">ダウンロード保存先</string>
     <string name="set_download_storage_internal">内部ストレージ</string>
     <string name="set_download_storage_sd">SD カード</string>
@@ -513,4 +501,22 @@
     <string name="lng_empty_offline_backup">オンラインで音楽を聴くとオフラインバックアップが自動的に作成されます</string>
     <string name="msg_offline_backup_ready">オフラインです。オフラインバックアップを再生できます</string>
     <string name="btn_listen">聴く</string>
+    <string name="lbl_scan_device">デバイス全体をスキャン</string>
+    <string name="lbl_select_folders">フォルダを選択</string>
+    <string name="set_detected_folders">検出された音楽フォルダ</string>
+    <string name="lbl_rescan_folders">再スキャン</string>
+    <string name="desc_rescan_folders">音楽フォルダを再検索</string>
+    <string name="lbl_choose_another_folder">別のフォルダを選択…</string>
+    <string name="lbl_folder_always_included">常に含める</string>
+    <string name="lbl_custom_folder">カスタムフォルダ</string>
+    <string name="lbl_no_music_folders_found">音楽フォルダが見つかりません</string>
+    <string name="lng_no_music_folders_found">このデバイスに音楽を含むフォルダが見つかりませんでした。</string>
+    <string name="lng_grant_storage_discover">音楽フォルダを自動検出するにはオーディオへのアクセスを許可してください。</string>
+    <string name="set_filter_settings">フィルター設定</string>
+    <string name="set_exclude_short_audio">短い音声を除外</string>
+    <string name="set_exclude_short_audio_desc">30秒未満の音声クリップを無視する</string>
+    <string name="set_exclude_voice_notes">ボイスメモを除外</string>
+    <string name="set_exclude_voice_notes_desc">音声録音やメッセージアプリの音声を無視する (WhatsApp、Telegram など)</string>
+    <string name="set_scan_device_desc">音楽フォルダを検出してライブラリを更新</string>
+    <string name="msg_scanning_device_music">デバイスの音楽をスキャンしています…</string>
 </resources>

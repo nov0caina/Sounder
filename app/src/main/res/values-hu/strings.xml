@@ -151,7 +151,6 @@
     <string name="set_behavior">Viselkedés</string>
     <string name="set_keep_shuffle">Emlékezzen a keverésre</string>
     <string name="set_replay_gain_mode_dynamic">Inkább album, ha egyet játszik</string>
-    <string name="set_reindex">Zene frissítése</string>
     <string name="lbl_cancel">Mégse</string>
     <string name="set_bar_action">Egyéni lejátszási sáv művelet</string>
     <string name="set_headset_autoplay_desc">A lejátszás mindig akkor indul el, ha a fejhallgató csatlakoztatva van (nem minden eszközön működik)</string>
@@ -167,7 +166,7 @@
     <string name="set_play_song_from_genre">Lejátszás műfajból</string>
     <string name="set_content">Tartalom</string>
     <string name="set_observing_desc">A zenei könyvtár újratöltése, ha változik (állandó értesítést igényel)</string>
-    <string name="set_locations">Zene könyvtárak</string>
+    <string name="set_locations">Zenei mappák</string>
     <string name="err_index_failed">A zene betöltése sikertelen</string>
     <string name="set_separators_plus">Plusz (+)</string>
     <string name="err_no_app">Nem találtunk olyan alkalmazást, amely képes lenne kezelni ezt a feladatot</string>
@@ -179,7 +178,7 @@
     <string name="def_playback">Nincs zenelejátszás</string>
     <string name="def_date">Nincs dátum</string>
     <string name="set_cover_mode_balanced">Gyors</string>
-    <string name="set_exclude_non_music">A nem zenei anyagok kizárása</string>
+    <string name="set_exclude_non_music">Csengőhangok és jelzések kizárása</string>
     <string name="cdc_ogg">Ogg audio</string>
     <string name="set_display">Megjelenítés</string>
     <string name="lbl_track">Hangsáv</string>
@@ -228,7 +227,7 @@
     <string name="set_action_mode_next">Ugrás a következőre</string>
     <string name="set_play_song_from_artist">Lejátszás előadótól</string>
     <string name="set_music">Zene</string>
-    <string name="set_exclude_non_music_desc">A nem zenei fájlok, például podcastok figyelmen kívül hagyása</string>
+    <string name="set_exclude_non_music_desc">Csengőhangok, riasztások, értesítések és nem zenei hangok mellőzése</string>
     <string name="set_separators_desc">Több címkeértéket jelölő karakterek konfigurálása</string>
     <string name="set_separators_comma">Vessző (,)</string>
     <string name="set_separators_semicolon">Pontosvessző (;)</string>
@@ -242,10 +241,7 @@
     <string name="set_playback">Lejátszás</string>
     <string name="set_headset_autoplay">Fejhallgató auto. lejátszás</string>
     <string name="set_pre_amp_without">Beállítás címkék nélkül</string>
-    <string name="set_locations_desc">Kezelje, hogy honnan töltsön be zenét</string>
-    <string name="set_rescan">Zene újraolvasása</string>
-    <string name="set_rescan_desc">A címkék gyorsítótárának törlése és a zenei könyvtár teljes újratöltése (lassabb, de teljesebb)</string>
-    <string name="set_reindex_desc">A zenei könyvtár újratöltése, lehetőség szerint a gyorstárazott címkék használatával</string>
+    <string name="set_locations_desc">Válassza ki a helyi zenei mappákat</string>
     <string name="fmt_selected">%d kiválasztott</string>
     <string name="fmt_disc_no">%d lemez</string>
     <string name="fmt_def_playlist">%d playlista</string>
@@ -303,8 +299,6 @@
     <string name="err_export_failed">Nem sikerült exportálni a lejátszási listát ebbe a fájlba</string>
     <string name="def_album">Ismeretlen album</string>
     <string name="lng_empty_songs">Itt fognak megjelenni a számaid.</string>
-    <string name="set_with_hidden">Rejtett fájlok megjelenítése</string>
-    <string name="set_with_hidden_desc">Rejtett audió fájlok megjelenítése (pl. .cache)</string>
     <string name="lbl_more">Több</string>
     <string name="lbl_email">Küldj egy e-mailt</string>
     <string name="lng_empty_albums">Itt fognak megjelenni az albumaid.</string>
@@ -322,8 +316,6 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="cdc_unknown">Ismeretlen</string>
     <string name="lbl_feedback">Visszajelzés</string>
     <string name="lbl_github">Hozz létre egy hibajegyet a GitHubon</string>
-    <string name="set_excluded_locations">Kizárt mappák</string>
-    <string name="set_excluded_locations_desc">Mappák kihagyása a zenevizsgálatból</string>
     <string name="lbl_go_to_online_profile">Ugrás az online profilra</string>
     <string name="err_artist_not_found_online">Az előadó online profilja nem található</string>
 
@@ -429,9 +421,9 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="search_online_hint">Számok, előadók vagy albumok keresése…</string>
     <string name="set_auto_download_favorites">Kedveltek automatikus letöltése</string>
     <string name="set_auto_download_favorites_desc">Számok automatikus letöltése a háttérben, amikor kedveled őket</string>
-    <string name="set_direct_deletion">Közvetlen törlés megerősítés nélkül</string>
-    <string name="set_direct_deletion_desc">A Sounder azonnal törölheti a számokat és albumokat rendszerkérdés nélkül (minden fájlhoz hozzáférés szükséges).</string>
-    <string name="set_direct_deletion_enabled_desc">Aktív: A számok és albumok azonnal törlődnek megerősítő ablakok nélkül.</string>
+    <string name="set_direct_deletion">Közvetlen törlés</string>
+    <string name="set_direct_deletion_desc">Dalok törlése rendszerszintű jóváhagyás nélkül</string>
+    <string name="set_direct_deletion_enabled_desc">Aktív: fájlok törlése megerősítés nélkül</string>
     <string name="set_download_storage">Letöltési hely</string>
     <string name="set_download_storage_internal">Belső tárhely</string>
     <string name="set_download_storage_sd">SD-kártya</string>
@@ -518,4 +510,22 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="lng_empty_offline_backup">Hallgass online zenét az Offline tartalék automatikus létrehozásához</string>
     <string name="msg_offline_backup_ready">Offline. Az Offline tartalék készen áll a lejátszásra</string>
     <string name="btn_listen">Hallgatás</string>
+    <string name="lbl_scan_device">Teljes eszköz vizsgálata</string>
+    <string name="lbl_select_folders">Mappák kiválasztása</string>
+    <string name="set_detected_folders">Észlelt zenei mappák</string>
+    <string name="lbl_rescan_folders">Újrakeresés</string>
+    <string name="desc_rescan_folders">Zenei mappák újbóli keresése</string>
+    <string name="lbl_choose_another_folder">Másik mappa választása…</string>
+    <string name="lbl_folder_always_included">Mindig benne van</string>
+    <string name="lbl_custom_folder">Egyéni mappa</string>
+    <string name="lbl_no_music_folders_found">Nem találhatók zenei mappák</string>
+    <string name="lng_no_music_folders_found">Nem található zenét tartalmazó mappa ezen az eszközön.</string>
+    <string name="lng_grant_storage_discover">Engedélyezze a hangfájl-hozzáférést a zenei mappák automatikus felismeréséhez.</string>
+    <string name="set_filter_settings">Szűrési beállítások</string>
+    <string name="set_exclude_short_audio">Rövid hangok kizárása</string>
+    <string name="set_exclude_short_audio_desc">30 másodpercnél rövidebb hangfájlok figyelmen kívül hagyása</string>
+    <string name="set_exclude_voice_notes">Hangjegyzetek kizárása</string>
+    <string name="set_exclude_voice_notes_desc">Hangfelvételek és üzenetküldő hangok mellőzése (WhatsApp, Telegram stb.)</string>
+    <string name="set_scan_device_desc">Zenei mappák keresése és könyvtár frissítése</string>
+    <string name="msg_scanning_device_music">Eszköz zenéinek keresése…</string>
 </resources>
