@@ -34,7 +34,6 @@ import org.nov0caina.sounder.R
 import org.nov0caina.sounder.image.PlaylistCoverManager
 import org.nov0caina.sounder.image.covers.SettingCovers
 import org.nov0caina.sounder.music.MusicRepository.IndexingWorker
-import org.nov0caina.sounder.music.locations.LocationMode
 import org.nov0caina.sounder.music.shim.WriteOnlyMutableCache
 import org.nov0caina.sounder.online.db.OnlinePlaylistTrackDao
 import org.nov0caina.sounder.online.db.OnlinePlaylistTrackEntity
@@ -51,8 +50,6 @@ import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
 import org.oxycblt.musikr.Storage
 import org.oxycblt.musikr.cache.MutableCache
-import org.oxycblt.musikr.fs.mediastore.MediaStore
-import org.oxycblt.musikr.fs.saf.SAF
 import org.oxycblt.musikr.playlist.db.StoredPlaylists
 import org.oxycblt.musikr.tag.interpret.Naming
 import org.oxycblt.musikr.tag.interpret.Separators
@@ -539,23 +536,7 @@ constructor(
         L.d("Cache: $cache")
         val covers = settingCovers.mutate(context, newRevision)
         L.d("Covers: $covers")
-        val fs =
-            when (musicSettings.locationMode) {
-                LocationMode.SAF -> {
-                    val safFs = SAF.from(context, musicSettings.safQuery)
-                    val auxioFs =
-                        MediaStore.from(
-                            context,
-                            MediaStore.Query(
-                                mode = MediaStore.FilterMode.EXCLUDE,
-                                filtered = emptyList(),
-                                excludeNonMusic = false,
-                            ),
-                        )
-                    SounderCompositeFS(safFs, auxioFs)
-                }
-                LocationMode.MEDIA_STORE -> MediaStore.from(context, musicSettings.mediaStoreQuery)
-            }
+        val fs = SounderCompositeFS.from(context, musicSettings)
         L.d("FS: $fs")
         val storage = Storage(cache, covers, storedPlaylists)
         val interpretation = Interpretation(nameFactory, separators)

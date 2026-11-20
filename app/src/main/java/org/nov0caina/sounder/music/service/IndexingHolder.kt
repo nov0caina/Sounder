@@ -33,13 +33,10 @@ import org.nov0caina.sounder.music.SounderCompositeFS
 import org.nov0caina.sounder.music.IndexingState
 import org.nov0caina.sounder.music.MusicRepository
 import org.nov0caina.sounder.music.MusicSettings
-import org.nov0caina.sounder.music.locations.LocationMode
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.playback.state.PlaybackStateManager
 import org.nov0caina.sounder.util.getSystemServiceCompat
 import org.oxycblt.musikr.MusicParent
-import org.oxycblt.musikr.fs.mediastore.MediaStore
-import org.oxycblt.musikr.fs.saf.SAF
 import timber.log.Timber as L
 
 class IndexingHolder
@@ -188,24 +185,7 @@ private constructor(
 
     private fun startTracking() {
         stopTracking()
-        val fs =
-            when (musicSettings.locationMode) {
-                LocationMode.MEDIA_STORE ->
-                    MediaStore.from(workerContext, musicSettings.mediaStoreQuery)
-                LocationMode.SAF -> {
-                    val safFs = SAF.from(workerContext, musicSettings.safQuery)
-                    val auxioFs =
-                        MediaStore.from(
-                            workerContext,
-                            MediaStore.Query(
-                                mode = MediaStore.FilterMode.EXCLUDE,
-                                filtered = emptyList(),
-                                excludeNonMusic = false,
-                            ),
-                        )
-                    SounderCompositeFS(safFs, auxioFs)
-                }
-            }
+        val fs = SounderCompositeFS.from(workerContext, musicSettings)
         trackingJob = indexScope.launch { fs.track().collect { requestIndex(true) } }
     }
 

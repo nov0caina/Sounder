@@ -52,6 +52,12 @@ interface MusicSettings : Settings<MusicSettings.Listener> {
     /** The currently configured MediaStore query (if any) * */
     var mediaStoreQuery: MediaStore.Query
 
+    /** Whether to exclude messaging voice notes and voice/call recordings by default. */
+    var excludeVoiceNotes: Boolean
+
+    /** Whether to exclude audio clips shorter than 30 seconds by default. */
+    var excludeShortAudio: Boolean
+
     /** Whether to be actively watching for changes in the music library. */
     val shouldBeObserving: Boolean
 
@@ -165,6 +171,24 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
             }
         }
 
+    override var excludeVoiceNotes: Boolean
+        get() = sharedPreferences.getBoolean(getString(R.string.set_key_exclude_voice_notes), true)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(getString(R.string.set_key_exclude_voice_notes), value)
+                apply()
+            }
+        }
+
+    override var excludeShortAudio: Boolean
+        get() = sharedPreferences.getBoolean(getString(R.string.set_key_exclude_short_audio), true)
+        set(value) {
+            sharedPreferences.edit {
+                putBoolean(getString(R.string.set_key_exclude_short_audio), value)
+                apply()
+            }
+        }
+
     override var mediaStoreQuery: MediaStore.Query
         get() {
             val filterMode =
@@ -191,6 +215,8 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
                     },
                 filtered = filteredLocations,
                 excludeNonMusic = excludeNonMusic,
+                excludeVoiceNotes = excludeVoiceNotes,
+                excludeShortAudio = excludeShortAudio,
             )
         }
         set(value) {
@@ -206,15 +232,17 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
                     value.filtered.stringify(),
                 )
                 putBoolean(getString(R.string.set_key_exclude_non_music), value.excludeNonMusic)
+                putBoolean(getString(R.string.set_key_exclude_voice_notes), value.excludeVoiceNotes)
+                putBoolean(getString(R.string.set_key_exclude_short_audio), value.excludeShortAudio)
                 apply()
             }
         }
 
     override fun forceLocationUpdate() {
-        // TODO: Temporary!!! This is really dumb, just need to ship a workaround for this rn
-        val cur = sharedPreferences.getInt(getString(R.string.set_key_locations_mode), 0)
+        val key = getString(R.string.set_key_force_reload_workaround)
+        val cur = sharedPreferences.getInt(key, 0)
         sharedPreferences.edit {
-            putInt(getString(R.string.set_key_force_reload_workaround), cur + 1)
+            putInt(key, cur + 1)
             apply()
         }
     }
@@ -235,6 +263,8 @@ class MusicSettingsImpl @Inject constructor(@ApplicationContext private val cont
             getString(R.string.set_key_filter_mode),
             getString(R.string.set_key_filtered_locations),
             getString(R.string.set_key_exclude_non_music),
+            getString(R.string.set_key_exclude_voice_notes),
+            getString(R.string.set_key_exclude_short_audio),
             getString(R.string.set_key_separators),
             getString(R.string.set_key_auto_sort_names) -> {
                 L.d("Dispatching indexing setting change for $key")

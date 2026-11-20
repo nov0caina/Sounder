@@ -11,14 +11,15 @@
     <string name="set_key_black_theme" translatable="false">KEY_BLACK_THEME</string>
     <string name="set_key_accent" translatable="false">sounder_accent2</string>
 
-    <string name="set_key_reindex" translatable="false">sounder_reindex</string>
-    <string name="set_key_rescan" translatable="false">sounder_rescan</string>
+    <string name="set_key_scan_device" translatable="false">sounder_scan_device</string>
     <string name="set_key_observing" translatable="false">sounder_observing</string>
     <string name="set_key_music_dirs" translatable="false">sounder_music_dirs</string>
     <string name="set_key_fs_cache" translatable="false">sounder_fs_cache</string>
     <string name="set_key_cover_mode" translatable="false">sounder_cover_mode2</string>
     <string name="set_key_square_covers" translatable="false">sounder_square_covers</string>
     <string name="set_key_exclude_non_music" translatable="false">sounder_exclude_non_music</string>
+    <string name="set_key_exclude_voice_notes" translatable="false">sounder_exclude_voice_notes</string>
+    <string name="set_key_exclude_short_audio" translatable="false">sounder_exclude_short_audio</string>
     <string name="set_key_with_hidden" translatable="false">sounder_with_hidden</string>
     <string name="set_key_saf_multithread" translatable="false">sounder_saf_multithread</string>
     <string name="set_key_music_locations" translatable="false">sounder_music_locations2</string>
