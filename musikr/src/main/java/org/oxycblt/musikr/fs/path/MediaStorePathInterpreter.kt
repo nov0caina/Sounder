@@ -137,13 +137,16 @@ private constructor(private val cursor: Cursor, volumeManager: VolumeManager) :
             for (i in paths.indices) {
                 val path = paths[i]
                 val volume = path.volume.components ?: continue
-                template +=
-                    if (args.isEmpty()) {
-                        "${MediaStore.Audio.AudioColumns.DATA} LIKE ?"
+                val clause =
+                    if (path.components.components.isEmpty()) {
+                        args.add("/${volume}/%")
+                        args.add("/${volume}/%/%")
+                        "(${MediaStore.Audio.AudioColumns.DATA} LIKE ? AND ${MediaStore.Audio.AudioColumns.DATA} NOT LIKE ?)"
                     } else {
-                        " OR ${MediaStore.Audio.AudioColumns.DATA} LIKE ?"
+                        args.add("/${volume}/${path.components}/%")
+                        "${MediaStore.Audio.AudioColumns.DATA} LIKE ?"
                     }
-                args.add("/${volume}/${path.components}%")
+                template += if (template.isEmpty()) clause else " OR $clause"
             }
 
             if (template.isEmpty()) {
@@ -216,20 +219,28 @@ private constructor(private val cursor: Cursor, volumeManager: VolumeManager) :
             var template = ""
             for (i in paths.indices) {
                 val path = paths[i]
-                template +=
-                    if (args.isEmpty()) {
-                        "(${MediaStore.Audio.AudioColumns.VOLUME_NAME} LIKE ? " +
-                            "AND ${MediaStore.Audio.AudioColumns.RELATIVE_PATH} LIKE ?)"
-                    } else {
-                        " OR (${MediaStore.Audio.AudioColumns.VOLUME_NAME} LIKE ? " +
-                            "AND ${MediaStore.Audio.AudioColumns.RELATIVE_PATH} LIKE ?)"
-                    }
-                // MediaStore uses a different naming scheme for it's volume column. Convert this
+                // MediaStore uses a different naming scheme for its volume column. Convert this
                 // directory's volume to it.
-                args.add(path.volume.mediaStoreName ?: return null)
-                // "%" signifies to accept any DATA value that begins with the Directory's path,
-                // thus recursively filtering all files in the directory.
-                args.add("${path.components}%")
+                val volumeName = path.volume.mediaStoreName ?: return null
+                val clause =
+                    if (path.components.components.isEmpty()) {
+                        args.add(volumeName)
+                        args.add("")
+                        args.add("/")
+                        "(${MediaStore.Audio.AudioColumns.VOLUME_NAME} LIKE ? " +
+                            "AND (${MediaStore.Audio.AudioColumns.RELATIVE_PATH} = ? " +
+                            "OR ${MediaStore.Audio.AudioColumns.RELATIVE_PATH} = ?))"
+                    } else {
+                        args.add(volumeName)
+                        args.add("${path.components}")
+                        args.add("${path.components}/")
+                        args.add("${path.components}/%")
+                        "(${MediaStore.Audio.AudioColumns.VOLUME_NAME} LIKE ? " +
+                            "AND (${MediaStore.Audio.AudioColumns.RELATIVE_PATH} = ? " +
+                            "OR ${MediaStore.Audio.AudioColumns.RELATIVE_PATH} = ? " +
+                            "OR ${MediaStore.Audio.AudioColumns.RELATIVE_PATH} LIKE ?))"
+                    }
+                template += if (template.isEmpty()) clause else " OR $clause"
             }
 
             if (template.isEmpty()) {

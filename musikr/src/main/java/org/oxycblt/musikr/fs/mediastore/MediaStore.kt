@@ -60,13 +60,13 @@ private constructor(
     override suspend fun explore(files: Channel<File>): Deferred<Result<Unit>> = coroutineScope {
         tryAsyncWith(files, Dispatchers.IO) { channel ->
             val projection = BASE_PROJECTION + pathInterpreterFactory.projection
-            var selector = BASE_SELECTOR
+            var selector =
+                MediaStoreAudioFilter.buildSqlSelection(
+                    excludeNonMusic = query.excludeNonMusic,
+                    excludeShortAudio = query.excludeShortAudio,
+                    minDurationMs = query.minDurationMs,
+                )
             val args = mutableListOf<String>()
-
-            // Filter out audio that is not music, if enabled
-            if (query.excludeNonMusic) {
-                selector += " AND ${AOSPMediaStore.Audio.AudioColumns.IS_MUSIC}=1"
-            }
 
             // Handle include/exclude directories
             when (query.mode) {
@@ -116,6 +116,21 @@ private constructor(
 
                 while (cursor.moveToNext()) {
                     val path = pathInterpreter.extract() ?: continue
+                    val dirComponents = path.directory.components
+                    if (
+                        query.excludeVoiceNotes &&
+                            !MediaStoreAudioFilter.isSounderPath(dirComponents) &&
+                            MediaStoreAudioFilter.isVoiceNoteOrRecorderPath(dirComponents.unixString)
+                    ) {
+                        continue
+                    }
+                    if (
+                        query.excludeNonMusic &&
+                            !MediaStoreAudioFilter.isSounderPath(dirComponents) &&
+                            MediaStoreAudioFilter.isSystemTonePath(dirComponents.unixString)
+                    ) {
+                        continue
+                    }
 
                     val id = cursor.getLong(idIndex)
                     val uri =
@@ -185,6 +200,9 @@ private constructor(
         val mode: FilterMode,
         val filtered: List<Location.Unopened>,
         val excludeNonMusic: Boolean,
+        val excludeVoiceNotes: Boolean = true,
+        val excludeShortAudio: Boolean = true,
+        val minDurationMs: Long = MediaStoreAudioFilter.DEFAULT_MIN_DURATION_MS,
     )
 
     enum class FilterMode {
@@ -203,12 +221,6 @@ private constructor(
                 volumeManager = VolumeManager.from(context),
                 query = query,
             )
-
-        /**
-         * The base selector that works across all versions of android. Excludes files with zero
-         * size.
-         */
-        private const val BASE_SELECTOR = "NOT ${AOSPMediaStore.Audio.Media.SIZE}=0"
 
         /** The base projection that works across all versions of android. */
         private val BASE_PROJECTION =

@@ -60,11 +60,25 @@ sealed class Location(val uri: Uri, val path: Path) {
             }
 
         companion object {
+            private const val EXTERNAL_STORAGE_AUTHORITY = "com.android.externalstorage.documents"
+
             fun from(context: Context, uri: Uri) =
                 Unopened(
                     uri,
                     getTreePath(context, uri) ?: Path(Volume.ThirdParty(uri), Components.root()),
                 )
+
+            fun fromPath(path: Path): Unopened? {
+                val volumePrefix =
+                    when (val volume = path.volume) {
+                        is Volume.Internal -> "primary"
+                        is Volume.External -> volume.id ?: return null
+                        is Volume.ThirdParty -> return Unopened(volume.uri, path)
+                    }
+                val docId = "$volumePrefix:${path.components.unixString}"
+                val uri = DocumentsContract.buildTreeDocumentUri(EXTERNAL_STORAGE_AUTHORITY, docId)
+                return Unopened(uri, path)
+            }
 
             private fun getTreePath(context: Context, uri: Uri): Path? {
                 if (!DocumentsContract.isTreeUri(uri)) return null
