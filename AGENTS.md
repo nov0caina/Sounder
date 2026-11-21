@@ -21,3 +21,12 @@ Whenever the user requests uploading the APK to Google Drive:
    - For **Release** builds: upload to the `Release` folder (ID: `1A18uS3nC3X_WeS73Dli7O3KYfaOb_qNq`).
 3. **Naming Convention**: Name the file following `Sounder-<Variant>_YYYYMMDD_HHMMSS.apk` (e.g., `Sounder-Debug_20261106_080200.apk`).
 4. **Provide Drive Link**: Always provide the resulting Google Drive view link to the user.
+
+## Git Commit Approval Policy
+
+Whenever the user requests generating commits (e.g., "genera los commits" / "que generes los commits"):
+1. **Never commit automatically**: Never execute `git commit` without explicit user approval.
+2. **Propose atomic commits**: Structure and group the working tree changes into logical, atomic commits with clear titles and descriptions (Conventional Commits).
+3. **Present for review**: Show the full list of proposed commits (files included and commit message) to the user.
+4. **Wait for feedback/approval**: Wait for the user's confirmation or adjustments before running any git commit commands.
+
