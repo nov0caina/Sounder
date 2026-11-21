@@ -18,10 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil3.ImageLoader
 import coil3.load
 import coil3.request.crossfade
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.min
 import org.nov0caina.sounder.InnerDirections
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentOnlineAlbumBinding
@@ -43,7 +46,8 @@ import org.nov0caina.sounder.util.navigateSafe
 import org.nov0caina.sounder.util.showToast
 
 @AndroidEntryPoint
-class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
+class OnlineAlbumFragment :
+    ViewBindingFragment<FragmentOnlineAlbumBinding>(), AppBarLayout.OnOffsetChangedListener {
 
     @Inject lateinit var imageLoader: ImageLoader
 
@@ -57,6 +61,7 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
     private var moreAlbumsAdapter: OnlineAlbumCardAdapter? = null
     private var albumTouchHelper: ItemTouchHelper? = null
     private var skeletonAnimator: ObjectAnimator? = null
+    private var spacingSmall: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,12 +75,16 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
     override fun onBindingCreated(binding: FragmentOnlineAlbumBinding, savedInstanceState: Bundle?) {
         super.onBindingCreated(binding, savedInstanceState)
 
+        spacingSmall = resources.getDimensionPixelSize(R.dimen.spacing_small)
+        binding.albumAppbar.addOnOffsetChangedListener(this)
+
         val separators = setOf("&", ",", "+", "feat.", "feat", "ft.", "ft", "with", "vs.")
         val cleanInitialTitle = if (args.albumTitle.isBlank() || args.albumTitle.trim().lowercase() in separators) "" else args.albumTitle
         binding.albumToolbar.title = cleanInitialTitle
         binding.albumToolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
+        animateToolbarTitle(binding, 1f)
 
         binding.albumHeaderTitle.text = cleanInitialTitle
         binding.albumHeaderArtist.text = args.artistName
@@ -201,9 +210,15 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
         collect(albumModel.albumDetail) { detail ->
             if (detail != null) {
                 stopSkeletonPulse()
+                val wasHeaderHidden = !binding.albumHeaderContainer.isVisible
                 binding.albumLoadingLayout.isVisible = false
                 binding.albumOfflineLayout.root.isVisible = false
+                binding.albumHeaderContainer.isVisible = true
+                binding.albumAmbientGlow.isVisible = true
                 binding.albumScroll.isVisible = true
+                if (wasHeaderHidden) {
+                    animateToolbarTitle(binding, 0f)
+                }
 
                 binding.albumToolbar.title = detail.title
                 binding.albumHeaderTitle.text = detail.title
@@ -255,22 +270,34 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
             if (isLoading && !hasData) {
                 binding.albumLoadingLayout.isVisible = true
                 binding.albumScroll.isVisible = false
+                binding.albumHeaderContainer.isVisible = false
+                binding.albumAmbientGlow.isVisible = false
                 binding.albumOfflineLayout.root.isVisible = false
+                animateToolbarTitle(binding, 1f)
                 startSkeletonPulse()
             } else if (!isLoading && !hasData) {
                 stopSkeletonPulse()
                 binding.albumLoadingLayout.isVisible = false
                 binding.albumScroll.isVisible = false
+                binding.albumHeaderContainer.isVisible = false
+                binding.albumAmbientGlow.isVisible = false
                 binding.albumOfflineLayout.root.isVisible = true
+                animateToolbarTitle(binding, 1f)
                 OfflineStateHelper.applyProposal(
                     binding = binding.albumOfflineLayout,
                     proposal = OfflineStateHelper.getNextProposal(requireContext())
                 )
             } else {
                 stopSkeletonPulse()
+                val wasHeaderHidden = !binding.albumHeaderContainer.isVisible
                 binding.albumLoadingLayout.isVisible = false
                 binding.albumOfflineLayout.root.isVisible = false
+                binding.albumHeaderContainer.isVisible = true
+                binding.albumAmbientGlow.isVisible = true
                 binding.albumScroll.isVisible = true
+                if (wasHeaderHidden) {
+                    animateToolbarTitle(binding, 0f)
+                }
             }
             binding.albumProgress.isVisible = isLoading && hasData
         }
@@ -412,8 +439,51 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
         target.alpha = 1.0f
     }
 
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        val b = binding ?: return
+        val range = appBarLayout.totalScrollRange
+        if (range <= 0 || !b.albumHeaderContainer.isVisible) {
+            b.albumHeaderContainer.apply {
+                scaleX = 1f
+                scaleY = 1f
+                alpha = 1f
+            }
+            b.albumAmbientGlow.apply {
+                scaleX = 1f
+                scaleY = 1f
+                alpha = 1f
+            }
+            animateToolbarTitle(b, 1f)
+            return
+        }
+
+        val ratio = abs(verticalOffset.toFloat()) / range.toFloat()
+        val outRatio = min(ratio * 2f, 1f)
+        val scale = 1f - 0.12f * outRatio
+        b.albumHeaderContainer.apply {
+            scaleX = scale
+            scaleY = scale
+            alpha = 1f - outRatio
+        }
+        b.albumAmbientGlow.apply {
+            scaleX = scale
+            scaleY = scale
+            alpha = 1f - outRatio
+        }
+
+        val inRatio = ((ratio - 0.75f) / 0.25f).coerceIn(0f, 1f)
+        animateToolbarTitle(b, inRatio)
+    }
+
+    private fun animateToolbarTitle(binding: FragmentOnlineAlbumBinding, ratio: Float) {
+        val titleView = binding.albumToolbar.titleContainer
+        titleView.alpha = ratio
+        titleView.translationY = spacingSmall * (1f - ratio)
+    }
+
     override fun onDestroyBinding(binding: FragmentOnlineAlbumBinding) {
         super.onDestroyBinding(binding)
+        binding.albumAppbar.removeOnOffsetChangedListener(this)
         albumTouchHelper?.attachToRecyclerView(null)
         albumTouchHelper = null
         binding.albumTracklistRecycler.adapter = null

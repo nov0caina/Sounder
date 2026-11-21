@@ -10,75 +10,63 @@
     <org.nov0caina.sounder.ui.CoordinatorAppBarLayout
         android:id="@+id/album_appbar"
         style="@style/Widget.Auxio.AppBarLayout"
-        app:liftOnScroll="true">
-
-        <org.nov0caina.sounder.ui.AuxioToolbar
-            android:id="@+id/album_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/ic_back_24"
-            tools:title="Zeit" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/album_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible" />
-
-    </org.nov0caina.sounder.ui.CoordinatorAppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/album_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/recycler_fab_space_normal"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/album_scroll">
 
-        <LinearLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/album_collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:orientation="vertical">
+            app:expandedTitleMargin="0dp"
+            app:forceApplySystemWindowInsetTop="false"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:titleEnabled="false"
+            app:toolbarId="@+id/album_toolbar">
 
-            <!-- Album Header Section -->
-            <FrameLayout
+            <org.nov0caina.sounder.playback.ui.AmbientGlowView
+                android:id="@+id/album_ambient_glow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                app:glowAnchorView="@id/album_cover_image"
+                app:glowBlurRadius="44"
+                app:glowSpread="48dp"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.85"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/album_header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:clipToPadding="false">
+                android:clipToPadding="false"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/spacing_medium"
+                android:paddingTop="?attr/actionBarSize"
+                android:paddingEnd="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_medium"
+                android:visibility="gone"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.85"
+                tools:visibility="visible">
 
-                <org.nov0caina.sounder.playback.ui.AmbientGlowView
-                    android:id="@+id/album_ambient_glow"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:glowAnchorView="@id/album_cover_image"
-                    app:glowSpread="44dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:paddingStart="@dimen/spacing_medium"
-                    android:paddingTop="@dimen/spacing_medium"
-                    android:paddingEnd="@dimen/spacing_medium"
-                    android:paddingBottom="@dimen/spacing_medium">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/album_cover_image"
-                        android:layout_width="164dp"
-                        android:layout_height="164dp"
-                        android:background="?attr/colorSurfaceVariant"
-                        android:contentDescription="@null"
-                        android:elevation="4dp"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                        tools:src="@drawable/ic_album_48" />
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/album_cover_image"
+                    android:layout_width="164dp"
+                    android:layout_height="164dp"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:background="?attr/colorSurfaceVariant"
+                    android:contentDescription="@null"
+                    android:elevation="4dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+                    tools:src="@drawable/ic_album_48" />
 
                 <TextView
                     android:id="@+id/album_header_title"
@@ -165,9 +153,41 @@
 
                 </LinearLayout>
 
-                </LinearLayout>
+            </LinearLayout>
 
-            </FrameLayout>
+            <org.nov0caina.sounder.ui.AuxioToolbar
+                android:id="@+id/album_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_back_24"
+                tools:title="Zeit" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/album_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+    </org.nov0caina.sounder.ui.CoordinatorAppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/album_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/recycler_fab_space_normal"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical">
 
             <!-- Tracklist Section -->
             <TextView
