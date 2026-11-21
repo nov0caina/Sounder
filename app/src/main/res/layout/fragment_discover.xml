@@ -16,14 +16,14 @@
         <org.nov0caina.sounder.ui.MultiToolbar
             android:id="@+id/discover_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="wrap_content">
 
             <org.nov0caina.sounder.ui.AuxioToolbar
                 android:id="@+id/discover_normal_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/ic_search_24">
+                app:brandNavigationInteractive="true"
+                app:brandNavigationLogo="@drawable/ic_sounder_logo">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/discover_search_input"
@@ -33,12 +33,15 @@
                     android:layout_marginBottom="6dp"
                     android:layout_marginEnd="@dimen/spacing_medium"
                     android:background="@drawable/bg_search_pill"
+                    android:drawablePadding="@dimen/spacing_small"
                     android:hint="@string/search_online_hint"
                     android:imeOptions="actionSearch|flagNoExtractUi"
                     android:inputType="text"
                     android:paddingStart="@dimen/spacing_medium"
                     android:paddingEnd="@dimen/spacing_medium"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    app:drawableStartCompat="@drawable/ic_search_24"
+                    app:drawableTint="?attr/colorOnSurfaceVariant" />
 
             </org.nov0caina.sounder.ui.AuxioToolbar>
 

@@ -24,6 +24,7 @@
         app:menu="@menu/toolbar_playback"
         app:titleCentered="true"
         app:subtitleCentered="true"
+        app:showTitleBrandLogo="true"
         app:titleTextAppearance="?attr/textAppearanceLabelLargeEmphasized"
         app:subtitleTextAppearance="?attr/textAppearanceBodySmall"
         app:navigationIcon="@drawable/ic_down_24"

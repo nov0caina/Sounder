@@ -16,15 +16,14 @@
         <org.nov0caina.sounder.ui.MultiToolbar
             android:id="@+id/home_feed_multitoolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:layout_height="wrap_content">
 
             <org.nov0caina.sounder.ui.AuxioToolbar
                 android:id="@+id/home_feed_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/info_app_name"
-                app:navigationIcon="@drawable/ic_sounder_logo" />
+                app:brandNavigationLogo="@drawable/ic_sounder_logo" />
 
         </org.nov0caina.sounder.ui.MultiToolbar>
 

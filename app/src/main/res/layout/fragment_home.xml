@@ -22,7 +22,7 @@
                 android:id="@+id/home_normal_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways"
+                app:brandNavigationLogo="@drawable/ic_sounder_logo"
                 app:menu="@menu/toolbar_home"
                 app:title="@string/info_app_name" />
 

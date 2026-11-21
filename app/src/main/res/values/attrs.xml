@@ -41,4 +41,21 @@
         <attr name="entryIcons" format="reference" />
         <attr name="offValue" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="AmbientGlowView">
+        <attr name="glowAnchorView" format="reference" />
+        <attr name="glowSpread" format="dimension" />
+        <attr name="glowBlurRadius" format="float" />
+        <attr name="glowAnimateTransitions" format="boolean" />
+        <attr name="glowShape" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="rect" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="AuxioToolbar">
+        <attr name="brandNavigationLogo" format="reference" />
+        <attr name="brandNavigationInteractive" format="boolean" />
+        <attr name="showTitleBrandLogo" format="boolean" />
+    </declare-styleable>
 </resources>

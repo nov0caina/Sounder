@@ -67,7 +67,6 @@ import org.nov0caina.sounder.music.PlaylistDecision
 import org.nov0caina.sounder.music.PlaylistMessage
 import org.nov0caina.sounder.playback.PlaybackDecision
 import org.nov0caina.sounder.playback.PlaybackViewModel
-import org.nov0caina.sounder.ui.FadingToolbarOffsetListener
 import org.nov0caina.sounder.util.collect
 import org.nov0caina.sounder.util.collectImmediately
 import org.nov0caina.sounder.util.dampen
@@ -161,9 +160,6 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
 
         // --- UI SETUP ---
 
-        binding.homeAppbar.addOnOffsetChangedListener(
-            FadingToolbarOffsetListener(binding.homeToolbar, binding.homeContent)
-        )
         binding.homeNormalToolbar.apply {
             setOnMenuItemClickListener(this@HomeFragment)
             MenuCompat.setGroupDividerEnabled(menu, true)

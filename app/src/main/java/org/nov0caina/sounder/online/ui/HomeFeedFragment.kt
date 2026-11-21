@@ -98,14 +98,6 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         super.onBindingCreated(binding, savedInstanceState)
 
         binding.homeFeedToolbar.inflateMenu(R.menu.toolbar_home_feed)
-        binding.homeFeedToolbar.findViewById<com.google.android.material.button.MaterialButton>(R.id.toolbar_navigation_button)?.apply {
-            iconTint = null
-            iconSize = resources.getDimensionPixelSize(R.dimen.size_icon_medium)
-            isClickable = false
-            isFocusable = false
-            rippleColor = android.content.res.ColorStateList.valueOf(android.graphics.Color.TRANSPARENT)
-            background = null
-        }
 
         // Setup Greeting text
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)

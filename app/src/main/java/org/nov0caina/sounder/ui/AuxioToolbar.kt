@@ -20,8 +20,11 @@ package org.nov0caina.sounder.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +33,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.AttrRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.R as AR
 import androidx.appcompat.view.SupportMenuInflater
@@ -94,15 +98,23 @@ constructor(
             context.obtainStyledAttributes(attrs, AR.styleable.Toolbar, defStyleAttr, 0)
         val materialToolbarAttrs =
             context.obtainStyledAttributes(attrs, MR.styleable.MaterialToolbar, defStyleAttr, 0)
+        val auxioToolbarAttrs =
+            context.obtainStyledAttributes(attrs, R.styleable.AuxioToolbar, defStyleAttr, 0)
 
         val titleCentered =
             materialToolbarAttrs.getBoolean(MR.styleable.MaterialToolbar_titleCentered, false)
+        binding.toolbarTitleRow.layoutParams =
+            (binding.toolbarTitleRow.layoutParams as LinearLayout.LayoutParams).apply {
+                gravity = if (titleCentered) Gravity.CENTER_HORIZONTAL else Gravity.START
+            }
+        binding.toolbarBrandLogo.isVisible =
+            auxioToolbarAttrs.getBoolean(R.styleable.AuxioToolbar_showTitleBrandLogo, false)
         binding.toolbarTitle.apply {
             text = toolbarAttrs.getText(AR.styleable.Toolbar_title)
             isVisible = !text.isNullOrEmpty()
             gravity =
-                if (titleCentered) android.view.Gravity.CENTER_HORIZONTAL
-                else android.view.Gravity.START
+                if (titleCentered) Gravity.CENTER_HORIZONTAL
+                else Gravity.START
             textAlignment =
                 if (titleCentered) {
                     TEXT_ALIGNMENT_CENTER
@@ -123,8 +135,8 @@ constructor(
             text = toolbarAttrs.getText(AR.styleable.Toolbar_subtitle)
             isVisible = !text.isNullOrEmpty()
             gravity =
-                if (subtitleCentered) android.view.Gravity.CENTER_HORIZONTAL
-                else android.view.Gravity.START
+                if (subtitleCentered) Gravity.CENTER_HORIZONTAL
+                else Gravity.START
             textAlignment =
                 if (subtitleCentered) {
                     TEXT_ALIGNMENT_CENTER
@@ -149,10 +161,19 @@ constructor(
             }
         }
 
+        val brandNavigationLogo =
+            auxioToolbarAttrs.getResourceId(R.styleable.AuxioToolbar_brandNavigationLogo, 0)
+        val brandNavigationInteractive =
+            auxioToolbarAttrs.getBoolean(R.styleable.AuxioToolbar_brandNavigationInteractive, false)
+        if (brandNavigationLogo != 0) {
+            setBrandNavigationLogo(brandNavigationLogo, brandNavigationInteractive)
+        }
+
         val menuResId = toolbarAttrs.getResourceId(AR.styleable.Toolbar_menu, 0)
 
         toolbarAttrs.recycle()
         materialToolbarAttrs.recycle()
+        auxioToolbarAttrs.recycle()
 
         if (menuResId != 0) {
             inflateMenu(menuResId)
@@ -217,6 +238,25 @@ constructor(
 
     fun setNavigationOnClickListener(listener: OnClickListener) {
         binding.toolbarNavigationButton.setOnClickListener(listener)
+    }
+
+    /**
+     * Configures the leading navigation button to display an un-tinted full-color brand logo.
+     */
+    fun setBrandNavigationLogo(@DrawableRes resId: Int, interactive: Boolean = false) {
+        binding.toolbarNavigationButton.apply {
+            setIconResource(resId)
+            iconTint = null
+            iconSize = resources.getDimensionPixelSize(R.dimen.size_icon_medium)
+            rotation = 0f
+            isVisible = true
+            isClickable = interactive
+            isFocusable = interactive
+            if (!interactive) {
+                rippleColor = ColorStateList.valueOf(Color.TRANSPARENT)
+                background = null
+            }
+        }
     }
 
     /**
