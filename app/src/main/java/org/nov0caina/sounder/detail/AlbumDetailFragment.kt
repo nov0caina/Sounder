@@ -136,6 +136,12 @@ class AlbumDetailFragment : DetailFragment<Album, Song>() {
 
         binding.detailNormalToolbar.title = name
         binding.detailCover.bind(album)
+        val dominantCover = album.covers.covers
+            .groupBy { it.id }
+            .maxByOrNull { it.value.size }
+            ?.value
+            ?.firstOrNull()
+        bindHeaderGlow(dominantCover, dominantCover?.id)
         // The type text depends on the release type (Album, EP, Single, etc.)
         binding.detailType.text = album.releaseType.resolve(context)
         binding.detailName.text = name

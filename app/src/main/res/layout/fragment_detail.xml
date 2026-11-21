@@ -31,6 +31,16 @@
                 app:titleEnabled="false"
                 app:toolbarId="@+id/detail_toolbar">
 
+                <org.nov0caina.sounder.playback.ui.AmbientGlowView
+                    android:id="@+id/detail_ambient_glow"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:glowAnchorView="@id/detail_cover"
+                    app:glowBlurRadius="44"
+                    app:glowSpread="24dp"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.85" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/detail_header"
                     android:layout_width="match_parent"

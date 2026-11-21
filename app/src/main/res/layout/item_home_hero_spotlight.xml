@@ -20,13 +20,25 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <org.nov0caina.sounder.playback.ui.AmbientGlowView
+            android:id="@+id/hero_spotlight_ambient_glow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:glowAnchorView="@id/hero_spotlight_cover"
+            app:glowBlurRadius="44"
+            app:glowSpread="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:padding="16dp">
 
             <!-- High-Res Cover Artwork -->
             <com.google.android.material.imageview.ShapeableImageView

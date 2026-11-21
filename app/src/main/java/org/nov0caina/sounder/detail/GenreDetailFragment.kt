@@ -18,6 +18,7 @@
  
 package org.nov0caina.sounder.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentDetailBinding
 import org.nov0caina.sounder.detail.list.GenreDetailListAdapter
+import org.nov0caina.sounder.image.coil.GalleryCoverCollection
 import org.nov0caina.sounder.list.Item
 import org.nov0caina.sounder.list.ListFragment
 import org.nov0caina.sounder.list.menu.Menu
@@ -134,6 +136,19 @@ class GenreDetailFragment : DetailFragment<Genre, Music>() {
         val name = genre.name.resolve(context)
         binding.detailNormalToolbar.title = name
         binding.detailCover.bind(genre)
+        if (genre.covers.covers.isNotEmpty()) {
+            bindHeaderGlow(
+                GalleryCoverCollection(
+                    genre.covers,
+                    genre.uid.toString().hashCode(),
+                    0f,
+                    Color.TRANSPARENT,
+                ),
+                genre.uid,
+            )
+        } else {
+            clearHeaderGlow()
+        }
         binding.detailType.text = context.getString(R.string.lbl_genre)
         binding.detailName.text = genre.name.resolve(context)
         // Nothing about a genre is applicable to the sub-head text.

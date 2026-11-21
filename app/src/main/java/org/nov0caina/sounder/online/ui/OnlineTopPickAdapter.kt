@@ -75,10 +75,14 @@ class OnlineTopPickAdapter(
                 ?: StreamingCacheManager.findCachedCoverFile(track.id)
             if (localCoverFile != null) {
                 binding.topPickImage.load(localCoverFile) { crossfade(true) }
+                val key = "${localCoverFile.absolutePath}_${localCoverFile.lastModified()}"
+                binding.topPickAmbientGlow.bindData(localCoverFile, key)
             } else if (!track.artworkUrl.isNullOrBlank()) {
                 binding.topPickImage.load(track.artworkUrl) { crossfade(true) }
+                binding.topPickAmbientGlow.bindData(track.artworkUrl, track.artworkUrl)
             } else {
                 binding.topPickImage.setImageResource(R.drawable.ic_song_24)
+                binding.topPickAmbientGlow.clearGlow()
             }
 
             binding.topPickLoading.isVisible = loading

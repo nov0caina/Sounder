@@ -16,11 +16,28 @@
     app:strokeColor="?attr/colorOutlineVariant"
     app:strokeWidth="1dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <org.nov0caina.sounder.playback.ui.AmbientGlowView
+            android:id="@+id/top_result_ambient_glow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:glowAnchorView="@id/top_result_avatar"
+            app:glowAnimateTransitions="false"
+            app:glowBlurRadius="36"
+            app:glowSpread="26dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="16dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -115,6 +132,8 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>

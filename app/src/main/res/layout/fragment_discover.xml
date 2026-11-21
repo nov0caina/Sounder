@@ -270,6 +270,7 @@
                         android:id="@+id/recent_artists_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
                         android:paddingStart="@dimen/spacing_small"
@@ -368,6 +369,7 @@
                         android:id="@+id/results_related_artists_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clipChildren="false"
                         android:clipToPadding="false"
                         android:orientation="horizontal"
                         android:paddingStart="@dimen/spacing_small"
@@ -426,6 +428,7 @@
             android:id="@+id/discover_artists_tab_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipChildren="false"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/recycler_fab_space_normal"
             android:visibility="gone" />

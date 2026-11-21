@@ -18,6 +18,7 @@
  
 package org.nov0caina.sounder.detail
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentDetailBinding
 import org.nov0caina.sounder.detail.list.ArtistDetailListAdapter
+import org.nov0caina.sounder.image.coil.SmatteringCoverComposition
 import org.nov0caina.sounder.list.Item
 import org.nov0caina.sounder.list.ListFragment
 import org.nov0caina.sounder.list.menu.Menu
@@ -137,6 +139,19 @@ class ArtistDetailFragment : DetailFragment<Artist, Music>() {
         binding.detailNormalToolbar.title = name
 
         binding.detailCover.bind(artist)
+        if (artist.covers.covers.isNotEmpty()) {
+            bindHeaderGlow(
+                SmatteringCoverComposition(
+                    artist.covers,
+                    0f,
+                    artist.uid.toString().hashCode(),
+                    Color.TRANSPARENT,
+                ),
+                artist.uid,
+            )
+        } else {
+            clearHeaderGlow()
+        }
         binding.detailType.text = context.getString(R.string.lbl_artist)
         binding.detailName.text = name
 

@@ -57,6 +57,11 @@ class DiscoverHeroAdapter(
             binding.topResultTitle.text = item.name
             binding.topResultSubtitle.text = item.subtitle ?: ctx.getString(R.string.header_artists)
             binding.topResultAvatar.load(item.avatarUrl) { crossfade(true) }
+            if (!item.avatarUrl.isNullOrBlank()) {
+                binding.topResultAmbientGlow.bindData(item.avatarUrl, item.avatarUrl)
+            } else {
+                binding.topResultAmbientGlow.clearGlow()
+            }
             binding.root.setOnClickListener { onArtistClick(item) }
             binding.topResultAvatar.setOnClickListener { onArtistClick(item) }
             binding.topResultTitle.setOnClickListener { onArtistClick(item) }

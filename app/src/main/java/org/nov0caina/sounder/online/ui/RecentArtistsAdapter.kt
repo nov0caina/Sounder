@@ -42,8 +42,10 @@ class RecentArtistsAdapter(
                 binding.recentArtistAvatar.load(artist.avatarUrl) {
                     crossfade(true)
                 }
+                binding.recentArtistAmbientGlow.bindData(artist.avatarUrl, artist.avatarUrl)
             } else {
                 binding.recentArtistAvatar.setImageResource(R.drawable.ic_artist_24)
+                binding.recentArtistAmbientGlow.clearGlow()
             }
 
             binding.root.setOnClickListener {

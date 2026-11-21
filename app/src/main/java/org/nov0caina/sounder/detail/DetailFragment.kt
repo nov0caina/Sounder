@@ -27,8 +27,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import coil3.ImageLoader
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialSharedAxis
+import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -56,6 +58,7 @@ abstract class DetailFragment<P : MusicParent, C : Music> :
     override val listModel: ListViewModel by activityViewModels()
     override val musicModel: MusicViewModel by activityViewModels()
     override val playbackModel: PlaybackViewModel by activityViewModels()
+    @Inject lateinit var imageLoader: ImageLoader
 
     protected var touchHelper: ItemTouchHelper? = null
     private var spacingSmall = 0
@@ -189,9 +192,15 @@ abstract class DetailFragment<P : MusicParent, C : Music> :
         val outRatio = min(ratio * 2, 1f)
         val detailHeader = binding.detailHeader
         if (detailHeader != null) {
-            detailHeader.scaleX = 1 - 0.2f * outRatio / (5f / 3f)
-            detailHeader.scaleY = 1 - 0.2f * outRatio / (5f / 3f)
+            val scale = 1 - 0.2f * outRatio / (5f / 3f)
+            detailHeader.scaleX = scale
+            detailHeader.scaleY = scale
             detailHeader.alpha = 1 - outRatio
+            binding.detailAmbientGlow.apply {
+                scaleX = scale
+                scaleY = scale
+                alpha = 1 - outRatio
+            }
         }
 
         val inRatio = max(ratio - 0.5f, 0f) * 2
@@ -268,6 +277,18 @@ abstract class DetailFragment<P : MusicParent, C : Music> :
     private fun saveStateInMemory(binding: FragmentDetailBinding) {
         lastHadDualPane = binding.detailPane != null
         lastWasScrolled = binding.detailRecycler.computeVerticalScrollOffset() > 0f
+    }
+
+    protected fun bindHeaderGlow(data: Any?, key: Any? = data) {
+        if (data == null) {
+            clearHeaderGlow()
+            return
+        }
+        binding?.detailAmbientGlow?.bindData(data, key, imageLoader)
+    }
+
+    protected fun clearHeaderGlow() {
+        binding?.detailAmbientGlow?.clearGlow()
     }
 
     protected abstract fun onPlayParent(parent: P)

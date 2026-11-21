@@ -15,11 +15,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil3.ImageLoader
 import coil3.load
 import coil3.request.crossfade
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import org.nov0caina.sounder.InnerDirections
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentOnlineAlbumBinding
@@ -42,6 +44,8 @@ import org.nov0caina.sounder.util.showToast
 
 @AndroidEntryPoint
 class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
+
+    @Inject lateinit var imageLoader: ImageLoader
 
     private val albumModel: OnlineAlbumViewModel by viewModels()
     private val playbackModel: PlaybackViewModel by activityViewModels()
@@ -230,6 +234,9 @@ class OnlineAlbumFragment : ViewBindingFragment<FragmentOnlineAlbumBinding>() {
                     binding.albumCoverImage.load(detail.coverUrl) {
                         crossfade(true)
                     }
+                    binding.albumAmbientGlow.bindData(detail.coverUrl, detail.coverUrl, imageLoader)
+                } else {
+                    binding.albumAmbientGlow.clearGlow()
                 }
 
                 tracklistAdapter?.submitList(detail.tracks)

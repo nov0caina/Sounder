@@ -776,6 +776,11 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
             cardBinding.topResultAvatar.load(topArtist.avatarUrl) {
                 crossfade(true)
             }
+            if (!topArtist.avatarUrl.isNullOrBlank()) {
+                cardBinding.topResultAmbientGlow.bindData(topArtist.avatarUrl, topArtist.avatarUrl)
+            } else {
+                cardBinding.topResultAmbientGlow.clearGlow()
+            }
             cardBinding.root.setOnClickListener { onArtistSelected(topArtist) }
             cardBinding.topResultAvatar.setOnClickListener { onArtistSelected(topArtist) }
             cardBinding.topResultTitle.setOnClickListener { onArtistSelected(topArtist) }
@@ -790,6 +795,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
                 }
             }
         } else {
+            cardBinding.topResultAmbientGlow.clearGlow()
             cardBinding.root.isVisible = false
         }
     }

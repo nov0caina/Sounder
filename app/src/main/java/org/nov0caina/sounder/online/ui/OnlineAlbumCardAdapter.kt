@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil3.load
 import coil3.request.crossfade
+import coil3.util.CoilUtils
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemOnlineAlbumCardBinding
 import org.nov0caina.sounder.online.model.OnlineAlbumSummary
@@ -38,12 +39,16 @@ class OnlineAlbumCardAdapter(
             binding.albumYear.isVisible = !album.year.isNullOrBlank()
             binding.albumYear.text = album.year
 
+            CoilUtils.dispose(binding.albumCover)
+            binding.albumCover.setImageDrawable(null)
             if (!album.coverUrl.isNullOrBlank()) {
                 binding.albumCover.load(album.coverUrl) {
                     crossfade(true)
                 }
+                binding.albumAmbientGlow.bindData(album.coverUrl, album.coverUrl)
             } else {
                 binding.albumCover.setImageResource(R.drawable.ic_album_48)
+                binding.albumAmbientGlow.clearGlow()
             }
 
             binding.root.setOnClickListener {

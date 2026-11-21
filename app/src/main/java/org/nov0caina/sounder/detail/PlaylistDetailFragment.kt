@@ -19,6 +19,7 @@
 package org.nov0caina.sounder.detail
 
 import android.content.Context
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.Uri
@@ -39,6 +40,9 @@ import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentDetailBinding
 import org.nov0caina.sounder.detail.list.PlaylistDetailListAdapter
 import org.nov0caina.sounder.detail.list.PlaylistDragCallback
+import org.nov0caina.sounder.image.PlaylistCoverManager
+import org.nov0caina.sounder.image.coil.GridCoverComposition
+import org.nov0caina.sounder.image.coil.extractOrderedDistinctCovers
 import org.nov0caina.sounder.list.Item
 import org.nov0caina.sounder.list.ListFragment
 import org.nov0caina.sounder.list.menu.Menu
@@ -48,6 +52,7 @@ import org.nov0caina.sounder.music.PlaylistMessage
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveName
 import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.OnlineCover
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackDecision
@@ -359,6 +364,23 @@ class PlaylistDetailFragment :
         binding.detailSubhead.isVisible = false
 
         val songs = editedPlaylist ?: allSongs
+        val customCoverFile = PlaylistCoverManager.getCoverFile(requireContext(), resolvedName)
+        if (customCoverFile != null) {
+            val cacheKey = "${customCoverFile.absolutePath}_${customCoverFile.lastModified()}"
+            bindHeaderGlow(customCoverFile, cacheKey)
+        } else {
+            val distinctCovers = extractOrderedDistinctCovers(songs)
+            if (distinctCovers.isNotEmpty()) {
+                val composition = GridCoverComposition(distinctCovers, 0f, Color.TRANSPARENT)
+                val key = distinctCovers.joinToString("|") {
+                    (it as? OnlineCover)?.artworkUrl?.takeIf { u -> u.isNotBlank() } ?: it.id
+                }
+                bindHeaderGlow(composition, key)
+            } else {
+                clearHeaderGlow()
+            }
+        }
+
         val durationMs = songs.sumOf { it.durationMs }
         // The song count of the playlist maps to the info text.
         binding.detailInfo.text =

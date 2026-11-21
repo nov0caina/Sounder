@@ -14,6 +14,7 @@ import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemOnlineArtistBinding
 import org.nov0caina.sounder.databinding.ItemOnlineArtistGridBinding
 import org.nov0caina.sounder.online.model.OnlineArtistSummary
+import org.nov0caina.sounder.playback.ui.AmbientGlowView
 
 class OnlineArtistAdapter(
     private val onArtistClick: (OnlineArtistSummary) -> Unit
@@ -86,7 +87,13 @@ class OnlineArtistAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == VIEW_TYPE_GRID) {
             val binding = ItemOnlineArtistGridBinding.inflate(inflater, parent, false)
-            ViewHolder(binding.root, binding.artistAvatar, binding.artistName, binding.artistSubtitle)
+            ViewHolder(
+                binding.root,
+                binding.artistAvatar,
+                binding.artistName,
+                binding.artistSubtitle,
+                binding.artistAmbientGlow,
+            )
         } else {
             val binding = ItemOnlineArtistBinding.inflate(inflater, parent, false)
             ViewHolder(binding.root, binding.artistAvatar, binding.artistName, binding.artistSubtitle)
@@ -102,6 +109,7 @@ class OnlineArtistAdapter(
         private val avatarView: ImageView,
         private val nameView: TextView,
         private val subtitleView: TextView,
+        private val ambientGlowView: AmbientGlowView? = null,
     ) : RecyclerView.ViewHolder(rootView) {
 
         fun bind(artist: OnlineArtistSummary) {
@@ -115,8 +123,10 @@ class OnlineArtistAdapter(
                 avatarView.load(artist.avatarUrl) {
                     crossfade(true)
                 }
+                ambientGlowView?.bindData(artist.avatarUrl, artist.avatarUrl)
             } else {
                 avatarView.setImageResource(R.drawable.ic_artist_24)
+                ambientGlowView?.clearGlow()
             }
 
             itemView.setOnClickListener {

@@ -565,6 +565,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         val b = binding ?: return
         currentHeroTrack = topTrack
         if (topTrack == null) {
+            b.homeHeroSpotlight.heroSpotlightAmbientGlow.clearGlow()
             b.homeHeroSpotlight.root.isVisible = false
             return
         }
@@ -584,8 +585,13 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             b.homeHeroSpotlight.heroSpotlightCover.load(topTrack.artworkUrl) {
                 crossfade(true)
             }
+            b.homeHeroSpotlight.heroSpotlightAmbientGlow.bindData(
+                topTrack.artworkUrl,
+                topTrack.artworkUrl,
+            )
         } else {
             b.homeHeroSpotlight.heroSpotlightCover.setImageResource(R.drawable.ic_song_24)
+            b.homeHeroSpotlight.heroSpotlightAmbientGlow.clearGlow()
         }
 
         b.homeHeroSpotlight.heroSpotlightPlayBtn.setOnClickListener {

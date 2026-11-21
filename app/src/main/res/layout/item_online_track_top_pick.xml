@@ -13,10 +13,28 @@
     app:strokeColor="?attr/colorOutlineVariant"
     app:strokeWidth="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:clipChildren="false"
+        android:clipToPadding="false">
+
+        <org.nov0caina.sounder.playback.ui.AmbientGlowView
+            android:id="@+id/top_pick_ambient_glow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:glowAnchorView="@id/top_pick_image"
+            app:glowAnimateTransitions="false"
+            app:glowBlurRadius="32"
+            app:glowShape="rect"
+            app:glowSpread="18dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:padding="10dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/top_pick_image"
@@ -114,6 +132,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/top_pick_download_button" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </com.google.android.material.card.MaterialCardView>
