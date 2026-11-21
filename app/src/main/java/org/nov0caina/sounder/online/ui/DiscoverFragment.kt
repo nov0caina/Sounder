@@ -146,7 +146,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         )
         moodAdapter = HomeMoodAdapter(
             moods = quickMoods,
-            selectedMoodId = "",
+            selectedMoodId = "all",
             onMoodSelected = { moodItem ->
                 if (moodItem.id == "all") {
                     exitResultsToHome(binding)
@@ -460,8 +460,13 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
             if (queryState is DiscoverQueryState.Category) {
                 b.discoverCategoryHeader.isVisible = true
                 b.discoverCategoryTitle.text = queryState.title
+                val matchingQuickMood = quickMoods.find {
+                    it.id != "all" && it.query.equals(queryState.apiQuery, ignoreCase = true)
+                }
+                moodAdapter?.setSelectedMood(matchingQuickMood?.id ?: "all")
             } else {
                 b.discoverCategoryHeader.isVisible = false
+                moodAdapter?.setSelectedMood("all")
             }
         }
 
@@ -657,6 +662,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         hasRevealedResultsForActiveQuery = false
         currentFilter = ResultFilter.ALL
         updateFilterButtons(b)
+        moodAdapter?.setSelectedMood("all")
         clearResultAdapters()
         b.topResultCard.root.isVisible = false
         b.resultsRelatedArtistsSection.isVisible = false
