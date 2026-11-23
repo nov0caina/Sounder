@@ -566,4 +566,12 @@
     <string name="dialog_download_waiting_title">ການດາວໂຫຼດຢູ່ໃນຄິວ</string>
     <string name="dialog_download_waiting_message">ເພງນີ້ກຳລັງລໍຖ້າດາວໂຫຼດ. ທ່ານສາມາດດາວໂຫຼດດຽວນີ້ດ້ວຍອິນເຕີເນັດມືຖື ຫຼື ລຶບອອກຈາກຄິວໄດ້.</string>
     <string name="genre_christian_worship">ເພງຄຣິສຕຽນ ແລະ ການນະມັດສະການ</string>
+    <string name="lbl_hero_spotlight_for_you">ແນະນຳສຳລັບທ່ານ</string>
+    <string name="lbl_hero_spotlight_time_morning">ເພງເດັ່ນຕອນເຊົ້າ</string>
+    <string name="lbl_hero_spotlight_time_afternoon">ເພງເດັ່ນຕອນບ່າຍ</string>
+    <string name="lbl_hero_spotlight_time_evening">ເພງເດັ່ນຕອນແລງ</string>
+    <string name="lbl_user_top_trends">ເພງທີ່ທ່ານຟັງຫຼາຍທີ່ສຸດ</string>
+    <string name="lbl_user_top_trends_sub">ແນວໂນ້ມສ່ວນຕົວຂອງທ່ານຈາກການຟັງ</string>
+    <string name="lbl_discover_national_trends">ກຳລັງມາແຮງໃນປະເທດຂອງທ່ານ</string>
+    <string name="lbl_discover_national_trends_sub">ເພງຮິດທີ່ຫຼິ້ນຫຼາຍທີ່ສຸດໃນພາກພື້ນຂອງທ່ານ</string>
 </resources>

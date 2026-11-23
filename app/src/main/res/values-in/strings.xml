@@ -568,4 +568,12 @@ PERINGATAN: Hati-hati saat mengontrol layanan ini, jika Anda menutupnya dan kemu
     <string name="dialog_download_waiting_title">Unduhan dalam antrean</string>
     <string name="dialog_download_waiting_message">Lagu ini sedang menunggu untuk diunduh. Anda dapat mengunduhnya sekarang menggunakan data seluler atau menghapusnya dari antrean.</string>
     <string name="genre_christian_worship">Musik Kristen &amp; Pujian</string>
+    <string name="lbl_hero_spotlight_for_you">Unggulan untuk Anda</string>
+    <string name="lbl_hero_spotlight_time_morning">Pilihan Pagi</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Pilihan Siang</string>
+    <string name="lbl_hero_spotlight_time_evening">Pilihan Malam</string>
+    <string name="lbl_user_top_trends">Paling Sering Anda Putar</string>
+    <string name="lbl_user_top_trends_sub">Tren pribadi Anda berdasarkan pemutaran</string>
+    <string name="lbl_discover_national_trends">Tren di Negara Anda</string>
+    <string name="lbl_discover_national_trends_sub">Lagu terpopuler yang paling sering diputar di wilayah Anda</string>
 </resources>

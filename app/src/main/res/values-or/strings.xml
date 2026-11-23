@@ -273,4 +273,12 @@
     <string name="dialog_download_waiting_title">ଡାଉନଲୋଡ୍ ଧାଡିରେ ଅଛି</string>
     <string name="dialog_download_waiting_message">ଏହି ଗୀତଟି ଡାଉନଲୋଡ୍ ହେବାକୁ ଅପେକ୍ଷା କରିଛି। ଆପଣ ଏହାକୁ ଏବେ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହାର କରି ଡାଉନଲୋଡ୍ କରିପାରିବେ କିମ୍ବା ଧାଡିରୁ କାଢିପାରିବେ।</string>
     <string name="genre_christian_worship">ଖ୍ରୀଷ୍ଟିଆନ ଏବଂ ଉପାସନା ସଙ୍ଗୀତ</string>
+    <string name="lbl_hero_spotlight_for_you">ଆପଣଙ୍କ ପାଇଁ ବିଶେଷ</string>
+    <string name="lbl_hero_spotlight_time_morning">ସକାଳର ପସନ୍ଦ</string>
+    <string name="lbl_hero_spotlight_time_afternoon">ଅପରାହ୍ନର ପସନ୍ଦ</string>
+    <string name="lbl_hero_spotlight_time_evening">ସନ୍ଧ୍ୟାର ପସନ୍ଦ</string>
+    <string name="lbl_user_top_trends">ଆପଣଙ୍କର ସର୍ବାଧିକ ଶୁଣାଯାଇଥିବା ଗୀତ</string>
+    <string name="lbl_user_top_trends_sub">ଆପଣଙ୍କ ଶୁଣିବା ଉପରେ ଆଧାରିତ ବ୍ୟକ୍ତିଗତ ଟ୍ରେଣ୍ଡ</string>
+    <string name="lbl_discover_national_trends">ଆପଣଙ୍କ ଦେଶରେ ଟ୍ରେଣ୍ଡିଂ</string>
+    <string name="lbl_discover_national_trends_sub">ଆପଣଙ୍କ ଅଞ୍ଚଳରେ ସର୍ବାଧିକ ବଜାଯାଇଥିବା ହିଟ୍ ଗୀତ</string>
 </resources>

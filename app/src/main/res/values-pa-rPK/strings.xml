@@ -282,4 +282,12 @@
     <string name="dialog_download_waiting_title">ڈاؤن لوڈ قطار وچ اے</string>
     <string name="dialog_download_waiting_message">ایہہ گانا ڈاؤن لوڈ ہون دا انتظار کر رہیا اے۔ تسیں اینوں ہنے موبائل ڈیٹا نال ڈاؤن لوڈ کر سکدے او یا قطار چوں ہٹا سکدے او۔</string>
     <string name="genre_christian_worship">مسیحی اتے عبادت موسیقی</string>
+    <string name="lbl_hero_spotlight_for_you">تہاڈے لئی خاص</string>
+    <string name="lbl_hero_spotlight_time_morning">سویر دی خاص پسند</string>
+    <string name="lbl_hero_spotlight_time_afternoon">دوپہر دی خاص پسند</string>
+    <string name="lbl_hero_spotlight_time_evening">شام دی خاص پسند</string>
+    <string name="lbl_user_top_trends">تہاڈے ولوں سب توں ودھ سنے گئے</string>
+    <string name="lbl_user_top_trends_sub">تہاڈے سنن دی بنیاد تے ذاتی رجحانات</string>
+    <string name="lbl_discover_national_trends">تہاڈے ملک وچ ٹرینڈنگ</string>
+    <string name="lbl_discover_national_trends_sub">تہاڈے علاقے وچ سب توں ودھ چلے ہٹ گانے</string>
 </resources>

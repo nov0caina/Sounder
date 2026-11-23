@@ -372,4 +372,12 @@
     <string name="dialog_download_waiting_title">Sťahovanie vo fronte</string>
     <string name="dialog_download_waiting_message">Táto skladba čaká na stiahnutie. Môžete ju stiahnuť teraz cez mobilné dáta alebo ju odstrániť z frontu.</string>
     <string name="genre_christian_worship">Kresťanská hudba a chvály</string>
+    <string name="lbl_hero_spotlight_for_you">Vybrané pre vás</string>
+    <string name="lbl_hero_spotlight_time_morning">Ranný výber</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Popoludňajší výber</string>
+    <string name="lbl_hero_spotlight_time_evening">Večerný výber</string>
+    <string name="lbl_user_top_trends">Vaše najhranejšie</string>
+    <string name="lbl_user_top_trends_sub">Vaše osobné trendy podľa počúvania</string>
+    <string name="lbl_discover_national_trends">Trendy vo vašej krajine</string>
+    <string name="lbl_discover_national_trends_sub">Najhranejšie hity vo vašom regióne</string>
 </resources>

@@ -268,4 +268,12 @@
     <string name="dialog_download_waiting_title">Lejupielāde rindā</string>
     <string name="dialog_download_waiting_message">Šī dziesma gaida lejupielādi. Varat to lejupielādēt tūlīt ar mobilajiem datiem vai noņemt no rindas.</string>
     <string name="genre_christian_worship">Kristīgā mūzika un pielūgsme</string>
+    <string name="lbl_hero_spotlight_for_you">Izcelts jums</string>
+    <string name="lbl_hero_spotlight_time_morning">Rīta izvēle</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Pēcpusdienas izvēle</string>
+    <string name="lbl_hero_spotlight_time_evening">Vakara izvēle</string>
+    <string name="lbl_user_top_trends">Jūsu visvairāk atskaņotās</string>
+    <string name="lbl_user_top_trends_sub">Jūsu personīgās tendences pēc atskaņošanas</string>
+    <string name="lbl_discover_national_trends">Aktuāli jūsu valstī</string>
+    <string name="lbl_discover_national_trends_sub">Visvairāk atskaņotie hiti jūsu reģionā</string>
 </resources>

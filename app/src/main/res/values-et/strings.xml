@@ -570,4 +570,12 @@ HOIATUS: Ole selle teenuse kasutamisel hoolikas - kui sa ta sulged ja siis proov
     <string name="dialog_download_waiting_title">Allalaadimine järjekorras</string>
     <string name="dialog_download_waiting_message">See lugu ootab allalaadimist. Saate selle kohe mobiilse andmesidega alla laadida või järjekorrast eemaldada.</string>
     <string name="genre_christian_worship">Kristlik muusika ja ülistus</string>
+    <string name="lbl_hero_spotlight_for_you">Sulle esile tõstetud</string>
+    <string name="lbl_hero_spotlight_time_morning">Hommikune valik</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Pärastlõunane valik</string>
+    <string name="lbl_hero_spotlight_time_evening">Õhtune valik</string>
+    <string name="lbl_user_top_trends">Sinu enim kuulatud</string>
+    <string name="lbl_user_top_trends_sub">Sinu isiklikud trendid kuulamisharjumuste põhjal</string>
+    <string name="lbl_discover_national_trends">Populaarne sinu riigis</string>
+    <string name="lbl_discover_national_trends_sub">Enim mängitud hitid sinu piirkonnas</string>
 </resources>

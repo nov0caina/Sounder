@@ -483,4 +483,12 @@
     <string name="dialog_download_waiting_title">Descarga na cola</string>
     <string name="dialog_download_waiting_message">Esta canción está agardando para descargarse. Podes descargala agora usando datos móbiles ou quitala da cola.</string>
     <string name="genre_christian_worship">Música Cristiá e Loanza</string>
+    <string name="lbl_hero_spotlight_for_you">Destacado para ti</string>
+    <string name="lbl_hero_spotlight_time_morning">Para a túa mañá</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Para a túa tarde</string>
+    <string name="lbl_hero_spotlight_time_evening">Para a túa noite</string>
+    <string name="lbl_user_top_trends">As túas máis escoitadas</string>
+    <string name="lbl_user_top_trends_sub">As túas tendencias persoais segundo a reprodución</string>
+    <string name="lbl_discover_national_trends">Tendencias no teu país</string>
+    <string name="lbl_discover_national_trends_sub">Os éxitos máis escoitados na túa rexión</string>
 </resources>

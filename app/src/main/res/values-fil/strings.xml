@@ -352,4 +352,12 @@
     <string name="dialog_download_waiting_title">Nakapila ang pag-download</string>
     <string name="dialog_download_waiting_message">Naghihintay ma-download ang kantang ito. Maaari mo itong i-download ngayon gamit ang mobile data o alisin ito sa pila.</string>
     <string name="genre_christian_worship">Kristiyanong Musika at Papuri</string>
+    <string name="lbl_hero_spotlight_for_you">Itinatampok para sa iyo</string>
+    <string name="lbl_hero_spotlight_time_morning">Tampok sa Umaga</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Tampok sa Hapon</string>
+    <string name="lbl_hero_spotlight_time_evening">Tampok sa Gabi</string>
+    <string name="lbl_user_top_trends">Mga Pinakapinapatugtog Mo</string>
+    <string name="lbl_user_top_trends_sub">Ang iyong mga personal na trend batay sa pakikinig</string>
+    <string name="lbl_discover_national_trends">Trending sa Iyong Bansa</string>
+    <string name="lbl_discover_national_trends_sub">Mga pinakapinapatugtog na hit sa iyong rehiyon</string>
 </resources>

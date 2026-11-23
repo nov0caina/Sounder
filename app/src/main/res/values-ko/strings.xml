@@ -560,4 +560,12 @@
     <string name="dialog_download_waiting_title">다운로드 대기 중</string>
     <string name="dialog_download_waiting_message">이 노래가 다운로드를 기다리고 있습니다. 지금 모바일 데이터로 다운로드하거나 대기열에서 제거할 수 있습니다.</string>
     <string name="genre_christian_worship">크리스천 &amp; 워십</string>
+    <string name="lbl_hero_spotlight_for_you">맞춤 추천</string>
+    <string name="lbl_hero_spotlight_time_morning">오전 추천 스포트라이트</string>
+    <string name="lbl_hero_spotlight_time_afternoon">오후 추천 스포트라이트</string>
+    <string name="lbl_hero_spotlight_time_evening">저녁 추천 스포트라이트</string>
+    <string name="lbl_user_top_trends">가장 많이 재생한 곡</string>
+    <string name="lbl_user_top_trends_sub">재생 기록 기반 개인 취향 트렌드</string>
+    <string name="lbl_discover_national_trends">국가별 인기 급상승</string>
+    <string name="lbl_discover_national_trends_sub">내 지역에서 가장 많이 재생된 인기곡</string>
 </resources>

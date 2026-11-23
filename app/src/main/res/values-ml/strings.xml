@@ -355,4 +355,12 @@
     <string name="dialog_download_waiting_title">ഡൗൺലോഡ് ക്യൂവിലാണ്</string>
     <string name="dialog_download_waiting_message">ഈ ഗാനം ഡൗൺലോഡ് ചെയ്യാൻ കാത്തിരിക്കുകയാണ്. നിങ്ങൾക്ക് ഇത് ഇപ്പോൾ മൊബൈൽ ഡാറ്റ ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യാം അല്ലെങ്കിൽ ക്യൂവിൽ നിന്ന് നീക്കം ചെയ്യാം.</string>
     <string name="genre_christian_worship">ക്രിസ്ത്യൻ &amp; ആരാധനാ സംഗീതം</string>
+    <string name="lbl_hero_spotlight_for_you">നിങ്ങൾക്കായി തിരഞ്ഞെടുത്തത്</string>
+    <string name="lbl_hero_spotlight_time_morning">പ്രഭാത തിരഞ്ഞെടുപ്പ്</string>
+    <string name="lbl_hero_spotlight_time_afternoon">ഉച്ചതിരിഞ്ഞുള്ള തിരഞ്ഞെടുപ്പ്</string>
+    <string name="lbl_hero_spotlight_time_evening">സായാഹ്ന തിരഞ്ഞെടുപ്പ്</string>
+    <string name="lbl_user_top_trends">നിങ്ങൾ ഏറ്റവും കൂടുതൽ കേട്ടവ</string>
+    <string name="lbl_user_top_trends_sub">നിങ്ങളുടെ പ്ലേബാക്ക് അടിസ്ഥാനമാക്കിയുള്ള വ്യക്തിഗത ട്രെൻഡുകൾ</string>
+    <string name="lbl_discover_national_trends">നിങ്ങളുടെ രാജ്യത്ത് ട്രെൻഡിംഗ്</string>
+    <string name="lbl_discover_national_trends_sub">നിങ്ങളുടെ മേഖലയിൽ ഏറ്റവും കൂടുതൽ പ്ലേ ചെയ്ത ഹിറ്റുകൾ</string>
 </resources>

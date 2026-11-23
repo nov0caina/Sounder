@@ -562,4 +562,12 @@
     <string name="dialog_download_waiting_title">Спампоўка ў чарзе</string>
     <string name="dialog_download_waiting_message">Гэты трэк чакае спампоўкі. Вы можаце спампаваць яго зараз праз мабільную сетку або выдаліць з чаргі.</string>
     <string name="genre_christian_worship">Хрысціянская музыка і праслаўленне</string>
+    <string name="lbl_hero_spotlight_for_you">Рэкамендавана для вас</string>
+    <string name="lbl_hero_spotlight_time_morning">Ранішняя падборка</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Дзённая падборка</string>
+    <string name="lbl_hero_spotlight_time_evening">Вячэрняя падборка</string>
+    <string name="lbl_user_top_trends">Вашы самыя папулярныя</string>
+    <string name="lbl_user_top_trends_sub">Вашы асабістыя трэнды па выніках праслухоўвання</string>
+    <string name="lbl_discover_national_trends">У трэндзе ў вашай краіне</string>
+    <string name="lbl_discover_national_trends_sub">Самыя папулярныя хіты ў вашым рэгіёне</string>
 </resources>

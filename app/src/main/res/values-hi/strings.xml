@@ -549,4 +549,12 @@
     <string name="dialog_download_waiting_title">डाउनलोड कतार में है</string>
     <string name="dialog_download_waiting_message">यह गाना डाउनलोड होने की प्रतीक्षा कर रहा है। आप इसे अभी मोबाइल डेटा से डाउनलोड कर सकते हैं या कतार से हटा सकते हैं।</string>
     <string name="genre_christian_worship">ईसाई और आराधना संगीत</string>
+    <string name="lbl_hero_spotlight_for_you">आपके लिए खास</string>
+    <string name="lbl_hero_spotlight_time_morning">सुबह की खास पसंद</string>
+    <string name="lbl_hero_spotlight_time_afternoon">दोपहर की खास पसंद</string>
+    <string name="lbl_hero_spotlight_time_evening">शाम की खास पसंद</string>
+    <string name="lbl_user_top_trends">आपके सबसे ज़्यादा सुने गए गाने</string>
+    <string name="lbl_user_top_trends_sub">आपके सुनने के आधार पर व्यक्तिगत रुझान</string>
+    <string name="lbl_discover_national_trends">आपके देश में ट्रेंडिंग</string>
+    <string name="lbl_discover_national_trends_sub">आपके क्षेत्र के सबसे ज़्यादा सुने गए हिट गाने</string>
 </resources>

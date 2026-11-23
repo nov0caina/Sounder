@@ -576,4 +576,12 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="dialog_download_waiting_title">İndirme kuyrukta</string>
     <string name="dialog_download_waiting_message">Bu şarkı indirilmeyi bekliyor. Şimdi mobil veri ile indirebilir veya kuyruktan kaldırabilirsiniz.</string>
     <string name="genre_christian_worship">Hristiyan Müziği ve İbadet</string>
+    <string name="lbl_hero_spotlight_for_you">Sizin için öne çıkarılan</string>
+    <string name="lbl_hero_spotlight_time_morning">Sabah Öne Çıkanı</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Öğleden Sonra Öne Çıkanı</string>
+    <string name="lbl_hero_spotlight_time_evening">Akşam Öne Çıkanı</string>
+    <string name="lbl_user_top_trends">En Çok Dinledikleriniz</string>
+    <string name="lbl_user_top_trends_sub">Dinleme geçmişinize dayalı kişisel trendleriniz</string>
+    <string name="lbl_discover_national_trends">Ülkenizde Trend Olanlar</string>
+    <string name="lbl_discover_national_trends_sub">Bölgenizde en çok çalınan hitler</string>
 </resources>

@@ -556,4 +556,12 @@ OBS: Var försiktig vid användning av denna tjänst, om du stänger ner den och
     <string name="dialog_download_waiting_title">Nedladdning i kö</string>
     <string name="dialog_download_waiting_message">Den här låten väntar på att laddas ner. Du kan ladda ner den nu med mobildata eller ta bort den från kön.</string>
     <string name="genre_christian_worship">Kristen musik &amp; Lovsång</string>
+    <string name="lbl_hero_spotlight_for_you">Utvalt för dig</string>
+    <string name="lbl_hero_spotlight_time_morning">Morgonens höjdpunkt</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Eftermiddagens höjdpunkt</string>
+    <string name="lbl_hero_spotlight_time_evening">Kvällens höjdpunkt</string>
+    <string name="lbl_user_top_trends">Dina mest spelade</string>
+    <string name="lbl_user_top_trends_sub">Dina personliga trender baserat på uppspelning</string>
+    <string name="lbl_discover_national_trends">Trendar i ditt land</string>
+    <string name="lbl_discover_national_trends_sub">De mest spelade hitsen i din region</string>
 </resources>

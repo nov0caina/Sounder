@@ -560,4 +560,12 @@
     <string name="dialog_download_waiting_title">ההורדה בתור</string>
     <string name="dialog_download_waiting_message">שיר זה ממתין להורדה. באפשרותך להוריד אותו כעת באמצעות נתונים ניידים או להסיר אותו מהתור.</string>
     <string name="genre_christian_worship">מוזיקה נוצרית והלל</string>
+    <string name="lbl_hero_spotlight_for_you">מומלץ עבורך</string>
+    <string name="lbl_hero_spotlight_time_morning">בחירת הבוקר</string>
+    <string name="lbl_hero_spotlight_time_afternoon">בחירת הצהריים</string>
+    <string name="lbl_hero_spotlight_time_evening">בחירת הערב</string>
+    <string name="lbl_user_top_trends">המושמעים ביותר שלך</string>
+    <string name="lbl_user_top_trends_sub">המגמות האישיות שלך על סמך ההאזנות</string>
+    <string name="lbl_discover_national_trends">חם במדינה שלך</string>
+    <string name="lbl_discover_national_trends_sub">הלהיטים המושמעים ביותר באזורך</string>
 </resources>

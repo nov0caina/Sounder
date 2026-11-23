@@ -568,4 +568,12 @@
     <string name="dialog_download_waiting_title">பதிவிறக்கம் வரிசையில் உள்ளது</string>
     <string name="dialog_download_waiting_message">இந்தப் பாடல் பதிவிறக்கக் காத்திருக்கிறது. மொபைல் தரவு மூலம் இப்போதே பதிவிறக்கலாம் அல்லது வரிசையிலிருந்து அகற்றலாம்.</string>
     <string name="genre_christian_worship">கிறிஸ்தவ மற்றும் ஆராதனை இசை</string>
+    <string name="lbl_hero_spotlight_for_you">உங்களுக்கான சிறப்புப் பரிந்துரை</string>
+    <string name="lbl_hero_spotlight_time_morning">காலைச் சிறப்பு</string>
+    <string name="lbl_hero_spotlight_time_afternoon">மதியச் சிறப்பு</string>
+    <string name="lbl_hero_spotlight_time_evening">மாலைச் சிறப்பு</string>
+    <string name="lbl_user_top_trends">நீங்கள் அதிகம் கேட்டவை</string>
+    <string name="lbl_user_top_trends_sub">உங்கள் கேட்கும் பழக்கத்திற்கேற்ற தனிப்பட்ட போக்குகள்</string>
+    <string name="lbl_discover_national_trends">உங்கள் நாட்டில் பிரபலமானவை</string>
+    <string name="lbl_discover_national_trends_sub">உங்கள் பகுதியில் அதிகம் இசைக்கப்பட்ட பாடல்கள்</string>
 </resources>

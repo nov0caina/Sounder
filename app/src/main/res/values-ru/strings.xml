@@ -578,4 +578,12 @@
     <string name="dialog_download_waiting_title">Загрузка в очереди</string>
     <string name="dialog_download_waiting_message">Этот трек ожидает загрузки. Вы можете скачать его сейчас через мобильную сеть или удалить из очереди.</string>
     <string name="genre_christian_worship">Христианская музыка и прославление</string>
+    <string name="lbl_hero_spotlight_for_you">Рекомендовано для вас</string>
+    <string name="lbl_hero_spotlight_time_morning">Утренняя подборка</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Дневная подборка</string>
+    <string name="lbl_hero_spotlight_time_evening">Вечерняя подборка</string>
+    <string name="lbl_user_top_trends">Ваши популярные треки</string>
+    <string name="lbl_user_top_trends_sub">Ваши персональные тренды по истории прослушиваний</string>
+    <string name="lbl_discover_national_trends">В тренде в вашей стране</string>
+    <string name="lbl_discover_national_trends_sub">Самые прослушиваемые хиты в вашем регионе</string>
 </resources>

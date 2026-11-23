@@ -289,4 +289,12 @@
     <string name="dialog_download_waiting_title">Преузимање на чекању</string>
     <string name="dialog_download_waiting_message">Ова песма чека преузимање. Можете је преузети одмах преко мобилних података или је уклонити са листе чекања.</string>
     <string name="genre_christian_worship">Хришћанска музика и слављење</string>
+    <string name="lbl_hero_spotlight_for_you">Издвојено за вас</string>
+    <string name="lbl_hero_spotlight_time_morning">Јутарњи избор</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Поподневни избор</string>
+    <string name="lbl_hero_spotlight_time_evening">Вечерњи избор</string>
+    <string name="lbl_user_top_trends">Ваше најслушаније</string>
+    <string name="lbl_user_top_trends_sub">Ваши лични трендови на основу слушања</string>
+    <string name="lbl_discover_national_trends">У тренду у вашој земљи</string>
+    <string name="lbl_discover_national_trends_sub">Најслушанији хитови у вашем региону</string>
 </resources>

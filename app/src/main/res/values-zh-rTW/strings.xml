@@ -567,4 +567,12 @@
     <string name="dialog_download_waiting_title">下載佇列中</string>
     <string name="dialog_download_waiting_message">此歌曲正在等待下載。您可以立即使用行動數據下載或將其從佇列中移除。</string>
     <string name="genre_christian_worship">基督教與敬拜音樂</string>
+    <string name="lbl_hero_spotlight_for_you">為你精選</string>
+    <string name="lbl_hero_spotlight_time_morning">清晨精選</string>
+    <string name="lbl_hero_spotlight_time_afternoon">午後精選</string>
+    <string name="lbl_hero_spotlight_time_evening">夜晚精選</string>
+    <string name="lbl_user_top_trends">你最常收聽</string>
+    <string name="lbl_user_top_trends_sub">根據你播放紀錄的個人趨勢</string>
+    <string name="lbl_discover_national_trends">所在國家/地區熱門趨勢</string>
+    <string name="lbl_discover_national_trends_sub">你所在地區播放次數最多的熱門歌曲</string>
 </resources>

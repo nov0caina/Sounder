@@ -381,4 +381,12 @@
     <string name="dialog_download_waiting_title">ჩამოტვირთვა რიგშია</string>
     <string name="dialog_download_waiting_message">ეს სიმღერა ელოდება ჩამოტვირთვას. შეგიძლიათ ჩამოტვირთოთ ახლა მობილური ინტერნეტით ან წაშალოთ რიგიდან.</string>
     <string name="genre_christian_worship">ქრისტიანული მუსიკა და თაყვანისცემა</string>
+    <string name="lbl_hero_spotlight_for_you">თქვენთვის შერჩეული</string>
+    <string name="lbl_hero_spotlight_time_morning">დილის რჩეული</string>
+    <string name="lbl_hero_spotlight_time_afternoon">შუადღის რჩეული</string>
+    <string name="lbl_hero_spotlight_time_evening">საღამოს რჩეული</string>
+    <string name="lbl_user_top_trends">თქვენი ყველაზე მოსმენილი</string>
+    <string name="lbl_user_top_trends_sub">თქვენი პერსონალური ტრენდები მოსმენის მიხედვით</string>
+    <string name="lbl_discover_national_trends">ტრენდული თქვენს ქვეყანაში</string>
+    <string name="lbl_discover_national_trends_sub">ყველაზე პოპულარული ჰიტები თქვენს რეგიონში</string>
 </resources>

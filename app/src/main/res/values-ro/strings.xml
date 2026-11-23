@@ -504,4 +504,12 @@
     <string name="dialog_download_waiting_title">Descărcare în coadă</string>
     <string name="dialog_download_waiting_message">Această melodie așteaptă descărcarea. O puteți descărca acum folosind datele mobile sau o puteți elimina din coadă.</string>
     <string name="genre_christian_worship">Muzică Creștină și Închinare</string>
+    <string name="lbl_hero_spotlight_for_you">Recomandat pentru tine</string>
+    <string name="lbl_hero_spotlight_time_morning">Selecția dimineții</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Selecția după-amiezii</string>
+    <string name="lbl_hero_spotlight_time_evening">Selecția serii</string>
+    <string name="lbl_user_top_trends">Cele mai ascultate de tine</string>
+    <string name="lbl_user_top_trends_sub">Tendințele tale personale pe baza redărilor</string>
+    <string name="lbl_discover_national_trends">În tendințe în țara ta</string>
+    <string name="lbl_discover_national_trends_sub">Cele mai ascultate hituri din regiunea ta</string>
 </resources>

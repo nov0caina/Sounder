@@ -573,4 +573,12 @@ RHYBUDD: Byddwch yn ofalus wrth reoli\'r gwasanaeth hwn. Os ydych yn ei gau ac y
     <string name="dialog_download_waiting_title">Lawrlwythiad yn y ciw</string>
     <string name="dialog_download_waiting_message">Mae\'r gân hon yn aros i gael ei lawrlwytho. Gallwch ei lawrlwytho nawr gan ddefnyddio data symudol neu ei dynnu o\'r ciw.</string>
     <string name="genre_christian_worship">Cerddoriaeth Gristnogol ac Addoliad</string>
+    <string name="lbl_hero_spotlight_for_you">Nodweddion i chi</string>
+    <string name="lbl_hero_spotlight_time_morning">Detholiad y bore</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Detholiad y prynhawn</string>
+    <string name="lbl_hero_spotlight_time_evening">Detholiad y noson</string>
+    <string name="lbl_user_top_trends">Eich rhai mwyaf poblogaidd</string>
+    <string name="lbl_user_top_trends_sub">Eich tueddiadau personol yn seiliedig ar chwarae</string>
+    <string name="lbl_discover_national_trends">Yn tueddu yn eich gwlad</string>
+    <string name="lbl_discover_national_trends_sub">Y caneuon mwyaf poblogaidd yn eich rhanbarth</string>
 </resources>

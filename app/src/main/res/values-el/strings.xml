@@ -380,4 +380,12 @@
     <string name="dialog_download_waiting_title">Λήψη στην ουρά</string>
     <string name="dialog_download_waiting_message">Αυτό το τραγούδι περιμένει λήψη. Μπορείτε να το κατεβάσετε τώρα με δεδομένα κινητής τηλεφωνίας ή να το αφαιρέσετε από την ουρά.</string>
     <string name="genre_christian_worship">Χριστιανική μουσική &amp; Λατρεία</string>
+    <string name="lbl_hero_spotlight_for_you">Επιλεγμένο για εσάς</string>
+    <string name="lbl_hero_spotlight_time_morning">Πρωινή πρόταση</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Απογευματινή πρόταση</string>
+    <string name="lbl_hero_spotlight_time_evening">Βραδινή πρόταση</string>
+    <string name="lbl_user_top_trends">Τα πιο δημοφιλή σας</string>
+    <string name="lbl_user_top_trends_sub">Οι προσωπικές σας τάσεις με βάση τις αναπαραγωγές</string>
+    <string name="lbl_discover_national_trends">Τάσεις στη χώρα σας</string>
+    <string name="lbl_discover_national_trends_sub">Οι πιο δημοφιλείς επιτυχίες στην περιοχή σας</string>
 </resources>

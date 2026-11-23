@@ -572,4 +572,12 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="dialog_download_waiting_title">Download in coda</string>
     <string name="dialog_download_waiting_message">Questo brano è in attesa di essere scaricato. Puoi scaricarlo ora usando i dati mobili o rimuoverlo dalla coda.</string>
     <string name="genre_christian_worship">Musica Cristiana e Lode</string>
+    <string name="lbl_hero_spotlight_for_you">In evidenza per te</string>
+    <string name="lbl_hero_spotlight_time_morning">Scelta del mattino</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Scelta del pomeriggio</string>
+    <string name="lbl_hero_spotlight_time_evening">Scelta della sera</string>
+    <string name="lbl_user_top_trends">I tuoi brani più ascoltati</string>
+    <string name="lbl_user_top_trends_sub">Le tue tendenze personali in base agli ascolti</string>
+    <string name="lbl_discover_national_trends">Tendenze nel tuo paese</string>
+    <string name="lbl_discover_national_trends_sub">I successi più ascoltati nella tua area</string>
 </resources>

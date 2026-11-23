@@ -268,4 +268,12 @@
     <string name="dialog_download_waiting_title">Tải xuống trong hàng đợi</string>
     <string name="dialog_download_waiting_message">Bài hát này đang chờ được tải xuống. Bạn có thể tải ngay bằng dữ liệu di động hoặc xóa khỏi hàng đợi.</string>
     <string name="genre_christian_worship">Nhạc Cơ Đốc &amp; Thờ Phượng</string>
+    <string name="lbl_hero_spotlight_for_you">Nổi bật dành cho bạn</string>
+    <string name="lbl_hero_spotlight_time_morning">Gợi ý buổi sáng</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Gợi ý buổi chiều</string>
+    <string name="lbl_hero_spotlight_time_evening">Gợi ý buổi tối</string>
+    <string name="lbl_user_top_trends">Nghe nhiều nhất của bạn</string>
+    <string name="lbl_user_top_trends_sub">Xu hướng cá nhân dựa trên lịch sử nghe</string>
+    <string name="lbl_discover_national_trends">Thịnh hành tại quốc gia của bạn</string>
+    <string name="lbl_discover_national_trends_sub">Các bản hit được phát nhiều nhất trong khu vực của bạn</string>
 </resources>

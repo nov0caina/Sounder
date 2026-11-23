@@ -727,4 +727,12 @@
     <string name="dialog_download_waiting_title">Download in queue</string>
     <string name="dialog_download_waiting_message">This song is waiting to download. You can download it now using mobile data or remove it from the queue.</string>
     <string name="genre_christian_worship">Christian &amp; Worship</string>
+    <string name="lbl_hero_spotlight_for_you">Featured for you</string>
+    <string name="lbl_hero_spotlight_time_morning">Morning Spotlight</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Afternoon Spotlight</string>
+    <string name="lbl_hero_spotlight_time_evening">Evening Spotlight</string>
+    <string name="lbl_user_top_trends">Your Most Played</string>
+    <string name="lbl_user_top_trends_sub">Your top personal trends based on playback</string>
+    <string name="lbl_discover_national_trends">Trending in Your Country</string>
+    <string name="lbl_discover_national_trends_sub">The most played hits in your region</string>
 </resources>

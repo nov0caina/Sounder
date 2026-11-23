@@ -561,4 +561,12 @@ KUJDES: Kini kujdes kur kontrolloni këtë shërbim; nëse e mbyllni dhe pastaj 
     <string name="dialog_download_waiting_title">Shkarkimi në radhë</string>
     <string name="dialog_download_waiting_message">Kjo këngë po pret të shkarkohet. Mund ta shkarkoni tani me të dhëna celulare ose ta hiqni nga radha.</string>
     <string name="genre_christian_worship">Muzikë e Krishterë dhe Adhurim</string>
+    <string name="lbl_hero_spotlight_for_you">Të zgjedhura për ju</string>
+    <string name="lbl_hero_spotlight_time_morning">Përzgjedhja e mëngjesit</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Përzgjedhja e pasdites</string>
+    <string name="lbl_hero_spotlight_time_evening">Përzgjedhja e mbrëmjes</string>
+    <string name="lbl_user_top_trends">Më të dëgjuarat tuaja</string>
+    <string name="lbl_user_top_trends_sub">Trendet tuaja personale bazuar në dëgjime</string>
+    <string name="lbl_discover_national_trends">Në trend në vendin tuaj</string>
+    <string name="lbl_discover_national_trends_sub">Hitet më të luajtura në rajonin tuaj</string>
 </resources>

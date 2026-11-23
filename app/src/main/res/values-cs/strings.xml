@@ -578,4 +578,12 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="dialog_download_waiting_title">Stahování ve frontě</string>
     <string name="dialog_download_waiting_message">Tato skladba čeká na stažení. Můžete ji stáhnout nyní přes mobilní data nebo ji odebrat z fronty.</string>
     <string name="genre_christian_worship">Křesťanská hudba a chvály</string>
+    <string name="lbl_hero_spotlight_for_you">Vybráno pro vás</string>
+    <string name="lbl_hero_spotlight_time_morning">Ranní výběr</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Odpolední výběr</string>
+    <string name="lbl_hero_spotlight_time_evening">Večerní výběr</string>
+    <string name="lbl_user_top_trends">Vaše nejhranější</string>
+    <string name="lbl_user_top_trends_sub">Vaše osobní trendy podle poslechu</string>
+    <string name="lbl_discover_national_trends">Trendy ve vaší zemi</string>
+    <string name="lbl_discover_national_trends_sub">Nejhranější hity ve vašem regionu</string>
 </resources>

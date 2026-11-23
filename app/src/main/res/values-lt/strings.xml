@@ -578,4 +578,12 @@
     <string name="dialog_download_waiting_title">Atsisiuntimas eilėje</string>
     <string name="dialog_download_waiting_message">Ši daina laukia atsisiuntimo. Galite atsisiųsti ją dabar naudodami mobiliuosius duomenis arba pašalinti iš eilės.</string>
     <string name="genre_christian_worship">Krikščioniška muzika ir šlovinimas</string>
+    <string name="lbl_hero_spotlight_for_you">Atrinkta jums</string>
+    <string name="lbl_hero_spotlight_time_morning">Ryto pasirinkimas</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Popietės pasirinkimas</string>
+    <string name="lbl_hero_spotlight_time_evening">Vakaro pasirinkimas</string>
+    <string name="lbl_user_top_trends">Jūsų klausomiausios</string>
+    <string name="lbl_user_top_trends_sub">Jūsų asmeninės tendencijos pagal klausymąsi</string>
+    <string name="lbl_discover_national_trends">Populiaru jūsų šalyje</string>
+    <string name="lbl_discover_national_trends_sub">Dažniausiai grojami hitai jūsų regione</string>
 </resources>

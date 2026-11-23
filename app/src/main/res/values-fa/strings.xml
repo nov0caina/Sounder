@@ -566,4 +566,12 @@
     <string name="dialog_download_waiting_title">دانلود در صف</string>
     <string name="dialog_download_waiting_message">این آهنگ در انتظار دانلود است. می‌توانید اکنون با اینترنت همراه آن را دانلود کنید یا از صف حذف کنید.</string>
     <string name="genre_christian_worship">موسیقی مسیحی و پرستش</string>
+    <string name="lbl_hero_spotlight_for_you">ویژه برای شما</string>
+    <string name="lbl_hero_spotlight_time_morning">پیشنهاد صبح</string>
+    <string name="lbl_hero_spotlight_time_afternoon">پیشنهاد عصر</string>
+    <string name="lbl_hero_spotlight_time_evening">پیشنهاد شب</string>
+    <string name="lbl_user_top_trends">پربازدیدترین‌های شما</string>
+    <string name="lbl_user_top_trends_sub">روندهای شخصی شما بر اساس پخش موسیقی</string>
+    <string name="lbl_discover_national_trends">داغ‌ترین‌های کشور شما</string>
+    <string name="lbl_discover_national_trends_sub">پرمخاطب‌ترین آهنگ‌های منطقه شما</string>
 </resources>

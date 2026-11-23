@@ -555,4 +555,12 @@
     <string name="dialog_download_waiting_title">ダウンロード待機中</string>
     <string name="dialog_download_waiting_message">この曲はダウンロード待ちです。モバイルデータ通信で今すぐダウンロードするか、キューから削除できます。</string>
     <string name="genre_christian_worship">クリスチャン＆ワーシップ</string>
+    <string name="lbl_hero_spotlight_for_you">あなたへのピックアップ</string>
+    <string name="lbl_hero_spotlight_time_morning">朝の注目トラック</string>
+    <string name="lbl_hero_spotlight_time_afternoon">昼の注目トラック</string>
+    <string name="lbl_hero_spotlight_time_evening">夜の注目トラック</string>
+    <string name="lbl_user_top_trends">よく聴く曲</string>
+    <string name="lbl_user_top_trends_sub">再生履歴に基づくパーソナルトレンド</string>
+    <string name="lbl_discover_national_trends">国内の急上昇</string>
+    <string name="lbl_discover_national_trends_sub">地域で最も再生されているヒット曲</string>
 </resources>

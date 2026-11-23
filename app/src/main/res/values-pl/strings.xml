@@ -578,4 +578,12 @@ UWAGA: Zachowaj ostrożność przy korzystaniu z tej opcji. Jeśli ją zamkniesz
     <string name="dialog_download_waiting_title">Pobieranie w kolejce</string>
     <string name="dialog_download_waiting_message">Ten utwór czeka na pobranie. Możesz pobrać go teraz przez sieć komórkową lub usunąć z kolejki.</string>
     <string name="genre_christian_worship">Muzyka chrześcijańska i uwielbienie</string>
+    <string name="lbl_hero_spotlight_for_you">Wybrane dla Ciebie</string>
+    <string name="lbl_hero_spotlight_time_morning">Poranny wybór</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Popołudniowy wybór</string>
+    <string name="lbl_hero_spotlight_time_evening">Wieczorny wybór</string>
+    <string name="lbl_user_top_trends">Twoje najczęściej słuchane</string>
+    <string name="lbl_user_top_trends_sub">Twoje osobiste trendy na podstawie odtworzeń</string>
+    <string name="lbl_discover_national_trends">Na czasie w Twoim kraju</string>
+    <string name="lbl_discover_national_trends_sub">Najczęściej odtwarzane hity w Twoim regionie</string>
 </resources>

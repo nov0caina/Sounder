@@ -542,4 +542,12 @@
     <string name="dialog_download_waiting_title">ਡਾਊਨਲੋਡ ਕਤਾਰ ਵਿੱਚ ਹੈ</string>
     <string name="dialog_download_waiting_message">ਇਹ ਗੀਤ ਡਾਊਨਲੋਡ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ। ਤੁਸੀਂ ਇਸ ਨੂੰ ਹੁਣੇ ਮੋਬਾਈਲ ਡਾਟਾ ਨਾਲ ਡਾਊਨਲੋਡ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਕਤਾਰ ਵਿੱਚੋਂ ਹਟਾ ਸਕਦੇ ਹੋ।</string>
     <string name="genre_christian_worship">ਈਸਾਈ ਅਤੇ ਉਪਾਸਨਾ ਸੰਗੀਤ</string>
+    <string name="lbl_hero_spotlight_for_you">ਤੁਹਾਡੇ ਲਈ ਖਾਸ</string>
+    <string name="lbl_hero_spotlight_time_morning">ਸਵੇਰ ਦੀ ਖਾਸ ਪਸੰਦ</string>
+    <string name="lbl_hero_spotlight_time_afternoon">ਦੁਪਹਿਰ ਦੀ ਖਾਸ ਪਸੰਦ</string>
+    <string name="lbl_hero_spotlight_time_evening">ਸ਼ਾਮ ਦੀ ਖਾਸ ਪਸੰਦ</string>
+    <string name="lbl_user_top_trends">ਤੁਹਾਡੇ ਵੱਲੋਂ ਸਭ ਤੋਂ ਵੱਧ ਸੁਣੇ ਗਏ</string>
+    <string name="lbl_user_top_trends_sub">ਤੁਹਾਡੇ ਸੁਣਨ ਦੇ ਆਧਾਰ \'ਤੇ ਨਿੱਜੀ ਰੁਝਾਨ</string>
+    <string name="lbl_discover_national_trends">ਤੁਹਾਡੇ ਦੇਸ਼ ਵਿੱਚ ਟ੍ਰੈਂਡਿੰਗ</string>
+    <string name="lbl_discover_national_trends_sub">ਤੁਹਾਡੇ ਖੇਤਰ ਵਿੱਚ ਸਭ ਤੋਂ ਵੱਧ ਚੱਲੇ ਹਿੱਟ ਗੀਤ</string>
 </resources>

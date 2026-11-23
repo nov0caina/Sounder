@@ -574,4 +574,12 @@ AVISO: Tenha cuidado ao controlar este serviço, se você fechá-lo e tentar us�
     <string name="dialog_download_waiting_title">Transferência em fila</string>
     <string name="dialog_download_waiting_message">Esta música está a aguardar transferência. Pode transferi-la agora com dados móveis ou removê-la da fila.</string>
     <string name="genre_christian_worship">Música Cristã e Adoração</string>
+    <string name="lbl_hero_spotlight_for_you">Destaque para ti</string>
+    <string name="lbl_hero_spotlight_time_morning">Para a tua manhã</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Para a tua tarde</string>
+    <string name="lbl_hero_spotlight_time_evening">Para a tua noite</string>
+    <string name="lbl_user_top_trends">As tuas mais ouvidas</string>
+    <string name="lbl_user_top_trends_sub">As tuas tendências pessoais com base no que ouves</string>
+    <string name="lbl_discover_national_trends">Tendências no teu país</string>
+    <string name="lbl_discover_national_trends_sub">Os êxitos mais ouvidos na tua região</string>
 </resources>

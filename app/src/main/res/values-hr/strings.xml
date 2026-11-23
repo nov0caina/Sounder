@@ -574,4 +574,12 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="dialog_download_waiting_title">Preuzimanje na čekanju</string>
     <string name="dialog_download_waiting_message">Ova pjesma čeka na preuzimanje. Možete je preuzeti sada putem mobilnih podataka ili ukloniti iz reda čekanja.</string>
     <string name="genre_christian_worship">Kršćanska glazba i slavljenje</string>
+    <string name="lbl_hero_spotlight_for_you">Istaknuto za vas</string>
+    <string name="lbl_hero_spotlight_time_morning">Jutarnji izbor</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Popodnevni izbor</string>
+    <string name="lbl_hero_spotlight_time_evening">Večernji izbor</string>
+    <string name="lbl_user_top_trends">Vaše najslušanije</string>
+    <string name="lbl_user_top_trends_sub">Vaši osobni trendovi na temelju slušanja</string>
+    <string name="lbl_discover_national_trends">U trendu u vašoj zemlji</string>
+    <string name="lbl_discover_national_trends_sub">Najčešće slušani hitovi u vašoj regiji</string>
 </resources>

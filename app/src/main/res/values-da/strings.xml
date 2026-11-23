@@ -361,4 +361,12 @@
     <string name="dialog_download_waiting_title">Download i kø</string>
     <string name="dialog_download_waiting_message">Denne sang venter på at blive downloadet. Du kan downloade den nu med mobildata eller fjerne den fra køen.</string>
     <string name="genre_christian_worship">Kristen musik &amp; Lovsang</string>
+    <string name="lbl_hero_spotlight_for_you">Udvalgt til dig</string>
+    <string name="lbl_hero_spotlight_time_morning">Morgenens højdepunkt</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Eftermiddagens højdepunkt</string>
+    <string name="lbl_hero_spotlight_time_evening">Aftenens højdepunkt</string>
+    <string name="lbl_user_top_trends">Dine mest spillede</string>
+    <string name="lbl_user_top_trends_sub">Dine personlige trends baseret på afspilning</string>
+    <string name="lbl_discover_national_trends">Trender i dit land</string>
+    <string name="lbl_discover_national_trends_sub">De mest spillede hits i din region</string>
 </resources>

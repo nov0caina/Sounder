@@ -457,4 +457,12 @@
     <string name="dialog_download_waiting_title">Discargamento in cauda</string>
     <string name="dialog_download_waiting_message">Iste canto attende a esser discargate. Tu pote discargar lo ora con datos mobile o remover lo del cauda.</string>
     <string name="genre_christian_worship">Musica Christian e Adoration</string>
+    <string name="lbl_hero_spotlight_for_you">Selecte pro te</string>
+    <string name="lbl_hero_spotlight_time_morning">Selection del matino</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Selection del postmeridie</string>
+    <string name="lbl_hero_spotlight_time_evening">Selection del vespere</string>
+    <string name="lbl_user_top_trends">Tu plus ascoltate</string>
+    <string name="lbl_user_top_trends_sub">Tu tendentias personal basate super tu ascolta</string>
+    <string name="lbl_discover_national_trends">Tendentias in tu pais</string>
+    <string name="lbl_discover_national_trends_sub">Le successos le plus ascoltate in tu region</string>
 </resources>

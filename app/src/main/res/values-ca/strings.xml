@@ -574,4 +574,12 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="dialog_download_waiting_title">Baixada en cua</string>
     <string name="dialog_download_waiting_message">Aquesta cançó està esperant per baixar-se. Pots baixar-la ara amb dades mòbils o treure-la de la cua.</string>
     <string name="genre_christian_worship">Música Cristiana i Lloança</string>
+    <string name="lbl_hero_spotlight_for_you">Destacat per a tu</string>
+    <string name="lbl_hero_spotlight_time_morning">Per al teu matí</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Per a la teva tarda</string>
+    <string name="lbl_hero_spotlight_time_evening">Per al teu vespre</string>
+    <string name="lbl_user_top_trends">Les teves més escoltades</string>
+    <string name="lbl_user_top_trends_sub">Les teves tendències personals segons la reproducció</string>
+    <string name="lbl_discover_national_trends">Tendències al teu país</string>
+    <string name="lbl_discover_national_trends_sub">Els èxits més escoltats a la teva regió</string>
 </resources>

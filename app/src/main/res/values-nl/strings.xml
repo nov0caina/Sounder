@@ -566,4 +566,12 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="dialog_download_waiting_title">Download in wachtrij</string>
     <string name="dialog_download_waiting_message">Dit nummer wacht om te worden gedownload. Je kunt het nu downloaden via mobiele data of uit de wachtrij verwijderen.</string>
     <string name="genre_christian_worship">Christelijke muziek &amp; Aanbidding</string>
+    <string name="lbl_hero_spotlight_for_you">Uitgelicht voor jou</string>
+    <string name="lbl_hero_spotlight_time_morning">Ochtend-selectie</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Middag-selectie</string>
+    <string name="lbl_hero_spotlight_time_evening">Avond-selectie</string>
+    <string name="lbl_user_top_trends">Meest beluisterd door jou</string>
+    <string name="lbl_user_top_trends_sub">Jouw persoonlijke trends op basis van afspelen</string>
+    <string name="lbl_discover_national_trends">Trending in jouw land</string>
+    <string name="lbl_discover_national_trends_sub">De meest afgespeelde hits in jouw regio</string>
 </resources>

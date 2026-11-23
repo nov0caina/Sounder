@@ -272,4 +272,12 @@
     <string name="dialog_download_waiting_title">التنزيل في قائمة الانتظار</string>
     <string name="dialog_download_waiting_message">هذه الأغنية بانتظار التنزيل. يمكنك تنزيلها الآن باستخدام بيانات الجوال أو إزالتها من قائمة الانتظار.</string>
     <string name="genre_christian_worship">الموسيقى المسيحية والعبادة</string>
+    <string name="lbl_hero_spotlight_for_you">مختار لك</string>
+    <string name="lbl_hero_spotlight_time_morning">أبرز مختارات الصباح</string>
+    <string name="lbl_hero_spotlight_time_afternoon">أبرز مختارات المساء</string>
+    <string name="lbl_hero_spotlight_time_evening">أبرز مختارات الليل</string>
+    <string name="lbl_user_top_trends">الأكثر استماعاً لديك</string>
+    <string name="lbl_user_top_trends_sub">تفضيلاتك الشخصية حسب استماعك</string>
+    <string name="lbl_discover_national_trends">الرائج في بلدك</string>
+    <string name="lbl_discover_national_trends_sub">الأغاني الأكثر تشغيلاً في منطقتك</string>
 </resources>

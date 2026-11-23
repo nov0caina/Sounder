@@ -574,4 +574,12 @@ ATTENTION : Faites attention en contrôlant ce service, si vous le fermez puis e
     <string name="dialog_download_waiting_title">Téléchargement en file d\'attente</string>
     <string name="dialog_download_waiting_message">Ce titre est en attente de téléchargement. Vous pouvez le télécharger maintenant avec les données mobiles ou le retirer de la file d\'attente.</string>
     <string name="genre_christian_worship">Musique Chrétienne et Louange</string>
+    <string name="lbl_hero_spotlight_for_you">Sélectionné pour vous</string>
+    <string name="lbl_hero_spotlight_time_morning">Sélection du matin</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Sélection de l\'après-midi</string>
+    <string name="lbl_hero_spotlight_time_evening">Sélection du soir</string>
+    <string name="lbl_user_top_trends">Vos titres les plus écoutés</string>
+    <string name="lbl_user_top_trends_sub">Vos tendances personnelles basées sur votre écoute</string>
+    <string name="lbl_discover_national_trends">Tendances dans votre pays</string>
+    <string name="lbl_discover_national_trends_sub">Les succès les plus écoutés dans votre région</string>
 </resources>

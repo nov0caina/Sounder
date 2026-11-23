@@ -570,4 +570,12 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="dialog_download_waiting_title">Download in Warteschlange</string>
     <string name="dialog_download_waiting_message">Dieser Titel wartet auf den Download. Du kannst ihn jetzt über mobile Daten herunterladen oder aus der Warteschlange entfernen.</string>
     <string name="genre_christian_worship">Christliche Musik &amp; Lobpreis</string>
+    <string name="lbl_hero_spotlight_for_you">Für dich ausgewählt</string>
+    <string name="lbl_hero_spotlight_time_morning">Morgen-Empfehlung</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Nachmittags-Empfehlung</string>
+    <string name="lbl_hero_spotlight_time_evening">Abend-Empfehlung</string>
+    <string name="lbl_user_top_trends">Deine meistgehörten Titel</string>
+    <string name="lbl_user_top_trends_sub">Deine persönlichen Trends basierend auf deinem Verlauf</string>
+    <string name="lbl_discover_national_trends">Trends in deinem Land</string>
+    <string name="lbl_discover_national_trends_sub">Die meistgespielten Hits in deiner Region</string>
 </resources>

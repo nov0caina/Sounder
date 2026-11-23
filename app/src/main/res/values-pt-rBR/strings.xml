@@ -574,4 +574,12 @@ AVISO: Tenha cuidado ao controlar este serviço. Se você fechá-lo e então ten
     <string name="dialog_download_waiting_title">Download na fila</string>
     <string name="dialog_download_waiting_message">Esta música está aguardando para ser baixada. Você pode baixá-la agora usando dados móveis ou removê-la da fila.</string>
     <string name="genre_christian_worship">Música Cristã e Adoração</string>
+    <string name="lbl_hero_spotlight_for_you">Destaque para Você</string>
+    <string name="lbl_hero_spotlight_time_morning">Para a sua manhã</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Para a sua tarde</string>
+    <string name="lbl_hero_spotlight_time_evening">Para a sua noite</string>
+    <string name="lbl_user_top_trends">Suas mais ouvidas</string>
+    <string name="lbl_user_top_trends_sub">Suas tendências pessoais com base no que você ouve</string>
+    <string name="lbl_discover_national_trends">Em alta no seu país</string>
+    <string name="lbl_discover_national_trends_sub">Os sucessos mais tocados na sua região</string>
 </resources>

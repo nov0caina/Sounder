@@ -564,4 +564,12 @@ FIGYELEM: Légy óvatos a szolgáltatás vezérlésével, mert ha bezárod, majd
     <string name="dialog_download_waiting_title">Letöltés várólistán</string>
     <string name="dialog_download_waiting_message">Ez a dal letöltésre vár. Letöltheted most mobiladattal, vagy eltávolíthatod a várólistáról.</string>
     <string name="genre_christian_worship">Keresztény zene és dicsőítés</string>
+    <string name="lbl_hero_spotlight_for_you">Neked válogatva</string>
+    <string name="lbl_hero_spotlight_time_morning">Reggeli kiemelt</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Délutáni kiemelt</string>
+    <string name="lbl_hero_spotlight_time_evening">Esti kiemelt</string>
+    <string name="lbl_user_top_trends">Legtöbbet hallgatott dalaid</string>
+    <string name="lbl_user_top_trends_sub">Személyes trendjeid a lejátszások alapján</string>
+    <string name="lbl_discover_national_trends">Felkapott az országodban</string>
+    <string name="lbl_discover_national_trends_sub">A régiód legjátszottabb slágerei</string>
 </resources>

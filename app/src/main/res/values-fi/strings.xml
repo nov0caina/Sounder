@@ -570,4 +570,12 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="dialog_download_waiting_title">Lataus jonossa</string>
     <string name="dialog_download_waiting_message">Tämä kappale odottaa latausta. Voit ladata sen nyt mobiilidatalla tai poistaa sen jonosta.</string>
     <string name="genre_christian_worship">Kristillinen musiikki ja ylistys</string>
+    <string name="lbl_hero_spotlight_for_you">Suositeltu sinulle</string>
+    <string name="lbl_hero_spotlight_time_morning">Aamun kohokohta</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Iltapäivän kohokohta</string>
+    <string name="lbl_hero_spotlight_time_evening">Illan kohokohta</string>
+    <string name="lbl_user_top_trends">Kuunnelluimmat kappaleesi</string>
+    <string name="lbl_user_top_trends_sub">Henkilökohtaiset trendisi kuuntelun perusteella</string>
+    <string name="lbl_discover_national_trends">Trendaavat maassasi</string>
+    <string name="lbl_discover_national_trends_sub">Alueesi soitetuimmat hitit</string>
 </resources>

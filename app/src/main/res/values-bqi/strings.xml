@@ -351,4 +351,12 @@
     <string name="dialog_download_waiting_title">دانلود در صف</string>
     <string name="dialog_download_waiting_message">ای آهنگ منتظر دانلودە. إیترین إیسو وا اینترنت گوشی دانلودش بکونین یا د صف پاکش بکونین.</string>
     <string name="genre_christian_worship">موسیقی مسیحی و نیایش</string>
+    <string name="lbl_hero_spotlight_for_you">پیشنهاد سی تو</string>
+    <string name="lbl_hero_spotlight_time_morning">برگزیده صو</string>
+    <string name="lbl_hero_spotlight_time_afternoon">برگزیده پسین</string>
+    <string name="lbl_hero_spotlight_time_evening">برگزیده شو</string>
+    <string name="lbl_user_top_trends">بیشتر گوش داده‌یل تو</string>
+    <string name="lbl_user_top_trends_sub">گرایش‌یل شخصی تو بر اساس گوش دادن</string>
+    <string name="lbl_discover_national_trends">داغ‌ترین‌یل ولات تو</string>
+    <string name="lbl_discover_national_trends_sub">آهنگ‌یل پرشنونده منطقه تو</string>
 </resources>

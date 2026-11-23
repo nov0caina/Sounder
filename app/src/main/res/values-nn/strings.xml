@@ -570,4 +570,12 @@ VARING: Ver varsam med å styra denne tenesta; om du lèt henne atter og så pr�
     <string name="dialog_download_waiting_title">Nedlasting i kø</string>
     <string name="dialog_download_waiting_message">Denne songen ventar på å bli lasta ned. Du kan laste han ned no med mobildata eller fjerne han frå køen.</string>
     <string name="genre_christian_worship">Kristen musikk og lovsong</string>
+    <string name="lbl_hero_spotlight_for_you">Utvalt for deg</string>
+    <string name="lbl_hero_spotlight_time_morning">Morgonens høgdepunkt</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Ettermiddagens høgdepunkt</string>
+    <string name="lbl_hero_spotlight_time_evening">Kveldens høgdepunkt</string>
+    <string name="lbl_user_top_trends">Dine mest spelte</string>
+    <string name="lbl_user_top_trends_sub">Dine personlege trendar basert på avspeling</string>
+    <string name="lbl_discover_national_trends">Trendar i landet ditt</string>
+    <string name="lbl_discover_national_trends_sub">Dei mest spelte hitane i regionen din</string>
 </resources>

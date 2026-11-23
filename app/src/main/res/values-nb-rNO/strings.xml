@@ -546,4 +546,12 @@ ADVARSEL: Vær varsom med å kontrollere denne tjenesten, hvis du lukker den og 
     <string name="dialog_download_waiting_title">Nedlasting i kø</string>
     <string name="dialog_download_waiting_message">Denne sangen venter på å bli lastet ned. Du kan laste den ned nå med mobildata eller fjerne den fra køen.</string>
     <string name="genre_christian_worship">Kristen musikk og lovsang</string>
+    <string name="lbl_hero_spotlight_for_you">Utvalgt for deg</string>
+    <string name="lbl_hero_spotlight_time_morning">Morgenens høydepunkt</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Ettermiddagens høydepunkt</string>
+    <string name="lbl_hero_spotlight_time_evening">Kveldens høydepunkt</string>
+    <string name="lbl_user_top_trends">Dine mest spilte</string>
+    <string name="lbl_user_top_trends_sub">Dine personlige trender basert på avspilling</string>
+    <string name="lbl_discover_national_trends">Trender i landet ditt</string>
+    <string name="lbl_discover_national_trends_sub">De mest spilte hitene i din region</string>
 </resources>

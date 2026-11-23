@@ -544,4 +544,12 @@
     <string name="dialog_download_waiting_title">Prenos v čakalni vrsti</string>
     <string name="dialog_download_waiting_message">Ta skladba čaka na prenos. Prenesete jo lahko zdaj z mobilnimi podatki ali odstranite iz čakalne vrste.</string>
     <string name="genre_christian_worship">Krščanska glasba in slavljenje</string>
+    <string name="lbl_hero_spotlight_for_you">Izbrano za vas</string>
+    <string name="lbl_hero_spotlight_time_morning">Jutranji izbor</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Popoldanski izbor</string>
+    <string name="lbl_hero_spotlight_time_evening">Večerni izbor</string>
+    <string name="lbl_user_top_trends">Vaše najbolj predvajane</string>
+    <string name="lbl_user_top_trends_sub">Vaši osebni trendi na podlagi poslušanja</string>
+    <string name="lbl_discover_national_trends">Priljubljeno v vaši državi</string>
+    <string name="lbl_discover_national_trends_sub">Največkrat predvajane uspešnice v vaši regiji</string>
 </resources>

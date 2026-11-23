@@ -570,4 +570,12 @@ XƏBƏRDARLIQ: Bu xidmətdən istifadə edərkən diqqətli olun, onu bağlasan�
     <string name="dialog_download_waiting_title">Endirmə növbədədir</string>
     <string name="dialog_download_waiting_message">Bu mahnı endirilməyi gözləyir. Onu indi mobil internetlə endirə və ya növbədən silə bilərsiniz.</string>
     <string name="genre_christian_worship">Xristian və İbadət</string>
+    <string name="lbl_hero_spotlight_for_you">Sizin üçün seçilmiş</string>
+    <string name="lbl_hero_spotlight_time_morning">Səhər seçimi</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Günorta seçimi</string>
+    <string name="lbl_hero_spotlight_time_evening">Axşam seçimi</string>
+    <string name="lbl_user_top_trends">Ən çox dinlədikləriniz</string>
+    <string name="lbl_user_top_trends_sub">Dinləmə vərdişlərinizə əsaslanan şəxsi trendlər</string>
+    <string name="lbl_discover_national_trends">Ölkənizdə trenddə olanlar</string>
+    <string name="lbl_discover_national_trends_sub">Bölgənizdə ən çox dinlənilən hitlər</string>
 </resources>

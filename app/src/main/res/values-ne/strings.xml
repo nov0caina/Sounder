@@ -321,4 +321,12 @@
     <string name="dialog_download_waiting_title">डाउनलोड लाममा छ</string>
     <string name="dialog_download_waiting_message">यो गीत डाउनलोड हुन पर्खिरहेको छ। तपाईं यसलाई अहिले मोबाइल डेटाबाट डाउनलोड गर्न वा लामबाट हटाउन सक्नुहुन्छ।</string>
     <string name="genre_christian_worship">क्रिश्चियन र आराधना संगीत</string>
+    <string name="lbl_hero_spotlight_for_you">तपाईंको लागि विशेष</string>
+    <string name="lbl_hero_spotlight_time_morning">बिहानीको रोजाइ</string>
+    <string name="lbl_hero_spotlight_time_afternoon">दिउँसोको रोजाइ</string>
+    <string name="lbl_hero_spotlight_time_evening">साँझको रोजाइ</string>
+    <string name="lbl_user_top_trends">तपाईंले धेरै सुनेका गीतहरू</string>
+    <string name="lbl_user_top_trends_sub">तपाईंको सुन्ने बानीमा आधारित व्यक्तिगत ट्रेन्डहरू</string>
+    <string name="lbl_discover_national_trends">तपाईंको देशमा ट्रेन्डिङ</string>
+    <string name="lbl_discover_national_trends_sub">तपाईंको क्षेत्रमा सबैभन्दा धेरै सुनिएका हिट गीतहरू</string>
 </resources>

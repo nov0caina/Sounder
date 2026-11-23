@@ -390,4 +390,12 @@
     <string name="dialog_download_waiting_title">การดาวน์โหลดอยู่ในคิว</string>
     <string name="dialog_download_waiting_message">เพลงนี้กำลังรอดาวน์โหลด คุณสามารถดาวน์โหลดได้ทันทีด้วยข้อมูลมือถือหรือลบออกจากคิว</string>
     <string name="genre_christian_worship">เพลงคริสเตียนและนมัสการ</string>
+    <string name="lbl_hero_spotlight_for_you">คัดสรรเพื่อคุณ</string>
+    <string name="lbl_hero_spotlight_time_morning">เพลงเด่นยามเช้า</string>
+    <string name="lbl_hero_spotlight_time_afternoon">เพลงเด่นยามบ่าย</string>
+    <string name="lbl_hero_spotlight_time_evening">เพลงเด่นยามเย็น</string>
+    <string name="lbl_user_top_trends">เพลงที่คุณฟังบ่อยที่สุด</string>
+    <string name="lbl_user_top_trends_sub">เทรนด์ส่วนตัวของคุณจากการฟังเพลง</string>
+    <string name="lbl_discover_national_trends">มาแรงในประเทศของคุณ</string>
+    <string name="lbl_discover_national_trends_sub">เพลงฮิตที่เล่นมากที่สุดในภูมิภาคของคุณ</string>
 </resources>

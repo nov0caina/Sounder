@@ -570,4 +570,12 @@
     <string name="dialog_download_waiting_title">Изтегляне в опашката</string>
     <string name="dialog_download_waiting_message">Тази песен очаква изтегляне. Можете да я изтеглите сега с мобилни данни или да я премахнете от опашката.</string>
     <string name="genre_christian_worship">Християнска музика и хваление</string>
+    <string name="lbl_hero_spotlight_for_you">Избрано за вас</string>
+    <string name="lbl_hero_spotlight_time_morning">Сутрешен фокус</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Следобеден фокус</string>
+    <string name="lbl_hero_spotlight_time_evening">Вечерен фокус</string>
+    <string name="lbl_user_top_trends">Най-слушаните от вас</string>
+    <string name="lbl_user_top_trends_sub">Вашите лични тенденции според слушането</string>
+    <string name="lbl_discover_national_trends">Набиращи популярност в страната ви</string>
+    <string name="lbl_discover_national_trends_sub">Най-слушаните хитове във вашия регион</string>
 </resources>

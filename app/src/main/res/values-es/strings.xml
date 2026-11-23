@@ -576,4 +576,12 @@ ADVERTENCIA: Ten cuidado al controlar este servicio, si lo cierras y luego inten
     <string name="dialog_download_waiting_title">Descarga en cola</string>
     <string name="dialog_download_waiting_message">Esta canción está esperando para descargarse. Puedes descargarla ahora con datos móviles o quitarla de la cola.</string>
     <string name="genre_christian_worship">Música Cristiana y Alabanzas</string>
+    <string name="lbl_hero_spotlight_for_you">Destacado para Ti</string>
+    <string name="lbl_hero_spotlight_time_morning">Para tu mañana</string>
+    <string name="lbl_hero_spotlight_time_afternoon">Para tu tarde</string>
+    <string name="lbl_hero_spotlight_time_evening">Para tu noche</string>
+    <string name="lbl_user_top_trends">Tus más escuchadas</string>
+    <string name="lbl_user_top_trends_sub">Tus tendencias personales según lo que más escuchas</string>
+    <string name="lbl_discover_national_trends">Tendencias del País</string>
+    <string name="lbl_discover_national_trends_sub">Los éxitos más escuchados en tu región</string>
 </resources>
