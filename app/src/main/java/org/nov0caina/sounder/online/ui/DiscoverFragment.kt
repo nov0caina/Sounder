@@ -88,6 +88,8 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
     private var recentAdapter: RecentArtistsAdapter? = null
     private var moodAdapter: HomeMoodAdapter? = null
     private var genreAdapter: GenreAdapter? = null
+    private var nationalTrendingAdapter: OnlineTrackAdapter? = null
+    private var discoverTrendingTouchHelper: ItemTouchHelper? = null
 
     private var currentFilter = ResultFilter.ALL
     private var isAllTracksExpanded = false
@@ -141,14 +143,8 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
 
         binding.discoverNormalToolbar.inflateMenu(R.menu.toolbar_discover)
 
-        // Setup Mood Chips in Discover Home (leaves search bar clear)
-        val quickMoods = listOf(
-            HomeMoodItem("all", R.string.home_mood_all, "all"),
-            HomeMoodItem("workout", R.string.home_mood_workout, "workout"),
-            HomeMoodItem("focus", R.string.home_mood_focus, "focus"),
-            HomeMoodItem("party", R.string.home_mood_party, "party"),
-            HomeMoodItem("chill", R.string.home_mood_chill, "chill")
-        )
+        // Setup Deduplicated Activity Mood Chips in Discover Home (leaves search bar clear)
+        val quickMoods = DiscoverViewModel.ACTIVITY_MOODS
         moodAdapter = HomeMoodAdapter(
             moods = quickMoods,
             selectedMoodId = "all",
@@ -220,9 +216,49 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
                     allTrackAdapter?.refreshTrackStates()
                     compactTrackAdapter?.refreshTrackStates()
                     topPickAdapter?.refreshTrackStates()
+                    nationalTrendingAdapter?.refreshTrackStates()
                 },
                 onDeleted = { musicModel.refresh() }
             )
+        }
+
+        // --- National Trending Charts Section in Discover Home ---
+        nationalTrendingAdapter = OnlineTrackAdapter(
+            onPlayClick = { track -> discoverModel.playTrendingTrack(track, playbackModel) },
+            onDownloadClick = handleDownloadTrack,
+            isDownloaded = { track -> discoverModel.isDownloaded(track) },
+            isDownloading = { track -> discoverModel.isEnqueuedOrDownloading(track) },
+            isCurrentlyLoading = { trackId -> discoverModel.loadingTrackId.value == trackId },
+            showRanking = true,
+            onTrackLongClick = { track -> openSongMenu(track) },
+            onTrackMenuClick = { track -> openSongMenu(track) }
+        )
+        binding.discoverTrendingRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = nationalTrendingAdapter
+            isNestedScrollingEnabled = false
+        }
+        discoverTrendingTouchHelper = ItemTouchHelper(
+            SwipeToQueueHelper(
+                canSwipe = { true },
+                onEnqueue = { viewHolder ->
+                    val pos = viewHolder.bindingAdapterPosition
+                    if (pos != RecyclerView.NO_POSITION) {
+                        val track = nationalTrendingAdapter?.currentList?.getOrNull(pos)
+                        if (track != null) {
+                            discoverModel.enqueueTrack(track, playbackModel) {
+                                context?.showToast(R.string.lng_queue_added)
+                            }
+                        }
+                    }
+                }
+            )
+        ).also { it.attachToRecyclerView(binding.discoverTrendingRecycler) }
+        binding.discoverTrendingToggleBtn.setOnClickListener {
+            discoverModel.toggleTrendingExpanded()
+        }
+        binding.discoverTrendingToggleContainer.setOnClickListener {
+            discoverModel.toggleTrendingExpanded()
         }
 
         // --- TAB 1 (ALL): Ranked Tracks List ---
@@ -389,6 +425,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
             setProgressBackgroundColorSchemeColor(refreshBg)
             setOnRefreshListener {
                 recentAdapter?.notifyDataSetChanged()
+                discoverModel.loadNationalTrends(forceRefresh = true)
                 isRefreshing = false
             }
         }
@@ -594,10 +631,19 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
             }
         }
 
+        // Collect National Trending Charts for Discover Home
+        collect(discoverModel.nationalTrendingTracks) { tracks ->
+            updateDiscoverTrendingCharts(tracks, discoverModel.isTrendingExpanded.value)
+        }
+        collect(discoverModel.isTrendingExpanded) { isExpanded ->
+            updateDiscoverTrendingCharts(discoverModel.nationalTrendingTracks.value, isExpanded)
+        }
+
         collect(discoverModel.loadingTrackId) {
             allTrackAdapter?.refreshTrackStates()
             compactTrackAdapter?.refreshTrackStates()
             topPickAdapter?.refreshTrackStates()
+            nationalTrendingAdapter?.refreshTrackStates()
         }
 
         collect(discoverModel.downloads) { items ->
@@ -607,6 +653,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
                 allTrackAdapter?.refreshTrackStates()
                 compactTrackAdapter?.refreshTrackStates()
                 topPickAdapter?.refreshTrackStates()
+                nationalTrendingAdapter?.refreshTrackStates()
             }
         }
 
@@ -614,6 +661,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
             allTrackAdapter?.refreshTrackStates()
             compactTrackAdapter?.refreshTrackStates()
             topPickAdapter?.refreshTrackStates()
+            nationalTrendingAdapter?.refreshTrackStates()
         }
 
         collect(listModel.menu.flow) { menu ->
@@ -983,6 +1031,27 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         }
     }
 
+    private fun updateDiscoverTrendingCharts(allTracks: List<OnlineTrack>, isExpanded: Boolean) {
+        val b = binding ?: return
+        b.discoverTrendingSection.isVisible = allTracks.isNotEmpty()
+        val tracksToShow = if (isExpanded) allTracks.take(20) else allTracks.take(5)
+        b.discoverTrendingToggleContainer.isVisible = allTracks.size > 5
+        if (isExpanded) {
+            b.discoverTrendingToggleBtn.setText(R.string.home_show_top_5)
+        } else {
+            b.discoverTrendingToggleBtn.setText(R.string.home_show_top_20)
+        }
+
+        val targetRotation = if (isExpanded) 180f else 0f
+        b.discoverTrendingToggleChevron.animate()
+            .rotation(targetRotation)
+            .setDuration(250)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
+
+        nationalTrendingAdapter?.submitList(tracksToShow)
+    }
+
     private fun stopSkeletonPulse() {
         skeletonAnimator?.cancel()
         val b = binding ?: return
@@ -1023,6 +1092,8 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         allTouchHelper = null
         songsTabTouchHelper?.attachToRecyclerView(null)
         songsTabTouchHelper = null
+        discoverTrendingTouchHelper?.attachToRecyclerView(null)
+        discoverTrendingTouchHelper = null
         binding.discoverArtistsTabRecycler.adapter = null
         binding.discoverSongsTabRecycler.adapter = null
         binding.discoverRecycler.adapter = null
@@ -1030,7 +1101,9 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         binding.recentArtistsRecycler.adapter = null
         binding.discoverMoodsRecycler.adapter = null
         binding.genresRecycler.adapter = null
+        binding.discoverTrendingRecycler.adapter = null
         allTrackAdapter = null
+        nationalTrendingAdapter = null
         relatedArtistsAdapter = null
         artistsHeroAdapter = null
         artistsHeaderAdapter = null

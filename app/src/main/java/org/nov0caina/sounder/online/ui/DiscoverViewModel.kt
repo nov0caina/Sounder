@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.nov0caina.sounder.R
 import org.nov0caina.sounder.online.download.DownloadItem
 import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.model.HomeMoodItem
 import org.nov0caina.sounder.online.model.OnlineSearchResult
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.model.OnlineTrack
@@ -108,7 +111,40 @@ class DiscoverViewModel @Inject constructor(
     private val _loadingTrackId = MutableStateFlow<String?>(null)
     val loadingTrackId: StateFlow<String?> = _loadingTrackId.asStateFlow()
 
+    private val _nationalTrendingTracks = MutableStateFlow<List<OnlineTrack>>(emptyList())
+    val nationalTrendingTracks: StateFlow<List<OnlineTrack>> = _nationalTrendingTracks.asStateFlow()
+
+    private val _isTrendingExpanded = MutableStateFlow(false)
+    val isTrendingExpanded: StateFlow<Boolean> = _isTrendingExpanded.asStateFlow()
+
     val activeQueryState: StateFlow<DiscoverQueryState> = queryCoordinator.activeQueryState
+
+    init {
+        loadNationalTrends()
+    }
+
+    fun loadNationalTrends(forceRefresh: Boolean = false) {
+        viewModelScope.launch {
+            try {
+                val feed = repository.getHomeFeed(forceRefresh = forceRefresh)
+                _nationalTrendingTracks.value = feed.trendingTracks
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w(e, "Failed to load national trending charts in Discover")
+            }
+        }
+    }
+
+    fun toggleTrendingExpanded() {
+        _isTrendingExpanded.value = !_isTrendingExpanded.value
+    }
+
+    fun playTrendingTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
+        val tracks = _nationalTrendingTracks.value
+        val ordered = HomeFeedViewModel.buildOrderedSectionQueue(track, tracks)
+        playAllTracks(ordered, playbackModel, shuffle = false)
+    }
 
     fun search(query: String) = queryCoordinator.search(viewModelScope, query)
 
@@ -301,4 +337,18 @@ class DiscoverViewModel @Inject constructor(
     fun isEnqueuedOrDownloading(track: OnlineTrack): Boolean = downloadManager.isEnqueuedOrDownloading(track)
 
     fun isEnqueuedOrDownloading(trackId: String): Boolean = downloadManager.isEnqueuedOrDownloading(trackId)
+
+    companion object {
+        /**
+         * Deduplicated activity and vibe moods for Discover quick filtering.
+         * Musical genres (e.g. Rock, Latin) are omitted here as they live in the genre card grid.
+         */
+        val ACTIVITY_MOODS: List<HomeMoodItem> = listOf(
+            HomeMoodItem("all", R.string.home_mood_all, "all"),
+            HomeMoodItem("workout", R.string.home_mood_workout, "workout"),
+            HomeMoodItem("focus", R.string.home_mood_focus, "focus"),
+            HomeMoodItem("party", R.string.home_mood_party, "party"),
+            HomeMoodItem("chill", R.string.home_mood_chill, "chill"),
+        )
+    }
 }
