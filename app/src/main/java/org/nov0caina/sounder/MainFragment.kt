@@ -202,12 +202,17 @@ class MainFragment :
         val glassSurfaceColor = context.getAttrColorCompat(MR.attr.colorSurfaceContainerLow).defaultColor
         val navBackground = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(glassSurfaceColor)
-            alpha = PlaybackBarGlassPolicy.FROSTED_GLASS_ALPHA
+            alpha = 0
             elevation = 6f
         }
         binding.mainBottomNav.background = navBackground
+        val backdropBlur = binding.mainBackdropBlur
+        backdropBlur.backdropSource = binding.mainContentContainer
+        binding.mainContentContainer.onContentChangedListener = {
+            backdropBlur.markBackdropDirty()
+        }
         playbackSheetBehavior.sheetBackgroundDrawable.alpha =
-            PlaybackBarGlassPolicy.sheetBackgroundAlpha(0f)
+            PlaybackBarGlassPolicy.sheetBackgroundAlpha(0f, hasBackdropBlur = true)
         maxScaleXDistance =
             context.getDimen(MR.dimen.m3_back_progress_bottom_container_max_scale_x_distance)
 
@@ -369,6 +374,8 @@ class MainFragment :
 
     override fun onDestroyBinding(binding: FragmentMainBinding) {
         super.onDestroyBinding(binding)
+        binding.mainContentContainer.onContentChangedListener = null
+        binding.mainBackdropBlur.backdropSource = null
         speedDialBackCallback = null
         sheetBackCallback = null
         detailBackCallback = null
@@ -431,7 +438,9 @@ class MainFragment :
         if (abs(sheetBg.topLeftCornerResolvedSize - currentCornerSize) > 0.01f) {
             sheetBg.setCornerSize(currentCornerSize)
         }
-        val targetSheetAlpha = PlaybackBarGlassPolicy.sheetBackgroundAlpha(playbackRatio)
+        val backdropBlur = binding.mainBackdropBlur
+        val targetSheetAlpha =
+            PlaybackBarGlassPolicy.sheetBackgroundAlpha(playbackRatio, hasBackdropBlur = true)
         if (sheetBg.alpha != targetSheetAlpha) {
             sheetBg.alpha = targetSheetAlpha
         }
@@ -443,8 +452,48 @@ class MainFragment :
                 playbackSheetBehavior.state != BackportBottomSheetBehavior.STATE_HIDDEN &&
                 binding.playbackSheet.top < binding.mainLayout.height
         val bottomNavTop = bottomNav.top.takeIf { it > 0 } ?: binding.mainLayout.height
-        val isNavCoveredBySheet = sheetVisible && binding.playbackSheet.top < bottomNavTop
-        val targetNavBgAlpha = if (isNavCoveredBySheet) 0 else PlaybackBarGlassPolicy.FROSTED_GLASS_ALPHA
+        val bottomNavVisible =
+            bottomNav.isVisible && bottomNav.alpha > 0f && bottomNavTop < binding.mainLayout.height
+        val isPlaybackGlassActive =
+            PlaybackBarGlassPolicy.isGlassActive(playbackRatio, sheetVisible)
+        val isBottomNavGlassActive =
+            PlaybackBarGlassPolicy.isBottomNavGlassActive(
+                bottomNavVisible = bottomNavVisible,
+                sheetVisible = sheetVisible,
+                sheetTop = binding.playbackSheet.top,
+                bottomNavTop = bottomNavTop,
+            )
+        val showBackdropBlur = isPlaybackGlassActive || isBottomNavGlassActive
+
+        if (showBackdropBlur) {
+            val targetTop =
+                when {
+                    isPlaybackGlassActive && bottomNavVisible ->
+                        min(binding.playbackSheet.top, bottomNavTop)
+                    isPlaybackGlassActive -> binding.playbackSheet.top
+                    else -> bottomNavTop
+                }
+            val targetRadius = if (isPlaybackGlassActive) currentCornerSize else 0f
+            val targetScaleX = if (isPlaybackGlassActive) binding.playbackSheet.scaleX else 1f
+            if (backdropBlur.isInvisible) {
+                backdropBlur.isInvisible = false
+            }
+            if (abs(backdropBlur.translationY - targetTop.toFloat()) > 0.5f) {
+                backdropBlur.translationY = targetTop.toFloat()
+            }
+            backdropBlur.cornerRadiusPx = targetRadius
+            backdropBlur.scaleX = targetScaleX
+            backdropBlur.pivotX = binding.playbackSheet.pivotX
+            backdropBlur.alpha = 1f
+            backdropBlur.refreshBackdrop()
+        } else if (!backdropBlur.isInvisible) {
+            backdropBlur.isInvisible = true
+        }
+
+        val isNavCovered =
+            (sheetVisible && binding.playbackSheet.top < bottomNavTop) || showBackdropBlur
+        val targetNavBgAlpha =
+            if (isNavCovered) 0 else PlaybackBarGlassPolicy.FROSTED_GLASS_ALPHA
         val navBg = bottomNav.background
         if (navBg != null && navBg.alpha != targetNavBgAlpha) {
             navBg.alpha = targetNavBgAlpha

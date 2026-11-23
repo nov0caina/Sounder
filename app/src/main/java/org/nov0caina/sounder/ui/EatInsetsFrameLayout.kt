@@ -19,7 +19,10 @@
 package org.nov0caina.sounder.ui
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewParent
 import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
@@ -34,6 +37,8 @@ class EatInsetsFrameLayout
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr: Int = 0) :
     FrameLayout(context, attrs, defStyleAttr) {
+    var onContentChangedListener: (() -> Unit)? = null
+
     init {
         clipToPadding = false
     }
@@ -41,5 +46,22 @@ constructor(context: Context, attrs: AttributeSet? = null, @AttrRes defStyleAttr
     override fun dispatchApplyWindowInsets(insets: WindowInsets): WindowInsets {
         super.dispatchApplyWindowInsets(insets)
         return insets
+    }
+
+    override fun onDescendantInvalidated(child: View, target: View) {
+        super.onDescendantInvalidated(child, target)
+        onContentChangedListener?.invoke()
+    }
+
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
+    override fun invalidateChildInParent(location: IntArray?, dirty: Rect?): ViewParent? {
+        onContentChangedListener?.invoke()
+        return super.invalidateChildInParent(location, dirty)
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        onContentChangedListener?.invoke()
     }
 }

@@ -46,7 +46,7 @@ import org.nov0caina.sounder.util.getAttrColorCompat
  */
 object PlaybackBarGlassPolicy {
     const val FROSTED_GLASS_ALPHA = 218 // ~85% translucent frosted glass wash
-    const val BLUR_RADIUS_DP = 24f
+    const val BLUR_RADIUS_DP = 28f
     const val DOWNSCALE_FACTOR = 0.25f
     const val SOLID_TRANSITION_START_RATIO = 0.02f
     const val SOLID_TRANSITION_END_RATIO = 0.45f
@@ -55,24 +55,26 @@ object PlaybackBarGlassPolicy {
 
     /**
      * Alpha of the playback sheet background:
-     * When minimized (`0f`), it has translucent frosted glass alpha ([FROSTED_GLASS_ALPHA]).
-     * As the playback sheet expands from minimized toward the panel reveal midpoint (`0.45f`),
-     * it smoothly transitions from translucent to 100% solid opacity (255).
+     * When a dedicated [BackdropBlurView] is active behind the sheet (`hasBackdropBlur = true`),
+     * the sheet background starts at 0 (transparent) while collapsed so the frosted glass layer
+     * shines through cleanly without double-tinting, and smoothly ramps to 100% solid opacity (255)
+     * as the playback sheet expands toward the panel reveal midpoint (`0.45f`).
      */
-    fun sheetBackgroundAlpha(playbackRatio: Float): Int {
+    fun sheetBackgroundAlpha(playbackRatio: Float, hasBackdropBlur: Boolean = false): Int {
+        val startAlpha = if (hasBackdropBlur) 0 else FROSTED_GLASS_ALPHA
         val clamped = playbackRatio.coerceIn(0f, 1f)
-        if (clamped <= SOLID_TRANSITION_START_RATIO) return FROSTED_GLASS_ALPHA
+        if (clamped <= SOLID_TRANSITION_START_RATIO) return startAlpha
         if (clamped >= SOLID_TRANSITION_END_RATIO) return 255
         val t =
             (clamped - SOLID_TRANSITION_START_RATIO) /
                 (SOLID_TRANSITION_END_RATIO - SOLID_TRANSITION_START_RATIO)
         val smooth = t * t * (3f - 2f * t)
-        return (FROSTED_GLASS_ALPHA + smooth * (255f - FROSTED_GLASS_ALPHA)).roundToInt().coerceIn(0, 255)
+        return (startAlpha + smooth * (255f - startAlpha)).roundToInt().coerceIn(0, 255)
     }
 
     /** Complement ratio of the glass state. */
     fun glassViewAlpha(playbackRatio: Float): Float {
-        val currentAlpha = sheetBackgroundAlpha(playbackRatio)
+        val currentAlpha = sheetBackgroundAlpha(playbackRatio, hasBackdropBlur = false)
         return 1f - ((currentAlpha - FROSTED_GLASS_ALPHA).toFloat() / (255f - FROSTED_GLASS_ALPHA)).coerceIn(0f, 1f)
     }
 
@@ -105,15 +107,15 @@ object PlaybackBarGlassPolicy {
         val fraction =
             if (hasHardwareBlur) {
                 when {
-                    surfaceLuminance < AMOLED_LUMINANCE_THRESHOLD -> 0.62f
-                    surfaceLuminance < DARK_LUMINANCE_THRESHOLD -> 0.56f
-                    else -> 0.58f
+                    surfaceLuminance < AMOLED_LUMINANCE_THRESHOLD -> 0.74f
+                    surfaceLuminance < DARK_LUMINANCE_THRESHOLD -> 0.72f
+                    else -> 0.72f
                 }
             } else {
                 when {
-                    surfaceLuminance < AMOLED_LUMINANCE_THRESHOLD -> 0.88f
-                    surfaceLuminance < DARK_LUMINANCE_THRESHOLD -> 0.84f
-                    else -> 0.86f
+                    surfaceLuminance < AMOLED_LUMINANCE_THRESHOLD -> 0.90f
+                    surfaceLuminance < DARK_LUMINANCE_THRESHOLD -> 0.88f
+                    else -> 0.88f
                 }
             }
         return (fraction * 255f).roundToInt().coerceIn(0, 255)
@@ -121,13 +123,13 @@ object PlaybackBarGlassPolicy {
 
     fun resolveRimAlpha(isDarkTheme: Boolean): Int = if (isDarkTheme) 42 else 92
 
-    fun computeScaledDimension(fullPx: Int, downscale: Float = 0.25f): Int =
+    fun computeScaledDimension(fullPx: Int, downscale: Float = DOWNSCALE_FACTOR): Int =
         ceil(fullPx * downscale).toInt().coerceAtLeast(1)
 
     fun computeScaledBlurRadius(
         density: Float,
-        blurRadiusDp: Float = 24f,
-        downscale: Float = 0.25f,
+        blurRadiusDp: Float = BLUR_RADIUS_DP,
+        downscale: Float = DOWNSCALE_FACTOR,
     ): Float = (blurRadiusDp * density * downscale).coerceAtLeast(1f)
 }
 
@@ -175,6 +177,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 
     private var hardwareBackdrop: Any? = null
     private var isCapturing = false
+    private var isBackdropDirty = true
     private var lastDx = Int.MIN_VALUE
     private var lastDy = Int.MIN_VALUE
     private var lastVisibleHeight = -1
@@ -201,6 +204,16 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                     PlaybackBarGlassPolicy.resolveRimAlpha(isDarkTheme),
                 )
         }
+
+    /**
+     * Marks the underlying [backdropSource] content as changed so the next pre-draw cycle records a
+     * fresh blurred slice without causing idle invalidation loops.
+     */
+    fun markBackdropDirty() {
+        if (!isCapturing) {
+            isBackdropDirty = true
+        }
+    }
 
     /**
      * Re-record the region of [backdropSource] currently behind this view. Invoked from
@@ -265,6 +278,7 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
         if (visibleHeight <= 0) return
 
         val geometryChanged = dx != lastDx || dy != lastDy || visibleHeight != lastVisibleHeight
+        val contentDirty = isBackdropDirty
         lastDx = dx
         lastDy = dy
         lastVisibleHeight = visibleHeight
@@ -274,6 +288,9 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
                 (hardwareBackdrop as? Api31RenderNodeBackdrop)
                     ?: Api31RenderNodeBackdrop().also { hardwareBackdrop = it }
             val hadRecorded = holder.hasRecorded
+            if (!geometryChanged && !contentDirty && hadRecorded) {
+                return
+            }
             isCapturing = true
             try {
                 holder.record(
@@ -288,15 +305,20 @@ constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
             } finally {
                 isCapturing = false
             }
-            if (allowInvalidate && (geometryChanged || !hadRecorded)) {
+            isBackdropDirty = false
+            if (allowInvalidate && (geometryChanged || contentDirty || !hadRecorded)) {
                 invalidate()
             }
-        } else if (allowInvalidate && geometryChanged) {
-            invalidate()
+        } else {
+            isBackdropDirty = false
+            if (allowInvalidate && geometryChanged) {
+                invalidate()
+            }
         }
     }
 
     private fun resetCachedCapture() {
+        isBackdropDirty = true
         lastDx = Int.MIN_VALUE
         lastDy = Int.MIN_VALUE
         lastVisibleHeight = -1

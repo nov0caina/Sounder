@@ -73,6 +73,12 @@
         android:alpha="0"
         android:background="?attr/colorSurfaceContainerLow" />
 
+    <org.nov0caina.sounder.playback.ui.BackdropBlurView
+        android:id="@+id/main_backdrop_blur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/playback_sheet"
         android:layout_width="match_parent"
