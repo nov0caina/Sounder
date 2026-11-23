@@ -24,6 +24,7 @@ import java.text.Normalizer
 import javax.inject.Inject
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveName
+import org.nov0caina.sounder.music.resolveNames
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -73,7 +74,14 @@ class SearchEngineImpl @Inject constructor(@ApplicationContext private val conte
         return SearchEngine.Items(
             songs =
                 items.songs?.searchListImpl(query) { q, song ->
-                    song.path.name?.contains(q, ignoreCase = true) == true
+                    val artistScore = FuzzySearchMatcher.scoreMatch(song.artists.resolveNames(context), q)
+                    val albumScore = FuzzySearchMatcher.scoreMatch(song.album.name.resolve(context), q)
+                    val pathScore = song.path.name?.let { FuzzySearchMatcher.scoreMatch(it, q) } ?: 0
+                    maxOf(
+                        if (artistScore > 0) artistScore - 5 else 0,
+                        if (albumScore > 0) albumScore - 10 else 0,
+                        if (pathScore > 0) pathScore - 15 else 0,
+                    )
                 },
             albums = items.albums?.searchListImpl(query),
             artists = items.artists?.searchListImpl(query),
@@ -83,53 +91,54 @@ class SearchEngineImpl @Inject constructor(@ApplicationContext private val conte
     }
 
     /**
-     * Search a given [Music] list.
-     *
-     * @param query The query to search for. The routine will compare this query to the names of
-     *   each object in the list and
-     * @param fallback Additional comparison code to run if the item does not match the query
-     *   initially. This can be used to compare against additional attributes to improve search
-     *   result quality.
+     * Search a given [Music] list using exact, normalized, and typo-tolerant matching, ranking
+     * higher-relevance matches first.
      */
     private inline fun <T : Music> Collection<T>.searchListImpl(
         query: String,
-        fallback: (String, T) -> Boolean = { _, _ -> false },
+        fallbackScore: (String, T) -> Int = { _, _ -> 0 },
     ) =
-        filter {
-                // See if the plain resolved name matches the query. This works for most
-                // situations.
-                val name = it.name
+        mapNotNull { item ->
+                val name = item.name
+                val resolvedName = (item as? Playlist)?.resolveName(context) ?: name.resolve(context)
 
-                val resolvedName = (it as? Playlist)?.resolveName(context) ?: name.resolve(context)
-                if (resolvedName.contains(query, ignoreCase = true)) {
-                    return@filter true
-                }
-
-                // See if the sort name matches. This can sometimes be helpful as certain
-                // libraries
-                // will tag sort names to have a alphabetized version of the title.
-                if (name is Name.Known) {
-                    val sortName = name.sort
-                    if (sortName != null && sortName.contains(query, ignoreCase = true)) {
-                        return@filter true
+                val primaryScore = when {
+                    resolvedName.equals(query, ignoreCase = true) -> 105
+                    resolvedName.contains(query, ignoreCase = true) -> 95
+                    else -> {
+                        val sortScore = if (name is Name.Known && name.sort != null) {
+                            val sortName = name.sort!!
+                            if (sortName.contains(query, ignoreCase = true)) {
+                                90
+                            } else {
+                                FuzzySearchMatcher.scoreMatch(sortName, query)
+                            }
+                        } else {
+                            0
+                        }
+                        val normalizedName =
+                            NORMALIZE_POST_PROCESSING_REGEX.replace(
+                                Normalizer.normalize(resolvedName, Normalizer.Form.NFKD),
+                                "",
+                            )
+                        val normScore = if (normalizedName.contains(query, ignoreCase = true)) {
+                            88
+                        } else {
+                            0
+                        }
+                        maxOf(
+                            FuzzySearchMatcher.scoreMatch(resolvedName, query),
+                            sortScore,
+                            normScore,
+                        )
                     }
                 }
 
-                // As a last-ditch effort, see if the normalized name matches. This will replace
-                // any non-alphabetical characters with their alphabetical representations,
-                // which
-                // could make it match the query.
-                val normalizedName =
-                    NORMALIZE_POST_PROCESSING_REGEX.replace(
-                        Normalizer.normalize(resolvedName, Normalizer.Form.NFKD),
-                        "",
-                    )
-                if (normalizedName.contains(query, ignoreCase = true)) {
-                    return@filter true
-                }
-
-                fallback(query, it)
+                val totalScore = maxOf(primaryScore, fallbackScore(query, item))
+                if (totalScore > 0) item to totalScore else null
             }
+            .sortedByDescending { it.second }
+            .map { it.first }
             .ifEmpty { null }
 
     private companion object {
