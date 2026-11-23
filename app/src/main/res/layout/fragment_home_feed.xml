@@ -81,19 +81,7 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-                <!-- 2. Mood & Category Filter Chips -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/home_mood_chips_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:paddingStart="@dimen/spacing_medium"
-                    android:paddingEnd="@dimen/spacing_medium"
-                    android:paddingTop="@dimen/spacing_tiny"
-                    android:paddingBottom="@dimen/spacing_small"
-                    tools:listitem="@layout/item_home_mood_chip" />
-
-                <!-- 3. Quick Access 2x3 Grid Section -->
+                <!-- 2. Quick Access 2x3 Grid Section -->
                 <LinearLayout
                     android:id="@+id/home_quick_access_section"
                     android:layout_width="match_parent"
@@ -369,6 +357,7 @@
                     android:paddingTop="@dimen/spacing_large">
 
                     <TextView
+                        android:id="@+id/trending_tracks_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/spacing_medium"
@@ -378,6 +367,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/trending_tracks_sub"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/spacing_medium"

@@ -12,6 +12,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +53,12 @@ import org.nov0caina.sounder.util.SongMatcher
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 
+data class HeroSpotlightState(
+    val track: OnlineTrack,
+    val isPersonalized: Boolean,
+    val badgeResId: Int,
+)
+
 @HiltViewModel
 class HomeFeedViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -88,25 +96,21 @@ class HomeFeedViewModel @Inject constructor(
     private val _personalizedQuickPicks = MutableStateFlow<List<OnlineTrack>>(emptyList())
     val personalizedQuickPicks: StateFlow<List<OnlineTrack>> = _personalizedQuickPicks.asStateFlow()
 
+    private val _userTopTrends = MutableStateFlow<List<OnlineTrack>>(emptyList())
+    val userTopTrends: StateFlow<List<OnlineTrack>> = _userTopTrends.asStateFlow()
+
+    private val _isShowingPersonalTrends = MutableStateFlow(false)
+    val isShowingPersonalTrends: StateFlow<Boolean> = _isShowingPersonalTrends.asStateFlow()
+
+    private val _heroSpotlight = MutableStateFlow<HeroSpotlightState?>(null)
+    val heroSpotlight: StateFlow<HeroSpotlightState?> = _heroSpotlight.asStateFlow()
+
     private val _artistRecommendedAlbums = MutableStateFlow<List<OnlineAlbumSummary>>(emptyList())
     private val _favoriteArtistTracks = MutableStateFlow<List<OnlineTrack>>(emptyList())
     private var lastLoadedSeedKey: String? = null
     private var becauseYouListenJob: Job? = null
     private val resolvedArtworkCache = ConcurrentHashMap<String, String>()
     private val attemptedArtworkLookups = ConcurrentHashMap.newKeySet<String>()
-
-    val availableMoods: List<HomeMoodItem> = listOf(
-        HomeMoodItem("all", org.nov0caina.sounder.R.string.home_mood_all, "all"),
-        HomeMoodItem("workout", org.nov0caina.sounder.R.string.home_mood_workout, "workout"),
-        HomeMoodItem("focus", org.nov0caina.sounder.R.string.home_mood_focus, "focus"),
-        HomeMoodItem("party", org.nov0caina.sounder.R.string.home_mood_party, "party"),
-        HomeMoodItem("chill", org.nov0caina.sounder.R.string.home_mood_chill, "chill"),
-        HomeMoodItem("latin", org.nov0caina.sounder.R.string.home_mood_latin, "latin"),
-        HomeMoodItem("rock", org.nov0caina.sounder.R.string.home_mood_rock, "rock")
-    )
-
-    private val _selectedMood = MutableStateFlow("all")
-    val selectedMood: StateFlow<String> = _selectedMood.asStateFlow()
 
     private val _isTopChartsExpanded = MutableStateFlow(false)
     val isTopChartsExpanded: StateFlow<Boolean> = _isTopChartsExpanded.asStateFlow()
@@ -349,8 +353,7 @@ class HomeFeedViewModel @Inject constructor(
                         _feedData.value.trendingAlbums.isNotEmpty() ||
                         _feedData.value.popularArtists.isNotEmpty()
                     if (wasOffline || !hasExistingData) {
-                        val categoryQuery = if (_selectedMood.value == "all") null else _selectedMood.value
-                        loadFeed(force = !hasExistingData, category = categoryQuery)
+                        loadFeed(force = !hasExistingData, category = null)
                     }
                 }
             }
@@ -391,14 +394,6 @@ class HomeFeedViewModel @Inject constructor(
             queue.first()
         }
         playbackModel.play(targetSong, queue, if (shuffle) ShuffleMode.ON else ShuffleMode.OFF)
-    }
-
-    fun selectMood(moodId: String) {
-        if (_selectedMood.value == moodId) return
-        _selectedMood.value = moodId
-        val moodItem = availableMoods.find { it.id == moodId }
-        val categoryQuery = if (moodId == "all") null else moodItem?.query ?: moodId
-        loadFeed(force = false, category = categoryQuery)
     }
 
     private var loadFeedJob: Job? = null
@@ -516,12 +511,34 @@ class HomeFeedViewModel @Inject constructor(
             catalogTrendingAlbums = feed.trendingAlbums,
             insightsEnabled = insightsEnabled,
         )
-        _personalizedQuickPicks.value = buildPersonalizedQuickPicks(
+        val picks = buildPersonalizedQuickPicks(
             records = records,
             favoriteAndContextualTracks = _favoriteArtistTracks.value + _becauseYouListenTracks.value,
             catalogQuickPicks = feed.quickPicks,
             insightsEnabled = insightsEnabled,
         ).map(::enrichTrackArtwork)
+        _personalizedQuickPicks.value = picks
+
+        val personalTrends = buildUserTopTrends(
+            records = records,
+            insightsEnabled = insightsEnabled,
+            maxTracks = 20,
+        ).map(::enrichTrackArtwork)
+        _userTopTrends.value = personalTrends
+        _isShowingPersonalTrends.value = insightsEnabled && personalTrends.isNotEmpty()
+
+        val (currentTimeOfDay, currentDayOfWeek) = PlaybackRecord.currentContext()
+        _heroSpotlight.value = selectHeroSpotlight(
+            records = records,
+            becauseYouListenTracks = _becauseYouListenTracks.value,
+            favoriteArtistTracks = _favoriteArtistTracks.value,
+            feed = feed,
+            currentTimeOfDay = currentTimeOfDay,
+            currentDayOfWeek = currentDayOfWeek,
+            insightsEnabled = insightsEnabled,
+        )?.let { state ->
+            state.copy(track = enrichTrackArtwork(state.track))
+        }
     }
 
     private fun enrichTrackArtwork(track: OnlineTrack): OnlineTrack {
@@ -670,53 +687,189 @@ class HomeFeedViewModel @Inject constructor(
 
     private suspend fun ensureAtLeast20Tracks(
         baseTracks: List<OnlineTrack>,
-        fallbackCategory: String? = null
+        fallbackCategory: String? = null,
+        allowTrendingFallback: Boolean = false,
+        seedTrack: OnlineTrack? = null,
     ): List<OnlineTrack> {
         if (baseTracks.size >= 20) return baseTracks
         val result = baseTracks.toMutableList()
         val seenIds = result.map { it.id }.toMutableSet()
 
-        // 1. First complement with quickPicks and trendingTracks from feedData
-        val feed = _feedData.value
-        for (t in feed.quickPicks + feed.trendingTracks) {
-            if (seenIds.add(t.id)) {
-                result.add(t)
-                if (result.size >= 25) return result
+        if (allowTrendingFallback) {
+            val feed = _feedData.value
+            for (t in feed.trendingTracks + feed.quickPicks) {
+                if (seenIds.add(t.id)) {
+                    result.add(t)
+                    if (result.size >= 25) return result
+                }
             }
+
+            if (result.size < 20 && NetworkUtil.isConnected(context)) {
+                try {
+                    val query = when {
+                        !fallbackCategory.isNullOrBlank() -> "$fallbackCategory top hits"
+                        else -> "Top 50 musica mundial"
+                    }
+                    val searchResult = repository.queryCategorized(query)
+                    for (t in searchResult.tracks) {
+                        if (seenIds.add(t.id)) {
+                            result.add(t)
+                            if (result.size >= 25) break
+                        }
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w(e, "Error fetching trending fallback tracks to reach 20")
+                }
+            }
+            return result
         }
 
-        // 2. If still < 20, fetch from search
-        if (result.size < 20) {
+        // Personalized sections must NEVER inject national trendingTracks.
+        // Complement strictly with contextual radio or user's affine tracks.
+        val seed = seedTrack ?: baseTracks.firstOrNull()
+        if (seed != null && seed.artist.isNotBlank() && NetworkUtil.isConnected(context)) {
             try {
-                val query = when {
-                    !fallbackCategory.isNullOrBlank() -> "$fallbackCategory top hits"
-                    else -> "Top 50 musica mundial"
-                }
-                val searchResult = repository.queryCategorized(query)
-                for (t in searchResult.tracks) {
+                val radioSearch = repository.queryCategorized("${seed.artist} radio")
+                val filteredRadio = filterContextualRadioTracks(seed, radioSearch.tracks, maxTracks = 25)
+                for (t in filteredRadio) {
                     if (seenIds.add(t.id)) {
                         result.add(t)
-                        if (result.size >= 25) break
+                        if (result.size >= 25) return result
                     }
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
-                L.w(e, "Error fetching fallback tracks to reach 20")
+                L.w(e, "Error fetching contextual backfill tracks for %s", seed.artist)
             }
         }
 
+        for (t in _favoriteArtistTracks.value + _becauseYouListenTracks.value + _personalizedQuickPicks.value) {
+            if (isValidMusicTrack(t) && seenIds.add(t.id)) {
+                result.add(t)
+                if (result.size >= 25) break
+            }
+        }
         return result
+    }
+
+    private suspend fun fetchContextualRadioTracks(seedTrack: OnlineTrack): List<OnlineTrack> {
+        val collected = mutableListOf<OnlineTrack>()
+        val seedArtist = seedTrack.artist.trim()
+
+        if (NetworkUtil.isConnected(context) && seedArtist.isNotBlank()) {
+            try {
+                val radioResult = repository.queryCategorized("$seedArtist radio")
+                collected.addAll(radioResult.tracks)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.w(e, "Radio search failed for %s", seedArtist)
+            }
+
+            if (collected.size < 15) {
+                try {
+                    val artistSearch = repository.queryCategorized(seedArtist)
+                    collected.addAll(artistSearch.tracks)
+                    val artistId = artistSearch.artists.firstOrNull()?.id
+                    if (!artistId.isNullOrBlank()) {
+                        val detail = repository.browseArtist(artistId, recordRecent = false)
+                        collected.addAll(detail.topSongs)
+                        for (related in detail.relatedArtists.take(3)) {
+                            try {
+                                val relResult = repository.queryCategorized(related.name)
+                                collected.addAll(relResult.tracks.take(4))
+                            } catch (e: CancellationException) {
+                                throw e
+                            } catch (_: Exception) {
+                            }
+                        }
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w(e, "Fallback artist radio browse failed for %s", seedArtist)
+                }
+            }
+        }
+
+        // Offline or sparse backfill: stay strictly within user's affinity pools, NEVER trendingTracks
+        val normSeedArtist = SongMatcher.normalizeArtist(seedArtist)
+        val sameArtistLocal = (_becauseYouListenTracks.value + _favoriteArtistTracks.value + _personalizedQuickPicks.value)
+            .filter { cand ->
+                val normCand = SongMatcher.normalizeArtist(cand.artist)
+                normCand.isNotEmpty() && normSeedArtist.isNotEmpty() &&
+                    (normCand == normSeedArtist || normCand.contains(normSeedArtist))
+            }
+        collected.addAll(sameArtistLocal)
+        collected.addAll(_becauseYouListenTracks.value)
+        collected.addAll(_favoriteArtistTracks.value)
+        collected.addAll(_personalizedQuickPicks.value)
+        return collected
+    }
+
+    fun playRadioForTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
+        viewModelScope.launch {
+            _loadingTrackId.value = track.id
+            try {
+                val (targetSong, radioCandidates) = coroutineScope {
+                    val songDeferred = async { resolveToPlayableSong(track) }
+                    val radioDeferred = async { fetchContextualRadioTracks(track) }
+                    songDeferred.await() to radioDeferred.await()
+                }
+                val orderedTracks = filterContextualRadioTracks(track, radioCandidates, maxTracks = 25)
+                val queue = orderedTracks.map { t ->
+                    if (t.id == track.id) targetSong else toSong(t)
+                }
+                val finalQueue = if (queue.any { it.uid.toString() == targetSong.uid.toString() }) {
+                    queue
+                } else {
+                    listOf(targetSong) + queue
+                }
+
+                playbackModel.play(targetSong, finalQueue)
+
+                launch(Dispatchers.IO) {
+                    orderedTracks.filter { it.id != track.id }.take(20).forEach { t ->
+                        try {
+                            if (downloadManager.getDownloadedFile(t)?.exists() != true &&
+                                downloadManager.findSongInLibrary(t) == null
+                            ) {
+                                repository.resolveStreamInfo(t.id, title = t.title, artist = t.artist)
+                            }
+                        } catch (e: Exception) {
+                            L.w(e, "Radio prefetch failed for track %s", t.title)
+                        }
+                    }
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                L.e(e, "Error starting contextual radio for %s", track.title)
+            } finally {
+                _loadingTrackId.value = null
+            }
+        }
     }
 
     fun playTrackWithQueue(
         track: OnlineTrack,
         sectionTracks: List<OnlineTrack>,
-        playbackModel: PlaybackViewModel
+        playbackModel: PlaybackViewModel,
+        allowTrendingFallback: Boolean = false,
     ) {
         viewModelScope.launch {
             _loadingTrackId.value = track.id
             try {
                 val targetSong = resolveToPlayableSong(track)
-                val enrichedTracks = ensureAtLeast20Tracks(sectionTracks, currentLoadedCategory)
+                val enrichedTracks = ensureAtLeast20Tracks(
+                    baseTracks = sectionTracks,
+                    fallbackCategory = currentLoadedCategory,
+                    allowTrendingFallback = allowTrendingFallback,
+                    seedTrack = track,
+                )
 
                 val queue = enrichedTracks.map { t ->
                     if (t.id == track.id) targetSong else toSong(t)
@@ -752,33 +905,53 @@ class HomeFeedViewModel @Inject constructor(
     }
 
     fun playTrendingTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
-        val tracks = _feedData.value.trendingTracks
-        playTrackWithQueue(track, tracks.ifEmpty { listOf(track) }, playbackModel)
+        val ordered = buildOrderedSectionQueue(track, _feedData.value.trendingTracks)
+        playTrackWithQueue(track, ordered, playbackModel, allowTrendingFallback = true)
+    }
+
+    fun playHeroSpotlight(spotlight: HeroSpotlightState, playbackModel: PlaybackViewModel) {
+        if (spotlight.isPersonalized) {
+            playRadioForTrack(spotlight.track, playbackModel)
+        } else {
+            playTrendingTrack(spotlight.track, playbackModel)
+        }
+    }
+
+    fun playTopChartsTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
+        if (_isShowingPersonalTrends.value && _userTopTrends.value.isNotEmpty()) {
+            val ordered = buildOrderedSectionQueue(track, _userTopTrends.value)
+            playTrackWithQueue(track, ordered, playbackModel, allowTrendingFallback = false)
+        } else {
+            playTrendingTrack(track, playbackModel)
+        }
     }
 
     fun playQuickPickTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
-        val tracks = _feedData.value.quickPicks
-        playTrackWithQueue(track, tracks.ifEmpty { listOf(track) }, playbackModel)
+        val picks = _personalizedQuickPicks.value.ifEmpty { _feedData.value.quickPicks }.take(24)
+        val ordered = buildOrderedSectionQueue(track, picks)
+        playTrackWithQueue(track, ordered, playbackModel, allowTrendingFallback = false)
     }
 
     fun playQuickAccessTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
-        val recommendations = _feedData.value.quickPicks.ifEmpty { _feedData.value.trendingTracks }
-        playTrackWithQueue(track, recommendations.ifEmpty { listOf(track) }, playbackModel)
+        playRadioForTrack(track, playbackModel)
     }
 
     fun playBecauseYouListenTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
-        val tracks = _becauseYouListenTracks.value
-        playTrackWithQueue(track, tracks.ifEmpty { listOf(track) }, playbackModel)
+        val ordered = buildOrderedSectionQueue(track, _becauseYouListenTracks.value)
+        playTrackWithQueue(track, ordered, playbackModel, allowTrendingFallback = false)
     }
 
     fun playTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
+        val picks = _personalizedQuickPicks.value.ifEmpty { _feedData.value.quickPicks }
+        val userTrends = _userTopTrends.value
         val feed = _feedData.value
-        val sectionTracks = when {
-            feed.quickPicks.any { it.id == track.id } -> feed.quickPicks
-            feed.trendingTracks.any { it.id == track.id } -> feed.trendingTracks
-            else -> feed.quickPicks + feed.trendingTracks
+        when {
+            picks.any { it.id == track.id } -> playQuickPickTrack(track, playbackModel)
+            _becauseYouListenTracks.value.any { it.id == track.id } -> playBecauseYouListenTrack(track, playbackModel)
+            userTrends.any { it.id == track.id } -> playTopChartsTrack(track, playbackModel)
+            feed.trendingTracks.any { it.id == track.id } -> playTrendingTrack(track, playbackModel)
+            else -> playRadioForTrack(track, playbackModel)
         }
-        playTrackWithQueue(track, sectionTracks.ifEmpty { listOf(track) }, playbackModel)
     }
 
     fun playArtist(artist: OnlineArtistSummary, playbackModel: PlaybackViewModel) {
@@ -1211,6 +1384,148 @@ class HomeFeedViewModel @Inject constructor(
             }
 
             return result
+        }
+
+        /**
+         * Orders a section queue starting at [selectedTrack] followed by the remaining tracks in sequence.
+         */
+        internal fun buildOrderedSectionQueue(
+            selectedTrack: OnlineTrack,
+            sectionTracks: List<OnlineTrack>,
+        ): List<OnlineTrack> {
+            if (sectionTracks.isEmpty()) return listOf(selectedTrack)
+            val idx = sectionTracks.indexOfFirst {
+                it.id == selectedTrack.id ||
+                    SongMatcher.matches(it.title, it.artist, selectedTrack.title, selectedTrack.artist)
+            }
+            if (idx == -1) return listOf(selectedTrack) + sectionTracks
+            return listOf(selectedTrack) + sectionTracks.drop(idx + 1) + sectionTracks.take(idx)
+        }
+
+        /**
+         * Filters and deduplicates contextual radio candidates around [seedTrack], keeping the seed first
+         * and rejecting unrelated tracks whose title matches the artist name.
+         */
+        internal fun filterContextualRadioTracks(
+            seedTrack: OnlineTrack,
+            candidates: List<OnlineTrack>,
+            maxTracks: Int = 25,
+        ): List<OnlineTrack> {
+            val result = mutableListOf<OnlineTrack>()
+            val seenIds = mutableSetOf<String>()
+            val seenKeys = mutableSetOf<String>()
+            if (isValidMusicTrack(seedTrack)) {
+                addUniqueTrack(result, seenIds, seenKeys, seedTrack)
+            } else {
+                result.add(seedTrack)
+                seenIds.add(seedTrack.id)
+            }
+
+            val artistNorm = SongMatcher.normalizeArtist(seedTrack.artist)
+            val artistTitleNorm = SongMatcher.normalizeTitle(seedTrack.artist)
+
+            for (t in candidates) {
+                if (result.size >= maxTracks) break
+                if (!isValidMusicTrack(t)) continue
+                val tTitleNorm = SongMatcher.normalizeTitle(t.title)
+                val tArtistNorm = SongMatcher.normalizeArtist(t.artist)
+                val matchesSeedArtist = artistNorm.isNotEmpty() && tArtistNorm.isNotEmpty() &&
+                    (tArtistNorm == artistNorm || tArtistNorm.contains(artistNorm) || tArtistNorm.startsWith(artistNorm))
+                if (artistTitleNorm.isNotEmpty() && tTitleNorm == artistTitleNorm && !matchesSeedArtist) {
+                    continue
+                }
+                addUniqueTrack(result, seenIds, seenKeys, t)
+            }
+            return result
+        }
+
+        /**
+         * Ranks the user's most played tracks from on-device playback records for personal Top Charts.
+         * Returns empty list when history is absent or insights are disabled (triggering cold-start fallback).
+         */
+        internal fun buildUserTopTrends(
+            records: List<PlaybackRecord>,
+            insightsEnabled: Boolean = true,
+            maxTracks: Int = 20,
+        ): List<OnlineTrack> {
+            if (!insightsEnabled || records.isEmpty()) return emptyList()
+            val result = mutableListOf<OnlineTrack>()
+            val seenIds = mutableSetOf<String>()
+            val seenKeys = mutableSetOf<String>()
+
+            val ranked = groupValidPlaybackRecords(records)
+                .map { group ->
+                    Triple(pickRepresentativeTrack(group), group.size, group.maxOf { it.timestamp })
+                }
+                .sortedWith(
+                    compareByDescending<Triple<OnlineTrack, Int, Long>> { it.second }
+                        .thenByDescending { it.third }
+                )
+                .map { it.first }
+
+            for (track in ranked) {
+                if (result.size >= maxTracks) break
+                addUniqueTrack(result, seenIds, seenKeys, track)
+            }
+            return result
+        }
+
+        /**
+         * Selects the Hero Spotlight track dynamically:
+         * - Cold-start (no playback history or insights disabled): national trending #1.
+         * - With listening history: personalized recommendation adapted to the time of day.
+         */
+        internal fun selectHeroSpotlight(
+            records: List<PlaybackRecord>,
+            becauseYouListenTracks: List<OnlineTrack>,
+            favoriteArtistTracks: List<OnlineTrack>,
+            feed: HomeFeedData,
+            currentTimeOfDay: Int,
+            currentDayOfWeek: Int,
+            insightsEnabled: Boolean = true,
+        ): HeroSpotlightState? {
+            val timeBadgeRes = when (currentTimeOfDay) {
+                PlaybackRecord.TIME_MORNING -> org.nov0caina.sounder.R.string.lbl_hero_spotlight_time_morning
+                PlaybackRecord.TIME_AFTERNOON -> org.nov0caina.sounder.R.string.lbl_hero_spotlight_time_afternoon
+                else -> org.nov0caina.sounder.R.string.lbl_hero_spotlight_time_evening
+            }
+
+            if (insightsEnabled && (records.isNotEmpty() || becauseYouListenTracks.isNotEmpty() || favoriteArtistTracks.isNotEmpty())) {
+                val validPersonalized = (becauseYouListenTracks + favoriteArtistTracks).filter(::isValidMusicTrack)
+                val timeMatchedRecord = groupValidPlaybackRecords(records)
+                    .map { group ->
+                        val timeMatches = group.count { it.timeOfDay == currentTimeOfDay }
+                        val dayMatches = group.count { it.dayOfWeek == currentDayOfWeek }
+                        val score = (group.size * 1.0) + (timeMatches * 3.0) + (dayMatches * 1.5)
+                        val latestTs = group.maxOf { it.timestamp }
+                        Triple(pickRepresentativeTrack(group), score, latestTs)
+                    }
+                    .sortedWith(
+                        compareByDescending<Triple<OnlineTrack, Double, Long>> { it.second }
+                            .thenByDescending { it.third }
+                    )
+                    .firstOrNull()
+                    ?.first
+
+                val spotlightTrack = validPersonalized.firstOrNull { cand ->
+                    cand.id != timeMatchedRecord?.id
+                } ?: timeMatchedRecord ?: validPersonalized.firstOrNull()
+
+                if (spotlightTrack != null) {
+                    return HeroSpotlightState(
+                        track = spotlightTrack,
+                        isPersonalized = true,
+                        badgeResId = timeBadgeRes,
+                    )
+                }
+            }
+
+            val coldStartTrack = feed.trendingTracks.firstOrNull() ?: return null
+            return HeroSpotlightState(
+                track = coldStartTrack,
+                isPersonalized = false,
+                badgeResId = org.nov0caina.sounder.R.string.header_hero_spotlight_tag,
+            )
         }
     }
 }

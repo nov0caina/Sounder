@@ -70,7 +70,6 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
     private val musicModel: MusicViewModel by activityViewModels()
     private val listModel: ListViewModel by activityViewModels()
 
-    private var moodChipsAdapter: HomeMoodAdapter? = null
     private var quickAccessAdapter: HomeQuickAccessAdapter? = null
     private var trendingTracksAdapter: OnlineTrackAdapter? = null
     private var trendingAlbumsAdapter: OnlineAlbumCardAdapter? = null
@@ -124,19 +123,6 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         }
         binding.homeGreetingText.setText(greetingRes)
 
-        // Setup Mood Filter Chips
-        moodChipsAdapter = HomeMoodAdapter(
-            moods = feedModel.availableMoods,
-            selectedMoodId = feedModel.selectedMood.value,
-            onMoodSelected = { moodItem ->
-                feedModel.selectMood(moodItem.id)
-            }
-        )
-        binding.homeMoodChipsRecycler.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = moodChipsAdapter
-        }
-
         // Setup Quick Access 2x3 Grid
         quickAccessAdapter = HomeQuickAccessAdapter(
             onItemClick = { item -> handleQuickAccessClick(item) },
@@ -157,13 +143,13 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             adapter = quickAccessAdapter
         }
 
-        // Setup Trending Tracks adapter (Billboard Numbered)
+        // Setup Top Charts adapter (User Personal Trends or Cold-Start Billboard)
         trendingTracksAdapter = OnlineTrackAdapter(
             onPlayClick = { track ->
                 if (isCurrentTrack(track)) {
                     playbackModel.togglePlaying()
                 } else {
-                    feedModel.playTrendingTrack(track, playbackModel)
+                    feedModel.playTopChartsTrack(track, playbackModel)
                 }
             },
             onDownloadClick = { track -> handleDownloadTrack(track) },
@@ -314,9 +300,7 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             ctx.getAttrColorCompat(com.google.android.material.R.attr.colorSurfaceContainerHigh).defaultColor
         )
         binding.homeSwipeRefresh.setOnRefreshListener {
-            val mood = feedModel.selectedMood.value
-            val catQuery = if (mood == "all") null else feedModel.availableMoods.find { it.id == mood }?.query ?: mood
-            feedModel.loadFeed(force = true, category = catQuery)
+            feedModel.loadFeed(force = true, category = null)
         }
 
         // Offline Backup ("Respaldo Musical") setup for network disconnection
@@ -386,8 +370,18 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
                 return@collect
             }
 
-            updateHeroSpotlight(data.trendingTracks.firstOrNull())
-            updateTopCharts(data.trendingTracks, feedModel.isTopChartsExpanded.value)
+            if (feedModel.heroSpotlight.value == null) {
+                data.trendingTracks.firstOrNull()?.let { track ->
+                    updateHeroSpotlight(
+                        HeroSpotlightState(
+                            track = track,
+                            isPersonalized = false,
+                            badgeResId = R.string.header_hero_spotlight_tag,
+                        )
+                    )
+                }
+            }
+            refreshTopCharts()
 
             val displayAlbums = feedModel.personalizedTrendingAlbums.value.ifEmpty { data.trendingAlbums }
             binding.trendingAlbumsSection.isVisible = displayAlbums.isNotEmpty()
@@ -404,6 +398,18 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             if (data.trendingTracks.isEmpty()) {
                 revealContent()
             }
+        }
+
+        collect(feedModel.heroSpotlight) { state ->
+            updateHeroSpotlight(state)
+        }
+
+        collect(feedModel.userTopTrends) {
+            refreshTopCharts()
+        }
+
+        collect(feedModel.isShowingPersonalTrends) {
+            refreshTopCharts()
         }
 
         collect(feedModel.personalizedTrendingAlbums) { albums ->
@@ -456,14 +462,9 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             becauseYouListenAdapter?.submitList(tracks.take(18).chunked(3))
         }
 
-        // Collect selected mood
-        collect(feedModel.selectedMood) { moodId ->
-            moodChipsAdapter?.setSelectedMood(moodId)
-        }
-
         // Collect top charts expanded state
-        collect(feedModel.isTopChartsExpanded) { isExpanded ->
-            updateTopCharts(feedModel.feedData.value.trendingTracks, isExpanded)
+        collect(feedModel.isTopChartsExpanded) {
+            refreshTopCharts()
         }
 
         // Collect loading state
@@ -642,6 +643,21 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         b.homeSwipeRefresh.isVisible = true
     }
 
+    private fun refreshTopCharts() {
+        val b = binding ?: return
+        val isPersonal = feedModel.isShowingPersonalTrends.value && feedModel.userTopTrends.value.isNotEmpty()
+        val tracks = if (isPersonal) {
+            b.trendingTracksHeader.setText(R.string.lbl_user_top_trends)
+            b.trendingTracksSub.setText(R.string.lbl_user_top_trends_sub)
+            feedModel.userTopTrends.value
+        } else {
+            b.trendingTracksHeader.setText(R.string.header_trending_tracks)
+            b.trendingTracksSub.setText(R.string.header_trending_tracks_sub)
+            feedModel.feedData.value.trendingTracks
+        }
+        updateTopCharts(tracks, feedModel.isTopChartsExpanded.value)
+    }
+
     private fun updateTopCharts(allTracks: List<OnlineTrack>, isExpanded: Boolean) {
         val b = binding ?: return
         val hasTrendingTracks = allTracks.isNotEmpty()
@@ -666,16 +682,18 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         }
     }
 
-    private fun updateHeroSpotlight(topTrack: OnlineTrack?) {
+    private fun updateHeroSpotlight(state: HeroSpotlightState?) {
         val b = binding ?: return
+        val topTrack = state?.track
         currentHeroTrack = topTrack
-        if (topTrack == null) {
+        if (state == null || topTrack == null) {
             b.homeHeroSpotlight.heroSpotlightAmbientGlow.clearGlow()
             b.homeHeroSpotlight.root.isVisible = false
             return
         }
 
         b.homeHeroSpotlight.root.isVisible = true
+        b.homeHeroSpotlight.heroSpotlightTag.setText(state.badgeResId)
         b.homeHeroSpotlight.heroSpotlightTitle.text = topTrack.title
         val artistSubtitle = if (topTrack.durationMs > 0) {
             "${topTrack.artist} • ${topTrack.formattedDuration()}"
@@ -703,14 +721,14 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             if (isCurrentTrack(topTrack)) {
                 playbackModel.togglePlaying()
             } else {
-                feedModel.playTrendingTrack(topTrack, playbackModel)
+                feedModel.playHeroSpotlight(state, playbackModel)
             }
         }
         b.homeHeroSpotlight.heroSpotlightCard.setOnClickListener {
             if (isCurrentTrack(topTrack)) {
                 playbackModel.togglePlaying()
             } else {
-                feedModel.playTrendingTrack(topTrack, playbackModel)
+                feedModel.playHeroSpotlight(state, playbackModel)
             }
         }
         b.homeHeroSpotlight.heroSpotlightCard.setOnLongClickListener {
@@ -972,7 +990,6 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         quickPicksTouchHelper = null
         stopSkeletonPulse()
         skeletonAnimator = null
-        moodChipsAdapter = null
         quickAccessAdapter = null
         trendingTracksAdapter = null
         trendingAlbumsAdapter = null
