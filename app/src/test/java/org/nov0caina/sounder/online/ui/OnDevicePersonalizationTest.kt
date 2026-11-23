@@ -2,9 +2,11 @@ package org.nov0caina.sounder.online.ui
 
 import java.util.Calendar
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.nov0caina.sounder.R
 import org.nov0caina.sounder.online.db.CachedTrackEntity
 import org.nov0caina.sounder.online.db.PlaybackRecord
 import org.nov0caina.sounder.online.model.HomeFeedData
@@ -366,5 +368,102 @@ class OnDevicePersonalizationTest {
             insightsEnabled = true,
         )
         assertEquals(listOf("c1", "c2"), coldStartResult.map { it.id })
+    }
+
+    @Test
+    fun buildOrderedSectionQueue_preservesFull24CarouselStartingAtClickedTrack() {
+        val picks = (1..24).map { track("qp$it", "Pick $it", "Artist $it") }
+        val selected = picks[4] // qp5
+
+        val queue = HomeFeedViewModel.buildOrderedSectionQueue(selected, picks)
+        assertEquals(24, queue.size)
+        assertEquals("qp5", queue.first().id)
+        assertEquals("qp6", queue[1].id)
+        assertEquals("qp24", queue[19].id)
+        assertEquals("qp1", queue[20].id)
+        assertEquals("qp4", queue.last().id)
+    }
+
+    @Test
+    fun filterContextualRadioTracks_isolatesRadioAndFiltersTitleConfusion() {
+        val seed = track("seed1", "Let It Die", "Ozzy Osbourne")
+        val candidates = listOf(
+            track("r1", "Crazy Train", "Ozzy Osbourne"),
+            track("r2", "War Pigs", "Black Sabbath"),
+            track("confused", "Ozzy Osbourne", "Unrelated Pop Band"), // title matches artist name
+            track("metric", "Invalid Artist Track", "45M monthly audience"),
+            track("seed1", "Let It Die", "Ozzy Osbourne"), // duplicate seed
+        )
+
+        val radio = HomeFeedViewModel.filterContextualRadioTracks(seed, candidates)
+        assertEquals(listOf("seed1", "r1", "r2"), radio.map { it.id })
+        assertFalse(radio.any { it.id == "confused" || it.id == "metric" })
+    }
+
+    @Test
+    fun buildUserTopTrends_ranksByPlayCountAndFallsBackOnColdStart() {
+        val records = listOf(
+            record("t1", "Frequent Song", "Artist 1", PlaybackRecord.TIME_MORNING, timestamp = 1_000L),
+            record("t1", "Frequent Song", "Artist 1", PlaybackRecord.TIME_AFTERNOON, timestamp = 2_000L),
+            record("t1", "Frequent Song", "Artist 1", PlaybackRecord.TIME_NIGHT, timestamp = 3_000L),
+            record("t2", "Second Song", "Artist 2", PlaybackRecord.TIME_EVENING, timestamp = 5_000L),
+            record("t2", "Second Song", "Artist 2", PlaybackRecord.TIME_EVENING, timestamp = 6_000L),
+            record("t3", "Recent Single", "Artist 3", PlaybackRecord.TIME_NIGHT, timestamp = 9_000L),
+        )
+
+        val personalTrends = HomeFeedViewModel.buildUserTopTrends(records, insightsEnabled = true)
+        assertEquals(listOf("t1", "t2", "t3"), personalTrends.map { it.id })
+
+        val coldStart = HomeFeedViewModel.buildUserTopTrends(emptyList(), insightsEnabled = true)
+        assertTrue(coldStart.isEmpty())
+
+        val disabled = HomeFeedViewModel.buildUserTopTrends(records, insightsEnabled = false)
+        assertTrue(disabled.isEmpty())
+    }
+
+    @Test
+    fun selectHeroSpotlight_adaptsToHistoryAndTimeOrColdStartTrending() {
+        val nationalTrending = track("nat1", "Sin Fin De Lucro", "LA DIFERENCIA")
+        val feed = HomeFeedData(trendingTracks = listOf(nationalTrending))
+
+        // Cold start: national #1
+        val coldStart = HomeFeedViewModel.selectHeroSpotlight(
+            records = emptyList(),
+            becauseYouListenTracks = emptyList(),
+            favoriteArtistTracks = emptyList(),
+            feed = feed,
+            currentTimeOfDay = PlaybackRecord.TIME_MORNING,
+            currentDayOfWeek = Calendar.MONDAY,
+            insightsEnabled = true,
+        )
+        assertEquals("nat1", coldStart?.track?.id)
+        assertFalse(coldStart?.isPersonalized ?: true)
+        assertEquals(R.string.header_hero_spotlight_tag, coldStart?.badgeResId)
+
+        // With history in afternoon: personalized spotlight
+        val records = listOf(
+            record("fav1", "Let It Die", "Ozzy Osbourne", PlaybackRecord.TIME_AFTERNOON, timestamp = 1_000L)
+        )
+        val recTrack = track("rec1", "Mama I'm Coming Home", "Ozzy Osbourne")
+        val personalized = HomeFeedViewModel.selectHeroSpotlight(
+            records = records,
+            becauseYouListenTracks = listOf(recTrack),
+            favoriteArtistTracks = emptyList(),
+            feed = feed,
+            currentTimeOfDay = PlaybackRecord.TIME_AFTERNOON,
+            currentDayOfWeek = Calendar.MONDAY,
+            insightsEnabled = true,
+        )
+        assertEquals("rec1", personalized?.track?.id)
+        assertTrue(personalized?.isPersonalized ?: false)
+        assertEquals(R.string.lbl_hero_spotlight_time_afternoon, personalized?.badgeResId)
+    }
+
+    @Test
+    fun discoverActivityMoods_areDeduplicatedFromGenreCards() {
+        val moodIds = DiscoverViewModel.ACTIVITY_MOODS.map { it.id }
+        assertEquals(listOf("all", "workout", "focus", "party", "chill"), moodIds)
+        assertFalse("Mood chips must not duplicate Rock genre", moodIds.contains("rock"))
+        assertFalse("Mood chips must not duplicate Latin genre", moodIds.contains("latin"))
     }
 }

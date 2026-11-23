@@ -146,6 +146,30 @@ class PlaybackBarGlassPolicyTest {
         assertEquals(270, PlaybackBarGlassPolicy.computeScaledDimension(1080, 0.25f))
         assertEquals(1f, PlaybackBarGlassPolicy.computeScaledBlurRadius(density = 0f), 0.0001f)
         assertEquals(18f, PlaybackBarGlassPolicy.computeScaledBlurRadius(density = 3f, 24f, 0.25f), 0.0001f)
+        assertEquals(28f, PlaybackBarGlassPolicy.BLUR_RADIUS_DP, 0.0001f)
+        assertEquals(21f, PlaybackBarGlassPolicy.computeScaledBlurRadius(density = 3f), 0.0001f)
+    }
+
+    @Test
+    fun `sheetBackgroundAlpha with backdrop blur starts at zero and ramps smoothly to solid`() {
+        assertEquals(0, PlaybackBarGlassPolicy.sheetBackgroundAlpha(0f, hasBackdropBlur = true))
+        assertEquals(0, PlaybackBarGlassPolicy.sheetBackgroundAlpha(0.02f, hasBackdropBlur = true))
+
+        val midEarly = PlaybackBarGlassPolicy.sheetBackgroundAlpha(0.15f, hasBackdropBlur = true)
+        val midLate = PlaybackBarGlassPolicy.sheetBackgroundAlpha(0.35f, hasBackdropBlur = true)
+        assertTrue(midEarly in 1..254)
+        assertTrue(midLate in 1..254)
+        assertTrue(midLate > midEarly)
+
+        assertEquals(255, PlaybackBarGlassPolicy.sheetBackgroundAlpha(0.45f, hasBackdropBlur = true))
+        assertEquals(255, PlaybackBarGlassPolicy.sheetBackgroundAlpha(1.0f, hasBackdropBlur = true))
+    }
+
+    @Test
+    fun `resolveTintAlpha yields 72 percent wash with hardware blur and dense fallback without`() {
+        assertEquals(184, PlaybackBarGlassPolicy.resolveTintAlpha(0.12f, hasHardwareBlur = true))
+        assertEquals(184, PlaybackBarGlassPolicy.resolveTintAlpha(0.92f, hasHardwareBlur = true))
+        assertEquals(224, PlaybackBarGlassPolicy.resolveTintAlpha(0.12f, hasHardwareBlur = false))
     }
 
     @Test
