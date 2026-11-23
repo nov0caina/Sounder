@@ -59,6 +59,7 @@ import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
 import org.oxycblt.musikr.Playlist
 import org.oxycblt.musikr.Song
+import org.oxycblt.musikr.tag.Name
 import timber.log.Timber as L
 
 /**
@@ -138,12 +139,15 @@ class SongMenuDialogFragment : MenuDialogFragment<Menu.ForSong>() {
             }
             R.id.action_download -> {
                 if (menu.song is OnlineSong) {
-                    if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
-                        requireContext().showToast(R.string.msg_storage_permission_required)
-                        return
-                    }
-                    downloadManager.enqueue(menu.song.onlineTrack)
-                    requireContext().showToast(getString(R.string.download_queued, menu.song.onlineTrack.title))
+                    val act = activity ?: return
+                    val music = ViewModelProvider(act)[MusicViewModel::class.java]
+                    org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+                        context = act,
+                        lifecycleOwner = act,
+                        downloadManager = downloadManager,
+                        track = menu.song.onlineTrack,
+                        onDeleted = { music.refresh() }
+                    )
                 }
             }
             R.id.action_delete_download -> {
@@ -207,6 +211,9 @@ class SongMenuDialogFragment : MenuDialogFragment<Menu.ForSong>() {
                     val mainAct = act as? MainActivity
                     val targetUri = targetSong?.uri
                     if (mainAct != null && targetUri != null) {
+                        val preResolvedTitle = targetSong.name.resolve(appContext)
+                        val preResolvedFiles = MediaDeletionUtil.getCandidateSongFiles(appContext, targetSong)
+                            .filter { it.parentFile?.exists() == true }
                         try {
                             val pi = MediaStore.createDeleteRequest(act.contentResolver, listOf(targetUri))
                             mainAct.requestMediaDeletion(pi.intentSender) { granted ->
@@ -216,6 +223,12 @@ class SongMenuDialogFragment : MenuDialogFragment<Menu.ForSong>() {
                                         playback.endSession()
                                     }
                                     CoroutineScope(Dispatchers.IO).launch {
+                                        if (preResolvedFiles.isNotEmpty()) {
+                                            MediaDeletionUtil.cleanPostMediaStoreDeletion(
+                                                appContext,
+                                                preResolvedFiles.map { it to preResolvedTitle }
+                                            )
+                                        }
                                         MediaDeletionUtil.cleanPostMediaStoreSongDeletion(appContext, targetSong)
                                         if (trackIdToClean != null) {
                                             downloadManager.removeDownload(trackIdToClean)
@@ -361,6 +374,8 @@ class AlbumMenuDialogFragment : MenuDialogFragment<Menu.ForAlbum>() {
         val deleteDownloadAlbumItem = builder.findItem(R.id.action_delete_download_album)
         val hasLocalSongs = menu.album.songs.any { it !is OnlineSong }
         deleteDownloadAlbumItem?.isVisible = hasLocalSongs
+        builder.findItem(R.id.action_online_album)?.isVisible =
+            hasLocalSongs && menu.album.name is Name.Known
     }
 
     override fun updateMenu(binding: DialogMenuBinding, menu: Menu.ForAlbum) {
@@ -397,6 +412,28 @@ class AlbumMenuDialogFragment : MenuDialogFragment<Menu.ForAlbum>() {
                     detailModel.showArtist(menu.album)
                 }
             }
+            R.id.action_online_album -> {
+                playbackModel.openMain()
+                val context = requireContext()
+                if (!NetworkUtil.isConnected(context)) {
+                    context.showToast(R.string.home_offline_still_no_internet)
+                    return
+                }
+                val albumTitle = menu.album.name.resolve(context)
+                val artistName = menu.album.artists
+                    .firstOrNull { it.name is Name.Known }
+                    ?.name
+                    ?.resolve(context)
+                    ?: ""
+                if (albumTitle.isNotBlank()) {
+                    val args = bundleOf(
+                        "albumId" to "",
+                        "albumTitle" to albumTitle,
+                        "artistName" to artistName,
+                    )
+                    findNavController().navigate(R.id.action_global_online_album, args)
+                }
+            }
             R.id.action_delete_download_album -> {
                 val act = activity ?: return
                 val appContext = act.applicationContext
@@ -430,6 +467,12 @@ class AlbumMenuDialogFragment : MenuDialogFragment<Menu.ForAlbum>() {
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                     val mainAct = act as? MainActivity
                     if (mainAct != null) {
+                        val preResolvedItems = localSongs.flatMap { song ->
+                            val title = song.name.resolve(appContext)
+                            MediaDeletionUtil.getCandidateSongFiles(appContext, song)
+                                .filter { it.parentFile?.exists() == true }
+                                .map { it to title }
+                        }
                         try {
                             val uris = localSongs.map { it.uri }
                             val pi = MediaStore.createDeleteRequest(act.contentResolver, uris)
@@ -440,6 +483,9 @@ class AlbumMenuDialogFragment : MenuDialogFragment<Menu.ForAlbum>() {
                                         playback.endSession()
                                     }
                                     CoroutineScope(Dispatchers.IO).launch {
+                                        if (preResolvedItems.isNotEmpty()) {
+                                            MediaDeletionUtil.cleanPostMediaStoreDeletion(appContext, preResolvedItems)
+                                        }
                                         MediaDeletionUtil.cleanPostMediaStoreAlbumDeletion(appContext, menu.album)
                                         withContext(Dispatchers.Main) {
                                             music.rescan()

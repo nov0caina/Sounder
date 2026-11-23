@@ -5,6 +5,7 @@ import android.media.MediaScannerConnection
 import android.os.Environment
 import android.provider.MediaStore
 import java.io.File
+import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Song
@@ -13,6 +14,15 @@ import timber.log.Timber as L
 object MediaDeletionUtil {
 
     val AUDIO_EXTENSIONS = setOf("mp3", "m4a", "opus", "flac", "ogg", "wav", "aac", "wma")
+
+    private val PROTECTED_ROOT_DIR_NAMES = setOf(
+        "sounder",
+        "music",
+        "downloads",
+        "download",
+        "emulated",
+        "storage"
+    )
 
     fun getCandidateSongFiles(context: Context, song: Song): List<File> {
         val list = mutableListOf<File>()
@@ -61,11 +71,61 @@ object MediaDeletionUtil {
             list.add(File(sdCardSounderDir, relativePath.removePrefix("Music/Sounder/").removePrefix("Music/")))
         }
 
-        return list
+        return list.distinctBy { it.absolutePath }
     }
 
     fun resolveSongFile(context: Context, song: Song): File? {
         return getCandidateSongFiles(context, song).firstOrNull { it.exists() }
+    }
+
+    internal fun stripTitleForAuxMatch(nameWithoutExt: String): String {
+        return nameWithoutExt
+            .replace(Regex("""^\d{1,3}\s*-\s*"""), "")
+            .trim()
+            .lowercase()
+    }
+
+    /**
+     * Removes matching `.lrc` lyrics and `.jpg` track artwork companions alongside a deleted audio
+     * file, covering exact stem matches as well as stripped track-title `.lrc` variants.
+     */
+    internal fun deleteAuxFilesForSong(parentDir: File, songFile: File, songTitle: String? = null) {
+        if (!parentDir.exists() || !parentDir.isDirectory) return
+        val stem = songFile.nameWithoutExtension
+        File(parentDir, "$stem.lrc").takeIf { it.exists() }?.delete()
+        File(parentDir, "$stem.jpg").takeIf { it.exists() }?.delete()
+
+        val strippedStem = stripTitleForAuxMatch(stem)
+        val normalizedTitle = songTitle?.trim()?.lowercase()?.takeIf { it.isNotBlank() }
+
+        val auxFiles = parentDir.listFiles { _, name ->
+            val ext = name.substringAfterLast('.', "").lowercase()
+            ext == "lrc" || (ext == "jpg" && !name.equals("cover.jpg", ignoreCase = true))
+        }.orEmpty()
+
+        for (aux in auxFiles) {
+            val auxStem = aux.nameWithoutExtension
+            val strippedAux = stripTitleForAuxMatch(auxStem)
+            val afterDash = auxStem.substringAfter(" - ", "").trim().lowercase()
+            val matchesStem = auxStem.equals(stem, ignoreCase = true) ||
+                (strippedStem.isNotBlank() && (strippedAux == strippedStem || afterDash == strippedStem))
+            val matchesTitle = normalizedTitle != null &&
+                (strippedAux == normalizedTitle || afterDash == normalizedTitle || auxStem.equals(normalizedTitle, ignoreCase = true))
+            if (matchesStem || matchesTitle) {
+                aux.delete()
+            }
+        }
+    }
+
+    private fun isSafePrunableDir(dir: File): Boolean {
+        if (dir.name.lowercase() in PROTECTED_ROOT_DIR_NAMES) return false
+        return try {
+            val musicPublic = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)
+            val extRoot = Environment.getExternalStorageDirectory()
+            dir.canonicalPath != musicPublic.canonicalPath && dir.canonicalPath != extRoot.canonicalPath
+        } catch (_: Exception) {
+            true
+        }
     }
 
     fun deleteSongFile(context: Context, song: Song): Boolean {
@@ -73,23 +133,24 @@ object MediaDeletionUtil {
         var fileDeleted = false
         var mediaStoreDeleted = false
         val file = resolveSongFile(context, song)
+        val songTitle = try {
+            song.name.resolve(context)
+        } catch (_: Exception) {
+            null
+        }
 
         try {
             if (file != null && file.exists()) {
                 val parentDir = file.parentFile
                 if (parentDir != null) {
-                    val lrcFile = File(parentDir, "${file.nameWithoutExtension}.lrc")
-                    if (lrcFile.exists()) {
-                        lrcFile.delete()
-                    }
-                    val jpgFile = File(parentDir, "${file.nameWithoutExtension}.jpg")
-                    if (jpgFile.exists()) {
-                        jpgFile.delete()
-                    }
+                    deleteAuxFilesForSong(parentDir, file, songTitle)
                 }
                 fileDeleted = file.delete() || !file.exists()
                 if (fileDeleted) {
                     MediaScannerConnection.scanFile(context, arrayOf(file.absolutePath), null, null)
+                    if (parentDir != null && cleanAlbumAndArtistDirs(parentDir)) {
+                        scanCleanedDirectories(context, parentDir)
+                    }
                 }
             }
         } catch (t: Throwable) {
@@ -107,23 +168,69 @@ object MediaDeletionUtil {
         return (fileDeleted || mediaStoreDeleted) && !finalFileExists
     }
 
+    /**
+     * Deletes [albumDir] (along with orphaned `.lrc` / artwork / companion files) if it contains
+     * no remaining audio files, and then prunes the parent artist directory if empty.
+     */
     fun cleanAlbumAndArtistDirs(albumDir: File): Boolean {
         if (!albumDir.exists() || !albumDir.isDirectory) return false
+        if (!isSafePrunableDir(albumDir)) return false
+
         val remainingAudio = albumDir.listFiles { _, name ->
             AUDIO_EXTENSIONS.contains(name.substringAfterLast('.', "").lowercase())
         }
         if (remainingAudio.isNullOrEmpty()) {
-            albumDir.deleteRecursively()
+            // Also skip deletion if there are nested subdirectories containing audio files
+            val subDirsWithAudio = albumDir.listFiles { file ->
+                file.isDirectory && file.walkTopDown().any {
+                    it.isFile && AUDIO_EXTENSIONS.contains(it.extension.lowercase())
+                }
+            }
+            if (!subDirsWithAudio.isNullOrEmpty()) return false
+
+            albumDir.listFiles()?.forEach { child ->
+                if (child.isFile) child.delete() else child.deleteRecursively()
+            }
+            val albumRemoved = albumDir.deleteRecursively() || !albumDir.exists()
+
             val artistDir = albumDir.parentFile
-            if (artistDir != null && artistDir.exists() && artistDir.isDirectory) {
+            if (artistDir != null && artistDir.exists() && artistDir.isDirectory && isSafePrunableDir(artistDir)) {
                 val artistRemaining = artistDir.listFiles()
-                if (artistRemaining.isNullOrEmpty()) {
+                val hasRemainingMeaningfulContent = artistRemaining?.any { entry ->
+                    if (entry.isDirectory) {
+                        val nestedAudio = entry.walkTopDown().any {
+                            it.isFile && AUDIO_EXTENSIONS.contains(it.extension.lowercase())
+                        }
+                        if (!nestedAudio) {
+                            entry.deleteRecursively()
+                            false
+                        } else {
+                            true
+                        }
+                    } else {
+                        AUDIO_EXTENSIONS.contains(entry.extension.lowercase())
+                    }
+                } ?: false
+
+                if (!hasRemainingMeaningfulContent) {
+                    artistDir.listFiles()?.forEach { child ->
+                        if (child.isFile) child.delete() else child.deleteRecursively()
+                    }
                     artistDir.delete()
                 }
             }
-            return true
+            return albumRemoved
         }
         return false
+    }
+
+    private fun scanCleanedDirectories(context: Context, dir: File) {
+        MediaScannerConnection.scanFile(context, arrayOf(dir.absolutePath), null, null)
+        dir.parentFile?.let { artistDir ->
+            if (!artistDir.exists()) {
+                MediaScannerConnection.scanFile(context, arrayOf(artistDir.absolutePath), null, null)
+            }
+        }
     }
 
     fun deleteAlbumFiles(context: Context, album: Album): Int {
@@ -143,12 +250,7 @@ object MediaDeletionUtil {
         for (dir in albumDirs) {
             try {
                 if (cleanAlbumAndArtistDirs(dir)) {
-                    MediaScannerConnection.scanFile(context, arrayOf(dir.absolutePath), null, null)
-                    dir.parentFile?.let { artistDir ->
-                        if (!artistDir.exists()) {
-                            MediaScannerConnection.scanFile(context, arrayOf(artistDir.absolutePath), null, null)
-                        }
-                    }
+                    scanCleanedDirectories(context, dir)
                 }
             } catch (t: Throwable) {
                 L.e(t, "Error cleaning up album directory: %s", dir.absolutePath)
@@ -157,68 +259,51 @@ object MediaDeletionUtil {
         return count
     }
 
-    fun cleanPostMediaStoreSongDeletion(context: Context, song: Song) {
-        val candidates = getCandidateSongFiles(context, song)
-        for (file in candidates) {
+    fun cleanPostMediaStoreDeletion(
+        context: Context,
+        preResolvedFilesWithTitles: List<Pair<File, String?>>
+    ) {
+        val albumDirs = mutableSetOf<File>()
+        for ((file, songTitle) in preResolvedFilesWithTitles) {
             val parentDir = file.parentFile
             if (parentDir != null && parentDir.exists()) {
-                val lrcFile = File(parentDir, "${file.nameWithoutExtension}.lrc")
-                if (lrcFile.exists()) {
-                    lrcFile.delete()
-                }
-                val jpgFile = File(parentDir, "${file.nameWithoutExtension}.jpg")
-                if (jpgFile.exists()) {
-                    jpgFile.delete()
-                }
-                try {
-                    if (cleanAlbumAndArtistDirs(parentDir)) {
-                        MediaScannerConnection.scanFile(context, arrayOf(parentDir.absolutePath), null, null)
-                        parentDir.parentFile?.let { artistDir ->
-                            if (!artistDir.exists()) {
-                                MediaScannerConnection.scanFile(context, arrayOf(artistDir.absolutePath), null, null)
-                            }
-                        }
-                    }
-                } catch (t: Throwable) {
-                    L.e(t, "Error cleaning album/artist directory for song: %s", parentDir.absolutePath)
-                }
-            }
-        }
-    }
-
-    fun cleanPostMediaStoreAlbumDeletion(context: Context, album: Album) {
-        val albumDirs = mutableSetOf<File>()
-        for (song in album.songs) {
-            val candidates = getCandidateSongFiles(context, song)
-            for (file in candidates) {
-                val parentDir = file.parentFile
-                if (parentDir != null && parentDir.exists()) {
-                    albumDirs.add(parentDir)
-                    val lrcFile = File(parentDir, "${file.nameWithoutExtension}.lrc")
-                    if (lrcFile.exists()) {
-                        lrcFile.delete()
-                    }
-                    val jpgFile = File(parentDir, "${file.nameWithoutExtension}.jpg")
-                    if (jpgFile.exists()) {
-                        jpgFile.delete()
-                    }
-                }
+                albumDirs.add(parentDir)
+                deleteAuxFilesForSong(parentDir, file, songTitle)
             }
         }
         for (dir in albumDirs) {
             try {
                 if (cleanAlbumAndArtistDirs(dir)) {
-                    MediaScannerConnection.scanFile(context, arrayOf(dir.absolutePath), null, null)
-                    dir.parentFile?.let { artistDir ->
-                        if (!artistDir.exists()) {
-                            MediaScannerConnection.scanFile(context, arrayOf(artistDir.absolutePath), null, null)
-                        }
-                    }
+                    scanCleanedDirectories(context, dir)
                 }
             } catch (t: Throwable) {
-                L.e(t, "Error cleaning up album directory: %s", dir.absolutePath)
+                L.e(t, "Error cleaning album/artist directory: %s", dir.absolutePath)
             }
         }
     }
-}
 
+    fun cleanPostMediaStoreSongDeletion(context: Context, song: Song) {
+        val songTitle = try {
+            song.name.resolve(context)
+        } catch (_: Exception) {
+            null
+        }
+        val candidates = getCandidateSongFiles(context, song)
+        cleanPostMediaStoreDeletion(context, candidates.map { it to songTitle })
+    }
+
+    fun cleanPostMediaStoreAlbumDeletion(context: Context, album: Album) {
+        val items = mutableListOf<Pair<File, String?>>()
+        for (song in album.songs) {
+            val songTitle = try {
+                song.name.resolve(context)
+            } catch (_: Exception) {
+                null
+            }
+            for (file in getCandidateSongFiles(context, song)) {
+                items.add(file to songTitle)
+            }
+        }
+        cleanPostMediaStoreDeletion(context, items)
+    }
+}

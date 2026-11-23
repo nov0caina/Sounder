@@ -68,4 +68,23 @@ class MediaDeletionUtilTest {
         assertTrue("Audio file must still exist", audioFile.exists())
         assertTrue("Artist directory must still exist", artistDir.exists())
     }
+
+    @Test
+    fun testDeletesMatchingLrcVariantsForSingleDeletedSong() {
+        val artistDir = File(tempRoot, "Coldplay").apply { mkdirs() }
+        val albumDir = File(artistDir, "Parachutes").apply { mkdirs() }
+        val track1 = File(albumDir, "01 - Yellow.m4a").apply { writeText("audio") }
+        val track2 = File(albumDir, "02 - Sparks.m4a").apply { writeText("audio") }
+
+        val lrcExact = File(albumDir, "01 - Yellow.lrc").apply { writeText("[00:00] Look at the stars") }
+        val lrcBase = File(albumDir, "Yellow.lrc").apply { writeText("[00:00] Look at the stars") }
+        val otherTrackLrc = File(albumDir, "02 - Sparks.lrc").apply { writeText("[00:00] Did I drive you away") }
+
+        MediaDeletionUtil.deleteAuxFilesForSong(albumDir, track1, "Yellow")
+
+        assertFalse("Exact matching .lrc must be deleted", lrcExact.exists())
+        assertFalse("Title-matching .lrc must be deleted", lrcBase.exists())
+        assertTrue("Other track .lrc must be preserved while audio remains", otherTrackLrc.exists())
+        assertTrue("Track 2 audio must remain intact", track2.exists())
+    }
 }

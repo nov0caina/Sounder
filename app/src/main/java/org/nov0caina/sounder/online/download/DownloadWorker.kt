@@ -45,6 +45,7 @@ interface DownloadWorkerEntryPoint {
     fun onlineSettings(): OnlineSettings
     fun musicRepository(): MusicRepository
     fun streamingCacheManager(): StreamingCacheManager
+    fun downloadManager(): DownloadManager
 }
 
 class DownloadWorker(
@@ -72,6 +73,7 @@ class DownloadWorker(
         const val KEY_ERROR = "error"
         const val KEY_TRACK_NUMBER = "track_number"
         const val KEY_YEAR = "year"
+        private const val MAX_RETRY_ATTEMPTS = 6
 
         private data class ITunesMeta(
             val genre: String?,
@@ -253,7 +255,7 @@ class DownloadWorker(
 
                                     if (contentLength > 0) {
                                         val progress = ((totalRead * 95) / contentLength).toInt().coerceIn(0, 95)
-                                        if (progress != lastReportedProgress && progress % 5 == 0) {
+                                        if (progress - lastReportedProgress >= 10 || (progress >= 95 && progress != lastReportedProgress)) {
                                             lastReportedProgress = progress
                                             setProgress(workDataOf(KEY_PROGRESS to progress))
                                             notificationManager.notify(
@@ -274,9 +276,17 @@ class DownloadWorker(
                         null
                     }
                 }
-            ) ?: return@withContext Result.failure(
-                workDataOf(KEY_ERROR to if (isStopped) "Cancelled" else "Failed to acquire audio stream")
-            )
+            ) ?: run {
+                notificationManager.cancel(notificationId)
+                return@withContext if (!isStopped && runAttemptCount < MAX_RETRY_ATTEMPTS) {
+                    L.w("Recoverable stream acquisition failure for %s (attempt %d); scheduling retry", title, runAttemptCount)
+                    Result.retry()
+                } else {
+                    Result.failure(
+                        workDataOf(KEY_ERROR to if (isStopped) "Cancelled" else "Failed to acquire audio stream")
+                    )
+                }
+            }
 
             val tempFile = acquiredAudio.tempFile
             val audioExtension = acquiredAudio.audioExtension
@@ -411,7 +421,7 @@ class DownloadWorker(
                 filesToScan.toTypedArray(),
                 null
             ) { _, _ ->
-                entryPoint.musicRepository().requestIndex(true)
+                entryPoint.downloadManager().requestDebouncedLibraryIndex()
             }
 
             // Notify completion
@@ -426,10 +436,17 @@ class DownloadWorker(
                     KEY_PROGRESS to 100
                 )
             )
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            notificationManager.cancel(notificationId)
+            throw e
         } catch (e: Exception) {
             L.e(e, "Error downloading track: %s", title)
             notificationManager.cancel(notificationId)
-            Result.failure(workDataOf(KEY_ERROR to (e.message ?: "Unknown error")))
+            if (!isStopped && runAttemptCount < MAX_RETRY_ATTEMPTS) {
+                Result.retry()
+            } else {
+                Result.failure(workDataOf(KEY_ERROR to (e.message ?: "Unknown error")))
+            }
         }
     }
 
