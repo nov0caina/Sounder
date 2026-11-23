@@ -29,6 +29,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/track1_playing_indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_playing_cover_overlay"
+            android:contentDescription="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/track1_image"
+            app:layout_constraintEnd_toEndOf="@+id/track1_image"
+            app:layout_constraintStart_toStartOf="@+id/track1_image"
+            app:layout_constraintTop_toTopOf="@+id/track1_image"
+            app:tint="@android:color/white" />
+
         <TextView
             android:id="@+id/track1_title"
             style="@style/Widget.Auxio.TextView.Item.Primary"
@@ -122,6 +137,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/track2_playing_indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_playing_cover_overlay"
+            android:contentDescription="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/track2_image"
+            app:layout_constraintEnd_toEndOf="@+id/track2_image"
+            app:layout_constraintStart_toStartOf="@+id/track2_image"
+            app:layout_constraintTop_toTopOf="@+id/track2_image"
+            app:tint="@android:color/white" />
+
         <TextView
             android:id="@+id/track2_title"
             style="@style/Widget.Auxio.TextView.Item.Primary"
@@ -214,6 +244,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/track3_playing_indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_playing_cover_overlay"
+            android:contentDescription="@null"
+            android:padding="12dp"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/track3_image"
+            app:layout_constraintEnd_toEndOf="@+id/track3_image"
+            app:layout_constraintStart_toStartOf="@+id/track3_image"
+            app:layout_constraintTop_toTopOf="@+id/track3_image"
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/track3_title"

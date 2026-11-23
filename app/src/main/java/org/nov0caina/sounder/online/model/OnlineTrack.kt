@@ -16,7 +16,8 @@ data class OnlineTrack(
     val isStudioTrack: Boolean = true,
     val albumId: String? = null,
     val artistId: String? = null,
-    val localCoverPath: String? = null
+    val localCoverPath: String? = null,
+    val isExplicit: Boolean = false
 ) {
     /**
      * Formats duration in milliseconds into mm:ss.

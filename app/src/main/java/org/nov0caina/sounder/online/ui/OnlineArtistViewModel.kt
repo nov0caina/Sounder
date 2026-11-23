@@ -8,12 +8,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.R
+import org.nov0caina.sounder.online.db.FavoriteArtistDao
+import org.nov0caina.sounder.online.db.FavoriteArtistEntity
 import org.nov0caina.sounder.online.download.DownloadItem
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineArtistDetail
@@ -22,6 +29,7 @@ import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.util.SongMatcher
 import org.nov0caina.sounder.util.showToast
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -30,11 +38,21 @@ import timber.log.Timber as L
 class OnlineArtistViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: OnlineMusicRepository,
-    private val downloadManager: DownloadManager
+    val downloadManager: DownloadManager,
+    private val favoriteArtistDao: FavoriteArtistDao
 ) : ViewModel() {
 
     private val _artistDetail = MutableStateFlow<OnlineArtistDetail?>(null)
     val artistDetail: StateFlow<OnlineArtistDetail?> = _artistDetail.asStateFlow()
+
+    private val _currentArtistId = MutableStateFlow<String>("")
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val isFavorite: StateFlow<Boolean> = _currentArtistId
+        .flatMapLatest { id ->
+            if (id.isBlank()) flowOf(false) else favoriteArtistDao.observeIsFavorite(id)
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -45,6 +63,9 @@ class OnlineArtistViewModel @Inject constructor(
     val downloads: StateFlow<List<DownloadItem>> = downloadManager.downloads
 
     fun loadArtist(browseId: String, artistName: String? = null) {
+        if (browseId.isNotBlank()) {
+            _currentArtistId.value = browseId
+        }
         if (browseId.isNotBlank() && _artistDetail.value?.id == browseId) return
 
         viewModelScope.launch {
@@ -63,6 +84,7 @@ class OnlineArtistViewModel @Inject constructor(
                     browseId
                 }
                 if (resolvedId.isNotBlank()) {
+                    _currentArtistId.value = resolvedId
                     val detail = repository.browseArtist(resolvedId)
                     _artistDetail.value = detail
 
@@ -90,6 +112,56 @@ class OnlineArtistViewModel @Inject constructor(
         }
     }
 
+    fun toggleFavorite(onResult: ((Boolean) -> Unit)? = null) {
+        val detail = _artistDetail.value ?: return
+        if (detail.id.isBlank()) return
+        viewModelScope.launch {
+            val isNowFav = performToggleFavorite(detail, favoriteArtistDao)
+            withContext(Dispatchers.Main) { onResult?.invoke(isNowFav) }
+        }
+    }
+
+    companion object {
+        fun isArtistMatch(trackArtist: String, profileArtist: String): Boolean {
+            val normTrack = SongMatcher.normalizeArtist(trackArtist)
+            val normProfile = SongMatcher.normalizeArtist(profileArtist)
+            if (normTrack.isEmpty() || normProfile.isEmpty()) return false
+            return normTrack == normProfile ||
+                normTrack.startsWith(normProfile) ||
+                normTrack.contains(normProfile)
+        }
+
+        fun isDuplicateTrack(combined: List<OnlineTrack>, candidate: OnlineTrack): Boolean {
+            if (combined.any { it.id == candidate.id }) return true
+            val candidateTitle = SongMatcher.normalizeTitle(candidate.title)
+            if (candidateTitle.isEmpty()) return false
+            return combined.any { SongMatcher.normalizeTitle(it.title) == candidateTitle }
+        }
+
+        suspend fun performToggleFavorite(
+            detail: OnlineArtistDetail,
+            favoriteArtistDao: FavoriteArtistDao,
+            timestamp: Long = System.currentTimeMillis()
+        ): Boolean {
+            if (detail.id.isBlank()) return false
+            val currentlyFav = favoriteArtistDao.isFavorite(detail.id)
+            return if (currentlyFav) {
+                favoriteArtistDao.deleteById(detail.id)
+                false
+            } else {
+                val entity = FavoriteArtistEntity(
+                    id = detail.id,
+                    name = detail.name,
+                    avatarUrl = detail.avatarUrl,
+                    subtitle = detail.subscribers ?: detail.description?.take(80),
+                    addedAt = timestamp
+                )
+                favoriteArtistDao.insertOrUpdate(entity)
+                true
+            }
+        }
+    }
+
     private fun toSong(track: OnlineTrack, streamUrl: String? = null): Song {
         val localFile = downloadManager.getDownloadedFile(track)
         if (localFile != null && localFile.exists()) {
@@ -109,27 +181,51 @@ class OnlineArtistViewModel @Inject constructor(
         return OnlineSong(track.copy(durationMs = resolvedDuration), targetUri)
     }
 
-    private suspend fun getEnrichedSongs(baseTracks: List<OnlineTrack>, artistName: String): List<OnlineTrack> {
+    internal suspend fun getEnrichedSongs(baseTracks: List<OnlineTrack>, artistName: String): List<OnlineTrack> {
         if (baseTracks.size >= 20) return baseTracks
         return withContext(Dispatchers.IO) {
             val combined = baseTracks.toMutableList()
-            try {
-                val searchResult = repository.queryCategorized("$artistName songs")
-                for (t in searchResult.tracks) {
-                    if (combined.none { it.id == t.id }) {
-                        combined.add(t)
-                        if (combined.size >= 25) break
+
+            // 1. Discography-first priority: official albums and singles
+            val detail = _artistDetail.value
+            val albumList = (detail?.albums.orEmpty() + detail?.singles.orEmpty())
+            for (alb in albumList) {
+                if (combined.size >= 20) break
+                try {
+                    val albumDetail = repository.browseAlbum(alb.id)
+                    for (t in albumDetail.tracks) {
+                        val resolvedArtist = t.artist.ifBlank { artistName }
+                        if (isArtistMatch(resolvedArtist, artistName) && !isDuplicateTrack(combined, t)) {
+                            combined.add(t)
+                            if (combined.size >= 25) break
+                        }
                     }
+                } catch (e: Exception) {
+                    L.w(e, "Could not fetch tracks from album ${alb.id}")
                 }
-            } catch (e: Exception) {
-                L.w(e, "Search for $artistName songs failed")
             }
 
+            // 2. Strict categorized search fallback ("$artistName songs")
+            if (combined.size < 20) {
+                try {
+                    val searchResult = repository.queryCategorized("$artistName songs")
+                    for (t in searchResult.tracks) {
+                        if (isArtistMatch(t.artist, artistName) && !isDuplicateTrack(combined, t)) {
+                            combined.add(t)
+                            if (combined.size >= 25) break
+                        }
+                    }
+                } catch (e: Exception) {
+                    L.w(e, "Search for $artistName songs failed")
+                }
+            }
+
+            // 3. Strict direct search fallback ("$artistName")
             if (combined.size < 20) {
                 try {
                     val directSearch = repository.queryCategorized(artistName)
                     for (t in directSearch.tracks) {
-                        if (combined.none { it.id == t.id }) {
+                        if (isArtistMatch(t.artist, artistName) && !isDuplicateTrack(combined, t)) {
                             combined.add(t)
                             if (combined.size >= 25) break
                         }
@@ -139,24 +235,6 @@ class OnlineArtistViewModel @Inject constructor(
                 }
             }
 
-            if (combined.size < 20) {
-                val detail = _artistDetail.value
-                val albumList = (detail?.albums.orEmpty() + detail?.singles.orEmpty())
-                for (alb in albumList) {
-                    if (combined.size >= 20) break
-                    try {
-                        val albumDetail = repository.browseAlbum(alb.id)
-                        for (t in albumDetail.tracks) {
-                            if (combined.none { it.id == t.id }) {
-                                combined.add(t)
-                                if (combined.size >= 25) break
-                            }
-                        }
-                    } catch (e: Exception) {
-                        L.w(e, "Could not fetch tracks from album ${alb.id}")
-                    }
-                }
-            }
             combined
         }
     }

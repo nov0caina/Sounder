@@ -108,6 +108,7 @@
                         android:id="@+id/home_quick_access_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clipChildren="false"
                         android:clipToPadding="false"
                         android:paddingStart="@dimen/spacing_small"
                         android:paddingEnd="@dimen/spacing_small"
@@ -155,6 +156,129 @@
 
                 </LinearLayout>
 
+                <!-- 4a. Favorite Artists ("Tus Artistas") -->
+                <LinearLayout
+                    android:id="@+id/favorite_artists_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="@dimen/spacing_large"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/spacing_medium"
+                        android:paddingEnd="@dimen/spacing_small"
+                        android:paddingBottom="@dimen/spacing_tiny">
+
+                        <TextView
+                            android:id="@+id/favorite_artists_header"
+                            style="@style/Widget.Auxio.TextView.Item.Primary"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:maxLines="1"
+                            android:text="@string/header_favorite_artists"
+                            android:textSize="18sp"
+                            tools:text="Tus Artistas (5)" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/favorite_artists_view_toggle_btn"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:ellipsize="end"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:maxLines="1"
+                            android:minWidth="0dp"
+                            android:paddingStart="10dp"
+                            android:paddingTop="0dp"
+                            android:paddingEnd="10dp"
+                            android:paddingBottom="0dp"
+                            android:text="@string/btn_view_grid"
+                            android:textSize="13sp"
+                            android:visibility="gone"
+                            app:icon="@drawable/ic_grid_view_24"
+                            app:iconSize="18dp"
+                            tools:visibility="visible" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/favorite_artists_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/spacing_small"
+                        android:paddingEnd="@dimen/spacing_small"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_recent_artist" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/favorite_artists_expand_btn"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/btn_show_more"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <!-- 4b. Because You Listen To [Top Artist] -->
+                <LinearLayout
+                    android:id="@+id/because_you_listen_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="@dimen/spacing_large">
+
+                    <TextView
+                        android:id="@+id/because_you_listen_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/spacing_medium"
+                        android:paddingEnd="@dimen/spacing_medium"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold"
+                        tools:text="Because you listen to Artist" />
+
+                    <TextView
+                        android:id="@+id/because_you_listen_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/spacing_medium"
+                        android:paddingEnd="@dimen/spacing_medium"
+                        android:paddingBottom="@dimen/spacing_small"
+                        android:text="@string/header_because_you_listen_sub"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/because_you_listen_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingStart="@dimen/spacing_medium"
+                        android:paddingEnd="@dimen/spacing_medium"
+                        tools:listitem="@layout/item_quick_picks_column" />
+
+                </LinearLayout>
+
                 <!-- 5. Álbumes en Tendencia -->
                 <LinearLayout
                     android:id="@+id/trending_albums_section"
@@ -169,7 +293,7 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/spacing_medium"
                         android:paddingEnd="@dimen/spacing_medium"
-                        android:text="@string/header_trending_albums"
+                        android:text="@string/header_trending_albums_for_you"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textStyle="bold" />
 

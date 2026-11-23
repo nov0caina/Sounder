@@ -38,6 +38,21 @@
         app:layout_constraintStart_toEndOf="@+id/online_track_rank"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/online_track_playing_indicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_playing_cover_overlay"
+        android:contentDescription="@null"
+        android:padding="12dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/online_track_image"
+        app:layout_constraintEnd_toEndOf="@+id/online_track_image"
+        app:layout_constraintStart_toStartOf="@+id/online_track_image"
+        app:layout_constraintTop_toTopOf="@+id/online_track_image"
+        app:tint="@android:color/white" />
+
     <TextView
         android:id="@+id/online_track_title"
         style="@style/Widget.Auxio.TextView.Item.Primary"

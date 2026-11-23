@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -18,15 +20,24 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.nov0caina.sounder.online.OnlineSettings
 import org.nov0caina.sounder.online.cache.OfflineBackupFilter
 import org.nov0caina.sounder.online.cache.OfflineBackupFilterMode
 import org.nov0caina.sounder.online.cache.OfflineBackupFilterState
 import org.nov0caina.sounder.online.cache.StreamingCacheManager
+import org.nov0caina.sounder.online.db.CachedTrackEntity
+import org.nov0caina.sounder.online.db.FavoriteArtistDao
+import org.nov0caina.sounder.online.db.PlaybackRecord
+import org.nov0caina.sounder.online.db.PlaybackRecordDao
+import org.nov0caina.sounder.online.db.RecentArtistsDao
 import org.nov0caina.sounder.online.download.DownloadItem
 import org.nov0caina.sounder.online.download.DownloadManager
+import org.nov0caina.sounder.online.innertube.InnerTubeParser
 import org.nov0caina.sounder.online.model.HomeFeedData
 import org.nov0caina.sounder.online.model.HomeMoodItem
+import org.nov0caina.sounder.online.model.OnlineAlbumSummary
 import org.nov0caina.sounder.online.model.OnlineArtistSummary
+import org.nov0caina.sounder.image.CoverProvider
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.online.model.QuickAccessItem
@@ -34,7 +45,9 @@ import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.PlaySong
 import org.nov0caina.sounder.playback.state.ShuffleMode
+import org.nov0caina.sounder.util.MediaDeletionUtil
 import org.nov0caina.sounder.util.NetworkUtil
+import org.nov0caina.sounder.util.SongMatcher
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
 
@@ -42,8 +55,12 @@ import timber.log.Timber as L
 class HomeFeedViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: OnlineMusicRepository,
-    private val downloadManager: DownloadManager,
+    val downloadManager: DownloadManager,
     private val streamingCacheManager: StreamingCacheManager,
+    private val playbackRecordDao: PlaybackRecordDao,
+    private val favoriteArtistDao: FavoriteArtistDao,
+    private val recentArtistsDao: RecentArtistsDao,
+    private val onlineSettings: OnlineSettings,
 ) : ViewModel() {
 
     private val _feedData = MutableStateFlow(HomeFeedData())
@@ -51,6 +68,32 @@ class HomeFeedViewModel @Inject constructor(
 
     private val _quickAccessItems = MutableStateFlow<List<QuickAccessItem>>(emptyList())
     val quickAccessItems: StateFlow<List<QuickAccessItem>> = _quickAccessItems.asStateFlow()
+
+    private val _recentRecords = MutableStateFlow<List<PlaybackRecord>>(emptyList())
+
+    val favoriteArtists: StateFlow<List<OnlineArtistSummary>> =
+        favoriteArtistDao.observeFavoriteArtists()
+            .map { entities -> entities.map { it.toSummary() } }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    private val _becauseYouListenArtist = MutableStateFlow<String?>(null)
+    val becauseYouListenArtist: StateFlow<String?> = _becauseYouListenArtist.asStateFlow()
+
+    private val _becauseYouListenTracks = MutableStateFlow<List<OnlineTrack>>(emptyList())
+    val becauseYouListenTracks: StateFlow<List<OnlineTrack>> = _becauseYouListenTracks.asStateFlow()
+
+    private val _personalizedTrendingAlbums = MutableStateFlow<List<OnlineAlbumSummary>>(emptyList())
+    val personalizedTrendingAlbums: StateFlow<List<OnlineAlbumSummary>> = _personalizedTrendingAlbums.asStateFlow()
+
+    private val _personalizedQuickPicks = MutableStateFlow<List<OnlineTrack>>(emptyList())
+    val personalizedQuickPicks: StateFlow<List<OnlineTrack>> = _personalizedQuickPicks.asStateFlow()
+
+    private val _artistRecommendedAlbums = MutableStateFlow<List<OnlineAlbumSummary>>(emptyList())
+    private val _favoriteArtistTracks = MutableStateFlow<List<OnlineTrack>>(emptyList())
+    private var lastLoadedSeedKey: String? = null
+    private var becauseYouListenJob: Job? = null
+    private val resolvedArtworkCache = ConcurrentHashMap<String, String>()
+    private val attemptedArtworkLookups = ConcurrentHashMap.newKeySet<String>()
 
     val availableMoods: List<HomeMoodItem> = listOf(
         HomeMoodItem("all", org.nov0caina.sounder.R.string.home_mood_all, "all"),
@@ -101,6 +144,196 @@ class HomeFeedViewModel @Inject constructor(
     init {
         loadFeed()
         observeNetworkChanges()
+        observePlaybackRecords()
+        observeFavoriteArtists()
+    }
+
+    private fun observeFavoriteArtists() {
+        viewModelScope.launch {
+            favoriteArtistDao.observeFavoriteArtists().collect {
+                refreshBecauseYouListen(_recentRecords.value)
+            }
+        }
+    }
+
+    private fun observePlaybackRecords() {
+        viewModelScope.launch {
+            playbackRecordDao.observeRecentRecords(300).collect { records ->
+                _recentRecords.value = records
+                rebuildQuickAccess(_feedData.value, records)
+                refreshBecauseYouListen(records)
+            }
+        }
+    }
+
+    /** Re-evaluates privacy-aware personalization widgets (e.g. after returning from Settings). */
+    fun refreshPersonalizationState() {
+        val records = _recentRecords.value
+        rebuildQuickAccess(_feedData.value, records)
+        refreshBecauseYouListen(records)
+    }
+
+    private fun refreshBecauseYouListen(records: List<PlaybackRecord>) {
+        val insightsEnabled = onlineSettings.enableLocalListeningInsights
+        val thirtyDaysAgoMs = System.currentTimeMillis() - THIRTY_DAYS_MS
+
+        viewModelScope.launch {
+            val favs = favoriteArtistDao.getAll().map { it.toSummary() }
+            val cached = streamingCacheManager.getPlayableCachedTracks()
+            val recents = recentArtistsDao.getRecentArtists().map { it.toSummary() }
+
+            val topArtist = selectTopSeedArtist(
+                records = records,
+                sinceTimestampMs = thirtyDaysAgoMs,
+                insightsEnabled = insightsEnabled,
+                favoriteArtists = favs,
+                cachedTracks = cached,
+                recentArtists = recents,
+            )
+            val seedArtists = selectSeedArtistsList(
+                records = records,
+                sinceTimestampMs = thirtyDaysAgoMs,
+                insightsEnabled = insightsEnabled,
+                minPlays = 2,
+                favoriteArtists = favs,
+                cachedTracks = cached,
+                recentArtists = recents,
+                maxArtists = 3,
+            )
+
+            if (topArtist == null) {
+                _becauseYouListenArtist.value = null
+                _becauseYouListenTracks.value = emptyList()
+            } else {
+                _becauseYouListenArtist.value = topArtist
+            }
+
+            if (seedArtists.isEmpty()) {
+                becauseYouListenJob?.cancel()
+                lastLoadedSeedKey = null
+                _artistRecommendedAlbums.value = emptyList()
+                _favoriteArtistTracks.value = emptyList()
+                rebuildPersonalizedFeedSections(_feedData.value, records)
+                return@launch
+            }
+
+            val seedKey = "${topArtist.orEmpty()}|${seedArtists.joinToString(",")}"
+            if (seedKey == lastLoadedSeedKey &&
+                (_becauseYouListenTracks.value.isNotEmpty() || topArtist == null) &&
+                _artistRecommendedAlbums.value.isNotEmpty()
+            ) {
+                rebuildPersonalizedFeedSections(_feedData.value, records)
+                return@launch
+            }
+            if (!NetworkUtil.isConnected(context)) return@launch
+
+            becauseYouListenJob?.cancel()
+            becauseYouListenJob = viewModelScope.launch {
+                try {
+                    val primaryArtist = topArtist ?: seedArtists.first()
+                    val normPrimary = SongMatcher.normalizeArtist(primaryArtist)
+                    fun isSeedArtistTrack(track: OnlineTrack): Boolean {
+                        val norm = SongMatcher.normalizeArtist(track.artist)
+                        return norm.isNotEmpty() && normPrimary.isNotEmpty() &&
+                            (norm == normPrimary || norm.contains(normPrimary) || norm.startsWith(normPrimary))
+                    }
+
+                    val artistSearch = repository.queryCategorized(primaryArtist)
+                    val radioSearch = try {
+                        repository.queryCategorized("$primaryArtist radio")
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (_: Exception) {
+                        artistSearch
+                    }
+
+                    val collectedAlbums = mutableListOf<OnlineAlbumSummary>()
+                    val seedTracks = artistSearch.tracks.filter(::isSeedArtistTrack).toMutableList()
+                    val relatedTracks = mutableListOf<OnlineTrack>()
+
+                    fun findKnownArtistId(artistName: String): String? =
+                        (favs + recents)
+                            .firstOrNull { it.name.equals(artistName, ignoreCase = true) && it.id.isNotBlank() }
+                            ?.id
+
+                    val primaryArtistId = findKnownArtistId(primaryArtist)
+                        ?: artistSearch.artists.firstOrNull()?.id
+                    if (!primaryArtistId.isNullOrBlank()) {
+                        try {
+                            val detail = repository.browseArtist(primaryArtistId, recordRecent = false)
+                            val primaryAlbums = detail.albums.take(6).ifEmpty { detail.singles.take(4) }
+                            collectedAlbums.addAll(primaryAlbums)
+                            seedTracks.addAll(detail.topSongs.filter(::isSeedArtistTrack))
+
+                            val relatedArtists = detail.relatedArtists.take(4)
+                            for (related in relatedArtists) {
+                                try {
+                                    val normRelated = SongMatcher.normalizeArtist(related.name)
+                                    val tracks = repository.queryCategorized(related.name).tracks.filter { t ->
+                                        val norm = SongMatcher.normalizeArtist(t.artist)
+                                        norm.isNotEmpty() && normRelated.isNotEmpty() &&
+                                            (norm == normRelated || norm.contains(normRelated) || norm.startsWith(normRelated))
+                                    }.take(4)
+                                    relatedTracks.addAll(tracks)
+                                } catch (e: CancellationException) {
+                                    throw e
+                                } catch (_: Exception) {
+                                }
+                            }
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            L.w(e, "Failed to browse seed artist detail for %s", primaryArtist)
+                        }
+                    }
+
+                    for (extraArtist in seedArtists) {
+                        if (extraArtist.equals(primaryArtist, ignoreCase = true)) continue
+                        try {
+                            val knownId = findKnownArtistId(extraArtist)
+                            val extraSearch = repository.queryCategorized(extraArtist)
+                            val extraArtistId = knownId ?: extraSearch.artists.firstOrNull()?.id
+                            if (!extraArtistId.isNullOrBlank()) {
+                                val extraDetail = repository.browseArtist(extraArtistId, recordRecent = false)
+                                val extraAlbums = extraDetail.albums.take(4).ifEmpty { extraDetail.singles.take(3) }
+                                collectedAlbums.addAll(extraAlbums)
+                            }
+                            val normExtra = SongMatcher.normalizeArtist(extraArtist)
+                            val extraTracks = extraSearch.tracks.filter { t ->
+                                val norm = SongMatcher.normalizeArtist(t.artist)
+                                norm.isNotEmpty() && normExtra.isNotEmpty() &&
+                                    (norm == normExtra || norm.contains(normExtra) || norm.startsWith(normExtra))
+                            }.take(4)
+                            relatedTracks.addAll(extraTracks)
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (_: Exception) {
+                        }
+                    }
+
+                    val blendedTracks = blendSimilarArtistTracks(
+                        seedArtist = primaryArtist,
+                        seedTracks = seedTracks,
+                        similarTracks = radioSearch.tracks + relatedTracks,
+                        maxTracks = 18,
+                    )
+
+                    if (onlineSettings.enableLocalListeningInsights) {
+                        lastLoadedSeedKey = seedKey
+                        _artistRecommendedAlbums.value = collectedAlbums
+                        _favoriteArtistTracks.value = blendedTracks
+                        if (topArtist != null && blendedTracks.isNotEmpty()) {
+                            _becauseYouListenTracks.value = blendedTracks
+                        }
+                        rebuildPersonalizedFeedSections(_feedData.value, _recentRecords.value)
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w(e, "Failed to load contextual recommendations for %s", topArtist ?: seedArtists.firstOrNull())
+                }
+            }
+        }
     }
 
     private fun observeNetworkChanges() {
@@ -206,6 +439,7 @@ class HomeFeedViewModel @Inject constructor(
                 currentLoadedCategory = category
                 _feedData.value = feed
                 rebuildQuickAccess(feed)
+                refreshBecauseYouListen(_recentRecords.value)
                 if (feed.trendingTracks.isEmpty() && feed.trendingAlbums.isEmpty() && feed.popularArtists.isEmpty()) {
                     if (!NetworkUtil.isConnected(context)) {
                         _isOffline.value = true
@@ -228,7 +462,10 @@ class HomeFeedViewModel @Inject constructor(
         }
     }
 
-    private fun rebuildQuickAccess(feed: HomeFeedData) {
+    private fun rebuildQuickAccess(
+        feed: HomeFeedData,
+        records: List<PlaybackRecord> = _recentRecords.value,
+    ) {
         val list = mutableListOf<QuickAccessItem>()
 
         // 1. Favorites Card
@@ -242,24 +479,17 @@ class HomeFeedViewModel @Inject constructor(
             )
         )
 
-        // 2. Popular Artist or Top Item
-        if (feed.popularArtists.isNotEmpty()) {
-            val artist = feed.popularArtists[0]
-            list.add(
-                QuickAccessItem(
-                    id = "artist_${artist.id}",
-                    title = artist.name,
-                    subtitle = artist.subtitle ?: context.getString(org.nov0caina.sounder.R.string.lbl_artist),
-                    imageUrl = artist.avatarUrl,
-                    artist = artist
-                )
-            )
-        }
-
-        // 3..6. Up to 4 Quick Picks / trending tracks
-        val candidates = if (feed.quickPicks.isNotEmpty()) feed.quickPicks else feed.trendingTracks
-        for (track in candidates) {
-            if (list.size >= 6) break
+        // 2..6. Up to 5 playable songs only (weighted by local time-of-day & day-of-week habits)
+        val (currentTimeOfDay, currentDayOfWeek) = PlaybackRecord.currentContext()
+        val selectedTracks = scoreAndSelectQuickAccessTracks(
+            records = records,
+            feed = feed,
+            currentTimeOfDay = currentTimeOfDay,
+            currentDayOfWeek = currentDayOfWeek,
+            insightsEnabled = onlineSettings.enableLocalListeningInsights,
+            maxTracks = 5,
+        ).map(::enrichTrackArtwork)
+        for (track in selectedTracks) {
             list.add(
                 QuickAccessItem(
                     id = "track_${track.id}",
@@ -272,6 +502,124 @@ class HomeFeedViewModel @Inject constructor(
         }
 
         _quickAccessItems.value = list
+        rebuildPersonalizedFeedSections(feed, records)
+        scheduleArtworkLookupIfMissing(selectedTracks + _personalizedQuickPicks.value)
+    }
+
+    private fun rebuildPersonalizedFeedSections(
+        feed: HomeFeedData = _feedData.value,
+        records: List<PlaybackRecord> = _recentRecords.value,
+    ) {
+        val insightsEnabled = onlineSettings.enableLocalListeningInsights
+        _personalizedTrendingAlbums.value = blendTrendingAlbums(
+            artistAlbums = _artistRecommendedAlbums.value,
+            catalogTrendingAlbums = feed.trendingAlbums,
+            insightsEnabled = insightsEnabled,
+        )
+        _personalizedQuickPicks.value = buildPersonalizedQuickPicks(
+            records = records,
+            favoriteAndContextualTracks = _favoriteArtistTracks.value + _becauseYouListenTracks.value,
+            catalogQuickPicks = feed.quickPicks,
+            insightsEnabled = insightsEnabled,
+        ).map(::enrichTrackArtwork)
+    }
+
+    private fun enrichTrackArtwork(track: OnlineTrack): OnlineTrack {
+        if (!track.artworkUrl.isNullOrBlank() || !track.localCoverPath.isNullOrBlank()) {
+            return track
+        }
+
+        val normKey = "${SongMatcher.normalizeTitle(track.title)}|${SongMatcher.normalizeArtist(track.artist)}"
+        val cachedUrl = resolvedArtworkCache[normKey]
+        if (!cachedUrl.isNullOrBlank()) {
+            return track.copy(artworkUrl = cachedUrl)
+        }
+
+        StreamingCacheManager.findCachedCoverFile(track.id)
+            ?.takeIf { it.exists() && it.length() > 0L }
+            ?.let { cachedCover ->
+                return track.copy(localCoverPath = cachedCover.absolutePath)
+            }
+
+        downloadManager.getDownloadedFile(track)?.takeIf { it.exists() }?.let { downloadedFile ->
+            findCompanionCoverFile(downloadedFile.parentFile, downloadedFile.nameWithoutExtension)?.let { coverFile ->
+                return track.copy(localCoverPath = coverFile.absolutePath)
+            }
+        }
+
+        downloadManager.findSongInLibrary(track)?.let { libSong ->
+            libSong.cover?.id?.takeIf { it.isNotBlank() }?.let { coverId ->
+                val coverUri = CoverProvider.CONTENT_URI
+                    .buildUpon()
+                    .appendPath(coverId)
+                    .build()
+                    .toString()
+                return track.copy(artworkUrl = coverUri)
+            }
+            MediaDeletionUtil.resolveSongFile(context, libSong)?.let { songFile ->
+                findCompanionCoverFile(songFile.parentFile, songFile.nameWithoutExtension)?.let { coverFile ->
+                    return track.copy(localCoverPath = coverFile.absolutePath)
+                }
+            }
+        }
+
+        val catalogPool = _feedData.value.quickPicks +
+            _feedData.value.trendingTracks +
+            _favoriteArtistTracks.value +
+            _becauseYouListenTracks.value
+        val catalogMatch = catalogPool.firstOrNull { candidate ->
+            !candidate.artworkUrl.isNullOrBlank() &&
+                (candidate.id == track.id || SongMatcher.matches(candidate.title, candidate.artist, track.title, track.artist))
+        }
+        if (catalogMatch != null && !catalogMatch.artworkUrl.isNullOrBlank()) {
+            resolvedArtworkCache[normKey] = catalogMatch.artworkUrl
+            return track.copy(artworkUrl = catalogMatch.artworkUrl)
+        }
+
+        return track
+    }
+
+    private fun findCompanionCoverFile(parentDir: File?, stem: String): File? {
+        if (parentDir == null || !parentDir.exists()) return null
+        return File(parentDir, "$stem.jpg").takeIf { it.exists() && it.length() > 0L }
+            ?: File(parentDir, "cover.jpg").takeIf { it.exists() && it.length() > 0L }
+    }
+
+    private fun scheduleArtworkLookupIfMissing(tracks: List<OnlineTrack>) {
+        if (!NetworkUtil.isConnected(context)) return
+        val missing = tracks.filter {
+            it.artworkUrl.isNullOrBlank() &&
+                it.localCoverPath.isNullOrBlank() &&
+                it.title.isNotBlank()
+        }
+        if (missing.isEmpty()) return
+
+        for (track in missing) {
+            val normKey = "${SongMatcher.normalizeTitle(track.title)}|${SongMatcher.normalizeArtist(track.artist)}"
+            if (!attemptedArtworkLookups.add(normKey)) continue
+
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val query = "${track.title} ${track.artist}".trim()
+                    val result = repository.queryCategorized(query)
+                    val matched = result.tracks.firstOrNull { candidate ->
+                        !candidate.artworkUrl.isNullOrBlank() &&
+                            (candidate.id == track.id ||
+                                SongMatcher.matches(candidate.title, candidate.artist, track.title, track.artist))
+                    } ?: result.tracks.firstOrNull { !it.artworkUrl.isNullOrBlank() }
+
+                    val resolvedUrl = matched?.artworkUrl
+                    if (!resolvedUrl.isNullOrBlank()) {
+                        resolvedArtworkCache[normKey] = resolvedUrl
+                        rebuildQuickAccess(_feedData.value, _recentRecords.value)
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    L.w(e, "Failed background artwork lookup for %s", track.title)
+                }
+            }
+        }
     }
 
     private fun toSong(track: OnlineTrack, streamUrl: String? = null): Song {
@@ -311,7 +659,8 @@ class HomeFeedViewModel @Inject constructor(
             val resolvedDuration = if (track.durationMs > 0) track.durationMs else 0L
             return OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse("sounder://stream/${track.id}"))
         }
-        val streamInfo = repository.resolveStreamInfo(track.id, title = track.title, artist = track.artist)
+        val lookupId = if (track.id.contains("-") && track.id.length > 16) "" else track.id
+        val streamInfo = repository.resolveStreamInfo(lookupId, title = track.title, artist = track.artist)
         if (streamInfo != null && streamInfo.url.isNotBlank()) {
             val resolvedDuration = if (track.durationMs > 0) track.durationMs else streamInfo.durationMs
             return OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse(streamInfo.url))
@@ -417,6 +766,11 @@ class HomeFeedViewModel @Inject constructor(
         playTrackWithQueue(track, recommendations.ifEmpty { listOf(track) }, playbackModel)
     }
 
+    fun playBecauseYouListenTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
+        val tracks = _becauseYouListenTracks.value
+        playTrackWithQueue(track, tracks.ifEmpty { listOf(track) }, playbackModel)
+    }
+
     fun playTrack(track: OnlineTrack, playbackModel: PlaybackViewModel) {
         val feed = _feedData.value
         val sectionTracks = when {
@@ -491,7 +845,8 @@ class HomeFeedViewModel @Inject constructor(
                     onEnqueued?.invoke()
                     return@launch
                 }
-                val streamInfo = repository.resolveStreamInfo(track.id, title = track.title, artist = track.artist)
+                val lookupId = if (track.id.contains("-") && track.id.length > 16) "" else track.id
+        val streamInfo = repository.resolveStreamInfo(lookupId, title = track.title, artist = track.artist)
                 if (streamInfo != null && streamInfo.url.isNotBlank()) {
                     val resolvedDuration = if (track.durationMs > 0) track.durationMs else streamInfo.durationMs
                     val onlineSong = OnlineSong(track.copy(durationMs = resolvedDuration), Uri.parse(streamInfo.url))
@@ -521,6 +876,341 @@ class HomeFeedViewModel @Inject constructor(
     fun recordRecentArtist(artist: OnlineArtistSummary) {
         viewModelScope.launch {
             repository.recordRecentArtist(artist)
+        }
+    }
+
+    companion object {
+        private const val THIRTY_DAYS_MS = 30L * 24L * 60L * 60L * 1000L
+
+        internal fun selectQuickAccessTracks(
+            feed: HomeFeedData,
+            maxTracks: Int = 5
+        ): List<OnlineTrack> {
+            val seenIds = mutableSetOf<String>()
+            val result = mutableListOf<OnlineTrack>()
+            for (track in feed.quickPicks + feed.trendingTracks) {
+                if (track.id.isBlank()) continue
+                if (InnerTubeParser.hasMonthlyAudienceMetric(track.artist) || InnerTubeParser.hasArtistMetricPart(track.artist)) {
+                    continue
+                }
+                if (seenIds.add(track.id)) {
+                    result.add(track)
+                    if (result.size >= maxTracks) break
+                }
+            }
+            return result
+        }
+
+        private fun isValidMusicTrack(track: OnlineTrack): Boolean {
+            return track.id.isNotBlank() &&
+                track.title.isNotBlank() &&
+                !InnerTubeParser.hasMonthlyAudienceMetric(track.artist) &&
+                !InnerTubeParser.hasArtistMetricPart(track.artist)
+        }
+
+        private fun addUniqueTrack(
+            target: MutableList<OnlineTrack>,
+            seenIds: MutableSet<String>,
+            seenKeys: MutableSet<String>,
+            track: OnlineTrack,
+        ): Boolean {
+            if (!isValidMusicTrack(track)) return false
+            val key = "${track.title.trim().lowercase()}|${track.artist.trim().lowercase()}"
+            if (!seenIds.add(track.id) || !seenKeys.add(key)) return false
+            target.add(track)
+            return true
+        }
+
+        private fun groupValidPlaybackRecords(records: List<PlaybackRecord>): List<List<PlaybackRecord>> {
+            return records
+                .filter { it.trackId.isNotBlank() && it.title.isNotBlank() }
+                .groupBy { "${it.title.trim().lowercase()}|${it.artist.trim().lowercase()}" }
+                .values
+                .toList()
+        }
+
+        private fun pickRepresentativeTrack(group: List<PlaybackRecord>): OnlineTrack {
+            val representative = group.firstOrNull {
+                it.sourceType == PlaybackRecord.SOURCE_STREAM && !it.artworkUrl.isNullOrBlank()
+            } ?: group.firstOrNull {
+                !it.artworkUrl.isNullOrBlank()
+            } ?: group.firstOrNull {
+                it.sourceType == PlaybackRecord.SOURCE_STREAM
+            } ?: group.first()
+            return representative.toOnlineTrack()
+        }
+
+        /**
+         * Scores recent local playback records by contextual affinity (all-time plays + time-of-day
+         * boost + day-of-week boost) and fills any remaining slots with editorial feed tracks.
+         */
+        internal fun scoreAndSelectQuickAccessTracks(
+            records: List<PlaybackRecord>,
+            feed: HomeFeedData,
+            currentTimeOfDay: Int,
+            currentDayOfWeek: Int,
+            insightsEnabled: Boolean = true,
+            maxTracks: Int = 5,
+        ): List<OnlineTrack> {
+            val selected = mutableListOf<OnlineTrack>()
+            val seenIds = mutableSetOf<String>()
+            val seenKeys = mutableSetOf<String>()
+
+            if (insightsEnabled && records.isNotEmpty()) {
+                val ranked = groupValidPlaybackRecords(records).map { group ->
+                    val allTimePlays = group.size
+                    val timeOfDayPlays = group.count { it.timeOfDay == currentTimeOfDay }
+                    val dayOfWeekPlays = group.count { it.dayOfWeek == currentDayOfWeek }
+                    val score = (allTimePlays * 1.0) + (timeOfDayPlays * 2.5) + (dayOfWeekPlays * 1.5)
+                    val latestTs = group.maxOf { it.timestamp }
+                    Triple(pickRepresentativeTrack(group), score, latestTs)
+                }.sortedWith(
+                    compareByDescending<Triple<OnlineTrack, Double, Long>> { it.second }
+                        .thenByDescending { it.third }
+                )
+
+                for ((track, _, _) in ranked) {
+                    if (selected.size >= maxTracks) break
+                    addUniqueTrack(selected, seenIds, seenKeys, track)
+                }
+            }
+
+            if (selected.size < maxTracks) {
+                for (track in selectQuickAccessTracks(feed, maxTracks = maxTracks * 2)) {
+                    if (selected.size >= maxTracks) break
+                    addUniqueTrack(selected, seenIds, seenKeys, track)
+                }
+            }
+
+            return selected
+        }
+
+        /**
+         * Returns the prioritized list of seed artists across 4 tiers:
+         * 1. Favorite artists
+         * 2. Verified playback records (>= [minPlays] since [sinceTimestampMs])
+         * 3. Cached streaming tracks
+         * 4. Recently explored artists
+         */
+        internal fun selectSeedArtistsList(
+            records: List<PlaybackRecord>,
+            sinceTimestampMs: Long,
+            insightsEnabled: Boolean = true,
+            minPlays: Int = 2,
+            favoriteArtists: List<OnlineArtistSummary> = emptyList(),
+            cachedTracks: List<CachedTrackEntity> = emptyList(),
+            recentArtists: List<OnlineArtistSummary> = emptyList(),
+            maxArtists: Int = 3,
+        ): List<String> {
+            if (!insightsEnabled) return emptyList()
+            val result = mutableListOf<String>()
+            val seen = mutableSetOf<String>()
+
+            fun addArtist(name: String?) {
+                val trimmed = name?.trim() ?: return
+                if (trimmed.isNotBlank() && seen.add(trimmed.lowercase())) {
+                    result.add(trimmed)
+                }
+            }
+
+            // Tier 1: User's explicitly favorited artists
+            favoriteArtists.forEach { if (result.size < maxArtists) addArtist(it.name) }
+
+            // Tier 2: Verified playback records
+            if (result.size < maxArtists && records.isNotEmpty()) {
+                records
+                    .filter { it.timestamp >= sinceTimestampMs && it.artist.isNotBlank() }
+                    .groupBy { it.artist.trim() }
+                    .mapValues { (_, list) -> list.size to (list.maxOfOrNull { it.timestamp } ?: 0L) }
+                    .filter { it.value.first >= minPlays }
+                    .entries
+                    .sortedWith(
+                        compareByDescending<Map.Entry<String, Pair<Int, Long>>> { it.value.first }
+                            .thenByDescending { it.value.second }
+                    )
+                    .forEach { if (result.size < maxArtists) addArtist(it.key) }
+            }
+
+            // Tier 3: Cached streaming tracks
+            if (result.size < maxArtists && cachedTracks.isNotEmpty()) {
+                cachedTracks
+                    .filter { it.artist.isNotBlank() }
+                    .groupBy { it.artist.trim() }
+                    .mapValues { (_, list) -> list.sumOf { it.playCount } to (list.maxOfOrNull { it.lastPlayedMs } ?: 0L) }
+                    .entries
+                    .sortedWith(
+                        compareByDescending<Map.Entry<String, Pair<Int, Long>>> { it.value.first }
+                            .thenByDescending { it.value.second }
+                    )
+                    .forEach { if (result.size < maxArtists) addArtist(it.key) }
+            }
+
+            // Tier 4: Recently explored artists
+            recentArtists.forEach { if (result.size < maxArtists) addArtist(it.name) }
+
+            return result
+        }
+
+        /**
+         * Returns the prioritized seed artist based on the 4-tier fallback cascade.
+         */
+        internal fun selectTopSeedArtist(
+            records: List<PlaybackRecord>,
+            sinceTimestampMs: Long,
+            insightsEnabled: Boolean = true,
+            minPlays: Int = 3,
+            favoriteArtists: List<OnlineArtistSummary> = emptyList(),
+            cachedTracks: List<CachedTrackEntity> = emptyList(),
+            recentArtists: List<OnlineArtistSummary> = emptyList(),
+        ): String? = selectSeedArtistsList(
+            records = records,
+            sinceTimestampMs = sinceTimestampMs,
+            insightsEnabled = insightsEnabled,
+            minPlays = minPlays,
+            favoriteArtists = favoriteArtists,
+            cachedTracks = cachedTracks,
+            recentArtists = recentArtists,
+            maxArtists = 1,
+        ).firstOrNull()
+
+        /**
+         * Blends albums associated with the user's preferred artists ahead of catalog trending albums,
+         * deduplicating by ID and normalized title.
+         */
+        internal fun blendTrendingAlbums(
+            artistAlbums: List<OnlineAlbumSummary>,
+            catalogTrendingAlbums: List<OnlineAlbumSummary>,
+            insightsEnabled: Boolean = true,
+            maxAlbums: Int = 15,
+        ): List<OnlineAlbumSummary> {
+            val result = mutableListOf<OnlineAlbumSummary>()
+            val seenIds = mutableSetOf<String>()
+            val seenTitles = mutableSetOf<String>()
+
+            fun addAlbum(album: OnlineAlbumSummary) {
+                if (album.id.isBlank() || album.title.isBlank()) return
+                val normTitle = album.title.trim().lowercase()
+                if (seenIds.add(album.id) && seenTitles.add(normTitle)) {
+                    result.add(album)
+                }
+            }
+
+            if (insightsEnabled) {
+                for (album in artistAlbums) {
+                    if (result.size >= maxAlbums) break
+                    addAlbum(album)
+                }
+            }
+            for (album in catalogTrendingAlbums) {
+                if (result.size >= maxAlbums) break
+                addAlbum(album)
+            }
+            return result
+        }
+
+        /**
+         * Interleaves songs from [seedArtist] with tracks from similar/related artists while
+         * filtering out non-song artist metric artifacts.
+         */
+        internal fun blendSimilarArtistTracks(
+            seedArtist: String,
+            seedTracks: List<OnlineTrack>,
+            similarTracks: List<OnlineTrack>,
+            maxTracks: Int = 18,
+        ): List<OnlineTrack> {
+            val seedNorm = SongMatcher.normalizeArtist(seedArtist)
+            val seedTitleNorm = SongMatcher.normalizeTitle(seedArtist)
+
+            fun matchesSeedArtist(track: OnlineTrack): Boolean {
+                val normArtist = SongMatcher.normalizeArtist(track.artist)
+                return normArtist.isNotEmpty() && seedNorm.isNotEmpty() &&
+                    (normArtist == seedNorm || normArtist.contains(seedNorm) || normArtist.startsWith(seedNorm))
+            }
+
+            fun isUnrelatedTitleConfusion(track: OnlineTrack): Boolean {
+                val trackTitleNorm = SongMatcher.normalizeTitle(track.title)
+                return trackTitleNorm == seedTitleNorm && !matchesSeedArtist(track)
+            }
+
+            val validSeeds = seedTracks.filter(::isValidMusicTrack).filter(::matchesSeedArtist)
+            val validSimilar = similarTracks.filter(::isValidMusicTrack).filterNot(::isUnrelatedTitleConfusion)
+
+            val primary = validSeeds.toMutableList()
+            val related = mutableListOf<OnlineTrack>()
+            for (t in validSimilar) {
+                if (matchesSeedArtist(t)) {
+                    if (primary.none { it.id == t.id || SongMatcher.normalizeTitle(it.title) == SongMatcher.normalizeTitle(t.title) }) {
+                        primary.add(t)
+                    }
+                } else {
+                    related.add(t)
+                }
+            }
+
+            val result = mutableListOf<OnlineTrack>()
+            val seenIds = mutableSetOf<String>()
+            val seenKeys = mutableSetOf<String>()
+
+            var pIdx = 0
+            var rIdx = 0
+            while (result.size < maxTracks && (pIdx < primary.size || rIdx < related.size)) {
+                if (pIdx < primary.size) {
+                    addUniqueTrack(result, seenIds, seenKeys, primary[pIdx++])
+                }
+                if (result.size < maxTracks && rIdx < related.size) {
+                    addUniqueTrack(result, seenIds, seenKeys, related[rIdx++])
+                }
+                if (result.size < maxTracks && rIdx < related.size) {
+                    addUniqueTrack(result, seenIds, seenKeys, related[rIdx++])
+                }
+            }
+            return result
+        }
+
+        /**
+         * Builds "Quick Picks" prioritized from user playback history and favorite/contextual
+         * artist tracks, falling back to catalog quick picks when local activity is sparse.
+         */
+        internal fun buildPersonalizedQuickPicks(
+            records: List<PlaybackRecord>,
+            favoriteAndContextualTracks: List<OnlineTrack>,
+            catalogQuickPicks: List<OnlineTrack>,
+            insightsEnabled: Boolean = true,
+            maxTracks: Int = 24,
+        ): List<OnlineTrack> {
+            val result = mutableListOf<OnlineTrack>()
+            val seenIds = mutableSetOf<String>()
+            val seenKeys = mutableSetOf<String>()
+
+            if (insightsEnabled && (records.isNotEmpty() || favoriteAndContextualTracks.isNotEmpty())) {
+                val rankedHistory = groupValidPlaybackRecords(records)
+                    .map { group ->
+                        Triple(pickRepresentativeTrack(group), group.size, group.maxOf { it.timestamp })
+                    }
+                    .sortedWith(
+                        compareByDescending<Triple<OnlineTrack, Int, Long>> { it.second }
+                            .thenByDescending { it.third }
+                    )
+                    .map { it.first }
+
+                var hIdx = 0
+                var cIdx = 0
+                while (result.size < maxTracks && (hIdx < rankedHistory.size || cIdx < favoriteAndContextualTracks.size)) {
+                    if (hIdx < rankedHistory.size) {
+                        addUniqueTrack(result, seenIds, seenKeys, rankedHistory[hIdx++])
+                    }
+                    if (result.size < maxTracks && cIdx < favoriteAndContextualTracks.size) {
+                        addUniqueTrack(result, seenIds, seenKeys, favoriteAndContextualTracks[cIdx++])
+                    }
+                }
+            }
+
+            for (track in catalogQuickPicks) {
+                if (result.size >= maxTracks) break
+                addUniqueTrack(result, seenIds, seenKeys, track)
+            }
+
+            return result
         }
     }
 }

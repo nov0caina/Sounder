@@ -37,7 +37,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
@@ -45,8 +48,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentHomeBinding
+import org.nov0caina.sounder.online.OnlineSettings
+import org.nov0caina.sounder.online.db.PlaybackRecord
+import org.nov0caina.sounder.online.db.PlaybackRecordDao
 import org.nov0caina.sounder.detail.DetailViewModel
 import org.nov0caina.sounder.detail.Show
 import org.nov0caina.sounder.home.list.AlbumListFragment
@@ -90,6 +98,9 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
     override val musicModel: MusicViewModel by activityViewModels()
     override val playbackModel: PlaybackViewModel by activityViewModels()
     private val homeModel: HomeViewModel by activityViewModels()
+    @Inject lateinit var playbackRecordDao: PlaybackRecordDao
+    @Inject lateinit var onlineSettings: OnlineSettings
+    private var latestMonthlyPlayedMs: Long = 0L
     private var storagePermissionLauncher: ActivityResultLauncher<String>? = null
     private var getContentLauncher: ActivityResultLauncher<String>? = null
     private var pendingImportTarget: Playlist? = null
@@ -165,6 +176,11 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
             MenuCompat.setGroupDividerEnabled(menu, true)
         }
 
+        binding.homeListeningSummaryCloseBtn.setOnClickListener {
+            onlineSettings.setShowMonthlyListeningBanner(false)
+            updateListeningSummary(binding, latestMonthlyPlayedMs)
+        }
+
         binding.homePager.apply {
             // Update HomeViewModel whenever the user swipes through the ViewPager.
             // This would be implemented in HomeFragment itself, but OnPageChangeCallback
@@ -224,6 +240,41 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         collectImmediately(musicModel.playlistMessage.flow, ::handlePlaylistMessage)
         collect(musicModel.deviceScanMessage.flow, ::handleDeviceScanMessage)
         collect(playbackModel.playbackDecision.flow, ::handlePlaybackDecision)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                playbackRecordDao.observeTotalPlayedMsSince(PlaybackRecord.currentMonthStartMs())
+                    .collect { totalMs ->
+                        latestMonthlyPlayedMs = totalMs
+                        val b = this@HomeFragment.binding ?: return@collect
+                        updateListeningSummary(b, totalMs)
+                    }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val binding = binding ?: return
+        updateListeningSummary(binding, latestMonthlyPlayedMs)
+    }
+
+    private fun updateListeningSummary(binding: FragmentHomeBinding, totalMs: Long) {
+        if (!onlineSettings.enableLocalListeningInsights ||
+            !onlineSettings.showMonthlyListeningBanner ||
+            totalMs < 60_000L
+        ) {
+            binding.homeListeningSummaryCard.isVisible = false
+            return
+        }
+        val totalMinutes = (totalMs / 60_000L).toInt()
+        val hours = totalMinutes / 60
+        val minutes = totalMinutes % 60
+        binding.homeListeningSummaryText.text = if (hours > 0) {
+            getString(R.string.fmt_monthly_listening_hours, hours, minutes)
+        } else {
+            getString(R.string.fmt_monthly_listening_minutes, minutes)
+        }
+        binding.homeListeningSummaryCard.isVisible = true
     }
 
     override fun onDestroyBinding(binding: FragmentHomeBinding) {
@@ -232,6 +283,7 @@ class HomeFragment : SelectionFragment<FragmentHomeBinding>() {
         homePagerAdapter = null
         binding.homeLayout.setOnDragListener(null)
         storagePermissionLauncher = null
+        binding.homeListeningSummaryCloseBtn.setOnClickListener(null)
         binding.homeNormalToolbar.setOnMenuItemClickListener(null)
     }
 

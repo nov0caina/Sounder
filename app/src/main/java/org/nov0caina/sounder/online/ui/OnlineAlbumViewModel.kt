@@ -26,7 +26,7 @@ import timber.log.Timber as L
 @HiltViewModel
 class OnlineAlbumViewModel @Inject constructor(
     private val repository: OnlineMusicRepository,
-    private val downloadManager: DownloadManager
+    val downloadManager: DownloadManager
 ) : ViewModel() {
 
     private val _albumDetail = MutableStateFlow<OnlineAlbumDetail?>(null)
@@ -49,93 +49,7 @@ class OnlineAlbumViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                var resolvedDetail: OnlineAlbumDetail? = null
-
-                // 1. If browseId is provided, try browsing it directly
-                if (browseId.isNotBlank()) {
-                    try {
-                        resolvedDetail = repository.browseAlbum(browseId)
-                    } catch (e: Exception) {
-                        L.w(e, "Could not load album directly with browseId: %s", browseId)
-                    }
-                }
-
-                val separators = setOf("&", ",", "+", "feat.", "feat", "ft.", "ft", "with", "vs.")
-                val cleanAlbumTitle = albumTitle?.trim()?.takeIf {
-                    it.isNotBlank() && it !in separators && it.lowercase() !in separators
-                }
-                val cleanArtistName = artistName?.trim()?.takeIf { it.isNotBlank() }
-
-                // 2. If no detail yet, try resolving browseId via artist's catalog
-                if (resolvedDetail == null && !cleanAlbumTitle.isNullOrBlank()) {
-                    var foundBrowseId = ""
-                    if (!cleanArtistName.isNullOrBlank()) {
-                        try {
-                            val artistSearch = repository.queryCategorized(cleanArtistName)
-                            val artistId = artistSearch.artists.firstOrNull()?.id
-                            if (!artistId.isNullOrBlank()) {
-                                val artistDetail = repository.browseArtist(artistId)
-                                val matchingAlbum = (artistDetail.albums + artistDetail.singles).find {
-                                    it.title.contains(cleanAlbumTitle, ignoreCase = true) ||
-                                        cleanAlbumTitle.contains(it.title, ignoreCase = true)
-                                }
-                                foundBrowseId = matchingAlbum?.id ?: ""
-                            }
-                        } catch (e: Exception) {
-                            L.w(e, "Could not resolve album browseId via artist catalog")
-                        }
-                    }
-
-                    if (foundBrowseId.isNotBlank()) {
-                        try {
-                            resolvedDetail = repository.browseAlbum(foundBrowseId)
-                        } catch (e: Exception) {
-                            L.w(e, "Could not load resolved album: %s", foundBrowseId)
-                        }
-                    }
-                }
-
-                // 3. If still not resolved, search for the album or track
-                if (resolvedDetail == null && !cleanAlbumTitle.isNullOrBlank()) {
-                    val query = if (!cleanArtistName.isNullOrBlank()) "$cleanAlbumTitle $cleanArtistName" else cleanAlbumTitle
-                    try {
-                        val searchResult = repository.queryCategorized(query)
-                        val matchingTrack = searchResult.tracks.firstOrNull {
-                            it.title.contains(cleanAlbumTitle, ignoreCase = true) ||
-                                cleanAlbumTitle.contains(it.title, ignoreCase = true) ||
-                                (it.album != null && (it.album.contains(cleanAlbumTitle, ignoreCase = true) || cleanAlbumTitle.contains(it.album, ignoreCase = true)))
-                        } ?: searchResult.tracks.firstOrNull()
-
-                        if (matchingTrack != null) {
-                            // If matching track has an albumId, try loading that album
-                            if (!matchingTrack.albumId.isNullOrBlank()) {
-                                try {
-                                    resolvedDetail = repository.browseAlbum(matchingTrack.albumId)
-                                } catch (e: Exception) {
-                                    L.w(e, "Could not load track albumId %s", matchingTrack.albumId)
-                                }
-                            }
-
-                            // If still null, synthesize single/track album detail so user NEVER sees empty 0-song screen
-                            if (resolvedDetail == null) {
-                                val synthesizedTitle = matchingTrack.album?.takeIf {
-                                    it.isNotBlank() && it !in separators && it.lowercase() !in separators
-                                } ?: matchingTrack.title
-                                resolvedDetail = OnlineAlbumDetail(
-                                    id = matchingTrack.albumId ?: matchingTrack.id,
-                                    title = synthesizedTitle,
-                                    artist = matchingTrack.artist.ifBlank { cleanArtistName ?: "Unknown Artist" },
-                                    year = matchingTrack.year?.toString(),
-                                    coverUrl = matchingTrack.artworkUrl,
-                                    tracks = listOf(matchingTrack)
-                                )
-                            }
-                        }
-                    } catch (e: Exception) {
-                        L.w(e, "Could not search fallback for album %s", cleanAlbumTitle)
-                    }
-                }
-
+                val resolvedDetail = resolveOnlineAlbumDetail(repository, browseId, albumTitle, artistName)
                 if (resolvedDetail != null) {
                     _albumDetail.value = resolvedDetail
                     fetchMoreAlbums(resolvedDetail)
@@ -282,9 +196,9 @@ class OnlineAlbumViewModel @Inject constructor(
         playTrack(tracks.first(), playbackModel)
     }
 
-    fun downloadAlbum() {
+    fun downloadAlbum(allowMeteredNetwork: Boolean = false) {
         val detail = _albumDetail.value ?: return
-        downloadManager.enqueueAlbum(detail)
+        downloadManager.enqueueAlbum(detail, allowMeteredNetwork)
     }
 
     fun downloadTrack(track: OnlineTrack) {
@@ -323,4 +237,138 @@ enum class AlbumDownloadStatus {
     AVAILABLE,
     DOWNLOADING,
     COMPLETED
+}
+
+private val TITLE_SEPARATORS = setOf("&", ",", "+", "feat.", "feat", "ft.", "ft", "with", "vs.")
+
+/** Selects the best matching release from an artist's catalog, preferring exact studio album matches. */
+internal fun findBestAlbumMatch(
+    albums: List<OnlineAlbumSummary>,
+    singles: List<OnlineAlbumSummary>,
+    cleanAlbumTitle: String
+): OnlineAlbumSummary? {
+    return albums.firstOrNull { it.title.equals(cleanAlbumTitle, ignoreCase = true) }
+        ?: singles.firstOrNull { it.title.equals(cleanAlbumTitle, ignoreCase = true) }
+        ?: albums.firstOrNull {
+            it.title.contains(cleanAlbumTitle, ignoreCase = true) ||
+                cleanAlbumTitle.contains(it.title, ignoreCase = true)
+        }
+        ?: singles.firstOrNull {
+            it.title.contains(cleanAlbumTitle, ignoreCase = true) ||
+                cleanAlbumTitle.contains(it.title, ignoreCase = true)
+        }
+}
+
+/** Selects the best search fallback track, prioritizing tracks with a matching album and browseable albumId. */
+internal fun findBestFallbackTrack(
+    tracks: List<OnlineTrack>,
+    cleanAlbumTitle: String
+): OnlineTrack? {
+    return tracks.firstOrNull {
+        !it.albumId.isNullOrBlank() && it.album?.equals(cleanAlbumTitle, ignoreCase = true) == true
+    } ?: tracks.firstOrNull { track ->
+        !track.albumId.isNullOrBlank() && track.album != null &&
+            (track.album.contains(cleanAlbumTitle, ignoreCase = true) ||
+                cleanAlbumTitle.contains(track.album, ignoreCase = true))
+    } ?: tracks.firstOrNull {
+        !it.albumId.isNullOrBlank() &&
+            (it.title.equals(cleanAlbumTitle, ignoreCase = true) ||
+                it.title.contains(cleanAlbumTitle, ignoreCase = true))
+    } ?: tracks.firstOrNull {
+        it.album?.equals(cleanAlbumTitle, ignoreCase = true) == true
+    } ?: tracks.firstOrNull { track ->
+        track.title.contains(cleanAlbumTitle, ignoreCase = true) ||
+            cleanAlbumTitle.contains(track.title, ignoreCase = true) ||
+            (track.album != null && (track.album.contains(cleanAlbumTitle, ignoreCase = true) ||
+                cleanAlbumTitle.contains(track.album, ignoreCase = true)))
+    } ?: tracks.firstOrNull()
+}
+
+/** Resolves an [OnlineAlbumDetail] by browseId or falls back to artist catalog and track search. */
+internal suspend fun resolveOnlineAlbumDetail(
+    repository: OnlineMusicRepository,
+    browseId: String,
+    albumTitle: String? = null,
+    artistName: String? = null
+): OnlineAlbumDetail? {
+    var resolvedDetail: OnlineAlbumDetail? = null
+
+    if (browseId.isNotBlank()) {
+        try {
+            resolvedDetail = repository.browseAlbum(browseId)
+        } catch (e: Exception) {
+            L.w(e, "Could not load album directly with browseId: %s", browseId)
+        }
+    }
+
+    val cleanAlbumTitle = albumTitle?.trim()?.takeIf {
+        it.isNotBlank() && it !in TITLE_SEPARATORS && it.lowercase() !in TITLE_SEPARATORS
+    }
+    val cleanArtistName = artistName?.trim()?.takeIf { it.isNotBlank() }
+
+    if (resolvedDetail == null && !cleanAlbumTitle.isNullOrBlank()) {
+        var foundBrowseId = ""
+        if (!cleanArtistName.isNullOrBlank()) {
+            try {
+                val artistSearch = repository.queryCategorized(cleanArtistName)
+                val artistId = (artistSearch.artists.firstOrNull {
+                    it.name.equals(cleanArtistName, ignoreCase = true)
+                } ?: artistSearch.artists.firstOrNull())?.id
+                if (!artistId.isNullOrBlank()) {
+                    val artistDetail = repository.browseArtist(artistId)
+                    foundBrowseId = findBestAlbumMatch(
+                        artistDetail.albums,
+                        artistDetail.singles,
+                        cleanAlbumTitle
+                    )?.id ?: ""
+                }
+            } catch (e: Exception) {
+                L.w(e, "Could not resolve album browseId via artist catalog")
+            }
+        }
+
+        if (foundBrowseId.isNotBlank()) {
+            try {
+                resolvedDetail = repository.browseAlbum(foundBrowseId)
+            } catch (e: Exception) {
+                L.w(e, "Could not load resolved album: %s", foundBrowseId)
+            }
+        }
+    }
+
+    if (resolvedDetail == null && !cleanAlbumTitle.isNullOrBlank()) {
+        val query = if (!cleanArtistName.isNullOrBlank()) "$cleanAlbumTitle $cleanArtistName" else cleanAlbumTitle
+        try {
+            val searchResult = repository.queryCategorized(query)
+            val matchingTrack = findBestFallbackTrack(searchResult.tracks, cleanAlbumTitle)
+
+            if (matchingTrack != null) {
+                if (!matchingTrack.albumId.isNullOrBlank()) {
+                    try {
+                        resolvedDetail = repository.browseAlbum(matchingTrack.albumId)
+                    } catch (e: Exception) {
+                        L.w(e, "Could not load track albumId %s", matchingTrack.albumId)
+                    }
+                }
+
+                if (resolvedDetail == null) {
+                    val synthesizedTitle = matchingTrack.album?.takeIf {
+                        it.isNotBlank() && it !in TITLE_SEPARATORS && it.lowercase() !in TITLE_SEPARATORS
+                    } ?: matchingTrack.title
+                    resolvedDetail = OnlineAlbumDetail(
+                        id = matchingTrack.albumId ?: matchingTrack.id,
+                        title = synthesizedTitle,
+                        artist = matchingTrack.artist.ifBlank { cleanArtistName ?: "Unknown Artist" },
+                        year = matchingTrack.year?.toString(),
+                        coverUrl = matchingTrack.artworkUrl,
+                        tracks = listOf(matchingTrack)
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            L.w(e, "Could not search fallback for album %s", cleanAlbumTitle)
+        }
+    }
+
+    return resolvedDetail
 }

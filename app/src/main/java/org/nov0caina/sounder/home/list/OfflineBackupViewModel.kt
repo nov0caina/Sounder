@@ -26,7 +26,7 @@ import org.nov0caina.sounder.playback.state.ShuffleMode
 @HiltViewModel
 class OfflineBackupViewModel @Inject constructor(
     private val streamingCacheManager: StreamingCacheManager,
-    private val downloadManager: DownloadManager,
+    val downloadManager: DownloadManager,
 ) : ViewModel() {
 
     val cachedTracks: StateFlow<List<OnlineTrack>> =

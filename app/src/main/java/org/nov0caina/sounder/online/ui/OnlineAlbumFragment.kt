@@ -10,6 +10,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,12 +20,16 @@ import coil3.ImageLoader
 import coil3.load
 import coil3.request.crossfade
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.min
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.InnerDirections
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentOnlineAlbumBinding
@@ -35,6 +40,7 @@ import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.music.PlaylistDecision
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.online.download.DownloadStatus
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.playback.PlaySong
@@ -62,6 +68,7 @@ class OnlineAlbumFragment :
     private var albumTouchHelper: ItemTouchHelper? = null
     private var skeletonAnimator: ObjectAnimator? = null
     private var spacingSmall: Int = 0
+    private var lastDownloadStatuses: Map<String, DownloadStatus>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,13 +113,17 @@ class OnlineAlbumFragment :
                 }
             },
             onDownloadClick = { track ->
-                if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
-                    Snackbar.make(binding.root, R.string.msg_storage_permission_required, Snackbar.LENGTH_LONG).show()
-                    return@OnlineAlbumTrackAdapter
-                }
-                albumModel.downloadTrack(track)
-                Snackbar.make(binding.root, getString(R.string.download_queued, track.title), Snackbar.LENGTH_SHORT).show()
-                tracklistAdapter?.notifyDataSetChanged()
+                org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+                    context = requireContext(),
+                    lifecycleOwner = viewLifecycleOwner,
+                    downloadManager = albumModel.downloadManager,
+                    track = track,
+                    onStateChanged = {
+                        updateAlbumDownloadButton()
+                        tracklistAdapter?.refreshTrackStates()
+                    },
+                    onDeleted = { musicModel.refresh() }
+                )
             },
             isDownloaded = { track -> albumModel.isDownloaded(track) },
             isDownloading = { track -> albumModel.isEnqueuedOrDownloading(track) },
@@ -165,27 +176,106 @@ class OnlineAlbumFragment :
         }
 
         binding.albumDownloadButton.setOnClickListener {
+            val detail = albumModel.albumDetail.value ?: return@setOnClickListener
+            val status = albumModel.getAlbumDownloadStatus()
+
+            if (status == AlbumDownloadStatus.DOWNLOADING) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_download_waiting_title)
+                    .setMessage(R.string.dialog_download_waiting_message)
+                    .setPositiveButton(R.string.btn_download_now) { _, _ ->
+                        albumModel.downloadAlbum(allowMeteredNetwork = true)
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.album_enqueued_for_download, albumModel.getUndownloadedTracksCount()),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        updateAlbumDownloadButton()
+                        tracklistAdapter?.refreshTrackStates()
+                    }
+                    .setNeutralButton(R.string.lbl_delete_download) { _, _ ->
+                        for (track in detail.tracks) {
+                            albumModel.downloadManager.cancel(track.id)
+                            albumModel.downloadManager.removeDownload(track.id)
+                        }
+                        updateAlbumDownloadButton()
+                        tracklistAdapter?.refreshTrackStates()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+                return@setOnClickListener
+            }
+
+            if (status == AlbumDownloadStatus.COMPLETED) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.lbl_delete_download_album)
+                    .setMessage(R.string.msg_confirm_delete_album)
+                    .setPositiveButton(R.string.btn_delete) { _, _ ->
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            for (track in detail.tracks) {
+                                albumModel.downloadManager.deleteDownloadedSong(
+                                    OnlineSong(track, Uri.parse("sounder://stream/${track.id}"))
+                                )
+                            }
+                            withContext(Dispatchers.Main) {
+                                requireContext().showToast(R.string.msg_download_deleted)
+                                musicModel.refresh()
+                                updateAlbumDownloadButton()
+                                tracklistAdapter?.refreshTrackStates()
+                            }
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+                return@setOnClickListener
+            }
+
             if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
                 Snackbar.make(binding.root, R.string.msg_storage_permission_required, Snackbar.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            if (albumModel.getAlbumDownloadStatus() == AlbumDownloadStatus.COMPLETED) {
-                Snackbar.make(binding.root, R.string.album_already_downloaded, Snackbar.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+
             val undownloadedCount = albumModel.getUndownloadedTracksCount()
             if (undownloadedCount <= 0) {
-                Snackbar.make(binding.root, R.string.album_already_downloaded, Snackbar.LENGTH_SHORT).show()
+                updateAlbumDownloadButton()
                 return@setOnClickListener
             }
-            albumModel.downloadAlbum()
-            Snackbar.make(
-                binding.root,
-                getString(R.string.album_enqueued_for_download, undownloadedCount),
-                Snackbar.LENGTH_SHORT
-            ).show()
-            updateAlbumDownloadButton()
-            tracklistAdapter?.notifyDataSetChanged()
+
+            val needsWifiConfirm = detail.tracks.any {
+                !albumModel.isDownloaded(it) && albumModel.downloadManager.requiresCellularConfirmation(it)
+            }
+            if (needsWifiConfirm) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_download_cellular_title)
+                    .setMessage(R.string.dialog_download_cellular_message)
+                    .setPositiveButton(R.string.btn_download_now) { _, _ ->
+                        albumModel.downloadAlbum(allowMeteredNetwork = true)
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.album_enqueued_for_download, undownloadedCount),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        updateAlbumDownloadButton()
+                        tracklistAdapter?.refreshTrackStates()
+                    }
+                    .setNeutralButton(R.string.btn_wait_for_wifi) { _, _ ->
+                        albumModel.downloadAlbum(allowMeteredNetwork = false)
+                        requireContext().showToast(getString(R.string.msg_download_waiting_wifi, detail.title))
+                        updateAlbumDownloadButton()
+                        tracklistAdapter?.refreshTrackStates()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+            } else {
+                albumModel.downloadAlbum(allowMeteredNetwork = false)
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.album_enqueued_for_download, undownloadedCount),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                updateAlbumDownloadButton()
+                tracklistAdapter?.refreshTrackStates()
+            }
         }
 
         OfflineStateHelper.setup(
@@ -198,12 +288,12 @@ class OnlineAlbumFragment :
         albumModel.loadAlbum(args.albumId, args.albumTitle, args.artistName)
 
         collect(playbackModel.song) {
-            tracklistAdapter?.notifyDataSetChanged()
+            tracklistAdapter?.refreshTrackStates()
             updateAlbumPlayButton()
         }
 
         collect(playbackModel.isPlaying) {
-            tracklistAdapter?.notifyDataSetChanged()
+            tracklistAdapter?.refreshTrackStates()
             updateAlbumPlayButton()
         }
 
@@ -303,17 +393,21 @@ class OnlineAlbumFragment :
         }
 
         collect(albumModel.loadingTrackId) {
-            tracklistAdapter?.notifyDataSetChanged()
+            tracklistAdapter?.refreshTrackStates()
         }
 
-        collect(albumModel.downloads) {
-            updateAlbumDownloadButton()
-            tracklistAdapter?.notifyDataSetChanged()
+        collect(albumModel.downloads) { items ->
+            val statusMap = items.associate { it.trackId to it.status }
+            if (statusMap != lastDownloadStatuses) {
+                lastDownloadStatuses = statusMap
+                updateAlbumDownloadButton()
+                tracklistAdapter?.refreshTrackStates()
+            }
         }
 
         collect(musicModel.indexingState) {
             updateAlbumDownloadButton()
-            tracklistAdapter?.notifyDataSetChanged()
+            tracklistAdapter?.refreshTrackStates()
         }
 
         collect(listModel.menu.flow) { menu ->
@@ -350,14 +444,14 @@ class OnlineAlbumFragment :
             AlbumDownloadStatus.COMPLETED -> {
                 binding.albumDownloadButton.setText(R.string.album_downloaded)
                 binding.albumDownloadButton.setIconResource(R.drawable.ic_check_24)
-                binding.albumDownloadButton.isEnabled = false
-                binding.albumDownloadButton.alpha = 0.7f
+                binding.albumDownloadButton.isEnabled = true
+                binding.albumDownloadButton.alpha = 1.0f
             }
             AlbumDownloadStatus.DOWNLOADING -> {
                 binding.albumDownloadButton.setText(R.string.album_downloading)
                 binding.albumDownloadButton.setIconResource(R.drawable.ic_download_24)
-                binding.albumDownloadButton.isEnabled = false
-                binding.albumDownloadButton.alpha = 0.5f
+                binding.albumDownloadButton.isEnabled = true
+                binding.albumDownloadButton.alpha = 0.7f
             }
             AlbumDownloadStatus.AVAILABLE -> {
                 if (undownloadedCount < detail.tracks.size) {
@@ -483,6 +577,7 @@ class OnlineAlbumFragment :
 
     override fun onDestroyBinding(binding: FragmentOnlineAlbumBinding) {
         super.onDestroyBinding(binding)
+        lastDownloadStatuses = null
         binding.albumAppbar.removeOnOffsetChangedListener(this)
         albumTouchHelper?.attachToRecyclerView(null)
         albumTouchHelper = null

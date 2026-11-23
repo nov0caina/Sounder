@@ -62,13 +62,14 @@ class OfflineBackupListFragment : ViewBindingFragment<FragmentOfflineBackupListB
                 }
             },
             onDownloadClick = { track ->
-                backupModel.downloadTrack(track)
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.download_queued, track.title),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                trackAdapter?.notifyDataSetChanged()
+                org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+                    context = requireContext(),
+                    lifecycleOwner = viewLifecycleOwner,
+                    downloadManager = backupModel.downloadManager,
+                    track = track,
+                    onStateChanged = { trackAdapter?.refreshTrackStates() },
+                    onDeleted = { musicModel.refresh() }
+                )
             },
             isDownloaded = { track -> backupModel.isDownloaded(track) },
             isDownloading = { track -> backupModel.isEnqueuedOrDownloading(track) },

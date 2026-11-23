@@ -2,10 +2,7 @@ package org.nov0caina.sounder.online.ui
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.graphics.RenderEffect
-import android.graphics.Shader
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,14 +12,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil3.ImageLoader
 import coil3.load
 import coil3.request.crossfade
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialSharedAxis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.math.min
 import org.nov0caina.sounder.InnerDirections
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentOnlineArtistBinding
@@ -33,19 +37,27 @@ import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.music.PlaylistDecision
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveNames
+import org.nov0caina.sounder.online.download.DownloadStatus
+import org.nov0caina.sounder.online.model.OnlineAlbumSummary
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.model.OnlineTrack
 import org.nov0caina.sounder.playback.PlaySong
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.oxycblt.musikr.Song
+import org.nov0caina.sounder.ui.MotionPhysics
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
+import org.nov0caina.sounder.ui.performSpringPop
 import org.nov0caina.sounder.util.collect
 import org.nov0caina.sounder.util.getAttrColorCompat
 import org.nov0caina.sounder.util.navigateSafe
 import org.nov0caina.sounder.util.showToast
 
 @AndroidEntryPoint
-class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() {
+class OnlineArtistFragment :
+    ViewBindingFragment<FragmentOnlineArtistBinding>(), AppBarLayout.OnOffsetChangedListener {
+
+    @Inject lateinit var imageLoader: ImageLoader
 
     private val artistModel: OnlineArtistViewModel by viewModels()
     private val playbackModel: PlaybackViewModel by activityViewModels()
@@ -61,6 +73,13 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
     private var skeletonAnimator: ObjectAnimator? = null
     private var isTopSongsExpanded: Boolean = false
     private val collapsedSongsCap: Int = 5
+    private var isAlbumsGridMode: Boolean = false
+    private var isAlbumsGridExpanded: Boolean = false
+    private var isSinglesGridMode: Boolean = false
+    private var isSinglesGridExpanded: Boolean = false
+    private val collapsedGridCap: Int = 6
+    private var spacingSmall: Int = 0
+    private var lastDownloadStatuses: Map<String, DownloadStatus>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,20 +93,14 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
     override fun onBindingCreated(binding: FragmentOnlineArtistBinding, savedInstanceState: Bundle?) {
         super.onBindingCreated(binding, savedInstanceState)
 
+        spacingSmall = resources.getDimensionPixelSize(R.dimen.spacing_small)
+        binding.artistAppbar.addOnOffsetChangedListener(this)
+
         binding.artistToolbar.title = args.artistName
         binding.artistToolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            binding.artistHeroBlurImage.setRenderEffect(
-                RenderEffect.createBlurEffect(
-                    25f,
-                    25f,
-                    Shader.TileMode.CLAMP
-                )
-            )
-        }
+        animateToolbarTitle(binding, 1f)
 
         binding.artistHeaderName.text = args.artistName
 
@@ -100,13 +113,14 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
                 }
             },
             onDownloadClick = { track ->
-                if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
-                    Snackbar.make(binding.root, R.string.msg_storage_permission_required, Snackbar.LENGTH_LONG).show()
-                    return@OnlineTrackAdapter
-                }
-                artistModel.downloadTrack(track)
-                Snackbar.make(binding.root, getString(R.string.download_queued, track.title), Snackbar.LENGTH_SHORT).show()
-                topSongsAdapter?.notifyDataSetChanged()
+                org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+                    context = requireContext(),
+                    lifecycleOwner = viewLifecycleOwner,
+                    downloadManager = artistModel.downloadManager,
+                    track = track,
+                    onStateChanged = { topSongsAdapter?.refreshTrackStates() },
+                    onDeleted = { musicModel.refresh() }
+                )
             },
             isDownloaded = { track -> artistModel.isDownloaded(track) },
             isDownloading = { track -> artistModel.isEnqueuedOrDownloading(track) },
@@ -165,6 +179,28 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
             updateTopSongsList(artistModel.artistDetail.value?.topSongs.orEmpty())
         }
 
+        binding.artistAlbumsViewToggleBtn.setOnClickListener {
+            isAlbumsGridMode = !isAlbumsGridMode
+            if (!isAlbumsGridMode) isAlbumsGridExpanded = false
+            updateAlbumsSection(artistModel.artistDetail.value?.albums.orEmpty())
+        }
+
+        binding.artistAlbumsExpandBtn.setOnClickListener {
+            isAlbumsGridExpanded = !isAlbumsGridExpanded
+            updateAlbumsSection(artistModel.artistDetail.value?.albums.orEmpty())
+        }
+
+        binding.artistSinglesViewToggleBtn.setOnClickListener {
+            isSinglesGridMode = !isSinglesGridMode
+            if (!isSinglesGridMode) isSinglesGridExpanded = false
+            updateSinglesSection(artistModel.artistDetail.value?.singles.orEmpty())
+        }
+
+        binding.artistSinglesExpandBtn.setOnClickListener {
+            isSinglesGridExpanded = !isSinglesGridExpanded
+            updateSinglesSection(artistModel.artistDetail.value?.singles.orEmpty())
+        }
+
         binding.artistPlayButton.setOnClickListener {
             if (isArtistCurrentSong()) {
                 playbackModel.togglePlaying()
@@ -182,23 +218,35 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
             }
         }
 
-        var isFavorite = false
-        binding.artistFavoriteButton.setOnClickListener {
-            isFavorite = !isFavorite
-            binding.artistFavoriteButton.setIconResource(
-                if (isFavorite) R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24
-            )
-            binding.artistFavoriteButton.iconTint = context?.getAttrColorCompat(
-                if (isFavorite) androidx.appcompat.R.attr.colorPrimary else com.google.android.material.R.attr.colorOnSurfaceVariant
-            )
-            context?.showToast(if (isFavorite) R.string.lng_added_favorite else R.string.lng_removed_favorite)
+        binding.artistFavoriteButton.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { button ->
+                artistModel.toggleFavorite { isFav ->
+                    if (!isAdded || this@OnlineArtistFragment.binding == null) {
+                        return@toggleFavorite
+                    }
+                    if (MotionPhysics.shouldTriggerFavoritePop(isFav)) {
+                        button.performSpringPop()
+                    }
+                    context?.showToast(
+                        if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite
+                    )
+                }
+            }
         }
 
         var isDescriptionExpanded = false
+        var isDescriptionTruncated = false
         val toggleDescription = {
-            isDescriptionExpanded = !isDescriptionExpanded
-            binding.artistDescription.maxLines = if (isDescriptionExpanded) Int.MAX_VALUE else 4
-            binding.artistDescription.ellipsize = if (isDescriptionExpanded) null else android.text.TextUtils.TruncateAt.END
+            if (isDescriptionTruncated || isDescriptionExpanded) {
+                isDescriptionExpanded = !isDescriptionExpanded
+                binding.artistDescription.maxLines = if (isDescriptionExpanded) Int.MAX_VALUE else 4
+                binding.artistDescription.ellipsize = if (isDescriptionExpanded) null else android.text.TextUtils.TruncateAt.END
+                binding.artistDescriptionChevron.animate()
+                    .rotation(if (isDescriptionExpanded) 180f else 0f)
+                    .setDuration(200)
+                    .start()
+            }
         }
         binding.artistDescription.setOnClickListener { toggleDescription() }
         binding.artistDescriptionCard.setOnClickListener { toggleDescription() }
@@ -213,35 +261,44 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
         artistModel.loadArtist(args.artistId, args.artistName)
 
         collect(playbackModel.song) {
-            topSongsAdapter?.notifyDataSetChanged()
+            topSongsAdapter?.refreshTrackStates()
             updateArtistPlayButton()
         }
 
         collect(playbackModel.isPlaying) {
-            topSongsAdapter?.notifyDataSetChanged()
+            topSongsAdapter?.refreshTrackStates()
             updateArtistPlayButton()
         }
 
         collect(artistModel.artistDetail) { detail ->
             if (detail != null) {
                 stopSkeletonPulse()
+                val wasHeaderHidden = !binding.artistHeaderContainer.isVisible
                 binding.artistLoadingLayout.isVisible = false
                 binding.artistOfflineLayout.root.isVisible = false
+                binding.artistHeaderContainer.isVisible = true
+                binding.artistAmbientGlow.isVisible = true
                 binding.artistScroll.isVisible = true
+                if (wasHeaderHidden) {
+                    animateToolbarTitle(binding, 0f)
+                }
 
                 isDescriptionExpanded = false
+                isDescriptionTruncated = false
                 binding.artistDescription.maxLines = 4
                 binding.artistDescription.ellipsize = android.text.TextUtils.TruncateAt.END
+                binding.artistDescriptionChevron.rotation = 0f
                 binding.artistToolbar.title = detail.name
                 binding.artistHeaderName.text = detail.name
 
                 if (!detail.avatarUrl.isNullOrBlank()) {
-                    binding.artistHeroImage.load(detail.avatarUrl) {
+                    binding.artistAvatar.load(detail.avatarUrl) {
                         crossfade(true)
                     }
-                    binding.artistHeroBlurImage.load(detail.avatarUrl) {
-                        crossfade(true)
-                    }
+                    binding.artistAmbientGlow.bindData(detail.avatarUrl, detail.id, imageLoader)
+                } else {
+                    binding.artistAvatar.setImageResource(R.drawable.ic_artist_24)
+                    binding.artistAmbientGlow.clearGlow()
                 }
 
                 if (!detail.subscribers.isNullOrBlank()) {
@@ -254,19 +311,26 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
                 val hasDesc = !detail.description.isNullOrBlank()
                 binding.artistDescriptionCard.isVisible = hasDesc
                 binding.artistDescription.isVisible = hasDesc
+                binding.artistDescriptionChevron.isVisible = false
                 binding.artistDescription.text = detail.description?.let {
                     it.replace(Regex("""(?is)[\s\n]*(From Wikipedia|De Wikipedia|Fuente:\s*Wikipedia).*$"""), "")
                         .replace(Regex("""\(?\s*https?://\S+\s*\)?"""), "")
                         .trim()
                 }
+                if (hasDesc) {
+                    binding.artistDescription.post {
+                        val b = this@OnlineArtistFragment.binding ?: return@post
+                        val layout = b.artistDescription.layout ?: return@post
+                        val lineCount = layout.lineCount
+                        isDescriptionTruncated = lineCount > 4 || (lineCount > 0 && layout.getEllipsisCount(lineCount - 1) > 0)
+                        b.artistDescriptionChevron.isVisible = isDescriptionTruncated
+                    }
+                }
 
                 updateTopSongsList(detail.topSongs)
 
-                albumsAdapter?.submitList(detail.albums)
-                binding.artistAlbumsSection.isVisible = detail.albums.isNotEmpty()
-
-                singlesAdapter?.submitList(detail.singles)
-                binding.artistSinglesSection.isVisible = detail.singles.isNotEmpty()
+                updateAlbumsSection(detail.albums)
+                updateSinglesSection(detail.singles)
 
                 relatedAdapter?.submitList(detail.relatedArtists)
                 binding.artistRelatedSection.isVisible = detail.relatedArtists.isNotEmpty()
@@ -280,36 +344,63 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
             if (isLoading && !hasData) {
                 binding.artistLoadingLayout.isVisible = true
                 binding.artistScroll.isVisible = false
+                binding.artistHeaderContainer.isVisible = false
+                binding.artistAmbientGlow.isVisible = false
                 binding.artistOfflineLayout.root.isVisible = false
+                animateToolbarTitle(binding, 1f)
                 startSkeletonPulse()
             } else if (!isLoading && !hasData) {
                 stopSkeletonPulse()
                 binding.artistLoadingLayout.isVisible = false
                 binding.artistScroll.isVisible = false
+                binding.artistHeaderContainer.isVisible = false
+                binding.artistAmbientGlow.isVisible = false
                 binding.artistOfflineLayout.root.isVisible = true
+                animateToolbarTitle(binding, 1f)
                 OfflineStateHelper.applyProposal(
                     binding = binding.artistOfflineLayout,
                     proposal = OfflineStateHelper.getNextProposal(requireContext())
                 )
             } else {
                 stopSkeletonPulse()
+                val wasHeaderHidden = !binding.artistHeaderContainer.isVisible
                 binding.artistLoadingLayout.isVisible = false
                 binding.artistOfflineLayout.root.isVisible = false
+                binding.artistHeaderContainer.isVisible = true
+                binding.artistAmbientGlow.isVisible = true
                 binding.artistScroll.isVisible = true
+                if (wasHeaderHidden) {
+                    animateToolbarTitle(binding, 0f)
+                }
             }
             binding.artistProgress.isVisible = isLoading && hasData
         }
 
-        collect(artistModel.loadingTrackId) {
-            topSongsAdapter?.notifyDataSetChanged()
+        collect(artistModel.isFavorite) { isFav ->
+            binding.artistFavoriteButton.apply {
+                setIconResource(
+                    if (isFav) R.drawable.ic_favorite_24 else R.drawable.ic_favorite_border_24
+                )
+                iconTint = context?.getAttrColorCompat(
+                    if (isFav) androidx.appcompat.R.attr.colorPrimary else com.google.android.material.R.attr.colorOnSurfaceVariant
+                )
+            }
         }
 
-        collect(artistModel.downloads) {
-            topSongsAdapter?.notifyDataSetChanged()
+        collect(artistModel.loadingTrackId) {
+            topSongsAdapter?.refreshTrackStates()
+        }
+
+        collect(artistModel.downloads) { items ->
+            val statusMap = items.associate { it.trackId to it.status }
+            if (statusMap != lastDownloadStatuses) {
+                lastDownloadStatuses = statusMap
+                topSongsAdapter?.refreshTrackStates()
+            }
         }
 
         collect(musicModel.indexingState) {
-            topSongsAdapter?.notifyDataSetChanged()
+            topSongsAdapter?.refreshTrackStates()
         }
 
         collect(listModel.menu.flow) { menu ->
@@ -429,11 +520,153 @@ class OnlineArtistFragment : ViewBindingFragment<FragmentOnlineArtistBinding>() 
         topSongsAdapter?.submitList(listToSubmit)
     }
 
+    private fun updateAlbumsSection(albums: List<OnlineAlbumSummary>) {
+        val b = binding ?: return
+        updateReleasesSection(
+            releases = albums,
+            section = b.artistAlbumsSection,
+            headerView = b.artistAlbumsHeader,
+            headerTitleRes = R.string.header_albums,
+            recycler = b.artistAlbumsRecycler,
+            adapter = albumsAdapter,
+            viewToggleBtn = b.artistAlbumsViewToggleBtn,
+            expandBtn = b.artistAlbumsExpandBtn,
+            isGridMode = isAlbumsGridMode,
+            isExpanded = isAlbumsGridExpanded
+        )
+    }
+
+    private fun updateSinglesSection(singles: List<OnlineAlbumSummary>) {
+        val b = binding ?: return
+        updateReleasesSection(
+            releases = singles,
+            section = b.artistSinglesSection,
+            headerView = b.artistSinglesHeader,
+            headerTitleRes = R.string.header_singles,
+            recycler = b.artistSinglesRecycler,
+            adapter = singlesAdapter,
+            viewToggleBtn = b.artistSinglesViewToggleBtn,
+            expandBtn = b.artistSinglesExpandBtn,
+            isGridMode = isSinglesGridMode,
+            isExpanded = isSinglesGridExpanded
+        )
+    }
+
+    private fun updateReleasesSection(
+        releases: List<OnlineAlbumSummary>,
+        section: View,
+        headerView: android.widget.TextView,
+        headerTitleRes: Int,
+        recycler: RecyclerView,
+        adapter: OnlineAlbumCardAdapter?,
+        viewToggleBtn: MaterialButton,
+        expandBtn: MaterialButton,
+        isGridMode: Boolean,
+        isExpanded: Boolean
+    ) {
+        headerView.text = if (releases.isNotEmpty()) {
+            "${getString(headerTitleRes)} (${releases.size})"
+        } else {
+            getString(headerTitleRes)
+        }
+        section.isVisible = releases.isNotEmpty()
+        if (releases.isEmpty()) {
+            viewToggleBtn.isVisible = false
+            expandBtn.isVisible = false
+            adapter?.submitList(emptyList())
+            return
+        }
+
+        viewToggleBtn.isVisible = releases.size > 3
+        if (isGridMode) {
+            if (recycler.layoutManager !is GridLayoutManager) {
+                recycler.layoutManager = GridLayoutManager(requireContext(), 3)
+            }
+            recycler.isNestedScrollingEnabled = false
+            adapter?.setGridMode(true)
+            viewToggleBtn.setText(R.string.btn_view_carousel)
+            viewToggleBtn.setIconResource(R.drawable.ic_carousel_view_24)
+
+            val hasOverflow = releases.size > collapsedGridCap
+            expandBtn.isVisible = hasOverflow
+            val displayed = if (isExpanded || !hasOverflow) releases else releases.take(collapsedGridCap)
+            expandBtn.setText(if (isExpanded) R.string.btn_show_less else R.string.btn_show_more)
+            adapter?.submitList(displayed)
+        } else {
+            val currentLm = recycler.layoutManager
+            if (currentLm !is LinearLayoutManager || currentLm is GridLayoutManager) {
+                recycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            }
+            recycler.isNestedScrollingEnabled = true
+            adapter?.setGridMode(false)
+            viewToggleBtn.setText(R.string.btn_view_grid)
+            viewToggleBtn.setIconResource(R.drawable.ic_grid_view_24)
+            expandBtn.isVisible = false
+            adapter?.submitList(releases)
+        }
+    }
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        val b = binding ?: return
+        if (!b.artistHeaderContainer.isVisible) {
+            animateToolbarTitle(b, 1f)
+            return
+        }
+        val range = appBarLayout.totalScrollRange
+        if (range == 0) {
+            b.artistHeaderContainer.apply {
+                scaleX = 1f
+                scaleY = 1f
+                alpha = 1f
+            }
+            b.artistAmbientGlow.apply {
+                scaleX = 1f
+                scaleY = 1f
+                alpha = 1f
+            }
+            animateToolbarTitle(b, 1f)
+            return
+        }
+
+        val ratio = abs(verticalOffset.toFloat()) / range.toFloat()
+        val outRatio = min(ratio * 2f, 1f)
+        val scale = 1f - 0.12f * outRatio
+        b.artistHeaderContainer.apply {
+            scaleX = scale
+            scaleY = scale
+            alpha = 1f - outRatio
+        }
+        b.artistAmbientGlow.apply {
+            scaleX = scale
+            scaleY = scale
+            alpha = 1f - outRatio
+        }
+
+        val inRatio = ((ratio - 0.75f) / 0.25f).coerceIn(0f, 1f)
+        animateToolbarTitle(b, inRatio)
+    }
+
+    private fun animateToolbarTitle(binding: FragmentOnlineArtistBinding, ratio: Float) {
+        val titleView = binding.artistToolbar.titleContainer
+        titleView.alpha = ratio
+        titleView.translationY = spacingSmall * (1f - ratio)
+    }
+
     override fun onDestroyBinding(binding: FragmentOnlineArtistBinding) {
         super.onDestroyBinding(binding)
+        lastDownloadStatuses = null
+        binding.artistAppbar.removeOnOffsetChangedListener(this)
         isTopSongsExpanded = false
+        isAlbumsGridMode = false
+        isAlbumsGridExpanded = false
+        isSinglesGridMode = false
+        isSinglesGridExpanded = false
         artistTouchHelper?.attachToRecyclerView(null)
         artistTouchHelper = null
+        binding.artistTopSongsRecycler.adapter = null
+        binding.artistAlbumsRecycler.adapter = null
+        binding.artistSinglesRecycler.adapter = null
+        binding.artistRelatedRecycler.adapter = null
         topSongsAdapter = null
         albumsAdapter = null
         singlesAdapter = null

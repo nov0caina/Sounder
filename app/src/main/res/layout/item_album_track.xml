@@ -24,6 +24,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="01" />
 
+    <ImageView
+        android:id="@+id/album_track_playing_indicator"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/album_track_number"
+        app:layout_constraintEnd_toEndOf="@+id/album_track_number"
+        app:layout_constraintStart_toStartOf="@+id/album_track_number"
+        app:layout_constraintTop_toTopOf="@+id/album_track_number"
+        app:tint="?attr/colorPrimary" />
+
     <!-- Title & Duration Container -->
     <TextView
         android:id="@+id/album_track_title"

@@ -39,6 +39,7 @@ import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.util.Event
 import org.nov0caina.sounder.util.MutableEvent
+import org.nov0caina.sounder.util.SongMatcher
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -194,25 +195,53 @@ constructor(
         val favPlaylist = findFavoritesPlaylist(lib)
         val playlistName = favPlaylist?.name?.resolve(context) ?: FAVORITES_NAME
         val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
-        return ((favPlaylist?.songs ?: emptyList()) + onlineTracks).distinctBy { it.uid.toString() }
+        val combined = (favPlaylist?.songs ?: emptyList()) + onlineTracks
+        return SongMatcher.deduplicateSongs(combined, context)
     }
 
     private fun updateFavorites(library: Library) {
         val favPlaylist = findFavoritesPlaylist(library)
         val playlistName = favPlaylist?.name?.resolve(context) ?: FAVORITES_NAME
         val onlineFavs = musicRepository.getOnlineTracksForPlaylist(playlistName)
-        val allUids = (favPlaylist?.songs?.map { it.uid } ?: emptyList()) + onlineFavs.map { it.uid }
-        _favoriteSongUids.value = allUids.toSet()
+        val allSongs = SongMatcher.deduplicateSongs((favPlaylist?.songs ?: emptyList()) + onlineFavs, context)
+        val allUids = allSongs.map { it.uid }.toMutableSet()
+        for (song in allSongs) {
+            if (song is OnlineSong) {
+                downloadManager.findSongInLibrary(song.onlineTrack)?.let { localSong ->
+                    allUids.add(localSong.uid)
+                }
+            } else {
+                val matchingOnline = onlineFavs.firstOrNull { online ->
+                    SongMatcher.matches(
+                        song.name.resolve(context),
+                        song.artists.resolveNames(context),
+                        online.name.resolve(context),
+                        online.artists.resolveNames(context)
+                    )
+                }
+                matchingOnline?.let { allUids.add(it.uid) }
+            }
+        }
+        _favoriteSongUids.value = allUids
     }
 
-    fun isFavorite(song: Song): Boolean = _favoriteSongUids.value.contains(song.uid)
+    fun isFavorite(song: Song): Boolean {
+        if (_favoriteSongUids.value.contains(song.uid)) return true
+        val currentFavs = getFavoritesSongs()
+        val songTitle = song.name.resolve(context)
+        val songArtist = song.artists.resolveNames(context)
+        return currentFavs.any { fav ->
+            fav.uid == song.uid ||
+                (song is OnlineSong && fav is OnlineSong && song.onlineTrack.id == fav.onlineTrack.id) ||
+                SongMatcher.matches(fav.name.resolve(context), fav.artists.resolveNames(context), songTitle, songArtist)
+        }
+    }
 
     fun toggleFavorite(song: Song, onResult: ((Boolean) -> Unit)? = null) {
         viewModelScope.launch(Dispatchers.IO) {
             val lib = musicRepository.library ?: return@launch
             val favPlaylist = findFavoritesPlaylist(lib)
-            val isCurrentlyFav = _favoriteSongUids.value.contains(song.uid) ||
-                (favPlaylist?.songs?.any { it.uid == song.uid } == true)
+            val isCurrentlyFav = isFavorite(song)
 
             if (favPlaylist == null) {
                 _favoriteSongUids.value = _favoriteSongUids.value + song.uid
@@ -225,12 +254,24 @@ constructor(
                 }
             } else {
                 val playlistName = favPlaylist.name.resolve(context)
-                val allCurrentSongs = (favPlaylist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName))
-                    .distinctBy { it.uid.toString() }
+                val allCurrentSongs = SongMatcher.deduplicateSongs(
+                    favPlaylist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName),
+                    context
+                )
+                val songTitle = song.name.resolve(context)
+                val songArtist = song.artists.resolveNames(context)
+
+                fun matchesThisSong(other: Song): Boolean {
+                    return other.uid == song.uid ||
+                        (song is OnlineSong && other is OnlineSong && song.onlineTrack.id == other.onlineTrack.id) ||
+                        SongMatcher.matches(other.name.resolve(context), other.artists.resolveNames(context), songTitle, songArtist)
+                }
+
                 if (isCurrentlyFav) {
-                    _favoriteSongUids.value = _favoriteSongUids.value - song.uid
+                    val matchingUids = allCurrentSongs.filter(::matchesThisSong).map { it.uid }.toSet() + song.uid
+                    _favoriteSongUids.value = _favoriteSongUids.value - matchingUids
                     withContext(Dispatchers.Main) { onResult?.invoke(false) }
-                    val remaining = allCurrentSongs.filter { it.uid.toString() != song.uid.toString() }
+                    val remaining = allCurrentSongs.filterNot(::matchesThisSong)
                     musicRepository.rewritePlaylist(favPlaylist, remaining)
                 } else {
                     _favoriteSongUids.value = _favoriteSongUids.value + song.uid
@@ -249,9 +290,17 @@ constructor(
     fun removeFromPlaylist(song: Song, playlist: Playlist) {
         viewModelScope.launch(Dispatchers.IO) {
             val playlistName = playlist.name.resolve(context)
-            val allCurrentSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName))
-                .distinctBy { it.uid.toString() }
-            val remaining = allCurrentSongs.filter { it.uid.toString() != song.uid.toString() }
+            val allCurrentSongs = SongMatcher.deduplicateSongs(
+                playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlistName),
+                context
+            )
+            val songTitle = song.name.resolve(context)
+            val songArtist = song.artists.resolveNames(context)
+            val remaining = allCurrentSongs.filterNot { other ->
+                other.uid == song.uid ||
+                    (song is OnlineSong && other is OnlineSong && song.onlineTrack.id == other.onlineTrack.id) ||
+                    SongMatcher.matches(other.name.resolve(context), other.artists.resolveNames(context), songTitle, songArtist)
+            }
             musicRepository.rewritePlaylist(playlist, remaining)
             playlistMessage.put(PlaylistMessage.DeleteSuccess)
         }

@@ -42,6 +42,8 @@ interface OnlineMusicRepository {
     suspend fun queryCategorized(query: String): OnlineSearchResult
     suspend fun recordRecentArtist(artist: RecentArtist)
     suspend fun browseArtist(browseId: String): OnlineArtistDetail
+    suspend fun browseArtist(browseId: String, recordRecent: Boolean): OnlineArtistDetail =
+        browseArtist(browseId)
     suspend fun browseAlbum(browseId: String): OnlineAlbumDetail
     suspend fun getHomeFeed(forceRefresh: Boolean = false): org.nov0caina.sounder.online.model.HomeFeedData
     suspend fun getHomeFeed(category: String?, forceRefresh: Boolean = false): org.nov0caina.sounder.online.model.HomeFeedData
@@ -93,7 +95,8 @@ class OnlineMusicRepositoryImpl @Inject constructor(
                 trackCache[track.id] = track
             }
             if (result.tracks.isNotEmpty() || result.artists.isNotEmpty()) {
-                val cacheKey = "${isCategory}|${query.trim().lowercase()}"
+                val deviceLang = java.util.Locale.getDefault().language.lowercase()
+                val cacheKey = "${isCategory}|${deviceLang}|${query.trim().lowercase()}"
                 searchCache[cacheKey] = result
             }
             result
@@ -122,7 +125,8 @@ class OnlineMusicRepositoryImpl @Inject constructor(
             return OnlineSearchResult()
         }
 
-        val cacheKey = "${isCategory}|${query.trim().lowercase()}"
+        val deviceLang = java.util.Locale.getDefault().language.lowercase()
+        val cacheKey = "${isCategory}|${deviceLang}|${query.trim().lowercase()}"
         if (!forceRefresh) {
             searchCache[cacheKey]?.let { cached ->
                 _searchResults.value = cached.tracks
@@ -178,9 +182,12 @@ class OnlineMusicRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun browseArtist(browseId: String): OnlineArtistDetail {
+    override suspend fun browseArtist(browseId: String): OnlineArtistDetail =
+        browseArtist(browseId, recordRecent = true)
+
+    override suspend fun browseArtist(browseId: String, recordRecent: Boolean): OnlineArtistDetail {
         val detail = client.browseArtist(browseId)
-        if (detail.id.isNotBlank() && detail.name.isNotBlank()) {
+        if (recordRecent && detail.id.isNotBlank() && detail.name.isNotBlank()) {
             recordRecentArtist(
                 RecentArtist(
                     id = detail.id,

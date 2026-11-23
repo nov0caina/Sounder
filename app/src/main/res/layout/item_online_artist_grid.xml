@@ -38,11 +38,9 @@
             android:layout_gravity="center"
             android:background="?attr/colorSurfaceContainerHigh"
             android:contentDescription="@null"
-            android:padding="2dp"
+            android:elevation="2dp"
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-            app:strokeColor="?attr/colorPrimary"
-            app:strokeWidth="1.5dp"
             tools:src="@drawable/ic_artist_24" />
 
     </FrameLayout>
@@ -52,11 +50,13 @@
         style="@style/Widget.Auxio.TextView.Item.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="-6dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:maxLines="2"
+        android:textAlignment="center"
         android:textSize="13sp"
         tools:text="Metallica" />
 
@@ -65,10 +65,12 @@
         style="@style/Widget.Auxio.TextView.Item.Secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
+        android:textAlignment="center"
         android:textSize="11sp"
         tools:text="75.8M monthly audience" />
 

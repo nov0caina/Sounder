@@ -11,6 +11,8 @@ import coil3.util.CoilUtils
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemRecentArtistBinding
 import org.nov0caina.sounder.online.model.OnlineArtistSummary
+import org.nov0caina.sounder.ui.MotionPhysics
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
 
 class RecentArtistsAdapter(
     private val onArtistClick: (OnlineArtistSummary) -> Unit
@@ -32,6 +34,10 @@ class RecentArtistsAdapter(
     inner class ViewHolder(
         private val binding: ItemRecentArtistBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.attachSpringTouchFeedback(MotionPhysics.DEFAULT_SQUISH_SCALE)
+        }
 
         fun bind(artist: OnlineArtistSummary) {
             binding.recentArtistName.text = artist.name

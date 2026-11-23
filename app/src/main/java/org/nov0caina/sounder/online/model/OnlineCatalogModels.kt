@@ -42,7 +42,11 @@ data class OnlineArtistDetail(
     val albums: List<OnlineAlbumSummary> = emptyList(),
     val singles: List<OnlineAlbumSummary> = emptyList(),
     val relatedArtists: List<OnlineArtistSummary> = emptyList(),
-    val subscribers: String? = null
+    val subscribers: String? = null,
+    val albumsBrowseId: String? = null,
+    val albumsBrowseParams: String? = null,
+    val singlesBrowseId: String? = null,
+    val singlesBrowseParams: String? = null
 )
 
 /**

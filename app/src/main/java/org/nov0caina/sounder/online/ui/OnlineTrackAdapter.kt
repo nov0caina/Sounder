@@ -12,6 +12,7 @@ import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemOnlineTrackBinding
 import org.nov0caina.sounder.online.cache.StreamingCacheManager
 import org.nov0caina.sounder.online.model.OnlineTrack
+import org.nov0caina.sounder.ui.setAnimatedPlayingIndicator
 import org.nov0caina.sounder.util.getAttrColorCompat
 
 class OnlineTrackAdapter(
@@ -88,6 +89,20 @@ class OnlineTrackAdapter(
         return true
     }
 
+    companion object {
+        const val PAYLOAD_STATE_CHANGED = "payload_state_changed"
+    }
+
+    /**
+     * Refreshes only download, loading, and playback indicator states across visible items without
+     * reloading cover artwork or rebinding titles.
+     */
+    fun refreshTrackStates() {
+        if (items.isNotEmpty()) {
+            notifyItemRangeChanged(0, items.size, PAYLOAD_STATE_CHANGED)
+        }
+    }
+
     override fun getItemCount(): Int = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -103,11 +118,21 @@ class OnlineTrackAdapter(
         holder.bind(items[position], position)
     }
 
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.contains(PAYLOAD_STATE_CHANGED)) {
+            holder.bindInteractiveState(items[position], position)
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
+    }
+
     inner class ViewHolder(
         private val binding: ItemOnlineTrackBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(track: OnlineTrack, position: Int) {
+        private var boundCoverKey: String? = null
+
+        fun bindInteractiveState(track: OnlineTrack, position: Int) {
             val context = binding.root.context
             val loading = isCurrentlyLoading(track.id)
             val playing = isCurrentlyPlaying(track)
@@ -131,7 +156,6 @@ class OnlineTrackAdapter(
                 binding.onlineTrackRank.isVisible = false
             }
 
-            binding.onlineTrackTitle.text = track.title
             if (playing) {
                 binding.onlineTrackTitle.setTextColor(
                     context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary)
@@ -142,6 +166,59 @@ class OnlineTrackAdapter(
                 )
             }
 
+            binding.onlineTrackLoading.isVisible = loading
+            binding.onlineTrackPlayingIndicator.setAnimatedPlayingIndicator(playing && !loading)
+            binding.onlineTrackPlayButton.isVisible = !loading && !compactMode
+            binding.onlineTrackPlayButton.setIconResource(if (playing) R.drawable.ic_pause_24 else R.drawable.ic_play_24)
+            binding.onlineTrackPlayButton.contentDescription = context.getString(if (playing) R.string.btn_pause else R.string.btn_play)
+
+            val downloaded = isDownloaded(track)
+            val downloading = isDownloading(track)
+
+            when {
+                downloaded -> {
+                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_check_24)
+                    binding.onlineTrackDownloadButton.isEnabled = true
+                    binding.onlineTrackDownloadButton.alpha = 1.0f
+                    binding.onlineTrackDownloadButton.iconTint =
+                        context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary)
+                    binding.onlineTrackDownloadButton.contentDescription =
+                        context.getString(R.string.btn_downloaded)
+                    binding.onlineTrackDownloadButton.setOnClickListener {
+                        onDownloadClick(track)
+                    }
+                }
+                downloading -> {
+                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_download_24)
+                    binding.onlineTrackDownloadButton.isEnabled = true
+                    binding.onlineTrackDownloadButton.alpha = 0.5f
+                    binding.onlineTrackDownloadButton.iconTint =
+                        context.getAttrColorCompat(com.google.android.material.R.attr.colorOnSurfaceVariant)
+                    binding.onlineTrackDownloadButton.contentDescription =
+                        context.getString(R.string.btn_downloading)
+                    binding.onlineTrackDownloadButton.setOnClickListener {
+                        onDownloadClick(track)
+                    }
+                }
+                else -> {
+                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_download_24)
+                    binding.onlineTrackDownloadButton.isEnabled = true
+                    binding.onlineTrackDownloadButton.alpha = 1.0f
+                    binding.onlineTrackDownloadButton.iconTint =
+                        context.getAttrColorCompat(com.google.android.material.R.attr.colorOnSurfaceVariant)
+                    binding.onlineTrackDownloadButton.contentDescription =
+                        context.getString(R.string.btn_download)
+                    binding.onlineTrackDownloadButton.setOnClickListener {
+                        onDownloadClick(track)
+                    }
+                }
+            }
+        }
+
+        fun bind(track: OnlineTrack, position: Int) {
+            val context = binding.root.context
+            binding.onlineTrackTitle.text = track.title
+
             val subtitle = if (track.durationMs > 0) {
                 "${track.artist} • ${track.formattedDuration()}"
             } else {
@@ -149,28 +226,30 @@ class OnlineTrackAdapter(
             }
             binding.onlineTrackSubtitle.text = subtitle
 
-            // Artwork loading via Coil (prefer local cached cover file for zero-network offline parity)
-            CoilUtils.dispose(binding.onlineTrackImage)
-            binding.onlineTrackImage.setImageDrawable(null)
+            // Artwork loading via Coil (skip redundant reload when bound to identical cover)
             val localCoverFile = track.localCoverPath?.let { File(it) }?.takeIf { it.exists() && it.length() > 0L }
                 ?: StreamingCacheManager.findCachedCoverFile(track.id)
-            if (localCoverFile != null) {
-                binding.onlineTrackImage.load(localCoverFile) {
-                    crossfade(true)
-                }
-            } else if (!track.artworkUrl.isNullOrBlank()) {
-                binding.onlineTrackImage.load(track.artworkUrl) {
-                    crossfade(true)
-                }
-            } else {
-                binding.onlineTrackImage.setImageResource(R.drawable.ic_song_24)
+            val nextCoverKey = when {
+                localCoverFile != null -> "file:${localCoverFile.absolutePath}:${localCoverFile.lastModified()}"
+                !track.artworkUrl.isNullOrBlank() -> "url:${track.artworkUrl}"
+                else -> "placeholder"
             }
-
-            // Stream loading & playing state (in compact mode hide redundant play button when idle)
-            binding.onlineTrackLoading.isVisible = loading
-            binding.onlineTrackPlayButton.isVisible = !loading && !compactMode
-            binding.onlineTrackPlayButton.setIconResource(if (playing) R.drawable.ic_pause_24 else R.drawable.ic_play_24)
-            binding.onlineTrackPlayButton.contentDescription = context.getString(if (playing) R.string.btn_pause else R.string.btn_play)
+            if (boundCoverKey != nextCoverKey) {
+                boundCoverKey = nextCoverKey
+                CoilUtils.dispose(binding.onlineTrackImage)
+                binding.onlineTrackImage.setImageDrawable(null)
+                if (localCoverFile != null) {
+                    binding.onlineTrackImage.load(localCoverFile) {
+                        crossfade(true)
+                    }
+                } else if (!track.artworkUrl.isNullOrBlank()) {
+                    binding.onlineTrackImage.load(track.artworkUrl) {
+                        crossfade(true)
+                    }
+                } else {
+                    binding.onlineTrackImage.setImageResource(R.drawable.ic_song_24)
+                }
+            }
 
             binding.onlineTrackPlayButton.setOnClickListener {
                 onPlayClick(track)
@@ -191,32 +270,7 @@ class OnlineTrackAdapter(
                 vPad
             )
 
-            // Download button state
-            val downloaded = isDownloaded(track)
-            val downloading = isDownloading(track)
-
-            when {
-                downloaded -> {
-                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_check_24)
-                    binding.onlineTrackDownloadButton.isEnabled = false
-                    binding.onlineTrackDownloadButton.alpha = 0.6f
-                    binding.onlineTrackDownloadButton.setOnClickListener(null)
-                }
-                downloading -> {
-                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_download_24)
-                    binding.onlineTrackDownloadButton.isEnabled = false
-                    binding.onlineTrackDownloadButton.alpha = 0.4f
-                    binding.onlineTrackDownloadButton.setOnClickListener(null)
-                }
-                else -> {
-                    binding.onlineTrackDownloadButton.setIconResource(R.drawable.ic_download_24)
-                    binding.onlineTrackDownloadButton.isEnabled = true
-                    binding.onlineTrackDownloadButton.alpha = 1.0f
-                    binding.onlineTrackDownloadButton.setOnClickListener {
-                        onDownloadClick(track)
-                    }
-                }
-            }
+            bindInteractiveState(track, position)
 
             binding.root.setOnClickListener {
                 onPlayClick(track)

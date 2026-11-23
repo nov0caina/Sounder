@@ -11,6 +11,8 @@ import coil3.request.crossfade
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.ItemHomeQuickAccessBinding
 import org.nov0caina.sounder.online.model.QuickAccessItem
+import org.nov0caina.sounder.ui.MotionPhysics
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
 import org.nov0caina.sounder.util.getAttrColorCompat
 
 class HomeQuickAccessAdapter(
@@ -37,6 +39,10 @@ class HomeQuickAccessAdapter(
         private val binding: ItemHomeQuickAccessBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.attachSpringTouchFeedback(MotionPhysics.DEFAULT_SQUISH_SCALE)
+        }
+
         fun bind(item: QuickAccessItem) {
             val context = binding.root.context
             val isPlaying = isItemPlaying(item)
@@ -45,10 +51,22 @@ class HomeQuickAccessAdapter(
             binding.quickAccessSubtitle.isVisible = !item.subtitle.isNullOrBlank()
             binding.quickAccessSubtitle.text = item.subtitle
 
+            val localCoverFile = item.track?.localCoverPath?.let { java.io.File(it) }
+                ?.takeIf { it.exists() && it.length() > 0L }
+                ?: item.track?.id?.let {
+                    org.nov0caina.sounder.online.cache.StreamingCacheManager.findCachedCoverFile(it)
+                }
+
             if (item.isFavorites) {
                 binding.quickAccessImage.isVisible = false
                 binding.quickAccessIcon.isVisible = true
                 binding.quickAccessIcon.setImageResource(item.iconRes ?: R.drawable.ic_favorite_24)
+            } else if (localCoverFile != null) {
+                binding.quickAccessIcon.isVisible = false
+                binding.quickAccessImage.isVisible = true
+                binding.quickAccessImage.load(localCoverFile) {
+                    crossfade(true)
+                }
             } else if (!item.imageUrl.isNullOrBlank()) {
                 binding.quickAccessIcon.isVisible = false
                 binding.quickAccessImage.isVisible = true

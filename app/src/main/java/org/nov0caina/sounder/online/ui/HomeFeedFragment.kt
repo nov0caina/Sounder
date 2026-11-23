@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -31,6 +32,7 @@ import java.util.Calendar
 import kotlinx.coroutines.launch
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentHomeFeedBinding
+import org.nov0caina.sounder.online.download.DownloadStatus
 import org.nov0caina.sounder.online.model.HomeFeedData
 import org.nov0caina.sounder.online.model.OnlineAlbumSummary
 import org.nov0caina.sounder.online.model.OnlineArtistSummary
@@ -49,7 +51,10 @@ import org.nov0caina.sounder.list.ListViewModel
 import org.nov0caina.sounder.list.menu.Menu
 import org.nov0caina.sounder.music.PlaylistDecision
 import org.nov0caina.sounder.playback.PlaySong
+import org.nov0caina.sounder.ui.MotionPhysics
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
+import org.nov0caina.sounder.ui.performSpringPop
 import org.nov0caina.sounder.util.NetworkUtil
 import org.nov0caina.sounder.util.StoragePermissionHelper
 import org.nov0caina.sounder.util.collect
@@ -70,12 +75,17 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
     private var trendingTracksAdapter: OnlineTrackAdapter? = null
     private var trendingAlbumsAdapter: OnlineAlbumCardAdapter? = null
     private var popularArtistsAdapter: RecentArtistsAdapter? = null
+    private var favoriteArtistsAdapter: HomeFavoriteArtistsAdapter? = null
+    private var isFavoriteArtistsGridMode: Boolean = false
+    private var isFavoriteArtistsGridExpanded: Boolean = false
     private var quickPicksAdapter: QuickPicksColumnAdapter? = null
+    private var becauseYouListenAdapter: QuickPicksColumnAdapter? = null
     private var offlineBackupAdapter: OnlineTrackAdapter? = null
     private var currentHeroTrack: OnlineTrack? = null
     private var trendingTouchHelper: ItemTouchHelper? = null
     private var quickPicksTouchHelper: ItemTouchHelper? = null
     private var skeletonAnimator: ObjectAnimator? = null
+    private var lastDownloadStatuses: Map<String, DownloadStatus>? = null
 
     private val storagePermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -98,6 +108,12 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         super.onBindingCreated(binding, savedInstanceState)
 
         binding.homeFeedToolbar.inflateMenu(R.menu.toolbar_home_feed)
+        binding.homeHeroSpotlight.heroSpotlightCard.attachSpringTouchFeedback(
+            MotionPhysics.DEFAULT_SQUISH_SCALE
+        )
+        binding.homeHeroSpotlight.heroSpotlightLikeBtn.attachSpringTouchFeedback(
+            MotionPhysics.ICON_SQUISH_SCALE
+        )
 
         // Setup Greeting text
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
@@ -202,6 +218,26 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             adapter = popularArtistsAdapter
         }
 
+        // Setup Favorite Artists ("Tus Artistas") adapter
+        favoriteArtistsAdapter = HomeFavoriteArtistsAdapter { artist ->
+            onArtistSelected(artist)
+        }
+        binding.favoriteArtistsRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = favoriteArtistsAdapter
+        }
+
+        binding.favoriteArtistsViewToggleBtn.setOnClickListener {
+            isFavoriteArtistsGridMode = !isFavoriteArtistsGridMode
+            if (!isFavoriteArtistsGridMode) isFavoriteArtistsGridExpanded = false
+            updateFavoriteArtistsSection(feedModel.favoriteArtists.value)
+        }
+
+        binding.favoriteArtistsExpandBtn.setOnClickListener {
+            isFavoriteArtistsGridExpanded = !isFavoriteArtistsGridExpanded
+            updateFavoriteArtistsSection(feedModel.favoriteArtists.value)
+        }
+
         // Setup Quick Picks horizontal columns adapter
         quickPicksAdapter = QuickPicksColumnAdapter(
             onPlayClick = { track ->
@@ -224,6 +260,33 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         binding.quickPicksRecycler.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = quickPicksAdapter
+            if (onFlingListener == null) {
+                LinearSnapHelper().attachToRecyclerView(this)
+            }
+        }
+
+        // Setup "Because you listen to [Top Artist]" horizontal columns adapter
+        becauseYouListenAdapter = QuickPicksColumnAdapter(
+            onPlayClick = { track ->
+                if (isCurrentTrack(track)) {
+                    playbackModel.togglePlaying()
+                } else {
+                    feedModel.playBecauseYouListenTrack(track, playbackModel)
+                }
+            },
+            onDownloadClick = { track -> handleDownloadTrack(track) },
+            isDownloaded = { track -> feedModel.isDownloaded(track) },
+            isDownloading = { track -> feedModel.isEnqueuedOrDownloading(track) },
+            isCurrentlyLoading = { trackId -> feedModel.loadingTrackId.value == trackId },
+            isCurrentlyPlaying = { track -> isTrackPlaying(track) },
+            onTrackLongClick = { track, _ ->
+                openSongMenu(track)
+                true
+            }
+        )
+        binding.becauseYouListenRecycler.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = becauseYouListenAdapter
             if (onFlingListener == null) {
                 LinearSnapHelper().attachToRecyclerView(this)
             }
@@ -326,21 +389,33 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             updateHeroSpotlight(data.trendingTracks.firstOrNull())
             updateTopCharts(data.trendingTracks, feedModel.isTopChartsExpanded.value)
 
-            val hasTrendingAlbums = data.trendingAlbums.isNotEmpty()
-            binding.trendingAlbumsSection.isVisible = hasTrendingAlbums
-            trendingAlbumsAdapter?.submitList(data.trendingAlbums)
+            val displayAlbums = feedModel.personalizedTrendingAlbums.value.ifEmpty { data.trendingAlbums }
+            binding.trendingAlbumsSection.isVisible = displayAlbums.isNotEmpty()
+            trendingAlbumsAdapter?.submitList(displayAlbums)
 
             val hasPopularArtists = data.popularArtists.isNotEmpty()
             binding.popularArtistsSection.isVisible = hasPopularArtists
             popularArtistsAdapter?.submitList(data.popularArtists)
 
-            val hasQuickPicks = data.quickPicks.isNotEmpty()
-            binding.quickPicksSection.isVisible = hasQuickPicks
-            quickPicksAdapter?.submitList(data.quickPicks.take(24).chunked(3))
+            val displayQuickPicks = feedModel.personalizedQuickPicks.value.ifEmpty { data.quickPicks }
+            binding.quickPicksSection.isVisible = displayQuickPicks.isNotEmpty()
+            quickPicksAdapter?.submitList(displayQuickPicks.take(24).chunked(3))
 
             if (data.trendingTracks.isEmpty()) {
                 revealContent()
             }
+        }
+
+        collect(feedModel.personalizedTrendingAlbums) { albums ->
+            val displayAlbums = albums.ifEmpty { feedModel.feedData.value.trendingAlbums }
+            binding.trendingAlbumsSection.isVisible = displayAlbums.isNotEmpty()
+            trendingAlbumsAdapter?.submitList(displayAlbums)
+        }
+
+        collect(feedModel.personalizedQuickPicks) { picks ->
+            val displayPicks = picks.ifEmpty { feedModel.feedData.value.quickPicks }
+            binding.quickPicksSection.isVisible = displayPicks.isNotEmpty()
+            quickPicksAdapter?.submitList(displayPicks.take(24).chunked(3))
         }
 
         // Collect favorite song UIDs for instant heart feedback on Hero Spotlight and Shortcuts
@@ -356,6 +431,29 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         collect(feedModel.quickAccessItems) { items ->
             binding.homeQuickAccessSection.isVisible = items.isNotEmpty()
             quickAccessAdapter?.submitList(items)
+        }
+
+        // Collect "Because you listen to [Top Artist]" contextual shelf
+        collect(feedModel.favoriteArtists) { artists ->
+            updateFavoriteArtistsSection(artists)
+        }
+
+        collect(feedModel.becauseYouListenArtist) { artist ->
+            val tracks = feedModel.becauseYouListenTracks.value
+            val showSection = !artist.isNullOrBlank() && tracks.isNotEmpty()
+            binding.becauseYouListenSection.isVisible = showSection
+            if (!artist.isNullOrBlank()) {
+                binding.becauseYouListenHeader.text = getString(R.string.fmt_because_you_listen_to, artist)
+            }
+        }
+        collect(feedModel.becauseYouListenTracks) { tracks ->
+            val artist = feedModel.becauseYouListenArtist.value
+            val showSection = !artist.isNullOrBlank() && tracks.isNotEmpty()
+            binding.becauseYouListenSection.isVisible = showSection
+            if (!artist.isNullOrBlank()) {
+                binding.becauseYouListenHeader.text = getString(R.string.fmt_because_you_listen_to, artist)
+            }
+            becauseYouListenAdapter?.submitList(tracks.take(18).chunked(3))
         }
 
         // Collect selected mood
@@ -388,17 +486,26 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
             updateViewState(feedModel.feedData.value, feedModel.isLoading.value, feedModel.isOffline.value, error)
         }
 
-        // Notify adapters when downloads list updates
-        collect(feedModel.downloads) {
-            trendingTracksAdapter?.notifyDataSetChanged()
-            quickPicksAdapter?.notifyDataSetChanged()
-            offlineBackupAdapter?.notifyDataSetChanged()
+        // Notify adapters only when track download status transitions
+        collect(feedModel.downloads) { items ->
+            val statusMap = items.associate { it.trackId to it.status }
+            if (statusMap != lastDownloadStatuses) {
+                lastDownloadStatuses = statusMap
+                trendingTracksAdapter?.refreshTrackStates()
+                quickPicksAdapter?.refreshTrackStates()
+                becauseYouListenAdapter?.refreshTrackStates()
+                offlineBackupAdapter?.refreshTrackStates()
+            }
         }
 
-        collect(musicModel.indexingState) {
-            trendingTracksAdapter?.notifyDataSetChanged()
-            quickPicksAdapter?.notifyDataSetChanged()
-            offlineBackupAdapter?.notifyDataSetChanged()
+        collect(musicModel.indexingState) { state ->
+            trendingTracksAdapter?.refreshTrackStates()
+            quickPicksAdapter?.refreshTrackStates()
+            becauseYouListenAdapter?.refreshTrackStates()
+            offlineBackupAdapter?.refreshTrackStates()
+            if (state == null) {
+                feedModel.refreshPersonalizationState()
+            }
         }
 
         // Collect playback song & playing state to refresh UI play/pause indicators
@@ -508,16 +615,22 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
     }
 
     private fun handleDownloadTrack(track: OnlineTrack) {
-        if (!StoragePermissionHelper.hasPermission(requireContext())) {
-            storagePermissionLauncher.launch(StoragePermissionHelper.getRequiredPermission())
-            Snackbar.make(requireView(), R.string.msg_storage_permission_required, Snackbar.LENGTH_LONG).show()
-            return
-        }
-        feedModel.downloadTrack(track)
-        Snackbar.make(requireView(), getString(R.string.download_queued, track.title), Snackbar.LENGTH_SHORT).show()
-        trendingTracksAdapter?.notifyDataSetChanged()
-        quickPicksAdapter?.notifyDataSetChanged()
-        offlineBackupAdapter?.notifyDataSetChanged()
+        org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+            context = requireContext(),
+            lifecycleOwner = viewLifecycleOwner,
+            downloadManager = feedModel.downloadManager,
+            track = track,
+            onStateChanged = {
+                trendingTracksAdapter?.refreshTrackStates()
+                quickPicksAdapter?.refreshTrackStates()
+                becauseYouListenAdapter?.refreshTrackStates()
+                offlineBackupAdapter?.refreshTrackStates()
+            },
+            onDeleted = { musicModel.refresh() },
+            onRequestPermission = {
+                storagePermissionLauncher.launch(StoragePermissionHelper.getRequiredPermission())
+            }
+        )
     }
 
     private fun revealContent() {
@@ -609,9 +722,17 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         val onlineSong = OnlineSong(topTrack, Uri.parse("https://music.youtube.com/watch?v=${topTrack.id}"))
         updateHeroFavoriteButton(onlineSong, musicModel.favoriteSongUids.value)
 
-        b.homeHeroSpotlight.heroSpotlightLikeBtn.setOnClickListener {
+        b.homeHeroSpotlight.heroSpotlightLikeBtn.setOnClickListener { button ->
             musicModel.toggleFavorite(onlineSong) { isFav ->
-                requireContext().showToast(if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite)
+                if (!isAdded || this@HomeFeedFragment.binding == null) {
+                    return@toggleFavorite
+                }
+                if (MotionPhysics.shouldTriggerFavoritePop(isFav)) {
+                    button.performSpringPop()
+                }
+                requireContext().showToast(
+                    if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite
+                )
             }
         }
     }
@@ -631,10 +752,16 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
 
     private fun updatePlaybackState() {
         quickAccessAdapter?.notifyDataSetChanged()
-        trendingTracksAdapter?.notifyDataSetChanged()
-        quickPicksAdapter?.notifyDataSetChanged()
-        offlineBackupAdapter?.notifyDataSetChanged()
+        trendingTracksAdapter?.refreshTrackStates()
+        quickPicksAdapter?.refreshTrackStates()
+        becauseYouListenAdapter?.refreshTrackStates()
+        offlineBackupAdapter?.refreshTrackStates()
         updateHeroPlayButton(currentHeroTrack)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        feedModel.refreshPersonalizationState()
     }
 
     private fun isTrackMatching(track: OnlineTrack?, song: Song?): Boolean {
@@ -795,8 +922,50 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         findNavController().navigate(R.id.action_global_online_artist, args)
     }
 
+    private fun updateFavoriteArtistsSection(artists: List<OnlineArtistSummary>) {
+        val b = this.binding ?: return
+        b.favoriteArtistsSection.isVisible = artists.isNotEmpty()
+        if (artists.isEmpty()) {
+            b.favoriteArtistsViewToggleBtn.isVisible = false
+            b.favoriteArtistsExpandBtn.isVisible = false
+            favoriteArtistsAdapter?.submitList(emptyList())
+            return
+        }
+
+        b.favoriteArtistsHeader.text = "${getString(R.string.header_favorite_artists)} (${artists.size})"
+        b.favoriteArtistsViewToggleBtn.isVisible = artists.size > 3
+
+        if (isFavoriteArtistsGridMode) {
+            if (b.favoriteArtistsRecycler.layoutManager !is GridLayoutManager) {
+                b.favoriteArtistsRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+            }
+            b.favoriteArtistsRecycler.isNestedScrollingEnabled = false
+            favoriteArtistsAdapter?.setGridMode(true)
+            b.favoriteArtistsViewToggleBtn.setText(R.string.btn_view_carousel)
+            b.favoriteArtistsViewToggleBtn.setIconResource(R.drawable.ic_carousel_view_24)
+
+            val hasOverflow = artists.size > 6
+            b.favoriteArtistsExpandBtn.isVisible = hasOverflow
+            val displayed = if (isFavoriteArtistsGridExpanded || !hasOverflow) artists else artists.take(6)
+            b.favoriteArtistsExpandBtn.setText(if (isFavoriteArtistsGridExpanded) R.string.btn_show_less else R.string.btn_show_more)
+            favoriteArtistsAdapter?.submitList(displayed)
+        } else {
+            val currentLm = b.favoriteArtistsRecycler.layoutManager
+            if (currentLm !is LinearLayoutManager || currentLm is GridLayoutManager) {
+                b.favoriteArtistsRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            }
+            b.favoriteArtistsRecycler.isNestedScrollingEnabled = true
+            favoriteArtistsAdapter?.setGridMode(false)
+            b.favoriteArtistsViewToggleBtn.setText(R.string.btn_view_grid)
+            b.favoriteArtistsViewToggleBtn.setIconResource(R.drawable.ic_grid_view_24)
+            b.favoriteArtistsExpandBtn.isVisible = false
+            favoriteArtistsAdapter?.submitList(artists)
+        }
+    }
+
     override fun onDestroyBinding(binding: FragmentHomeFeedBinding) {
         super.onDestroyBinding(binding)
+        lastDownloadStatuses = null
         trendingTouchHelper?.attachToRecyclerView(null)
         trendingTouchHelper = null
         quickPicksTouchHelper?.attachToRecyclerView(null)
@@ -808,7 +977,9 @@ class HomeFeedFragment : ViewBindingFragment<FragmentHomeFeedBinding>() {
         trendingTracksAdapter = null
         trendingAlbumsAdapter = null
         popularArtistsAdapter = null
+        favoriteArtistsAdapter = null
         quickPicksAdapter = null
+        becauseYouListenAdapter = null
         offlineBackupAdapter = null
         currentHeroTrack = null
     }
