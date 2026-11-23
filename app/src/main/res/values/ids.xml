@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tag_spring_scale_anim" type="id" />
+    <item name="tag_spring_pop_anim" type="id" />
+    <item name="tag_spring_attach_listener" type="id" />
+    <item name="tag_playing_indicator_attach_listener" type="id" />
+</resources>

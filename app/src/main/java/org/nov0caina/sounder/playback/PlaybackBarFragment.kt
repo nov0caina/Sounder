@@ -28,7 +28,9 @@ import org.nov0caina.sounder.detail.DetailViewModel
 import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveNames
 import org.nov0caina.sounder.playback.state.RepeatMode
+import org.nov0caina.sounder.ui.MotionPhysics
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
 import org.nov0caina.sounder.util.collectImmediately
 import org.oxycblt.musikr.Song
 import timber.log.Timber as L
@@ -66,7 +68,11 @@ class PlaybackBarFragment : ViewBindingFragment<FragmentPlaybackBarBinding>() {
         binding.playbackInfo.isSelected = true
 
         // Set up actions
-        binding.playbackPlayPause.setOnClickListener { playbackModel.togglePlaying() }
+        binding.playbackPlayPause.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { playbackModel.togglePlaying() }
+        }
+        binding.playbackSecondaryAction.attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
 
         // -- VIEWMODEL SETUP ---
         collectImmediately(playbackModel.song, ::updateSong)

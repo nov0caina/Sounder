@@ -19,7 +19,6 @@
 package org.nov0caina.sounder.playback
 
 import android.content.Context
-import android.graphics.drawable.LayerDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -70,6 +69,9 @@ class PlaybackBottomSheetBehavior<V : View>(context: Context, attributeSet: Attr
     override fun getIdealBarHeight(context: Context) =
         context.getDimenPixels(R.dimen.size_touchable_large)
 
+    override fun getBarView(child: View): View =
+        child.findViewById(R.id.playback_bar_fragment) ?: super.getBarView(child)
+
     // Hack around issue where the playback sheet will try to intercept nested scrolling events
     // before the queue sheet.
     override fun onInterceptTouchEvent(parent: CoordinatorLayout, child: V, event: MotionEvent) =
@@ -79,16 +81,7 @@ class PlaybackBottomSheetBehavior<V : View>(context: Context, attributeSet: Attr
     override fun isHideableWhenDragging() = false
 
     override fun createBackground(context: Context, uiSettings: UISettings) =
-        LayerDrawable(
-            arrayOf(
-                // Add another colored background so that there is always an obscuring
-                // element even as the actual "background" element is faded out.
-                MaterialShapeDrawable(sheetBackgroundDrawable.shapeAppearanceModel).apply {
-                    fillColor = sheetBackgroundDrawable.fillColor
-                },
-                sheetBackgroundDrawable,
-            )
-        )
+        sheetBackgroundDrawable
 
     override fun applyWindowInsets(child: View, insets: WindowInsets): WindowInsets {
         super.applyWindowInsets(child, insets)

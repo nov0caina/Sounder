@@ -51,6 +51,7 @@ import org.nov0caina.sounder.playback.state.ShuffleMode
 import org.nov0caina.sounder.util.Event
 import org.nov0caina.sounder.util.MutableEvent
 import org.nov0caina.sounder.util.NetworkUtil
+import org.nov0caina.sounder.util.SongMatcher
 import org.oxycblt.musikr.Album
 import org.oxycblt.musikr.Artist
 import org.oxycblt.musikr.Genre
@@ -79,6 +80,7 @@ constructor(
     private val onlineMusicRepository: OnlineMusicRepository,
     private val musicRepository: MusicRepository,
     private val streamingCacheManager: StreamingCacheManager,
+    private val playbackHistoryTracker: PlaybackHistoryTracker,
 ) : ViewModel(), PlaybackStateManager.Listener, PlaybackSettings.Listener {
     private var lastPositionJob: Job? = null
 
@@ -156,6 +158,7 @@ constructor(
         L.d("Index moved, updating current song")
         positionDs.value = playbackManager.progression.calculateElapsedPositionMs().msToDs()
         song.value = playbackManager.currentSong
+        playbackHistoryTracker.onSongOrStateChanged(song.value, isPlaying.value)
 
         pagerCommand.put(PagerCommand(update = null, scroll = index))
         _pagerQueue.value = _pagerQueue.value.copy(index = index)
@@ -166,6 +169,7 @@ constructor(
         if (change.type == QueueChange.Type.SONG) {
             L.d("Queue changed, updating current song")
             song.value = playbackManager.currentSong
+            playbackHistoryTracker.onSongOrStateChanged(song.value, isPlaying.value)
         }
 
         pagerCommand.put(
@@ -195,6 +199,7 @@ constructor(
         song.value = playbackManager.currentSong
         _parent.value = parent
         this.isShuffled.value = isShuffled
+        playbackHistoryTracker.onSongOrStateChanged(song.value, isPlaying.value)
 
         pagerCommand.put(PagerCommand(update = UpdateInstructions.Replace(0), scroll = index))
         _pagerQueue.value = PagerQueue(queue = queue, index = index)
@@ -203,6 +208,7 @@ constructor(
     override fun onProgressionChanged(progression: Progression) {
         L.d("Player state changed, starting new position polling")
         isPlaying.value = progression.isPlaying
+        playbackHistoryTracker.onSongOrStateChanged(song.value, progression.isPlaying)
         // Still need to update the position now due to co-routine launch delays
         positionDs.value = progression.calculateElapsedPositionMs().msToDs()
         // Replace the previous position co-routine with a new one that uses the new
@@ -211,6 +217,9 @@ constructor(
         lastPositionJob = viewModelScope.launch(Dispatchers.Default) {
             while (true) {
                 positionDs.value = progression.calculateElapsedPositionMs().msToDs()
+                if (progression.isPlaying) {
+                    playbackHistoryTracker.onPositionTick()
+                }
                 // Wait a deci-second for the next position tick.
                 delay(100.milliseconds)
             }
@@ -383,7 +392,7 @@ constructor(
         L.d("Playing $song from $playlist")
         val playlistName = playlist.name.resolve(context)
         val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
-        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val allSongs = SongMatcher.deduplicateSongs(playlist.songs + onlineTracks, context)
         val playable = filterPlayablePlaylistSongs(allSongs)
 
         val matchingSong = playable.find { it.uid.toString() == song.uid.toString() }
@@ -519,7 +528,7 @@ constructor(
         L.d("Playing $playlist")
         val playlistName = playlist.name.resolve(context)
         val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
-        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val allSongs = SongMatcher.deduplicateSongs(playlist.songs + onlineTracks, context)
         val playable = filterPlayablePlaylistSongs(allSongs)
         if (playable.isEmpty()) {
             L.w("No offline playable songs in playlist")
@@ -538,7 +547,7 @@ constructor(
         L.d("Shuffling $playlist")
         val playlistName = playlist.name.resolve(context)
         val onlineTracks = musicRepository.getOnlineTracksForPlaylist(playlistName)
-        val allSongs = (playlist.songs + onlineTracks).distinctBy { it.uid.toString() }
+        val allSongs = SongMatcher.deduplicateSongs(playlist.songs + onlineTracks, context)
         val playable = filterPlayablePlaylistSongs(allSongs)
         if (playable.isEmpty()) {
             L.w("No offline playable songs in playlist")

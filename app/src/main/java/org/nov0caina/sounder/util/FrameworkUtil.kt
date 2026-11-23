@@ -346,24 +346,7 @@ fun Context.share(parent: MusicParent) = share(parent.songs)
  * @param songs The [Song]s to share.
  */
 fun Context.share(songs: Collection<Song>) {
-    if (songs.isEmpty()) return
-    L.d("Showing sharesheet for ${songs.size} songs")
-    val builder = ShareCompat.IntentBuilder(this)
-    val mimeTypes = mutableSetOf<String>()
-    for (song in songs) {
-        builder.addStream(song.uri)
-        mimeTypes.add(song.format.mimeType)
-    }
-
-    try {
-        builder.setType(mimeTypes.singleOrNull() ?: "audio/*").startChooser()
-    } catch (e: TransactionTooLargeException) {
-        L.e("Failed to share ${songs.size} songs: Too large")
-        showToast(R.string.err_share_too_large)
-    } catch (e: Exception) {
-        L.e("Failed to share ${songs.size} songs: $e")
-        showToast(R.string.err_share_failed)
-    }
+    AudioShareHelper.shareSongs(this, songs)
 }
 
 /**

@@ -19,6 +19,7 @@
 package org.nov0caina.sounder
 
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -45,6 +46,7 @@ import com.leinardi.android.speeddial.SpeedDialView
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.reflect.Method
 import javax.inject.Inject
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlinx.coroutines.launch
@@ -66,6 +68,7 @@ import org.nov0caina.sounder.playback.OpenPanel
 import org.nov0caina.sounder.playback.PlaybackBottomSheetBehavior
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.queue.QueueBottomSheetBehavior
+import org.nov0caina.sounder.playback.ui.PlaybackBarGlassPolicy
 import org.nov0caina.sounder.ui.DialogAwareNavigationListener
 import org.nov0caina.sounder.ui.UISettings
 import org.nov0caina.sounder.ui.ViewBindingFragment
@@ -196,6 +199,15 @@ class MainFragment :
         }
 
         normalCornerSize = playbackSheetBehavior.sheetBackgroundDrawable.topLeftCornerResolvedSize
+        val glassSurfaceColor = context.getAttrColorCompat(MR.attr.colorSurfaceContainerLow).defaultColor
+        val navBackground = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(glassSurfaceColor)
+            alpha = PlaybackBarGlassPolicy.FROSTED_GLASS_ALPHA
+            elevation = 6f
+        }
+        binding.mainBottomNav.background = navBackground
+        playbackSheetBehavior.sheetBackgroundDrawable.alpha =
+            PlaybackBarGlassPolicy.sheetBackgroundAlpha(0f)
         maxScaleXDistance =
             context.getDimen(MR.dimen.m3_back_progress_bottom_container_max_scale_x_distance)
 
@@ -405,16 +417,38 @@ class MainFragment :
         val playbackLastStretchRatio = min(playbackEdgeRatio * playbackBackRatio, 1f)
         binding.mainSheetScrim.alpha = playbackLastStretchRatio
         val bottomNav = binding.mainBottomNav
-        if (bottomNav != null) {
-            bottomNav.alpha = 1f - min(playbackRatio * 2f, 1f)
-            bottomNav.isInvisible = bottomNav.alpha == 0f
+        val bottomNavAlpha = 1f - min(playbackRatio * 2f, 1f)
+        if (abs(bottomNav.alpha - bottomNavAlpha) > 0.005f) {
+            bottomNav.alpha = bottomNavAlpha
+        }
+        val bottomNavInvisible = bottomNav.alpha == 0f
+        if (bottomNav.isInvisible != bottomNavInvisible) {
+            bottomNav.isInvisible = bottomNavInvisible
         }
 
-        playbackSheetBehavior.sheetBackgroundDrawable.setCornerSize(
-            normalCornerSize * (1 - playbackLastStretchRatio)
-        )
+        val sheetBg = playbackSheetBehavior.sheetBackgroundDrawable
+        val currentCornerSize = normalCornerSize * (1 - playbackLastStretchRatio)
+        if (abs(sheetBg.topLeftCornerResolvedSize - currentCornerSize) > 0.01f) {
+            sheetBg.setCornerSize(currentCornerSize)
+        }
+        val targetSheetAlpha = PlaybackBarGlassPolicy.sheetBackgroundAlpha(playbackRatio)
+        if (sheetBg.alpha != targetSheetAlpha) {
+            sheetBg.alpha = targetSheetAlpha
+        }
         binding.exploreNavHost.isInvisible = playbackLastStretchRatio == 1f
         binding.playbackSheet.translationZ = (1 - playbackLastStretchRatio) * elevationNormal
+
+        val sheetVisible =
+            playbackModel.song.value != null &&
+                playbackSheetBehavior.state != BackportBottomSheetBehavior.STATE_HIDDEN &&
+                binding.playbackSheet.top < binding.mainLayout.height
+        val bottomNavTop = bottomNav.top.takeIf { it > 0 } ?: binding.mainLayout.height
+        val isNavCoveredBySheet = sheetVisible && binding.playbackSheet.top < bottomNavTop
+        val targetNavBgAlpha = if (isNavCoveredBySheet) 0 else PlaybackBarGlassPolicy.FROSTED_GLASS_ALPHA
+        val navBg = bottomNav.background
+        if (navBg != null && navBg.alpha != targetNavBgAlpha) {
+            navBg.alpha = targetNavBgAlpha
+        }
 
         if (queueSheetBehavior != null) {
             val queueRatio = max(queueSheetBehavior.calculateSlideOffset(), 0f)

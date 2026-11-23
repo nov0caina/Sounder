@@ -53,6 +53,7 @@ import org.nov0caina.sounder.music.resolve
 import org.nov0caina.sounder.music.resolveName
 import org.nov0caina.sounder.online.download.DownloadManager
 import org.nov0caina.sounder.online.model.OnlineCover
+import org.nov0caina.sounder.util.SongMatcher
 import org.nov0caina.sounder.online.model.OnlineSong
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
 import org.nov0caina.sounder.playback.PlaybackDecision
@@ -254,8 +255,10 @@ class PlaylistDetailFragment :
     }
 
     private fun playPlaylist(playlist: Playlist, shuffle: Boolean) {
-        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlist.name.resolve(requireContext())))
-            .distinctBy { it.uid.toString() }
+        val allSongs = SongMatcher.deduplicateSongs(
+            playlist.songs + musicRepository.getOnlineTracksForPlaylist(playlist.name.resolve(requireContext())),
+            requireContext()
+        )
         val isOnline = NetworkUtil.isConnected(requireContext())
         if (!isOnline) {
             val offlineSongs = allSongs.filter { song ->
@@ -348,8 +351,10 @@ class PlaylistDetailFragment :
         binding.detailEditToolbar.title =
             getString(R.string.fmt_editing, resolvedName)
 
-        val allSongs = (playlist.songs + musicRepository.getOnlineTracksForPlaylist(resolvedName))
-            .distinctBy { it.uid.toString() }
+        val allSongs = SongMatcher.deduplicateSongs(
+            playlist.songs + musicRepository.getOnlineTracksForPlaylist(resolvedName),
+            requireContext()
+        )
 
         if (editedPlaylist != null) {
             L.d("Binding edited playlist image")

@@ -108,6 +108,7 @@ class AmbientGlowView @JvmOverloads constructor(
     private var currentKey: Any? = null
     private var glowBitmap: Bitmap? = null
     private var oldBitmap: Bitmap? = null
+    private var glowLuminance: Float = 0.35f
     private var transitionProgress: Float = 1f
     private var activeDisposable: Disposable? = null
 
@@ -235,8 +236,30 @@ class AmbientGlowView @JvmOverloads constructor(
         clear()
     }
 
+    private fun sampleLuminance(bmp: Bitmap): Float {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && bmp.config == Bitmap.Config.HARDWARE) {
+            return 0.35f
+        }
+        val w = bmp.width
+        val h = bmp.height
+        if (w <= 0 || h <= 0) return 0.35f
+        var sum = 0.0
+        var count = 0
+        val steps = 4
+        for (ix in 0 until steps) {
+            val px = ((ix + 0.5f) / steps * w).toInt().coerceIn(0, w - 1)
+            for (iy in 0 until steps) {
+                val py = ((iy + 0.5f) / steps * h).toInt().coerceIn(0, h - 1)
+                sum += ColorUtils.calculateLuminance(bmp.getPixel(px, py))
+                count++
+            }
+        }
+        return if (count > 0) (sum / count).toFloat() else 0.35f
+    }
+
     private fun setGlowBitmap(newBmp: Bitmap) {
         animator?.cancel()
+        glowLuminance = sampleLuminance(newBmp)
         if (!animateTransitions) {
             oldBitmap = null
             glowBitmap = newBmp
@@ -267,6 +290,7 @@ class AmbientGlowView @JvmOverloads constructor(
         currentKey = null
         glowBitmap = null
         oldBitmap = null
+        glowLuminance = 0.35f
         transitionProgress = 1f
         invalidate()
     }
@@ -363,7 +387,12 @@ class AmbientGlowView @JvmOverloads constructor(
         // Adapt opacity based on dark or light surface theme
         val surfaceColor = context.getAttrColorCompat(com.google.android.material.R.attr.colorSurface).defaultColor
         val isDark = ColorUtils.calculateLuminance(surfaceColor) < 0.5f
-        val baseAlpha = if (isDark) 0.85f else 0.40f
+        val baseAlpha = if (isDark) {
+            val excessLuminance = ((glowLuminance - 0.45f) / 0.55f).coerceIn(0f, 1f)
+            0.85f - excessLuminance * 0.38f
+        } else {
+            0.40f
+        }
 
         layerPaint.alpha = (baseAlpha * 255).toInt()
         val saveCount = canvas.saveLayer(

@@ -42,6 +42,7 @@ import org.nov0caina.sounder.databinding.ActivityMainBinding
 import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.playback.PlaybackViewModel
 import org.nov0caina.sounder.playback.state.DeferredPlayback
+import org.nov0caina.sounder.ui.SplashTransitionHelper
 import org.nov0caina.sounder.ui.UISettings
 import org.nov0caina.sounder.update.UpdateDialogHelper
 import org.nov0caina.sounder.update.UpdateManager
@@ -104,6 +105,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupTheme()
+        SplashTransitionHelper.attach(this, isColdStart = savedInstanceState == null)
         // Inflate the views after setting up the theme so that the theme attributes are applied.
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

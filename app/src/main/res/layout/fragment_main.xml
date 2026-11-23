@@ -9,6 +9,7 @@
     android:transitionGroup="true">
 
     <org.nov0caina.sounder.ui.EatInsetsFrameLayout
+        android:id="@+id/main_content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="org.nov0caina.sounder.ui.BottomSheetContentBehavior">
@@ -152,7 +153,6 @@
         android:layout_gravity="bottom"
         android:elevation="6dp"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_nav"
-        android:background="?attr/colorSurfaceContainer" />
+        app:menu="@menu/menu_bottom_nav" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

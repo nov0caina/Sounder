@@ -37,13 +37,18 @@ import androidx.core.view.updatePadding
 import androidx.dynamicanimation.animation.SpringForce
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import coil3.ImageLoader
 import com.google.android.material.R as MR
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.math.abs
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.InnerDirections
 import org.nov0caina.sounder.R
 import org.nov0caina.sounder.databinding.FragmentPlaybackPanelBinding
@@ -66,12 +71,19 @@ import org.nov0caina.sounder.playback.ui.stepper.StepperOverlay
 import org.nov0caina.sounder.playback.ui.swiper.CarouselTransformer
 import org.nov0caina.sounder.playback.ui.swiper.CoverPagerAdapter
 import org.nov0caina.sounder.playback.ui.swiper.UserAwarePagerCallback
+import org.nov0caina.sounder.ui.MotionPhysics
 import org.nov0caina.sounder.ui.ViewBindingFragment
+import org.nov0caina.sounder.ui.animateScaleSpring
+import org.nov0caina.sounder.ui.attachSpringTouchFeedback
+import org.nov0caina.sounder.ui.cancelScaleSpring
+import org.nov0caina.sounder.ui.performSpringPop
+import org.nov0caina.sounder.util.MediaDeletionUtil
 import org.nov0caina.sounder.util.collectImmediately
 import org.nov0caina.sounder.util.dampen
 import org.nov0caina.sounder.util.getAttrColorCompat
 import org.nov0caina.sounder.util.navigateSafe
 import org.nov0caina.sounder.util.recycler
+import org.nov0caina.sounder.util.scale
 import org.nov0caina.sounder.util.showToast
 import org.nov0caina.sounder.util.smoothScrollByPageTo
 import org.nov0caina.sounder.util.systemBarInsetsCompat
@@ -102,6 +114,7 @@ class PlaybackPanelFragment :
     private val queueModel: QueueViewModel by viewModels()
     private var equalizerLauncher: ActivityResultLauncher<Intent>? = null
     private var userAwarePagerCallback: UserAwarePagerCallback? = null
+    private var lastPlayingState: Boolean? = null
 
     @Inject lateinit var downloadManager: DownloadManager
     @Inject lateinit var musicRepository: MusicRepository
@@ -177,14 +190,21 @@ class PlaybackPanelFragment :
 
         // Set up actions
         // TODO: Add better playback button accessibility
-        binding.playbackRepeat.setOnClickListener { playbackModel.toggleRepeatMode() }
-        binding.playbackSkipPrev.setOnClickListener { playbackModel.prev() }
+        binding.playbackRepeat.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { playbackModel.toggleRepeatMode() }
+        }
+        binding.playbackSkipPrev.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { playbackModel.prev() }
+        }
         binding.playbackPlayPause.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
             @SuppressLint("RestrictedApi")
             setCornerSpringForce(
                 SpringForce().apply {
-                    stiffness = 700f
-                    dampingRatio = 0.9f
+                    stiffness = MotionPhysics.PLAY_PAUSE_CORNER_SPRING.stiffness
+                    dampingRatio = MotionPhysics.PLAY_PAUSE_CORNER_SPRING.dampingRatio
                 }
             )
             val isPlaying = playbackModel.isPlaying.value
@@ -192,26 +212,107 @@ class PlaybackPanelFragment :
             setIconResource(if (isPlaying) R.drawable.ic_pause_24 else R.drawable.ic_play_24)
             setOnClickListener { playbackModel.togglePlaying() }
         }
-        binding.playbackSkipNext.setOnClickListener { playbackModel.next() }
-        binding.playbackShuffle.setOnClickListener { playbackModel.toggleShuffled() }
-        binding.playbackFavorite?.setOnClickListener {
-            playbackModel.song.value?.let { song ->
-                musicModel.toggleFavorite(song) { isFav ->
-                    requireContext().showToast(if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite)
+        binding.playbackSkipNext.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { playbackModel.next() }
+        }
+        binding.playbackShuffle.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { playbackModel.toggleShuffled() }
+        }
+        binding.playbackFavorite?.apply {
+            attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
+            setOnClickListener { button ->
+                playbackModel.song.value?.let { song ->
+                    musicModel.toggleFavorite(song) { isFav ->
+                        if (!isAdded || this@PlaybackPanelFragment.binding == null) {
+                            return@toggleFavorite
+                        }
+                        if (MotionPhysics.shouldTriggerFavoritePop(isFav)) {
+                            button.performSpringPop()
+                        }
+                        requireContext().showToast(
+                            if (isFav) R.string.lng_added_favorite else R.string.lng_removed_favorite
+                        )
+                    }
                 }
             }
         }
+        binding.playbackDownload?.attachSpringTouchFeedback(MotionPhysics.ICON_SQUISH_SCALE)
         binding.playbackDownload?.setOnClickListener {
-            val song = playbackModel.song.value
+            val song = playbackModel.song.value ?: return@setOnClickListener
+
+            if (song is OnlineSong && downloadManager.isEnqueuedOrDownloading(song.onlineTrack)) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.dialog_download_waiting_title)
+                    .setMessage(R.string.dialog_download_waiting_message)
+                    .setPositiveButton(R.string.btn_download_now) { _, _ ->
+                        downloadManager.enqueue(song.onlineTrack, allowMeteredNetwork = true)
+                        requireContext().showToast(getString(R.string.download_queued, song.onlineTrack.title))
+                        updateDownload(song)
+                    }
+                    .setNeutralButton(R.string.lbl_delete_download) { _, _ ->
+                        downloadManager.cancel(song.onlineTrack.id)
+                        downloadManager.removeDownload(song.onlineTrack.id)
+                        updateDownload(song)
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+                return@setOnClickListener
+            }
+
+            if (isSongDownloadedOrInLibrary(song)) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.lbl_delete_download)
+                    .setMessage(R.string.msg_confirm_delete_song)
+                    .setPositiveButton(R.string.btn_delete) { _, _ ->
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                            val success = downloadManager.deleteDownloadedSong(song)
+                            withContext(Dispatchers.Main) {
+                                if (success) {
+                                    requireContext().showToast(R.string.msg_download_deleted)
+                                    musicModel.refresh()
+                                    updateDownload(playbackModel.song.value)
+                                    if (song !is OnlineSong) {
+                                        playbackModel.next()
+                                    }
+                                } else {
+                                    requireContext().showToast(R.string.err_delete_failed)
+                                }
+                            }
+                        }
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
+                return@setOnClickListener
+            }
+
             if (song is OnlineSong) {
                 if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
                     requireContext().showToast(R.string.msg_storage_permission_required)
                     return@setOnClickListener
                 }
-                downloadManager.enqueue(song.onlineTrack)
-                requireContext().showToast(getString(R.string.download_queued, song.onlineTrack.title))
-                binding.playbackDownload?.isEnabled = false
-                binding.playbackDownload?.alpha = 0.5f
+                if (downloadManager.requiresCellularConfirmation(song.onlineTrack)) {
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle(R.string.dialog_download_cellular_title)
+                        .setMessage(R.string.dialog_download_cellular_message)
+                        .setPositiveButton(R.string.btn_download_now) { _, _ ->
+                            downloadManager.enqueue(song.onlineTrack, allowMeteredNetwork = true)
+                            requireContext().showToast(getString(R.string.download_queued, song.onlineTrack.title))
+                            updateDownload(song)
+                        }
+                        .setNeutralButton(R.string.btn_wait_for_wifi) { _, _ ->
+                            downloadManager.enqueue(song.onlineTrack, allowMeteredNetwork = false)
+                            requireContext().showToast(getString(R.string.msg_download_waiting_wifi, song.onlineTrack.title))
+                            updateDownload(song)
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                } else {
+                    downloadManager.enqueue(song.onlineTrack, allowMeteredNetwork = false)
+                    requireContext().showToast(getString(R.string.download_queued, song.onlineTrack.title))
+                    updateDownload(song)
+                }
             }
         }
         binding.playbackMore?.setOnClickListener {
@@ -285,6 +386,8 @@ class PlaybackPanelFragment :
     //    }
 
     override fun onDestroyBinding(binding: FragmentPlaybackPanelBinding) {
+        binding.playbackPager?.cancelScaleSpring()
+        lastPlayingState = null
         equalizerLauncher = null
         binding.playbackRepeat.clearPendingIcon()
         binding.playbackSong.isSelected = false
@@ -356,7 +459,10 @@ class PlaybackPanelFragment :
 
     private fun isSongDownloadedOrInLibrary(song: Song?): Boolean {
         if (song == null) return false
-        if (song !is OnlineSong) return true
+        if (song !is OnlineSong) {
+            val file = MediaDeletionUtil.resolveSongFile(requireContext(), song)
+            return file != null && file.exists()
+        }
         return downloadManager.isDownloaded(song.onlineTrack)
     }
 
@@ -367,11 +473,13 @@ class PlaybackPanelFragment :
             return
         }
 
+        val context = requireContext()
         if (isSongDownloadedOrInLibrary(song)) {
             downloadButton.setIconResource(R.drawable.ic_check_24)
-            downloadButton.isEnabled = false
-            downloadButton.alpha = 0.5f
+            downloadButton.isEnabled = true
+            downloadButton.alpha = 1.0f
             downloadButton.contentDescription = getString(R.string.btn_downloaded)
+            downloadButton.iconTint = context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary)
             return
         }
 
@@ -379,20 +487,23 @@ class PlaybackPanelFragment :
             val isDownloading = downloadManager.isEnqueuedOrDownloading(song.onlineTrack)
             if (isDownloading) {
                 downloadButton.setIconResource(R.drawable.ic_download_24)
-                downloadButton.isEnabled = false
-                downloadButton.alpha = 0.4f
+                downloadButton.isEnabled = true
+                downloadButton.alpha = 0.5f
                 downloadButton.contentDescription = getString(R.string.btn_downloading)
+                downloadButton.iconTint = context.getAttrColorCompat(com.google.android.material.R.attr.colorOnSurfaceVariant)
             } else {
                 downloadButton.setIconResource(R.drawable.ic_download_24)
                 downloadButton.isEnabled = true
                 downloadButton.alpha = 1.0f
                 downloadButton.contentDescription = getString(R.string.btn_download)
+                downloadButton.iconTint = context.getAttrColorCompat(com.google.android.material.R.attr.colorOnSurfaceVariant)
             }
         } else {
             downloadButton.setIconResource(R.drawable.ic_check_24)
-            downloadButton.isEnabled = false
-            downloadButton.alpha = 0.5f
+            downloadButton.isEnabled = true
+            downloadButton.alpha = 1.0f
             downloadButton.contentDescription = getString(R.string.btn_downloaded)
+            downloadButton.iconTint = context.getAttrColorCompat(androidx.appcompat.R.attr.colorPrimary)
         }
     }
 
@@ -428,6 +539,20 @@ class PlaybackPanelFragment :
             if (isPlaying) R.drawable.ic_pause_24 else R.drawable.ic_play_24
         )
         requireBinding().playbackSeekBar?.setWaveEnabled(isPlaying)
+        val shouldAnimate = lastPlayingState != null && lastPlayingState != isPlaying
+        updateCoverScale(isPlaying, animate = shouldAnimate)
+        lastPlayingState = isPlaying
+    }
+
+    private fun updateCoverScale(isPlaying: Boolean, animate: Boolean) {
+        val pager = binding?.playbackPager ?: return
+        val targetScale = MotionPhysics.resolveCoverScale(isPlaying)
+        if (animate) {
+            pager.animateScaleSpring(targetScale, MotionPhysics.resolveCoverSpring(isPlaying))
+        } else {
+            pager.cancelScaleSpring()
+            pager.scale = targetScale
+        }
     }
 
     private fun updateShuffled(isShuffled: Boolean) {

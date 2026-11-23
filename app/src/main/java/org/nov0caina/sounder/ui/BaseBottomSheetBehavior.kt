@@ -69,6 +69,9 @@ abstract class BaseBottomSheetBehavior<V : View>(context: Context, attributeSet:
     /** Get the ideal bar height to use before the bar is properly measured. */
     abstract fun getIdealBarHeight(context: Context): Int
 
+    /** Resolve the collapsed bar view used to determine peek height. */
+    protected open fun getBarView(child: View): View = (child as ViewGroup).getChildAt(0)
+
     /**
      * Called when window insets are being applied to the [View] this [BaseBottomSheetBehavior] is
      * linked to.
@@ -80,9 +83,9 @@ abstract class BaseBottomSheetBehavior<V : View>(context: Context, attributeSet:
      */
     open fun applyWindowInsets(child: View, insets: WindowInsets): WindowInsets {
         // All sheet behaviors derive their peek height from the size of the "bar" (i.e the
-        // first child) plus the gesture insets.
+        // collapsed bar view) plus the gesture insets.
         val gestures = insets.systemGestureInsetsCompat
-        val bar = (child as ViewGroup).getChildAt(0)
+        val bar = getBarView(child)
         peekHeight =
             (if (bar.measuredHeight > 0) {
                 bar.measuredHeight + gestures.bottom
