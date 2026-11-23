@@ -38,6 +38,18 @@
             app:summary="@string/set_hide_collaborators_desc"
             app:title="@string/set_hide_collaborators" />
 
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_genre_christian"
+            app:summary="@string/set_genre_christian_desc"
+            app:title="@string/set_genre_christian" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_genre_kpop"
+            app:summary="@string/set_genre_kpop_desc"
+            app:title="@string/set_genre_kpop" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/set_images">

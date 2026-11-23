@@ -51,5 +51,27 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/set_privacy_insights_category">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:key="@string/set_key_local_listening_insights"
+            app:summary="@string/set_local_listening_insights_desc"
+            app:title="@string/set_local_listening_insights" />
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:dependency="@string/set_key_local_listening_insights"
+            app:key="@string/set_key_show_monthly_listening_banner"
+            app:summary="@string/set_show_monthly_listening_banner_desc"
+            app:title="@string/set_show_monthly_listening_banner" />
+
+        <Preference
+            app:key="@string/set_key_clear_listening_history"
+            app:summary="@string/set_clear_listening_history_desc"
+            app:title="@string/set_clear_listening_history" />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

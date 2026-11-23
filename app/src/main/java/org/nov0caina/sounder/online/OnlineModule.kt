@@ -10,8 +10,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import org.nov0caina.sounder.online.db.CachedTrackDao
+import org.nov0caina.sounder.online.db.FavoriteArtistDao
 import org.nov0caina.sounder.online.db.OnlineDatabase
 import org.nov0caina.sounder.online.db.OnlinePlaylistTrackDao
+import org.nov0caina.sounder.online.db.PlaybackRecordDao
 import org.nov0caina.sounder.online.db.RecentArtistsDao
 import org.nov0caina.sounder.online.innertube.InnerTubeClient
 import org.nov0caina.sounder.online.repository.OnlineMusicRepository
@@ -43,9 +45,19 @@ abstract class OnlineModule {
                 context,
                 OnlineDatabase::class.java,
                 "auxio_online.db"
-            ).addMigrations(OnlineDatabase.MIGRATION_2_3)
+            ).addMigrations(
+                OnlineDatabase.MIGRATION_2_3,
+                OnlineDatabase.MIGRATION_3_4,
+                OnlineDatabase.MIGRATION_4_5,
+            )
                 .fallbackToDestructiveMigration(true)
                 .build()
+        }
+
+        @Provides
+        @Singleton
+        fun provideFavoriteArtistDao(database: OnlineDatabase): FavoriteArtistDao {
+            return database.favoriteArtistDao()
         }
 
         @Provides
@@ -64,6 +76,12 @@ abstract class OnlineModule {
         @Singleton
         fun provideCachedTrackDao(database: OnlineDatabase): CachedTrackDao {
             return database.cachedTrackDao()
+        }
+
+        @Provides
+        @Singleton
+        fun providePlaybackRecordDao(database: OnlineDatabase): PlaybackRecordDao {
+            return database.playbackRecordDao()
         }
 
         @Provides

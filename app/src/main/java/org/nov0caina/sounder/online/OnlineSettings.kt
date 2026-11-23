@@ -29,6 +29,12 @@ interface OnlineSettings : Settings<OnlineSettings.Listener> {
     val wifiOnlyDownloads: Boolean
     val autoDownloadFavorites: Boolean
     val preferStudioAudio: Boolean
+    val showChristianGenre: Boolean
+    val showKpopGenre: Boolean
+    val enableLocalListeningInsights: Boolean
+    val showMonthlyListeningBanner: Boolean
+        get() = true
+    fun setShowMonthlyListeningBanner(show: Boolean) {}
     val downloadStorage: StorageDestination
     fun setDownloadStorage(destination: StorageDestination)
     val streamingCacheSizeMb: Int
@@ -42,6 +48,8 @@ interface OnlineSettings : Settings<OnlineSettings.Listener> {
         fun onDownloadStorageChanged() {}
         fun onPreferStudioAudioChanged() {}
         fun onStreamingCacheSizeChanged() {}
+        fun onGenreVisibilityChanged() {}
+        fun onListeningInsightsChanged() {}
     }
 }
 
@@ -75,11 +83,42 @@ class OnlineSettingsImpl @Inject constructor(
             return sharedPreferences.getBoolean(key, false)
         }
 
+    @Volatile
+    private var cachedShowChristian: Boolean =
+        sharedPreferences.getBoolean(context.getString(R.string.set_key_genre_christian), true)
+
+    @Volatile
+    private var cachedShowKpop: Boolean =
+        sharedPreferences.getBoolean(context.getString(R.string.set_key_genre_kpop), true)
+
+    override val showChristianGenre: Boolean
+        get() = cachedShowChristian
+
+    override val showKpopGenre: Boolean
+        get() = cachedShowKpop
+
     override val preferStudioAudio: Boolean
         get() {
             val key = context.getString(R.string.set_key_prefer_studio_audio)
             return sharedPreferences.getBoolean(key, true)
         }
+
+    override val enableLocalListeningInsights: Boolean
+        get() {
+            val key = context.getString(R.string.set_key_local_listening_insights)
+            return sharedPreferences.getBoolean(key, true)
+        }
+
+    override val showMonthlyListeningBanner: Boolean
+        get() {
+            val key = context.getString(R.string.set_key_show_monthly_listening_banner)
+            return sharedPreferences.getBoolean(key, true)
+        }
+
+    override fun setShowMonthlyListeningBanner(show: Boolean) {
+        val key = context.getString(R.string.set_key_show_monthly_listening_banner)
+        sharedPreferences.edit().putBoolean(key, show).apply()
+    }
 
     override val downloadStorage: StorageDestination
         get() {
@@ -115,6 +154,18 @@ class OnlineSettingsImpl @Inject constructor(
             context.getString(R.string.set_key_download_storage) -> listener.onDownloadStorageChanged()
             context.getString(R.string.set_key_prefer_studio_audio) -> listener.onPreferStudioAudioChanged()
             context.getString(R.string.set_key_streaming_cache_size) -> listener.onStreamingCacheSizeChanged()
+            context.getString(R.string.set_key_genre_christian) -> {
+                cachedShowChristian = sharedPreferences.getBoolean(key, true)
+                listener.onGenreVisibilityChanged()
+            }
+            context.getString(R.string.set_key_genre_kpop) -> {
+                cachedShowKpop = sharedPreferences.getBoolean(key, true)
+                listener.onGenreVisibilityChanged()
+            }
+            context.getString(R.string.set_key_local_listening_insights),
+            context.getString(R.string.set_key_show_monthly_listening_banner) -> {
+                listener.onListeningInsightsChanged()
+            }
         }
     }
 }

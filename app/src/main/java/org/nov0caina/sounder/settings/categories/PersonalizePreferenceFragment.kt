@@ -18,11 +18,21 @@
  
 package org.nov0caina.sounder.settings.categories
 
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.nov0caina.sounder.R
+import org.nov0caina.sounder.online.db.PlaybackRecordDao
 import org.nov0caina.sounder.settings.BasePreferenceFragment
 import org.nov0caina.sounder.settings.ui.WrappedDialogPreference
 import org.nov0caina.sounder.util.navigateSafe
+import org.nov0caina.sounder.util.showToast
 import timber.log.Timber as L
 
 /**
@@ -30,11 +40,36 @@ import timber.log.Timber as L
  *
  * @author Alexander Capehart (OxygenCobalt)
  */
+@AndroidEntryPoint
 class PersonalizePreferenceFragment : BasePreferenceFragment(R.xml.preferences_personalize) {
+
+    @Inject lateinit var playbackRecordDao: PlaybackRecordDao
+
     override fun onOpenDialogPreference(preference: WrappedDialogPreference) {
         if (preference.key == getString(R.string.set_key_home_tabs)) {
             L.d("Navigating to home tab dialog")
             findNavController().navigateSafe(PersonalizePreferenceFragmentDirections.tabSettings())
+        }
+    }
+
+    override fun onSetupPreference(preference: Preference) {
+        if (preference.key == getString(R.string.set_key_clear_listening_history)) {
+            preference.setOnPreferenceClickListener {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.set_clear_listening_history)
+                    .setMessage(R.string.msg_confirm_clear_listening_history)
+                    .setPositiveButton(R.string.btn_delete) { _, _ ->
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                playbackRecordDao.clearAll()
+                            }
+                            context?.showToast(R.string.msg_listening_history_cleared)
+                        }
+                    }
+                    .setNegativeButton(R.string.lbl_cancel, null)
+                    .show()
+                true
+            }
         }
     }
 }

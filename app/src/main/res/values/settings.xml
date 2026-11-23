@@ -45,6 +45,8 @@
 
     <string name="set_key_home_tabs" translatable="false">sounder_home_tabs</string>
     <string name="set_key_hide_collaborators" translatable="false">sounder_hide_collaborators</string>
+    <string name="set_key_genre_christian" translatable="false">sounder_genre_christian</string>
+    <string name="set_key_genre_kpop" translatable="false">sounder_genre_kpop</string>
     <string name="set_key_round_mode" translatable="false">sounder_round_covers</string>
     <string name="set_key_bar_action" translatable="false">sounder_bar_action</string>
 
@@ -75,6 +77,9 @@
     <string name="set_key_direct_deletion" translatable="false">sounder_direct_deletion</string>
     <string name="set_key_streaming_cache_size" translatable="false">sounder_streaming_cache_size</string>
     <string name="set_key_clear_streaming_cache" translatable="false">sounder_clear_streaming_cache</string>
+    <string name="set_key_local_listening_insights" translatable="false">sounder_local_listening_insights</string>
+    <string name="set_key_show_monthly_listening_banner" translatable="false">sounder_show_monthly_listening_banner</string>
+    <string name="set_key_clear_listening_history" translatable="false">sounder_clear_listening_history</string>
 
     <string-array name="entries_streaming_cache_size" translatable="false">
         <item>100 MB</item>
