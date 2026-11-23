@@ -280,4 +280,212 @@ class InnerTubeClientTest {
         assertTrue(phase2.artists.size >= 50)
         assertEquals(phase1.artists.map { it.id }, phase2.artists.take(phase1.artists.size).map { it.id })
     }
+
+    @Test
+    fun testChristianCategoryExcludesSecularArtistsIsolatesLocalesAndRandomizesEmergingPlacement() = runBlocking {
+        fun buildClient(lang: String, seed: Int): InnerTubeClient =
+            object : InnerTubeClient() {
+                override internal suspend fun fetchSearchPayload(query: String, params: String?): OnlineSearchResult {
+                    return when {
+                        query == "musica cristiana alabanza y adoracion" -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_miel", "Miel San Marcos", "https://art/miel.jpg", "4.2M monthly audience"),
+                                OnlineArtistSummary("UC_kanye", "Kanye West", "https://art/kanye.jpg", "70M monthly audience")
+                            ),
+                            tracks = listOf(
+                                OnlineTrack("v_c1", "Danzando", "Christine D'Clario", "Emanuel", 240_000L, "https://art/danzando.jpg", artistId = "UC_christine")
+                            )
+                        )
+                        query == "artistas musica cristiana español" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_marcos", "Marcos Witt", "https://art/marcos.jpg", "3.8M monthly audience"),
+                                OnlineArtistSummary("UC_jar", "Jesús Adrián Romero", "https://art/jar.jpg", "5.1M monthly audience"),
+                                OnlineArtistSummary("UC_barak", "Barak", "https://art/barak.jpg", "2.9M monthly audience"),
+                                OnlineArtistSummary("UC_alex", "Alex Campos", "https://art/alex.jpg", "3.1M monthly audience"),
+                                OnlineArtistSummary("UC_marcela", "Marcela Gándara", "https://art/marcela.jpg", "3.5M monthly audience"),
+                                OnlineArtistSummary("UC_redimi2", "Redimi2", "https://art/redimi2.jpg", "2.8M monthly audience"),
+                                OnlineArtistSummary("UC_christine", "Christine D'Clario", "https://art/christine.jpg", "2.6M monthly audience")
+                            )
+                        )
+                        query == "Abel Meza" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_abel", "Abel Meza", "https://art/abel.jpg", "12K subscribers"),
+                                OnlineArtistSummary("UC_noise", "Random Christian Podcast", "https://art/noise.jpg", "5 subscribers")
+                            )
+                        )
+                        query == "Montesanto" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_montesanto", "Montesanto", "https://art/montesanto.jpg", "900K monthly audience")
+                            )
+                        )
+                        query == "Kike Pavon" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_kike", "Kike Pavon", "https://art/kike.jpg", "500K monthly audience")
+                            )
+                        )
+                        query == "Living Worship" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_living", "Living Worship", "https://art/living.jpg", "400K monthly audience")
+                            )
+                        )
+                        query == "Oasis Ministry" && params == PARAMS_ARTISTS -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_oasis", "Oasis Ministry", "https://art/oasis.jpg", "700K monthly audience")
+                            )
+                        )
+                        query.contains("Elevation Worship") -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_elev", "Elevation Worship", "https://art/elev.jpg", "12M monthly audience"),
+                                OnlineArtistSummary("UC_drake", "Drake", "https://art/drake.jpg", "85M monthly audience")
+                            )
+                        )
+                        query == "Christian worship artists" || query == "contemporary christian artists" -> OnlineSearchResult(
+                            artists = listOf(
+                                OnlineArtistSummary("UC_chris", "Chris Tomlin", "https://art/chris.jpg", "11M monthly audience"),
+                                OnlineArtistSummary("UC_brandon", "Brandon Lake", "https://art/brandon.jpg", "9M monthly audience")
+                            )
+                        )
+                        else -> OnlineSearchResult()
+                    }
+                }
+
+                override suspend fun browseArtist(browseId: String) =
+                    org.nov0caina.sounder.online.model.OnlineArtistDetail(
+                        id = browseId,
+                        name = "Resolved $browseId",
+                        avatarUrl = "https://art/$browseId.jpg",
+                        description = null,
+                        relatedArtists = listOf(
+                            OnlineArtistSummary("UC_jcole", "J. Cole", "https://art/jcole.jpg", "55M monthly audience"),
+                            OnlineArtistSummary("UC_lilly", "Lilly Goodman", "https://art/lilly.jpg", "2.1M monthly audience")
+                        )
+                    )
+            }.apply {
+                deviceLanguageProvider = { lang }
+                randomProvider = { kotlin.random.Random(seed) }
+            }
+
+        val spanishResult = buildClient("es", seed = 101).searchCategorized("Christian worship artists", isCategory = true)
+        val spanishNames = spanishResult.artists.map { it.name }
+
+        assertTrue("Secular artists must be excluded", "Kanye West" !in spanishNames)
+        assertTrue("Secular artists must be excluded", "Drake" !in spanishNames)
+        assertTrue("Secular artists must be excluded", "J. Cole" !in spanishNames)
+        assertEquals("Miel San Marcos", spanishNames[0])
+        assertTrue("Global top Christian artist retained", "Elevation Worship" in spanishNames)
+        assertTrue("Random noise channel excluded", "Random Christian Podcast" !in spanishNames)
+
+        // Verify emerging/mid-tier positions vary across random seeds rather than staying pinned at #5
+        val abelPositions = (1..25).mapNotNull { seed ->
+            val names = buildClient("es", seed).searchCategorized("Christian worship artists", isCategory = true)
+                .artists.map { it.name }
+            val idx = names.indexOf("Abel Meza")
+            if (idx >= 0) idx else null
+        }
+        assertTrue("Abel Meza should appear across some random draws", abelPositions.isNotEmpty())
+        assertTrue("All emerging placements must protect top 3 spotlight (index >= 3)", abelPositions.all { it >= 3 })
+        assertTrue("Abel Meza placement must vary rather than stay pinned at index 5: $abelPositions", abelPositions.toSet().size > 1)
+
+        // Verify strict locale isolation for English ("en"): Spanish emerging artists must never appear
+        val englishResult = buildClient("en", seed = 1).searchCategorized("Christian worship artists", isCategory = true)
+        val englishNames = englishResult.artists.map { it.name }
+        assertTrue("English locale must not include Spanish-only emerging seed", "Abel Meza" !in englishNames)
+        assertTrue("English Christian artist must be present", "Chris Tomlin" in englishNames)
+    }
+
+    @Test
+    fun testDirectSearchForAbelMezaRanksHimFirstInArtistsEvenWithLowSubscribersOrTrackOnlyResolution() = runBlocking {
+        val relatedChristianArtists = (1..18).map { i ->
+            OnlineArtistSummary(
+                id = "UC_rel_$i",
+                name = if (i == 1) "Michelle Matius" else "Artista Cristiano $i",
+                avatarUrl = "https://art/rel_$i.jpg",
+                subtitle = "${400 + i}K monthly audience"
+            )
+        }
+
+        // Case 1: Abel Meza returned in dedicated artist search with low subscribers alongside 18 monthly-audience artists
+        val clientWithLowSubArtist = object : InnerTubeClient() {
+            override internal suspend fun fetchSearchPayload(query: String, params: String?): OnlineSearchResult {
+                return when (params) {
+                    PARAMS_ARTISTS -> OnlineSearchResult(
+                        artists = relatedChristianArtists + OnlineArtistSummary(
+                            id = "UC_abel_meza",
+                            name = "Abel Meza",
+                            avatarUrl = "https://art/abel.jpg",
+                            subtitle = "1.2K subscribers"
+                        )
+                    )
+                    PARAMS_SONGS -> OnlineSearchResult(
+                        tracks = listOf(
+                            OnlineTrack(
+                                id = "vid_abel_1",
+                                title = "Canción de Abel",
+                                artist = "Abel Meza",
+                                album = "Sencillo",
+                                durationMs = 210_000L,
+                                artworkUrl = "https://art/abel_song.jpg",
+                                artistId = "UC_abel_meza"
+                            )
+                        )
+                    )
+                    else -> OnlineSearchResult(
+                        artists = listOf(relatedChristianArtists.first())
+                    )
+                }
+            }
+
+            override suspend fun browseArtist(browseId: String) =
+                org.nov0caina.sounder.online.model.OnlineArtistDetail(
+                    id = browseId,
+                    name = if (browseId == "UC_abel_meza") "Abel Meza" else "Unknown",
+                    avatarUrl = "https://art/$browseId.jpg",
+                    description = null,
+                    subscribers = if (browseId == "UC_abel_meza") "1.2K subscribers" else null
+                )
+        }
+
+        val case1Result = clientWithLowSubArtist.searchCategorized("Abel Meza", isCategory = false)
+        assertTrue("Expected non-empty artists", case1Result.artists.isNotEmpty())
+        assertEquals("Abel Meza", case1Result.artists.first().name)
+
+        // Case 2: Abel Meza absent from dedicated artists list (18 related artists present), only in track results
+        val clientTrackOnly = object : InnerTubeClient() {
+            override internal suspend fun fetchSearchPayload(query: String, params: String?): OnlineSearchResult {
+                return when (params) {
+                    PARAMS_ARTISTS -> OnlineSearchResult(artists = relatedChristianArtists)
+                    PARAMS_SONGS -> OnlineSearchResult(
+                        tracks = listOf(
+                            OnlineTrack(
+                                id = "vid_abel_track",
+                                title = "Adoración",
+                                artist = "Abel Meza",
+                                album = "Álbum",
+                                durationMs = 200_000L,
+                                artworkUrl = "https://art/abel_track.jpg",
+                                artistId = "UC_abel_meza"
+                            )
+                        )
+                    )
+                    else -> OnlineSearchResult(
+                        artists = listOf(relatedChristianArtists.first())
+                    )
+                }
+            }
+
+            override suspend fun browseArtist(browseId: String) =
+                org.nov0caina.sounder.online.model.OnlineArtistDetail(
+                    id = browseId,
+                    name = if (browseId == "UC_abel_meza") "Abel Meza" else "Resolved $browseId",
+                    avatarUrl = "https://art/abel_profile.jpg",
+                    description = null,
+                    subscribers = "1.2K subscribers"
+                )
+        }
+
+        val case2Result = clientTrackOnly.searchCategorized("Abel Meza", isCategory = false)
+        assertTrue("Expected non-empty artists", case2Result.artists.isNotEmpty())
+        assertEquals("Abel Meza", case2Result.artists.first().name)
+        assertEquals("UC_abel_meza", case2Result.artists.first().id)
+    }
 }

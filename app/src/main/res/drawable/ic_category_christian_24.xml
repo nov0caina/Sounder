@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Christian & Worship / Ascending Peace Dove Icon -->
+    <path
+        android:fillColor="@android:color/white"
+        android:fillAlpha="0.85"
+        android:pathData="M21.3,5.9C20.2,5.1 19.0,4.5 17.5,4.7C16.0,4.9 15.1,6.0 14.5,7.3C14.3,5.0 13.0,3.0 10.8,2.2C10.5,4.2 10.7,6.2 11.4,8.0C9.3,5.4 6.4,4.0 3.0,3.8C3.6,5.8 4.8,7.3 6.5,8.2C5.2,8.4 4.1,8.7 3.4,9.2C4.8,10.3 6.2,11.0 7.9,11.4C6.0,12.9 4.3,14.8 2.8,17.0C4.4,17.7 6.0,18.0 7.6,17.9C6.9,19.1 6.3,20.3 6.0,21.5C8.5,20.5 10.8,18.8 12.4,16.8C15.8,15.8 18.4,13.2 19.0,9.8C19.2,8.8 19.2,8.0 19.5,7.4C20.2,7.1 20.8,6.6 21.3,5.9Z" />
+</vector>

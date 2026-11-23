@@ -91,7 +91,7 @@ internal class DiscoverQueryCoordinator(
 @HiltViewModel
 class DiscoverViewModel @Inject constructor(
     private val repository: OnlineMusicRepository,
-    private val downloadManager: DownloadManager
+    val downloadManager: DownloadManager
 ) : ViewModel() {
 
     private val queryCoordinator = DiscoverQueryCoordinator(repository)

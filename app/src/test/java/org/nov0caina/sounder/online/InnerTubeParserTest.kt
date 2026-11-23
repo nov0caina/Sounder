@@ -400,6 +400,32 @@ class InnerTubeParserTest {
     }
 
     @Test
+    fun testParseArtistDetailPrefersMonthlyListenerCount() {
+        val sampleJson = """
+        {
+          "header": {
+            "musicImmersiveHeaderRenderer": {
+              "title": { "runs": [{ "text": "Korn" }] },
+              "subscriptionButton": {
+                "subscribeButtonRenderer": {
+                  "subscriberCountText": { "runs": [{ "text": "3.81M" }] },
+                  "longSubscriberCountText": { "runs": [{ "text": "3.81M subscribers" }] }
+                }
+              },
+              "monthlyListenerCount": {
+                "runs": [{ "text": "16.9M monthly audience" }]
+              }
+            }
+          }
+        }
+        """.trimIndent()
+
+        val detail = InnerTubeParser.parseArtistDetail("UCdSgOgQ0WtelXBMKF3tDsqg", sampleJson)
+        assertEquals("Korn", detail.name)
+        assertEquals("16.9M monthly audience", detail.subscribers)
+    }
+
+    @Test
     fun testCleanArtistDescription() {
         val raw = "AC/DC are an Australian rock band formed in Sydney in 1973.\n\nFrom Wikipedia (https://en.wikipedia.org/wiki/AC/DC) under Creative Commons"
         val cleaned = InnerTubeParser.cleanArtistDescription(raw)
@@ -1143,11 +1169,407 @@ class InnerTubeParserTest {
         assertFalse(InnerTubeParser.isLowQualityUserChannel("Metallica", "75.8M monthly audience"))
         assertFalse(InnerTubeParser.isLowQualityUserChannel("Bloodywood", "317K oyentes mensuales"))
         assertFalse(InnerTubeParser.isLowQualityUserChannel("Queen", "10M Subscribers"))
+        // Legitimate emerging/independent artists with < 50K subscribers remain visible
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Abel Meza", "800 suscriptores"))
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Sofía Valdés", "3.4K subscribers"))
 
+        // Generic genre spam, AI music channels, and low-quality reupload channels are excluded
         assertTrue(InnerTubeParser.isLowQualityUserChannel("HeavyPulse Metal", "2 subscribers"))
         assertTrue(InnerTubeParser.isLowQualityUserChannel("Heavy Metal Songs", "79 subscribers"))
         assertTrue(InnerTubeParser.isLowQualityUserChannel("Acordes de Metal", "114 suscriptores"))
         assertTrue(InnerTubeParser.isLowQualityUserChannel("Metal Scar Radio", "17.9K subscribers"))
         assertTrue(InnerTubeParser.isLowQualityUserChannel("Acordes de Metal Pro", "200K subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Suno AI Music", "15K subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Rock Covers - IA", "80K subscribers"))
+        assertTrue(InnerTubeParser.isLowQualityUserChannel("Canciones 8D Slowed", "120K subscribers"))
+    }
+
+    @Test
+    fun testParseStreamUrlPrefersMp4OverWebmForCompatibility() {
+        val mixedJson = """
+        {
+          "streamingData": {
+            "adaptiveFormats": [
+              {
+                "itag": 251,
+                "mimeType": "audio/webm; codecs=\"opus\"",
+                "bitrate": 160000,
+                "url": "https://stream.audio/webm"
+              },
+              {
+                "itag": 140,
+                "mimeType": "audio/mp4; codecs=\"mp4a.40.2\"",
+                "bitrate": 129000,
+                "url": "https://stream.audio/m4a"
+              }
+            ]
+          }
+        }
+        """.trimIndent()
+
+        val selected = InnerTubeParser.parseStreamUrl(mixedJson, AudioQuality.HIGH_QUALITY)
+        assertEquals("https://stream.audio/m4a", selected)
+    }
+
+    @Test
+    fun testExplicitBadgeDetectionAndCleanVersionDeduplication() {
+        val explicitJson = JSONObject("""
+        {
+          "playlistItemData": { "videoId": "vid_explicit" },
+          "badges": [
+            {
+              "musicInlineBadgeRenderer": {
+                "icon": { "iconType": "MUSIC_EXPLICIT_BADGE" },
+                "accessibilityData": {
+                  "accessibilityData": { "label": "Explicit" }
+                }
+              }
+            }
+          ],
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "HUMBLE." }] }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "Kendrick Lamar" }, { "text": " • " }, { "text": "2:57" }] }
+              }
+            }
+          ]
+        }
+        """.trimIndent())
+
+        val explicitTrack = InnerTubeParser.parseTrackItem(explicitJson)
+        assertNotNull(explicitTrack)
+        assertTrue("MUSIC_EXPLICIT_BADGE must set isExplicit=true", explicitTrack!!.isExplicit)
+
+        val cleanVersion = OnlineTrack(
+            id = "vid_clean",
+            title = "HUMBLE. (Clean)",
+            artist = "Kendrick Lamar",
+            album = "DAMN.",
+            durationMs = 177_000L,
+            artworkUrl = null,
+            isStudioTrack = true,
+            isExplicit = false
+        )
+        val nonExplicitDup = explicitTrack.copy(id = "vid_unlabeled", isExplicit = false)
+
+        val prioritized = InnerTubeParser.prioritizeExplicitTracks(
+            listOf(cleanVersion, nonExplicitDup, explicitTrack)
+        )
+        assertEquals(1, prioritized.size)
+        assertEquals("vid_explicit", prioritized[0].id)
+    }
+
+    @Test
+    fun testParseArtistDetailAndDiscographyBrowseExtractsAllAlbums() {
+        val artistOverviewJson = """
+        {
+          "header": {
+            "musicImmersiveHeaderRenderer": {
+              "title": { "runs": [{ "text": "Kendrick Lamar" }] }
+            }
+          },
+          "contents": {
+            "singleColumnBrowseResultsRenderer": {
+              "tabs": [
+                {
+                  "tabRenderer": {
+                    "content": {
+                      "sectionListRenderer": {
+                        "contents": [
+                          {
+                            "musicCarouselShelfRenderer": {
+                              "header": {
+                                "musicCarouselShelfBasicHeaderRenderer": {
+                                  "title": { "runs": [{ "text": "Álbumes" }] },
+                                  "moreContentButton": {
+                                    "buttonRenderer": {
+                                      "navigationEndpoint": {
+                                        "browseEndpoint": {
+                                          "browseId": "MPAD_kendrick",
+                                          "params": "ggMI..."
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "contents": [
+                                {
+                                  "musicTwoRowItemRenderer": {
+                                    "title": { "runs": [{ "text": "GNX" }] },
+                                    "subtitle": { "runs": [{ "text": "2024" }] },
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": { "browseId": "MPREb_gnx" }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        """.trimIndent()
+
+        val detail = InnerTubeParser.parseArtistDetail("UC_kendrick", artistOverviewJson)
+        assertEquals("MPAD_kendrick", detail.albumsBrowseId)
+        assertEquals("ggMI...", detail.albumsBrowseParams)
+        assertEquals(1, detail.albums.size)
+        assertEquals("GNX", detail.albums[0].title)
+
+        val discographyGridJson = """
+        {
+          "contents": {
+            "singleColumnBrowseResultsRenderer": {
+              "tabs": [
+                {
+                  "tabRenderer": {
+                    "content": {
+                      "sectionListRenderer": {
+                        "contents": [
+                          {
+                            "gridRenderer": {
+                              "items": [
+                                {
+                                  "musicTwoRowItemRenderer": {
+                                    "title": { "runs": [{ "text": "GNX" }] },
+                                    "subtitle": { "runs": [{ "text": "2024" }] },
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": { "browseId": "MPREb_gnx" }
+                                    }
+                                  }
+                                },
+                                {
+                                  "musicTwoRowItemRenderer": {
+                                    "title": { "runs": [{ "text": "DAMN." }] },
+                                    "subtitle": { "runs": [{ "text": "2017" }] },
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": { "browseId": "MPREb_damn" }
+                                    }
+                                  }
+                                },
+                                {
+                                  "musicTwoRowItemRenderer": {
+                                    "title": { "runs": [{ "text": "good kid, m.A.A.d city" }] },
+                                    "subtitle": { "runs": [{ "text": "2012" }] },
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": { "browseId": "MPREb_gkmc" }
+                                    }
+                                  }
+                                }
+                              ],
+                              "continuations": [
+                                {
+                                  "nextContinuationData": {
+                                    "continuation": "next_album_page_token"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        """.trimIndent()
+
+        val (parsedAlbums, token) = InnerTubeParser.parseArtistDiscographyBrowseWithContinuation(discographyGridJson)
+        assertEquals(3, parsedAlbums.size)
+        assertEquals("DAMN.", parsedAlbums[1].title)
+        assertEquals("2012", parsedAlbums[2].year)
+        assertEquals("next_album_page_token", token)
+    }
+
+    @Test
+    fun testAbelMezaRetainedInLowQualityFilterAndArtistSearchParsingEvenWithLowSubscribers() {
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Abel Meza", "12K subscribers"))
+        assertFalse(InnerTubeParser.isLowQualityUserChannel("Abel Meza", "800 suscriptores"))
+
+        val searchJson = """
+        {
+          "contents": {
+            "tabbedSearchResultsRenderer": {
+              "tabs": [
+                {
+                  "tabRenderer": {
+                    "content": {
+                      "sectionListRenderer": {
+                        "contents": [
+                          {
+                            "musicCardShelfRenderer": {
+                              "title": {
+                                "runs": [
+                                  {
+                                    "text": "Abel Meza",
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": {
+                                        "browseId": "UC_abel_card",
+                                        "browseEndpointContextSupportedConfigs": {
+                                          "browseEndpointContextMusicConfig": {
+                                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "subtitle": {
+                                "runs": [{ "text": "Artist" }, { "text": " • " }, { "text": "800 suscriptores" }]
+                              },
+                              "thumbnail": {
+                                "musicThumbnailRenderer": {
+                                  "thumbnail": { "thumbnails": [{ "url": "https://yt3.googleusercontent.com/abel=w120-h120" }] }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "musicShelfRenderer": {
+                              "contents": [
+                                {
+                                  "musicResponsiveListItemRenderer": {
+                                    "navigationEndpoint": {
+                                      "browseEndpoint": {
+                                        "browseId": "UC_abel_list",
+                                        "browseEndpointContextSupportedConfigs": {
+                                          "browseEndpointContextMusicConfig": {
+                                            "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "flexColumns": [
+                                      {
+                                        "musicResponsiveListItemFlexColumnRenderer": {
+                                          "text": { "runs": [{ "text": "Abel Meza" }] }
+                                        }
+                                      },
+                                      {
+                                        "musicResponsiveListItemFlexColumnRenderer": {
+                                          "text": { "runs": [{ "text": "12K subscribers" }] }
+                                        }
+                                      }
+                                    ],
+                                    "thumbnail": {
+                                      "musicThumbnailRenderer": {
+                                        "thumbnail": { "thumbnails": [{ "url": "https://yt3.googleusercontent.com/abel2=w120-h120" }] }
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        """.trimIndent()
+
+        val result = InnerTubeParser.parseMultiCategorySearch(searchJson)
+        assertEquals(2, result.artists.size)
+        assertEquals("Abel Meza", result.artists[0].name)
+        assertEquals("UC_abel_card", result.artists[0].id)
+        assertEquals("Abel Meza", result.artists[1].name)
+        assertEquals("UC_abel_list", result.artists[1].id)
+    }
+
+    @Test
+    fun testParseTrackItemRejectsArtistRowsAndQuickAccessSelectsSongsOnly() {
+        val artistRowWithAudience = JSONObject("""
+        {
+          "navigationEndpoint": {
+            "browseEndpoint": {
+              "browseId": "UC_fuerza_regida",
+              "browseEndpointContextSupportedConfigs": {
+                "browseEndpointContextMusicConfig": {
+                  "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                }
+              }
+            }
+          },
+          "playlistItemData": { "videoId": "unexpected_vid" },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "Fuerza Regida" }] }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "7,26 M de oyentes mensuales" }] }
+              }
+            }
+          ]
+        }
+        """.trimIndent())
+        assertNull(InnerTubeParser.parseTrackItem(artistRowWithAudience))
+
+        val artistSubtitleMetricOnly = JSONObject("""
+        {
+          "playlistItemData": { "videoId": "artist_metric_vid" },
+          "flexColumns": [
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "Fuerza Regida" }] }
+              }
+            },
+            {
+              "musicResponsiveListItemFlexColumnRenderer": {
+                "text": { "runs": [{ "text": "7.26M monthly audience" }] }
+              }
+            }
+          ]
+        }
+        """.trimIndent())
+        assertNull(InnerTubeParser.parseTrackItem(artistSubtitleMetricOnly))
+
+        val sampleFeed = org.nov0caina.sounder.online.model.HomeFeedData(
+            popularArtists = listOf(
+                org.nov0caina.sounder.online.model.OnlineArtistSummary(
+                    id = "UC_fuerza_regida",
+                    name = "Fuerza Regida",
+                    avatarUrl = "https://art/fr.jpg",
+                    subtitle = "7,26 M monthly audience"
+                )
+            ),
+            quickPicks = listOf(
+                org.nov0caina.sounder.online.model.OnlineTrack("s1", "Sin Fin De Lucro", "LA DIFERENCIA", "Album 1", 180_000L, "https://art/1.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("s2", "Dreamer Hats", "Omar C", "Album 2", 190_000L, "https://art/2.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("bogus_artist", "Fuerza Regida", "7,26 M subscribers", null, 0L, null)
+            ),
+            trendingTracks = listOf(
+                org.nov0caina.sounder.online.model.OnlineTrack("s2", "Dreamer Hats", "Omar C", "Album 2", 190_000L, "https://art/2.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("s3", "Kalashnikov", "Cartel de Santa", "Album 3", 210_000L, "https://art/3.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("s4", "Curados y Alucinados", "Cartel de Santa", "Album 4", 205_000L, "https://art/4.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("s5", "Extra Song", "Artist 5", "Album 5", 200_000L, "https://art/5.jpg"),
+                org.nov0caina.sounder.online.model.OnlineTrack("s6", "Sixth Song", "Artist 6", "Album 6", 200_000L, "https://art/6.jpg")
+            )
+        )
+
+        val selected = org.nov0caina.sounder.online.ui.HomeFeedViewModel.selectQuickAccessTracks(sampleFeed, maxTracks = 5)
+        assertEquals(listOf("s1", "s2", "s3", "s4", "s5"), selected.map { it.id })
     }
 }

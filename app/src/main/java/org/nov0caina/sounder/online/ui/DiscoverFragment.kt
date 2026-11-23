@@ -36,6 +36,8 @@ import org.nov0caina.sounder.list.menu.Menu
 import org.nov0caina.sounder.list.recycler.SwipeToQueueHelper
 import org.nov0caina.sounder.music.MusicViewModel
 import org.nov0caina.sounder.music.PlaylistDecision
+import org.nov0caina.sounder.online.OnlineSettings
+import org.nov0caina.sounder.online.download.DownloadStatus
 import org.nov0caina.sounder.online.model.HomeMoodItem
 import org.nov0caina.sounder.online.model.OnlineArtistSummary
 import org.nov0caina.sounder.online.model.OnlineSearchResult
@@ -56,6 +58,7 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
     private enum class ResultFilter { ALL, ARTISTS, SONGS }
 
     @Inject lateinit var imageLoader: ImageLoader
+    @Inject lateinit var onlineSettings: OnlineSettings
 
     private val discoverModel: DiscoverViewModel by viewModels()
     private val playbackModel: PlaybackViewModel by activityViewModels()
@@ -92,6 +95,8 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
     private var isSongsExpanded = false
     private var isSuppressingTextWatcher = false
     private var hasRevealedResultsForActiveQuery = false
+    private var lastGenreVisibility: Pair<Boolean, Boolean>? = null
+    private var lastDownloadStatuses: Map<String, DownloadStatus>? = null
 
     private val artistGridInitialCap = 12
     private val collapsedTracksCapAll = 10
@@ -194,10 +199,11 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         }
 
         // Setup Genre Adapter (leaves search bar clear)
-        genreAdapter = GenreAdapter { genre ->
+        genreAdapter = GenreAdapter(genres = loadActiveGenres()) { genre ->
             clearSearchInputSilently(binding)
             startSearchLoading()
-            discoverModel.selectGenre(genre)
+            val title = if (genre.nameRes != 0) getString(genre.nameRes) else genre.name
+            discoverModel.selectCategory(title = title, apiQuery = genre.query)
         }
         binding.genresRecycler.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
@@ -205,20 +211,18 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         }
 
         val handleDownloadTrack: (OnlineTrack) -> Unit = { track ->
-            val currentBinding = this.binding ?: binding
-            if (!org.nov0caina.sounder.util.StoragePermissionHelper.hasPermission(requireContext())) {
-                Snackbar.make(currentBinding.root, R.string.msg_storage_permission_required, Snackbar.LENGTH_LONG).show()
-            } else {
-                discoverModel.downloadTrack(track)
-                Snackbar.make(
-                    currentBinding.root,
-                    getString(R.string.download_queued, track.title),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                allTrackAdapter?.notifyDataSetChanged()
-                compactTrackAdapter?.notifyDataSetChanged()
-                topPickAdapter?.notifyDataSetChanged()
-            }
+            org.nov0caina.sounder.online.download.DownloadActionHelper.handleTrackDownloadClick(
+                context = requireContext(),
+                lifecycleOwner = viewLifecycleOwner,
+                downloadManager = discoverModel.downloadManager,
+                track = track,
+                onStateChanged = {
+                    allTrackAdapter?.refreshTrackStates()
+                    compactTrackAdapter?.refreshTrackStates()
+                    topPickAdapter?.refreshTrackStates()
+                },
+                onDeleted = { musicModel.refresh() }
+            )
         }
 
         // --- TAB 1 (ALL): Ranked Tracks List ---
@@ -591,21 +595,25 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         }
 
         collect(discoverModel.loadingTrackId) {
-            allTrackAdapter?.notifyDataSetChanged()
-            compactTrackAdapter?.notifyDataSetChanged()
-            topPickAdapter?.notifyDataSetChanged()
+            allTrackAdapter?.refreshTrackStates()
+            compactTrackAdapter?.refreshTrackStates()
+            topPickAdapter?.refreshTrackStates()
         }
 
-        collect(discoverModel.downloads) {
-            allTrackAdapter?.notifyDataSetChanged()
-            compactTrackAdapter?.notifyDataSetChanged()
-            topPickAdapter?.notifyDataSetChanged()
+        collect(discoverModel.downloads) { items ->
+            val statusMap = items.associate { it.trackId to it.status }
+            if (statusMap != lastDownloadStatuses) {
+                lastDownloadStatuses = statusMap
+                allTrackAdapter?.refreshTrackStates()
+                compactTrackAdapter?.refreshTrackStates()
+                topPickAdapter?.refreshTrackStates()
+            }
         }
 
         collect(musicModel.indexingState) {
-            allTrackAdapter?.notifyDataSetChanged()
-            compactTrackAdapter?.notifyDataSetChanged()
-            topPickAdapter?.notifyDataSetChanged()
+            allTrackAdapter?.refreshTrackStates()
+            compactTrackAdapter?.refreshTrackStates()
+            topPickAdapter?.refreshTrackStates()
         }
 
         collect(listModel.menu.flow) { menu ->
@@ -982,8 +990,33 @@ class DiscoverFragment : ViewBindingFragment<FragmentDiscoverBinding>() {
         target.alpha = 1.0f
     }
 
+    private fun loadActiveGenres(): List<GenreItem> {
+        val showChristian = onlineSettings.showChristianGenre
+        val showKpop = onlineSettings.showKpopGenre
+        lastGenreVisibility = showChristian to showKpop
+        return GenreAdapter.filterGenres(showChristian = showChristian, showKpop = showKpop)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (binding != null) {
+            val currentVisibility = onlineSettings.showChristianGenre to onlineSettings.showKpopGenre
+            if (currentVisibility != lastGenreVisibility) {
+                lastGenreVisibility = currentVisibility
+                genreAdapter?.updateGenres(
+                    GenreAdapter.filterGenres(
+                        showChristian = currentVisibility.first,
+                        showKpop = currentVisibility.second
+                    )
+                )
+            }
+        }
+    }
+
     override fun onDestroyBinding(binding: FragmentDiscoverBinding) {
         super.onDestroyBinding(binding)
+        lastGenreVisibility = null
+        lastDownloadStatuses = null
         searchBackPressedCallback?.remove()
         searchBackPressedCallback = null
         allTouchHelper?.attachToRecyclerView(null)
