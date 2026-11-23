@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">แอปเล่นเพลงที่ใช้งานง่ายและมีเหตุผลสำหรับ Android</string>
+    <string name="info_app_desc">นี่คือเพลงของคุณ</string>
     <string name="lbl_indexer">โหลดเพลง</string>
     <string name="lbl_indexing">กำลังโหลดเพลง</string>
     <string name="lbl_observing">กำลังเฝ้าสังเกตคลังเพลง</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">เพิ่มลงในเพลย์ลิสต์</string>
     <string name="lbl_artist_details">ไปที่ศิลปิน</string>
     <string name="lbl_album_details">ไปที่อัลบั้ม</string>
-    <string name="lbl_song_detail">ดูคุณสมบัติ</string>
+    <string name="lbl_song_detail">ดูรายละเอียด</string>
     <string name="lbl_parent_detail">ดู</string>
     <string name="lbl_share">แชร์</string>
-    <string name="lbl_props">คุณสมบัติเพลง</string>
+    <string name="lbl_props">รายละเอียดเพลง</string>
     <string name="lbl_path">พาธ</string>
     <string name="lbl_format">รูปแบบ</string>
     <string name="lbl_size">ขนาด</string>
@@ -358,4 +358,36 @@
     <string name="header_more_songs">เพลงเพิ่มเติม</string>
     <string name="desc_navigate_back">ย้อนกลับ</string>
     <string name="desc_song_options">ตัวเลือกเพลง</string>
+    <string name="set_genre_christian">หมวดหมู่ เพลงคริสเตียนและนมัสการ</string>
+    <string name="set_genre_christian_desc">แสดง เพลงคริสเตียนและนมัสการ ในหมวดหมู่สำรวจการค้นหา</string>
+    <string name="set_genre_kpop">หมวดหมู่ K-Pop</string>
+    <string name="set_genre_kpop_desc">แสดง K-Pop ในหมวดหมู่สำรวจการค้นหา</string>
+    <string name="btn_view_grid">ตาราง</string>
+    <string name="btn_view_carousel">ภาพหมุน</string>
+    <string name="btn_show_more">แสดงเพิ่มเติม</string>
+    <string name="lbl_go_to_online_album">ไปที่อัลบั้มออนไลน์</string>
+    <string name="set_privacy_insights_category">ความเป็นส่วนตัวและสถิติในเครื่อง</string>
+    <string name="set_local_listening_insights">เปิดใช้สถิติและการปรับแต่งในเครื่อง</string>
+    <string name="set_local_listening_insights_desc">วิเคราะห์พฤติกรรมการฟังบนอุปกรณ์ของคุณเท่านั้นโดยไม่ใช้โปรไฟล์ภายนอก</string>
+    <string name="set_clear_listening_history">ล้างประวัติการฟังในเครื่อง</string>
+    <string name="set_clear_listening_history_desc">ลบข้อมูลการเล่นในเครื่องทั้งหมดและรีเซ็ตคำแนะนำ</string>
+    <string name="msg_confirm_clear_listening_history">ลบสถิติการฟังในเครื่องทั้งหมดและรีเซ็ตคำแนะนำหรือไม่</string>
+    <string name="msg_listening_history_cleared">ล้างประวัติการฟังในเครื่องแล้ว</string>
+    <string name="fmt_because_you_listen_to">เพราะคุณฟัง %1$s</string>
+    <string name="header_because_you_listen_sub">มิกซ์แบบไม่ระบุตัวตนจากกิจกรรมในเครื่องของคุณ</string>
+    <string name="fmt_monthly_listening_hours">เดือนนี้คุณฟังเพลงไปแล้ว %1$d ชม. %2$d น.</string>
+    <string name="fmt_monthly_listening_minutes">เดือนนี้คุณฟังเพลงไปแล้ว %1$d นาที</string>
+    <string name="header_favorite_artists">ศิลปินของคุณ</string>
+    <string name="header_trending_albums_for_you">อัลบั้มมาแรงสำหรับคุณ</string>
+    <string name="set_show_monthly_listening_banner">แสดงแบนเนอร์เวลาการฟังรายเดือน</string>
+    <string name="set_show_monthly_listening_banner_desc">แสดงเวลาการฟังเพลงรวมต่อเดือนของคุณที่ด้านบนของคลังเพลง</string>
+    <string name="msg_download_deleted">ลบรายการดาวน์โหลดออกจากอุปกรณ์แล้ว</string>
+    <string name="dialog_download_cellular_title">ดาวน์โหลดด้วยอินเทอร์เน็ตมือถือหรือไม่?</string>
+    <string name="dialog_download_cellular_message">เปิดใช้งานการดาวน์โหลดผ่าน Wi-Fi เท่านั้น คุณต้องการดาวน์โหลดเพลงนี้ทันทีด้วยข้อมูลมือถือหรือรอการเชื่อมต่อ Wi-Fi?</string>
+    <string name="btn_download_now">ดาวน์โหลดทันที</string>
+    <string name="btn_wait_for_wifi">รอ Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">คิวการดาวน์โหลด (รอ Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">การดาวน์โหลดอยู่ในคิว</string>
+    <string name="dialog_download_waiting_message">เพลงนี้กำลังรอดาวน์โหลด คุณสามารถดาวน์โหลดได้ทันทีด้วยข้อมูลมือถือหรือลบออกจากคิว</string>
+    <string name="genre_christian_worship">เพลงคริสเตียนและนมัสการ</string>
 </resources>

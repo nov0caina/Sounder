@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="info_app_desc">ଏହା ଆପଣଙ୍କ ସଙ୍ଗୀତ।</string>
     <string name="clr_yellow">ହଳଦିଆ</string>
     <string name="clr_orange">କମଳା</string>
     <string name="clr_green">ସବୁଜ</string>
@@ -238,4 +239,38 @@
     <string name="header_more_songs">ଅଧିକ ଗୀତ</string>
     <string name="desc_navigate_back">ପଛକୁ ଯାଆନ୍ତୁ</string>
     <string name="desc_song_options">ଗୀତ ବିକଳ୍ପଗୁଡ଼ିକ</string>
+    <string name="set_genre_christian">ଖ୍ରୀଷ୍ଟିଆନ ଏବଂ ଉପାସନା ସଙ୍ଗୀତ ବର୍ଗ</string>
+    <string name="set_genre_christian_desc">ସନ୍ଧାନ ବର୍ଗଗୁଡ଼ିକରେ ଖ୍ରୀଷ୍ଟିଆନ ଏବଂ ଉପାସନା ସଙ୍ଗୀତ ଦେଖାନ୍ତୁ</string>
+    <string name="set_genre_kpop">K-Pop ବର୍ଗ</string>
+    <string name="set_genre_kpop_desc">ସନ୍ଧାନ ବର୍ଗଗୁଡ଼ିକରେ K-Pop ଦେଖାନ୍ତୁ</string>
+    <string name="lbl_song_detail">ବିବରଣୀ ଦେଖନ୍ତୁ</string>
+    <string name="lbl_props">ଗୀତ ବିବରଣୀ</string>
+    <string name="btn_view_grid">ଗ୍ରିଡ୍</string>
+    <string name="btn_view_carousel">କାରୋସେଲ୍</string>
+    <string name="btn_show_more">ଅଧିକ ଦେଖାନ୍ତୁ</string>
+    <string name="lbl_go_to_online_album">ଅନଲାଇନ୍ ଆଲବମକୁ ଯାଆନ୍ତୁ</string>
+    <string name="set_privacy_insights_category">ସ୍ଥାନୀୟ ଗୋପନୀୟତା ଏବଂ ପରିସଂଖ୍ୟାନ</string>
+    <string name="set_local_listening_insights">ସ୍ଥାନୀୟ ପରିସଂଖ୍ୟାନ ଏବଂ ବ୍ୟକ୍ତିଗତକରଣ ସକ୍ଷମ କରନ୍ତୁ</string>
+    <string name="set_local_listening_insights_desc">ବାହ୍ୟ ପ୍ରୋଫାଇଲ୍ ବିନା କେବଳ ଆପଣଙ୍କ ଡିଭାଇସରେ ଶୁଣିବା ଅଭ୍ୟାସ ବିଶ୍ଳେଷଣ କରେ</string>
+    <string name="set_clear_listening_history">ସ୍ଥାନୀୟ ଶୁଣିବା ଇତିହାସ ସଫା କରନ୍ତୁ</string>
+    <string name="set_clear_listening_history_desc">ସମସ୍ତ ସ୍ଥାନୀୟ ପ୍ଲେବ୍ୟାକ୍ ରେକର୍ଡ ଡିଲିଟ୍ କରନ୍ତୁ ଏବଂ ପରାମର୍ଶ ରିସେଟ୍ କରନ୍ତୁ</string>
+    <string name="msg_confirm_clear_listening_history">ସମସ୍ତ ସ୍ଥାନୀୟ ପରିସଂଖ୍ୟାନ ଡିଲିଟ୍ କରି ପରାମର୍ଶ ରିସେଟ୍ କରିବେ କି?</string>
+    <string name="msg_listening_history_cleared">ସ୍ଥାନୀୟ ଶୁଣିବା ଇତିହାସ ସଫା ହୋଇଗଲା</string>
+    <string name="fmt_because_you_listen_to">କାରଣ ଆପଣ %1$s ଶୁଣନ୍ତି</string>
+    <string name="header_because_you_listen_sub">ଆପଣଙ୍କ ସ୍ଥାନୀୟ କାର୍ଯ୍ୟକଳାପ ଆଧାରିତ ଅଜ୍ଞାତ ମିକ୍ସ</string>
+    <string name="fmt_monthly_listening_hours">ଏହି ମାସରେ ଆପଣ %1$d ଘ %2$d ମି ସଂଗୀତ ଶୁଣିଛନ୍ତି</string>
+    <string name="fmt_monthly_listening_minutes">ଏହି ମାସରେ ଆପଣ %1$d ମି ସଂଗୀତ ଶୁଣିଛନ୍ତି</string>
+    <string name="header_favorite_artists">ଆପଣଙ୍କ କଳାକାର</string>
+    <string name="header_trending_albums_for_you">ଆପଣଙ୍କ ପାଇଁ ଟ୍ରେଣ୍ଡିଂ ଆଲବମ୍</string>
+    <string name="set_show_monthly_listening_banner">ମାସିକ ଶୁଣିବା ବ୍ୟାନର ଦେଖାନ୍ତୁ</string>
+    <string name="set_show_monthly_listening_banner_desc">ଆପଣଙ୍କ ଲାଇବ୍ରେରୀ ଶୀର୍ଷରେ ଏହି ମାସର ମୋଟ ଶୁଣିବା ସମୟ ଦେଖାଏ</string>
+    <string name="msg_download_deleted">ଡିଭାଇସରୁ ଡାଉନଲୋଡ୍ ହଟାଗଲା</string>
+    <string name="dialog_download_cellular_title">ମୋବାଇଲ୍ ଡାଟା ସହିତ ଡାଉନଲୋଡ୍ କରିବେ କି?</string>
+    <string name="dialog_download_cellular_message">କେବଳ Wi-Fi ଡାଉନଲୋଡ୍ ସକ୍ଷମ ଅଛି। ଆପଣ ଏହି ଗୀତଟିକୁ ଏବେ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହାର କରି ଡାଉନଲୋଡ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି ନା Wi-Fi ସଂଯୋଗକୁ ଅପେକ୍ଷା କରିବାକୁ ଚାହୁଁଛନ୍ତି?</string>
+    <string name="btn_download_now">ଏବେ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="btn_wait_for_wifi">Wi-Fi ପାଇଁ ଅପେକ୍ଷା କରନ୍ତୁ</string>
+    <string name="msg_download_waiting_wifi">ଡାଉନଲୋଡ୍ ଧାଡିରେ ଅଛି (Wi-Fi ଅପେକ୍ଷାରେ): %1$s</string>
+    <string name="dialog_download_waiting_title">ଡାଉନଲୋଡ୍ ଧାଡିରେ ଅଛି</string>
+    <string name="dialog_download_waiting_message">ଏହି ଗୀତଟି ଡାଉନଲୋଡ୍ ହେବାକୁ ଅପେକ୍ଷା କରିଛି। ଆପଣ ଏହାକୁ ଏବେ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହାର କରି ଡାଉନଲୋଡ୍ କରିପାରିବେ କିମ୍ବା ଧାଡିରୁ କାଢିପାରିବେ।</string>
+    <string name="genre_christian_worship">ଖ୍ରୀଷ୍ଟିଆନ ଏବଂ ଉପାସନା ସଙ୍ଗୀତ</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lbl_indexer">गीतहरु लोड हुँदै छन्</string>
-    <string name="info_app_desc">एन्डरोइडको लागि एक सहज, विवेकशील गीत बजाउने एप।</string>
+    <string name="info_app_desc">यो तपाईंको संगीत हो।</string>
     <string name="lbl_soundtrack">साउन्डट्रयाक</string>
     <string name="lbl_single">सिङ्गल</string>
     <string name="lbl_ep_live">लाइभ ईपी</string>
@@ -287,4 +287,38 @@
     <string name="header_more_songs">थप गीतहरू</string>
     <string name="desc_navigate_back">पछाडि जानुहोस्</string>
     <string name="desc_song_options">गीत विकल्पहरू</string>
+    <string name="set_genre_christian">क्रिश्चियन र आराधना संगीत श्रेणी</string>
+    <string name="set_genre_christian_desc">खोज अन्वेषण श्रेणीहरूमा क्रिश्चियन र आराधना संगीत देखाउनुहोस्</string>
+    <string name="set_genre_kpop">K-Pop श्रेणी</string>
+    <string name="set_genre_kpop_desc">खोज अन्वेषण श्रेणीहरूमा K-Pop देखाउनुहोस्</string>
+    <string name="lbl_song_detail">विवरण हेर्नुहोस्</string>
+    <string name="lbl_props">गीतको विवरण</string>
+    <string name="btn_view_grid">ग्रिड</string>
+    <string name="btn_view_carousel">क्यारोसेल</string>
+    <string name="btn_show_more">थप देखाउनुहोस्</string>
+    <string name="lbl_go_to_online_album">अनलाइन एल्बममा जानुहोस्</string>
+    <string name="set_privacy_insights_category">स्थानीय गोपनीयता र तथ्याङ्क</string>
+    <string name="set_local_listening_insights">स्थानीय तथ्याङ्क र निजीकरण सक्षम गर्नुहोस्</string>
+    <string name="set_local_listening_insights_desc">बाहिरी प्रोफाइल बिना तपाईंको उपकरणमा मात्र सुन्ने बानी विश्लेषण गर्छ</string>
+    <string name="set_clear_listening_history">स्थानीय सुन्ने इतिहास खाली गर्नुहोस्</string>
+    <string name="set_clear_listening_history_desc">सबै स्थानीय प्लेब्याक अभिलेख हटाउनुहोस् र सुझावहरू रिसेट गर्नुहोस्</string>
+    <string name="msg_confirm_clear_listening_history">सबै स्थानीय सुन्ने तथ्याङ्क हटाएर सुझावहरू रिसेट गर्ने हो?</string>
+    <string name="msg_listening_history_cleared">स्थानीय सुन्ने इतिहास खाली गरियो</string>
+    <string name="fmt_because_you_listen_to">तपाईंले %1$s सुन्ने भएकोले</string>
+    <string name="header_because_you_listen_sub">तपाईंको स्थानीय गतिविधिमा आधारित बेनाम मिक्सहरू</string>
+    <string name="fmt_monthly_listening_hours">तपाईंले यो महिना %1$d घ %2$d मि संगीत सुन्नुभएको छ</string>
+    <string name="fmt_monthly_listening_minutes">तपाईंले यो महिना %1$d मि संगीत सुन्नुभएको छ</string>
+    <string name="header_favorite_artists">तपाईंका कलाकारहरू</string>
+    <string name="header_trending_albums_for_you">तपाईंको लागि ट्रेन्डिङ एल्बमहरू</string>
+    <string name="set_show_monthly_listening_banner">मासिक सुनेको ब्यानर देखाउनुहोस्</string>
+    <string name="set_show_monthly_listening_banner_desc">तपाईंको पुस्तकालयको शीर्षमा यस महिनाको कुल सुनेको समय देखाउँछ</string>
+    <string name="msg_download_deleted">उपकरणबाट डाउनलोड हटाइयो</string>
+    <string name="dialog_download_cellular_title">मोबाइल डेटाबाट डाउनलोड गर्ने हो?</string>
+    <string name="dialog_download_cellular_message">Wi-Fi मात्र डाउनलोड सक्षम छ। के तपाईं यो गीत अहिले मोबाइल डेटा प्रयोग गरेर डाउनलोड गर्न चाहनुहुन्छ वा Wi-Fi जडानको प्रतीक्षा गर्न चाहनुहुन्छ?</string>
+    <string name="btn_download_now">अहिले डाउनलोड गर्नुहोस्</string>
+    <string name="btn_wait_for_wifi">Wi-Fi को प्रतीक्षा गर्नुहोस्</string>
+    <string name="msg_download_waiting_wifi">डाउनलोड लाममा छ (Wi-Fi को प्रतीक्षा गर्दै): %1$s</string>
+    <string name="dialog_download_waiting_title">डाउनलोड लाममा छ</string>
+    <string name="dialog_download_waiting_message">यो गीत डाउनलोड हुन पर्खिरहेको छ। तपाईं यसलाई अहिले मोबाइल डेटाबाट डाउनलोड गर्न वा लामबाट हटाउन सक्नुहुन्छ।</string>
+    <string name="genre_christian_worship">क्रिश्चियन र आराधना संगीत</string>
 </resources>

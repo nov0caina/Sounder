@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Jednoduchý, rozumný hudobný prehrávač pre Android.</string>
+    <string name="info_app_desc">Je to tvoja hudba.</string>
     <string name="lbl_indexer">Načítavanie hudby</string>
     <string name="lbl_indexing">Hudba sa načítava</string>
     <string name="lbl_observing">Sledovanie zmien v hudobnej knižnici</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">Pridať do zoznamu skladieb</string>
     <string name="lbl_artist_details">Prejsť na interpreta</string>
     <string name="lbl_album_details">Prejsť na album</string>
-    <string name="lbl_song_detail">Zobraziť vlastnosti</string>
+    <string name="lbl_song_detail">Zobraziť podrobnosti</string>
     <string name="lbl_parent_detail">Zobraziť</string>
     <string name="lbl_share">Zdielať</string>
-    <string name="lbl_props">Vlastnosti skladby</string>
+    <string name="lbl_props">Podrobnosti skladby</string>
     <string name="lbl_path">Cesta</string>
     <string name="lbl_format">Formát</string>
     <string name="lbl_size">Veľkosť</string>
@@ -340,4 +340,36 @@
     <string name="header_more_songs">Ďalšie skladby</string>
     <string name="desc_navigate_back">Späť</string>
     <string name="desc_song_options">Možnosti skladby</string>
+    <string name="set_genre_christian">Kategória Kresťanská hudba a chvály</string>
+    <string name="set_genre_christian_desc">Zobraziť Kresťanská hudba a chvály v kategóriách vyhľadávania</string>
+    <string name="set_genre_kpop">Kategória K-Pop</string>
+    <string name="set_genre_kpop_desc">Zobraziť K-Pop v kategóriách vyhľadávania</string>
+    <string name="btn_view_grid">Mriežka</string>
+    <string name="btn_view_carousel">Karusel</string>
+    <string name="btn_show_more">Zobraziť viac</string>
+    <string name="lbl_go_to_online_album">Prejsť na online album</string>
+    <string name="set_privacy_insights_category">Miestne súkromie a štatistiky</string>
+    <string name="set_local_listening_insights">Povoliť miestne štatistiky a prispôsobenie</string>
+    <string name="set_local_listening_insights_desc">Analyzuje návyky počúvania iba v zariadení bez externých profilov</string>
+    <string name="set_clear_listening_history">Vymazať miestnu históriu počúvania</string>
+    <string name="set_clear_listening_history_desc">Odstrániť všetky miestne záznamy prehrávania a obnoviť odporúčania</string>
+    <string name="msg_confirm_clear_listening_history">Vymazať všetky miestne štatistiky počúvania a obnoviť odporúčania?</string>
+    <string name="msg_listening_history_cleared">Miestna história počúvania vymazaná</string>
+    <string name="fmt_because_you_listen_to">Pretože počúvate %1$s</string>
+    <string name="header_because_you_listen_sub">Anonymné mixy podľa vašej miestnej aktivity</string>
+    <string name="fmt_monthly_listening_hours">Tento mesiac ste počúvali hudbu %1$d h %2$d min</string>
+    <string name="fmt_monthly_listening_minutes">Tento mesiac ste počúvali hudbu %1$d min</string>
+    <string name="header_favorite_artists">Vaši umelci</string>
+    <string name="header_trending_albums_for_you">Populárne albumy pre vás</string>
+    <string name="set_show_monthly_listening_banner">Zobrazovať mesačný banner počúvania</string>
+    <string name="set_show_monthly_listening_banner_desc">Zobrazí celkový mesačný čas počúvania v hornej časti Vašej knižnice</string>
+    <string name="msg_download_deleted">Stiahnutý súbor bol zo zariadenia odstránený</string>
+    <string name="dialog_download_cellular_title">Stiahnuť cez mobilné dáta?</string>
+    <string name="dialog_download_cellular_message">Sťahovanie iba cez Wi-Fi je zapnuté. Chcete túto skladbu stiahnuť teraz cez mobilné dáta alebo počkať na pripojenie k Wi-Fi?</string>
+    <string name="btn_download_now">Stiahnuť teraz</string>
+    <string name="btn_wait_for_wifi">Počkať na Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Sťahovanie vo fronte (čaká na Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Sťahovanie vo fronte</string>
+    <string name="dialog_download_waiting_message">Táto skladba čaká na stiahnutie. Môžete ju stiahnuť teraz cez mobilné dáta alebo ju odstrániť z frontu.</string>
+    <string name="genre_christian_worship">Kresťanská hudba a chvály</string>
 </resources>

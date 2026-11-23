@@ -2,7 +2,7 @@
 <resources>
     <string name="lbl_observing">Праћење музичке библиотеке</string>
     <string name="lbl_retry">Покушај поново</string>
-    <string name="info_app_desc">Једноставан, рационалан музички плејер за android.</string>
+    <string name="info_app_desc">То је твоја музика.</string>
     <string name="lbl_indexer">Музика се учитава</string>
     <string name="lbl_indexing">Учитавање музике</string>
     <string name="lbl_songs">Песме</string>
@@ -255,4 +255,38 @@
     <string name="header_more_songs">Још песама</string>
     <string name="desc_navigate_back">Назад</string>
     <string name="desc_song_options">Опције песме</string>
+    <string name="set_genre_christian">Категорија Хришћанска музика и слављење</string>
+    <string name="set_genre_christian_desc">Прикажи Хришћанска музика и слављење у категоријама претраге</string>
+    <string name="set_genre_kpop">Категорија K-Pop</string>
+    <string name="set_genre_kpop_desc">Прикажи K-Pop у категоријама претраге</string>
+    <string name="lbl_song_detail">Прикажи детаље</string>
+    <string name="lbl_props">Детаљи песме</string>
+    <string name="btn_view_grid">Мрежа</string>
+    <string name="btn_view_carousel">Вртешка</string>
+    <string name="btn_show_more">Прикажи више</string>
+    <string name="lbl_go_to_online_album">Иди на онлајн албум</string>
+    <string name="set_privacy_insights_category">Локална приватност и статистика</string>
+    <string name="set_local_listening_insights">Омогући локалну статистику и персонализацију</string>
+    <string name="set_local_listening_insights_desc">Анализира навике слушања искључиво на уређају без спољних профила</string>
+    <string name="set_clear_listening_history">Обриши локалну историју слушања</string>
+    <string name="set_clear_listening_history_desc">Обриши све локалне записе и ресетуј препоруке</string>
+    <string name="msg_confirm_clear_listening_history">Обрисати сву локалну статистику слушања и ресетовати препоруке?</string>
+    <string name="msg_listening_history_cleared">Локална историја слушања обрисана</string>
+    <string name="fmt_because_you_listen_to">Зато што слушате %1$s</string>
+    <string name="header_because_you_listen_sub">Анонимни миксеви на основу ваше локалне активности</string>
+    <string name="fmt_monthly_listening_hours">Овог месеца сте слушали музику %1$d ч %2$d м</string>
+    <string name="fmt_monthly_listening_minutes">Овог месеца сте слушали музику %1$d мин</string>
+    <string name="header_favorite_artists">Ваши извођачи</string>
+    <string name="header_trending_albums_for_you">Популарни албуми за вас</string>
+    <string name="set_show_monthly_listening_banner">Прикажи месечни банер слушања</string>
+    <string name="set_show_monthly_listening_banner_desc">Приказује укупно месечно време слушања на врху ваше библиотеке</string>
+    <string name="msg_download_deleted">Преузимање је уклоњено са уређаја</string>
+    <string name="dialog_download_cellular_title">Преузети преко мобилних података?</string>
+    <string name="dialog_download_cellular_message">Омогућено је преузимање само преко Wi-Fi везе. Желите ли да преузмете ову песму одмах преко мобилних података или да сачекате Wi-Fi везу?</string>
+    <string name="btn_download_now">Преузми одмах</string>
+    <string name="btn_wait_for_wifi">Сачекај Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Преузимање на чекању (чека се Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Преузимање на чекању</string>
+    <string name="dialog_download_waiting_message">Ова песма чека преузимање. Можете је преузети одмах преко мобилних података или је уклонити са листе чекања.</string>
+    <string name="genre_christian_worship">Хришћанска музика и слављење</string>
 </resources>

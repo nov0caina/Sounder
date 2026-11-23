@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns0="http://schemas.android.com/tools" ns0:ignore="MissingTranslation">
-    <string name="info_app_desc">Jednoduchý, rozumný hudební přehrávač pro Android.</string>
+    <string name="info_app_desc">Je to tvoje hudba.</string>
     <string name="lbl_indexer">Načítání hudby</string>
     <string name="lng_widget">Zobrazení a ovládání přehrávání hudby</string>
     <string name="lng_indexing">Načítání vaší hudební knihovny…</string>
@@ -154,8 +154,8 @@
     <string name="set_play_in_parent_with">Při přehrávání z podrobností o položce</string>
     <string name="set_locations_desc">Vyberte místní složky s vaší hudbou</string>
     <string name="set_play_song_none">Přehrát ze zobrazené položky</string>
-    <string name="lbl_song_detail">Zobrazit vlastnosti</string>
-    <string name="lbl_props">Vlastnosti skladby</string>
+    <string name="lbl_song_detail">Zobrazit podrobnosti</string>
+    <string name="lbl_props">Podrobnosti skladby</string>
     <string name="lbl_format">Formát</string>
     <string name="lbl_size">Velikost</string>
     <string name="lbl_bitrate">Přenosová rychlost</string>
@@ -546,4 +546,36 @@ VAROVÁNÍ: při ovládání této služby buďte opatrní, pokud ji zavřete a 
     <string name="header_more_songs">Další skladby</string>
     <string name="desc_navigate_back">Zpět</string>
     <string name="desc_song_options">Možnosti skladby</string>
+    <string name="set_genre_christian">Kategorie Křesťanská hudba a chvály</string>
+    <string name="set_genre_christian_desc">Zobrazit Křesťanská hudba a chvály v kategoriích vyhledávání</string>
+    <string name="set_genre_kpop">Kategorie K-Pop</string>
+    <string name="set_genre_kpop_desc">Zobrazit K-Pop v kategoriích vyhledávání</string>
+    <string name="btn_view_grid">Mřížka</string>
+    <string name="btn_view_carousel">Karusel</string>
+    <string name="btn_show_more">Zobrazit více</string>
+    <string name="lbl_go_to_online_album">Přejít na online album</string>
+    <string name="set_privacy_insights_category">Místní soukromí a statistiky</string>
+    <string name="set_local_listening_insights">Povolit místní statistiky a personalizaci</string>
+    <string name="set_local_listening_insights_desc">Analyzuje návyky poslechu pouze v zařízení bez vzdálených profilů</string>
+    <string name="set_clear_listening_history">Vymazat místní historii poslechu</string>
+    <string name="set_clear_listening_history_desc">Smaže všechny místní záznamy přehrávání a resetuje doporučení</string>
+    <string name="msg_confirm_clear_listening_history">Smazat všechny místně uložené statistiky poslechu a resetovat doporučení?</string>
+    <string name="msg_listening_history_cleared">Místní historie poslechu byla vymazána</string>
+    <string name="fmt_because_you_listen_to">Protože posloucháte %1$s</string>
+    <string name="header_because_you_listen_sub">Anonymní mixy podle vaší místní aktivity</string>
+    <string name="fmt_monthly_listening_hours">Tento měsíc jste poslouchali hudbu %1$d h %2$d min</string>
+    <string name="fmt_monthly_listening_minutes">Tento měsíc jste poslouchali hudbu %1$d min</string>
+    <string name="header_favorite_artists">Vaši umělci</string>
+    <string name="header_trending_albums_for_you">Populární alba pro vás</string>
+    <string name="set_show_monthly_listening_banner">Zobrazovat měsíční banner poslechu</string>
+    <string name="set_show_monthly_listening_banner_desc">Zobrazí celkový měsíční čas poslechu v horní části Vaší knihovny</string>
+    <string name="msg_download_deleted">Stažený soubor byl ze zařízení smazán</string>
+    <string name="dialog_download_cellular_title">Stáhnout přes mobilní data?</string>
+    <string name="dialog_download_cellular_message">Stahování pouze přes Wi-Fi je zapnuto. Chcete tuto skladbu stáhnout nyní přes mobilní data, nebo počkat na připojení k Wi-Fi?</string>
+    <string name="btn_download_now">Stáhnout nyní</string>
+    <string name="btn_wait_for_wifi">Počkat na Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Stahování ve frontě (čeká na Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Stahování ve frontě</string>
+    <string name="dialog_download_waiting_message">Tato skladba čeká na stažení. Můžete ji stáhnout nyní přes mobilní data nebo ji odebrat z fronty.</string>
+    <string name="genre_christian_worship">Křesťanská hudba a chvály</string>
 </resources>

@@ -2,7 +2,7 @@
 <resources>
     <string name="lbl_retry">გამეორება</string>
     <string name="lbl_ep">EP</string>
-    <string name="info_app_desc">მარტივი და სასიამოვნო მუსიკის დამკვრელი Android-სთვის.</string>
+    <string name="info_app_desc">ეს შენი მუსიკაა.</string>
     <string name="lbl_song">სიმღერა</string>
     <string name="lbl_ep_remix">EP-ის რემიქსი</string>
     <string name="lbl_indexing">მუსიკის ჩატვირთვა</string>
@@ -60,8 +60,8 @@
     <string name="lbl_share">გაზიარება</string>
     <string name="lbl_format">ფორმატი</string>
     <string name="lbl_parent_detail">ნახვა</string>
-    <string name="lbl_props">სიმღერის პარამეტრები</string>
-    <string name="lbl_song_detail">პარამეტრების ნახვა</string>
+    <string name="lbl_props">სიმღერის დეტალები</string>
+    <string name="lbl_song_detail">დეტალების ნახვა</string>
     <string name="lbl_size">ზომა</string>
     <string name="lbl_more">მეტი</string>
     <string name="lbl_cancel">გაუქმება</string>
@@ -349,4 +349,36 @@
     <string name="header_more_songs">მეტი სიმღერა</string>
     <string name="desc_navigate_back">უკან დაბრუნება</string>
     <string name="desc_song_options">სიმღერის პარამეტრები</string>
+    <string name="set_genre_christian">კატეგორია ქრისტიანული მუსიკა და თაყვანისცემა</string>
+    <string name="set_genre_christian_desc">ქრისტიანული მუსიკა და თაყვანისცემა-ის ჩვენება ძიების კატეგორიებში</string>
+    <string name="set_genre_kpop">კატეგორია K-Pop</string>
+    <string name="set_genre_kpop_desc">K-Pop-ის ჩვენება ძიების კატეგორიებში</string>
+    <string name="btn_view_grid">ბადე</string>
+    <string name="btn_view_carousel">კარუსელი</string>
+    <string name="btn_show_more">მეტის ჩვენება</string>
+    <string name="lbl_go_to_online_album">ონლაინ ალბომზე გადასვლა</string>
+    <string name="set_privacy_insights_category">ლოკალური კონფიდენციალურობა და სტატისტიკა</string>
+    <string name="set_local_listening_insights">ლოკალური სტატისტიკისა და პერსონალიზაციის ჩართვა</string>
+    <string name="set_local_listening_insights_desc">აანალიზებს მოსმენის ჩვევებს მხოლოდ თქვენს მოწყობილობაში გარე პროფილების გარეშე</string>
+    <string name="set_clear_listening_history">ლოკალური მოსმენის ისტორიის წაშლა</string>
+    <string name="set_clear_listening_history_desc">წაშლის ყველა ლოკალურ ჩანაწერს და გაანულებს რეკომენდაციებს</string>
+    <string name="msg_confirm_clear_listening_history">წავშალოთ ყველა ლოკალური სტატისტიკა და გავანულოთ რეკომენდაციები?</string>
+    <string name="msg_listening_history_cleared">ლოკალური მოსმენის ისტორია გასუფთავდა</string>
+    <string name="fmt_because_you_listen_to">რადგან უსმენთ %1$s-ს</string>
+    <string name="header_because_you_listen_sub">ანონიმური მიქსები თქვენი ლოკალური აქტივობის მიხედვით</string>
+    <string name="fmt_monthly_listening_hours">ამ თვეში მუსიკას უსმინეთ %1$d სთ %2$d წთ</string>
+    <string name="fmt_monthly_listening_minutes">ამ თვეში მუსიკას უსმინეთ %1$d წთ</string>
+    <string name="header_favorite_artists">თქვენი შემსრულებლები</string>
+    <string name="header_trending_albums_for_you">ტრენდული ალბომები თქვენთვის</string>
+    <string name="set_show_monthly_listening_banner">ყოველთვიური მოსმენის ბანერის ჩვენება</string>
+    <string name="set_show_monthly_listening_banner_desc">აჩვენებს თქვენს ყოველთვიურ მოსმენის დროს ბიბლიოთეკის ზედა ნაწილში</string>
+    <string name="msg_download_deleted">ჩამოტვირთვა წაიშალა მოწყობილობიდან</string>
+    <string name="dialog_download_cellular_title">ჩამოტვირთვა მობილური ინტერნეტით?</string>
+    <string name="dialog_download_cellular_message">მხოლოდ Wi-Fi-ით ჩამოტვირთვა ჩართულია. გსურთ ამ სიმღერის ახლავე ჩამოტვირთვა მობილური ინტერნეტით თუ Wi-Fi კავშირის დალოდება?</string>
+    <string name="btn_download_now">ჩამოტვირთვა ახლა</string>
+    <string name="btn_wait_for_wifi">Wi-Fi-ს დალოდება</string>
+    <string name="msg_download_waiting_wifi">ჩამოტვირთვა რიგშია (ელოდება Wi-Fi-ს): %1$s</string>
+    <string name="dialog_download_waiting_title">ჩამოტვირთვა რიგშია</string>
+    <string name="dialog_download_waiting_message">ეს სიმღერა ელოდება ჩამოტვირთვას. შეგიძლიათ ჩამოტვირთოთ ახლა მობილური ინტერნეტით ან წაშალოთ რიგიდან.</string>
+    <string name="genre_christian_worship">ქრისტიანული მუსიკა და თაყვანისცემა</string>
 </resources>

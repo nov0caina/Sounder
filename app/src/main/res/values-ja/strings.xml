@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lbl_retry">再試行</string>
-    <string name="info_app_desc">Android 用のシンプルで合理的な音楽プレーヤー。</string>
+    <string name="info_app_desc">あなたの音楽です。</string>
     <string name="lbl_artists">アーティスト</string>
     <string name="lbl_genres">ジャンル</string>
     <string name="lbl_duration">曲の長さ</string>
@@ -104,7 +104,7 @@
     </plurals>
     <string name="lbl_artist_details">アーティストに移動</string>
     <string name="lbl_album_details">アルバムに移動</string>
-    <string name="lbl_props">曲のプロパティ</string>
+    <string name="lbl_props">曲の詳細</string>
     <string name="lng_queue_added">再生待ちに追加</string>
     <string name="lbl_author_name">nov0caina</string>
     <string name="desc_artist_image">%s のアーティスト画像</string>
@@ -153,7 +153,7 @@
     <string name="lbl_ep_remix">リミックスEP</string>
     <string name="lbl_remix_group">リミックス</string>
     <string name="lbl_genre">ジャンル</string>
-    <string name="lbl_song_detail">プロパティを見る</string>
+    <string name="lbl_song_detail">詳細を見る</string>
     <string name="lbl_queue">再生待ち</string>
     <string name="lbl_library_counts">ライブラリ統計</string>
     <string name="lng_observing">音楽ライブラリの変更を監視しています…</string>
@@ -523,4 +523,36 @@
     <string name="header_more_songs">その他の曲</string>
     <string name="desc_navigate_back">戻る</string>
     <string name="desc_song_options">曲のオプション</string>
+    <string name="set_genre_christian">クリスチャン＆ワーシップ カテゴリ</string>
+    <string name="set_genre_christian_desc">検索の探索カテゴリに クリスチャン＆ワーシップ を表示する</string>
+    <string name="set_genre_kpop">K-Pop カテゴリ</string>
+    <string name="set_genre_kpop_desc">検索の探索カテゴリに K-Pop を表示する</string>
+    <string name="btn_view_grid">グリッド</string>
+    <string name="btn_view_carousel">カルーセル</string>
+    <string name="btn_show_more">もっと見る</string>
+    <string name="lbl_go_to_online_album">オンラインアルバムへ移動</string>
+    <string name="set_privacy_insights_category">ローカルプライバシーと統計</string>
+    <string name="set_local_listening_insights">ローカル統計とパーソナライズを有効にする</string>
+    <string name="set_local_listening_insights_desc">外部プロフィールなしで端末内のみで再生傾向を分析し、おすすめを最適化します</string>
+    <string name="set_clear_listening_history">ローカル再生履歴を消去</string>
+    <string name="set_clear_listening_history_desc">端末に保存された再生履歴をすべて削除し、おすすめをリセットします</string>
+    <string name="msg_confirm_clear_listening_history">端末内の再生統計をすべて削除し、パーソナライズされたおすすめをリセットしますか？</string>
+    <string name="msg_listening_history_cleared">ローカル再生履歴を消去しました</string>
+    <string name="fmt_because_you_listen_to">%1$s を聴いているあなたへ</string>
+    <string name="header_because_you_listen_sub">ローカルの再生傾向に基づく匿名ミックス</string>
+    <string name="fmt_monthly_listening_hours">今月は音楽を %1$d時間%2$d分 聴きました</string>
+    <string name="fmt_monthly_listening_minutes">今月は音楽を %1$d分 聴きました</string>
+    <string name="header_favorite_artists">お気に入りのアーティスト</string>
+    <string name="header_trending_albums_for_you">あなたにおすすめのトレンドアルバム</string>
+    <string name="set_show_monthly_listening_banner">月間の再生時間バナーを表示</string>
+    <string name="set_show_monthly_listening_banner_desc">ライブラリの最上部に今月の合計再生時間を表示します</string>
+    <string name="msg_download_deleted">端末からダウンロードを削除しました</string>
+    <string name="dialog_download_cellular_title">モバイルデータ通信でダウンロードしますか？</string>
+    <string name="dialog_download_cellular_message">Wi-Fiのみでのダウンロードが有効です。モバイルデータ通信を使用して今すぐこの曲をダウンロードしますか、それともWi-Fi接続を待ちますか？</string>
+    <string name="btn_download_now">今すぐダウンロード</string>
+    <string name="btn_wait_for_wifi">Wi-Fiを待つ</string>
+    <string name="msg_download_waiting_wifi">ダウンロード待機中 (Wi-Fi待ち): %1$s</string>
+    <string name="dialog_download_waiting_title">ダウンロード待機中</string>
+    <string name="dialog_download_waiting_message">この曲はダウンロード待ちです。モバイルデータ通信で今すぐダウンロードするか、キューから削除できます。</string>
+    <string name="genre_christian_worship">クリスチャン＆ワーシップ</string>
 </resources>

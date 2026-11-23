@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Yksinkertainen ja rationaalinen musiikkisoitin Androidille.</string>
+    <string name="info_app_desc">Se on sinun musiikkiasi.</string>
     <string name="lbl_indexer">Musiikki latautuu</string>
     <string name="lbl_indexing">Ladataan musiikkia</string>
     <string name="lbl_retry">Yritä uudelleen</string>
@@ -40,8 +40,8 @@
     <string name="lbl_queue">Jono</string>
     <string name="lbl_queue_add">Lisää jonoon</string>
     <string name="lbl_album_details">Siirry albumiin</string>
-    <string name="lbl_song_detail">Näytä ominaisuudet</string>
-    <string name="lbl_props">Kappaleen ominaisuudet</string>
+    <string name="lbl_song_detail">Näytä tiedot</string>
+    <string name="lbl_props">Kappaleen tiedot</string>
     <string name="lbl_format">Muoto</string>
     <string name="lbl_size">Koko</string>
     <string name="lbl_bitrate">Bittitaajuus</string>
@@ -538,4 +538,36 @@ Varoitus: Ole varovainen tämän palvelun hallinnassa. Jos suljet sen ja yrität
     <string name="header_more_songs">Lisää kappaleita</string>
     <string name="desc_navigate_back">Palaa takaisin</string>
     <string name="desc_song_options">Kappaleen asetukset</string>
+    <string name="set_genre_christian">Kristillinen musiikki ja ylistys -kategoria</string>
+    <string name="set_genre_christian_desc">Näytä Kristillinen musiikki ja ylistys haun tutustumiskategorioissa</string>
+    <string name="set_genre_kpop">K-Pop-kategoria</string>
+    <string name="set_genre_kpop_desc">Näytä K-Pop haun tutustumiskategorioissa</string>
+    <string name="btn_view_grid">Ruudukko</string>
+    <string name="btn_view_carousel">Karuselli</string>
+    <string name="btn_show_more">Näytä lisää</string>
+    <string name="lbl_go_to_online_album">Siirry verkkoalbumiin</string>
+    <string name="set_privacy_insights_category">Paikallinen tietosuoja ja tilastot</string>
+    <string name="set_local_listening_insights">Ota paikalliset tilastot ja personointi käyttöön</string>
+    <string name="set_local_listening_insights_desc">Analysoi kuuntelutottumuksia vain laitteellasi ilman etäprofiileja</string>
+    <string name="set_clear_listening_history">Tyhjennä paikallinen kuunteluhistoria</string>
+    <string name="set_clear_listening_history_desc">Poista kaikki paikallisesti tallennetut kuuntelut ja nollaa suositukset</string>
+    <string name="msg_confirm_clear_listening_history">Poistetaanko kaikki paikalliset kuuntelutilastot ja nollataanko suositukset?</string>
+    <string name="msg_listening_history_cleared">Paikallinen kuunteluhistoria tyhjennetty</string>
+    <string name="fmt_because_you_listen_to">Koska kuuntelet artistia %1$s</string>
+    <string name="header_because_you_listen_sub">Anonyymejä miksauksia paikallisen aktiivisuutesi perusteella</string>
+    <string name="fmt_monthly_listening_hours">Olet kuunnellut musiikkia %1$d t %2$d min tässä kuussa</string>
+    <string name="fmt_monthly_listening_minutes">Olet kuunnellut musiikkia %1$d min tässä kuussa</string>
+    <string name="header_favorite_artists">Omat esittäjät</string>
+    <string name="header_trending_albums_for_you">Nousussa olevat albumit sinulle</string>
+    <string name="set_show_monthly_listening_banner">Näytä kuukausittainen kuuntelupalkki</string>
+    <string name="set_show_monthly_listening_banner_desc">Näyttää kuukauden kokonaiskuunteluajan kirjastosi yläosassa</string>
+    <string name="msg_download_deleted">Lataus poistettu laitteesta</string>
+    <string name="dialog_download_cellular_title">Ladataanko mobiilidatalla?</string>
+    <string name="dialog_download_cellular_message">Lataus vain Wi-Fi-yhteydellä on käytössä. Haluatko ladata tämän kappaleen nyt mobiilidatalla vai odottaa Wi-Fi-yhteyttä?</string>
+    <string name="btn_download_now">Lataa nyt</string>
+    <string name="btn_wait_for_wifi">Odota Wi-Fiä</string>
+    <string name="msg_download_waiting_wifi">Lataus jonossa (odotetaan Wi-Fiä): %1$s</string>
+    <string name="dialog_download_waiting_title">Lataus jonossa</string>
+    <string name="dialog_download_waiting_message">Tämä kappale odottaa latausta. Voit ladata sen nyt mobiilidatalla tai poistaa sen jonosta.</string>
+    <string name="genre_christian_worship">Kristillinen musiikki ja ylistys</string>
 </resources>

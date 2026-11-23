@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="lbl_indexer">بارگیری موسیقی</string>
-    <string name="info_app_desc">یک پخش کننده موسیقی ساده و منطقی برای اندروید.</string>
+    <string name="info_app_desc">این موسیقی توست.</string>
     <string name="lbl_retry">تلاش مجدد</string>
     <string name="lbl_album">آلبوم</string>
     <string name="lbl_album_live">آلبوم زنده</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">افزودن به فهرست پخش</string>
     <string name="lbl_artist_details">رفتن به بخش هنرمند</string>
     <string name="lbl_album_details">رفتن به آلبوم</string>
-    <string name="lbl_song_detail">دیدن مشخصات</string>
+    <string name="lbl_song_detail">مشاهده جزئیات</string>
     <string name="lbl_parent_detail">نما</string>
     <string name="lbl_share">ارسال</string>
-    <string name="lbl_props">مشخصات آهنگ</string>
+    <string name="lbl_props">جزئیات آهنگ</string>
     <string name="lbl_path">مسیر</string>
     <string name="lbl_format">قالب</string>
     <string name="lbl_size">اندازه</string>
@@ -534,4 +534,36 @@
     <string name="header_more_songs">آهنگ‌های بیشتر</string>
     <string name="desc_navigate_back">بازگشت</string>
     <string name="desc_song_options">گزینه‌های آهنگ</string>
+    <string name="set_genre_christian">دسته‌بندی موسیقی مسیحی و پرستش</string>
+    <string name="set_genre_christian_desc">نمایش موسیقی مسیحی و پرستش در دسته‌بندی‌های کاوش جستجو</string>
+    <string name="set_genre_kpop">دسته‌بندی K-Pop</string>
+    <string name="set_genre_kpop_desc">نمایش K-Pop در دسته‌بندی‌های کاوش جستجو</string>
+    <string name="btn_view_grid">شبکه</string>
+    <string name="btn_view_carousel">چرخشی</string>
+    <string name="btn_show_more">نمایش بیشتر</string>
+    <string name="lbl_go_to_online_album">رفتن به آلبوم آنلاین</string>
+    <string name="set_privacy_insights_category">حریم خصوصی و آمار محلی</string>
+    <string name="set_local_listening_insights">فعال‌سازی آمار محلی و شخصی‌سازی</string>
+    <string name="set_local_listening_insights_desc">تحلیل عادات شنیداری تنها روی دستگاه شما بدون پروفایل‌های خارجی</string>
+    <string name="set_clear_listening_history">پاک کردن تاریخچه شنیداری محلی</string>
+    <string name="set_clear_listening_history_desc">حذف تمام سوابق پخش محلی و بازنشانی پیشنهادها</string>
+    <string name="msg_confirm_clear_listening_history">تمام آمار شنیداری محلی حذف و پیشنهادها بازنشانی شود؟</string>
+    <string name="msg_listening_history_cleared">تاریخچه شنیداری محلی پاک شد</string>
+    <string name="fmt_because_you_listen_to">چون به %1$s گوش می‌دهید</string>
+    <string name="header_because_you_listen_sub">میکس‌های ناشناس بر اساس فعالیت محلی شما</string>
+    <string name="fmt_monthly_listening_hours">این ماه %1$d ساعت و %2$d دقیقه موسیقی گوش داده‌اید</string>
+    <string name="fmt_monthly_listening_minutes">این ماه %1$d دقیقه موسیقی گوش داده‌اید</string>
+    <string name="header_favorite_artists">هنرمندان شما</string>
+    <string name="header_trending_albums_for_you">آلبوم‌های پرطرفدار برای شما</string>
+    <string name="set_show_monthly_listening_banner">نمایش بنر زمان گوش دادن ماهانه</string>
+    <string name="set_show_monthly_listening_banner_desc">مجموع زمان گوش دادن ماهانه شما را در بالای کتابخانه نمایش می‌دهد</string>
+    <string name="msg_download_deleted">دانلود از دستگاه حذف شد</string>
+    <string name="dialog_download_cellular_title">دانلود با اینترنت همراه؟</string>
+    <string name="dialog_download_cellular_message">دانلود فقط از طریق Wi-Fi فعال است. آیا می‌خواهید این آهنگ را اکنون با اینترنت همراه دانلود کنید یا منتظر اتصال Wi-Fi بمانید؟</string>
+    <string name="btn_download_now">اکنون دانلود کن</string>
+    <string name="btn_wait_for_wifi">انتظار برای Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">دانلود در صف (در انتظار Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">دانلود در صف</string>
+    <string name="dialog_download_waiting_message">این آهنگ در انتظار دانلود است. می‌توانید اکنون با اینترنت همراه آن را دانلود کنید یا از صف حذف کنید.</string>
+    <string name="genre_christian_worship">موسیقی مسیحی و پرستش</string>
 </resources>

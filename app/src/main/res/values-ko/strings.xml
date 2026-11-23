@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Info namespace | App labels -->
-    <string name="info_app_desc">단순하고, 실용적인 안드로이드용 음악 플레이어입니다.</string>
+    <string name="info_app_desc">당신만의 음악입니다.</string>
     <string name="lng_widget">음악 재생 제어 및 상태 확인</string>
     <!-- Label Namespace | Static Labels -->
     <string name="lbl_retry">다시 시도</string>
@@ -146,8 +146,8 @@
     </plurals>
     <string name="cdc_mp4">MPEG-4 오디오</string>
     <string name="cdc_flac">Free Lossless Audio Codec (FLAC)</string>
-    <string name="lbl_props">곡 속성</string>
-    <string name="lbl_song_detail">속성 보기</string>
+    <string name="lbl_props">곡 세부정보</string>
+    <string name="lbl_song_detail">세부정보 보기</string>
     <string name="lbl_sample_rate">샘플 속도</string>
     <string name="lbl_bitrate">전송 속도</string>
     <string name="lbl_size">크기</string>
@@ -528,4 +528,36 @@
     <string name="header_more_songs">더 많은 곡</string>
     <string name="desc_navigate_back">뒤로 가기</string>
     <string name="desc_song_options">곡 옵션</string>
+    <string name="set_genre_christian">크리스천 &amp; 워십 카테고리</string>
+    <string name="set_genre_christian_desc">검색 탐색 카테고리에 크리스천 &amp; 워십 표시</string>
+    <string name="set_genre_kpop">K-Pop 카테고리</string>
+    <string name="set_genre_kpop_desc">검색 탐색 카테고리에 K-Pop 표시</string>
+    <string name="btn_view_grid">그리드</string>
+    <string name="btn_view_carousel">캐러셀</string>
+    <string name="btn_show_more">더 보기</string>
+    <string name="lbl_go_to_online_album">온라인 앨범으로 이동</string>
+    <string name="set_privacy_insights_category">로컬 개인정보 및 통계</string>
+    <string name="set_local_listening_insights">로컬 통계 및 개인화 활성화</string>
+    <string name="set_local_listening_insights_desc">외부 프로필 없이 기기 내부에서만 감상 습관을 분석하여 추천을 개인화합니다</string>
+    <string name="set_clear_listening_history">로컬 감상 기록 삭제</string>
+    <string name="set_clear_listening_history_desc">기기에 저장된 모든 재생 기록을 삭제하고 개인화 추천을 초기화합니다</string>
+    <string name="msg_confirm_clear_listening_history">로컬 감상 통계를 모두 삭제하고 홈 추천을 초기화하시겠습니까?</string>
+    <string name="msg_listening_history_cleared">로컬 감상 기록이 삭제되었습니다</string>
+    <string name="fmt_because_you_listen_to">%1$s님을 자주 들어서 추천</string>
+    <string name="header_because_you_listen_sub">로컬 감상 패턴을 기반으로 한 익명 믹스</string>
+    <string name="fmt_monthly_listening_hours">이번 달에 음악을 %1$d시간 %2$d분 들었습니다</string>
+    <string name="fmt_monthly_listening_minutes">이번 달에 음악을 %1$d분 들었습니다</string>
+    <string name="header_favorite_artists">내 아티스트</string>
+    <string name="header_trending_albums_for_you">회원님을 위한 인기 앨범</string>
+    <string name="set_show_monthly_listening_banner">월간 감상 시간 배너 표시</string>
+    <string name="set_show_monthly_listening_banner_desc">라이브러리 상단에 이번 달 총 음악 감상 시간을 표시합니다</string>
+    <string name="msg_download_deleted">기기에서 다운로드가 삭제되었습니다</string>
+    <string name="dialog_download_cellular_title">모바일 데이터로 다운로드할까요?</string>
+    <string name="dialog_download_cellular_message">Wi-Fi 전용 다운로드가 활성화되어 있습니다. 지금 모바일 데이터로 이 노래를 다운로드하시겠습니까, 아니면 Wi-Fi 연결을 기다리시겠습니까?</string>
+    <string name="btn_download_now">지금 다운로드</string>
+    <string name="btn_wait_for_wifi">Wi-Fi 대기</string>
+    <string name="msg_download_waiting_wifi">다운로드 대기 중 (Wi-Fi 대기): %1$s</string>
+    <string name="dialog_download_waiting_title">다운로드 대기 중</string>
+    <string name="dialog_download_waiting_message">이 노래가 다운로드를 기다리고 있습니다. 지금 모바일 데이터로 다운로드하거나 대기열에서 제거할 수 있습니다.</string>
+    <string name="genre_christian_worship">크리스천 &amp; 워십</string>
 </resources>

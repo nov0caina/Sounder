@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Một trình phát nhạc tối giản và hiệu quả cho android.</string>
+    <string name="info_app_desc">Đây là âm nhạc của bạn.</string>
     <string name="lbl_go_to_online_profile">Đi tới hồ sơ trực tuyến</string>
     <string name="err_artist_not_found_online">Không tìm thấy hồ sơ trực tuyến của nghệ sĩ</string>
 
@@ -234,4 +234,38 @@
     <string name="header_more_songs">Thêm bài hát</string>
     <string name="desc_navigate_back">Quay lại</string>
     <string name="desc_song_options">Tùy chọn bài hát</string>
+    <string name="set_genre_christian">Danh mục Nhạc Cơ Đốc &amp; Thờ Phượng</string>
+    <string name="set_genre_christian_desc">Hiển thị Nhạc Cơ Đốc &amp; Thờ Phượng trong các danh mục khám phá tìm kiếm</string>
+    <string name="set_genre_kpop">Danh mục K-Pop</string>
+    <string name="set_genre_kpop_desc">Hiển thị K-Pop trong các danh mục khám phá tìm kiếm</string>
+    <string name="lbl_song_detail">Xem chi tiết</string>
+    <string name="lbl_props">Chi tiết bài hát</string>
+    <string name="btn_view_grid">Lưới</string>
+    <string name="btn_view_carousel">Băng chuyền</string>
+    <string name="btn_show_more">Hiển thị thêm</string>
+    <string name="lbl_go_to_online_album">Đi tới album trực tuyến</string>
+    <string name="set_privacy_insights_category">Quyền riêng tư &amp; Thống kê cục bộ</string>
+    <string name="set_local_listening_insights">Bật thống kê cục bộ và cá nhân hóa</string>
+    <string name="set_local_listening_insights_desc">Chỉ phân tích thói quen nghe nhạc trên thiết bị của bạn mà không dùng hồ sơ từ xa</string>
+    <string name="set_clear_listening_history">Xóa lịch sử nghe nhạc cục bộ</string>
+    <string name="set_clear_listening_history_desc">Xóa toàn bộ lịch sử phát cục bộ và đặt lại gợi ý</string>
+    <string name="msg_confirm_clear_listening_history">Xóa toàn bộ thống kê cục bộ và đặt lại các đề xuất được cá nhân hóa?</string>
+    <string name="msg_listening_history_cleared">Đã xóa lịch sử nghe nhạc cục bộ</string>
+    <string name="fmt_because_you_listen_to">Vì bạn hay nghe %1$s</string>
+    <string name="header_because_you_listen_sub">Danh sách phối ẩn danh từ thói quen nghe cục bộ</string>
+    <string name="fmt_monthly_listening_hours">Tháng này bạn đã nghe %1$d g %2$d p nhạc</string>
+    <string name="fmt_monthly_listening_minutes">Tháng này bạn đã nghe %1$d phút nhạc</string>
+    <string name="header_favorite_artists">Nghệ sĩ của bạn</string>
+    <string name="header_trending_albums_for_you">Album thịnh hành dành cho bạn</string>
+    <string name="set_show_monthly_listening_banner">Hiển thị biểu ngữ thời gian nghe hàng tháng</string>
+    <string name="set_show_monthly_listening_banner_desc">Hiển thị tổng thời gian nghe nhạc hàng tháng ở đầu Thư viện của bạn</string>
+    <string name="msg_download_deleted">Đã xóa nội dung tải xuống khỏi thiết bị</string>
+    <string name="dialog_download_cellular_title">Tải xuống bằng dữ liệu di động?</string>
+    <string name="dialog_download_cellular_message">Chế độ chỉ tải xuống qua Wi-Fi đang bật. Bạn có muốn tải bài hát này ngay bằng dữ liệu di động hay chờ kết nối Wi-Fi?</string>
+    <string name="btn_download_now">Tải ngay</string>
+    <string name="btn_wait_for_wifi">Chờ Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Tải xuống đang chờ (đang chờ Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Tải xuống trong hàng đợi</string>
+    <string name="dialog_download_waiting_message">Bài hát này đang chờ được tải xuống. Bạn có thể tải ngay bằng dữ liệu di động hoặc xóa khỏi hàng đợi.</string>
+    <string name="genre_christian_worship">Nhạc Cơ Đốc &amp; Thờ Phượng</string>
 </resources>

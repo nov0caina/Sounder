@@ -120,6 +120,14 @@ class LocalizationParityTest {
         assertEquals("Cançons en tendència", caStrings["header_trending_tracks"])
         assertEquals("Baixa la cançó", caStrings["lbl_download_track"])
         assertEquals("Baixades recents", caStrings["lbl_recent_downloads"])
+
+        // Song Details terminology
+        assertEquals("View details", baseStrings["lbl_song_detail"])
+        assertEquals("Song details", baseStrings["lbl_props"])
+        assertEquals("Ver Detalles", esStrings["lbl_song_detail"])
+        assertEquals("Detalles de la canción", esStrings["lbl_props"])
+        assertEquals("Go to online album", baseStrings["lbl_go_to_online_album"])
+        assertEquals("Ir al álbum online", esStrings["lbl_go_to_online_album"])
     }
 
     @Test
@@ -192,6 +200,38 @@ class LocalizationParityTest {
             "set_locations_desc",
             "set_scan_device_desc",
             "msg_scanning_device_music",
+            "info_app_desc",
+            "set_genre_christian",
+            "set_genre_christian_desc",
+            "genre_christian_worship",
+            "set_genre_kpop",
+            "set_genre_kpop_desc",
+            "lbl_song_detail",
+            "lbl_props",
+            "btn_view_grid",
+            "btn_view_carousel",
+            "btn_show_more",
+            "btn_show_less",
+            "lbl_go_to_online_album",
+            "set_privacy_insights_category",
+            "set_local_listening_insights",
+            "set_local_listening_insights_desc",
+            "set_clear_listening_history",
+            "set_clear_listening_history_desc",
+            "msg_confirm_clear_listening_history",
+            "msg_listening_history_cleared",
+            "fmt_because_you_listen_to",
+            "header_because_you_listen_sub",
+            "fmt_monthly_listening_hours",
+            "fmt_monthly_listening_minutes",
+            "msg_download_deleted",
+            "dialog_download_cellular_title",
+            "dialog_download_cellular_message",
+            "btn_download_now",
+            "btn_wait_for_wifi",
+            "msg_download_waiting_wifi",
+            "dialog_download_waiting_title",
+            "dialog_download_waiting_message",
         )
 
         val removedLegacyKeys = listOf(

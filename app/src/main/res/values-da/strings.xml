@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">En simpel og rationel musikafspiller til Android.</string>
+    <string name="info_app_desc">Det er din musik.</string>
     <string name="lbl_indexer">Musikindlæser</string>
     <string name="lbl_indexing">Indlæser musik</string>
     <string name="lbl_observing">Holder øje med musikbibliotek</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">Tilføj til spilleliste</string>
     <string name="lbl_artist_details">Gå til kunstner</string>
     <string name="lbl_album_details">Gå til album</string>
-    <string name="lbl_song_detail">Vis egenskaber</string>
+    <string name="lbl_song_detail">Vis detaljer</string>
     <string name="lbl_parent_detail">Vis</string>
     <string name="lbl_share">Del</string>
-    <string name="lbl_props">Sangegenskaber</string>
+    <string name="lbl_props">Sangdetaljer</string>
     <string name="lbl_path">Sti</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_size">Størrelse</string>
@@ -329,4 +329,36 @@
     <string name="header_more_songs">Flere sange</string>
     <string name="desc_navigate_back">Gå tilbage</string>
     <string name="desc_song_options">Sangindstillinger</string>
+    <string name="set_genre_christian">Kristen musik &amp; Lovsang-kategori</string>
+    <string name="set_genre_christian_desc">Vis Kristen musik &amp; Lovsang i søgekategorier</string>
+    <string name="set_genre_kpop">K-Pop-kategori</string>
+    <string name="set_genre_kpop_desc">Vis K-Pop i søgekategorier</string>
+    <string name="btn_view_grid">Gitter</string>
+    <string name="btn_view_carousel">Karrusel</string>
+    <string name="btn_show_more">Vis mere</string>
+    <string name="lbl_go_to_online_album">Gå til onlinealbum</string>
+    <string name="set_privacy_insights_category">Lokal privatliv og statistik</string>
+    <string name="set_local_listening_insights">Aktivér lokal statistik og personalisering</string>
+    <string name="set_local_listening_insights_desc">Analyserer lyttevaner lokalt på din enhed uden eksterne profiler</string>
+    <string name="set_clear_listening_history">Ryd lokal lyttehistorik</string>
+    <string name="set_clear_listening_history_desc">Slet alle lokalt gemte afspilninger og nulstil forslag</string>
+    <string name="msg_confirm_clear_listening_history">Slet alle lokale lyttestatistikker og nulstil dine personlige anbefalinger?</string>
+    <string name="msg_listening_history_cleared">Lokal lyttehistorik ryddet</string>
+    <string name="fmt_because_you_listen_to">Fordi du lytter til %1$s</string>
+    <string name="header_because_you_listen_sub">Anonyme mix baseret på din lokale aktivitet</string>
+    <string name="fmt_monthly_listening_hours">Du har lyttet til musik i %1$d t %2$d m denne måned</string>
+    <string name="fmt_monthly_listening_minutes">Du har lyttet til musik i %1$d min denne måned</string>
+    <string name="header_favorite_artists">Dine kunstnere</string>
+    <string name="header_trending_albums_for_you">Populære albummer til dig</string>
+    <string name="set_show_monthly_listening_banner">Vis månedligt lyttebanner</string>
+    <string name="set_show_monthly_listening_banner_desc">Viser din samlede månedlige lyttetid øverst i Dit bibliotek</string>
+    <string name="msg_download_deleted">Download fjernet fra enheden</string>
+    <string name="dialog_download_cellular_title">Download med mobildata?</string>
+    <string name="dialog_download_cellular_message">Download kun via Wi-Fi er aktiveret. Vil du downloade denne sang nu med mobildata eller vente på en Wi-Fi-forbindelse?</string>
+    <string name="btn_download_now">Download nu</string>
+    <string name="btn_wait_for_wifi">Vent på Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Download i kø (venter på Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Download i kø</string>
+    <string name="dialog_download_waiting_message">Denne sang venter på at blive downloadet. Du kan downloade den nu med mobildata eller fjerne den fra køen.</string>
+    <string name="genre_christian_worship">Kristen musik &amp; Lovsang</string>
 </resources>

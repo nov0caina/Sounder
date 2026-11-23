@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">ເຄື່ອງຫຼິ້ນເພງທີ່ລຽບງ່າຍ ແລະ ມີເຫດຜົນສຳລັບ Android.</string>
+    <string name="info_app_desc">ນີ້ແມ່ນເພງຂອງທ່ານ.</string>
     <string name="lbl_indexer">ກຳລັງໂຫຼດເພງ</string>
     <string name="lbl_indexing">ກຳລັງໂຫຼດເພງ</string>
     <string name="lbl_observing">ກຳລັງກວດສອບຄັງເພງ</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">ເພີ່ມເຂົ້າລາຍການເພງ</string>
     <string name="lbl_artist_details">ໄປຫາສິນລະປິນ</string>
     <string name="lbl_album_details">ໄປຫາອາລະບໍາ</string>
-    <string name="lbl_song_detail">ເບິ່ງຄຸນສົມບັດ</string>
+    <string name="lbl_song_detail">ເບິ່ງລາຍລະອຽດ</string>
     <string name="lbl_parent_detail">ເບິ່ງ</string>
     <string name="lbl_share">ແບ່ງປັນ</string>
-    <string name="lbl_props">ຄຸນສົມບັດຂອງເພງ</string>
+    <string name="lbl_props">ລາຍລະອຽດຂອງເພງ</string>
     <string name="lbl_path">ທີ່ຢູ່ໄຟລ໌ (Path)</string>
     <string name="lbl_format">ຮູບແບບ</string>
     <string name="lbl_size">ຂະໜາດ</string>
@@ -534,4 +534,36 @@
     <string name="header_more_songs">ເພງເພີ່ມເຕີມ</string>
     <string name="desc_navigate_back">ກັບຄືນ</string>
     <string name="desc_song_options">ຕົວເລືອກເພງ</string>
+    <string name="set_genre_christian">ໝວດໝູ່ ເພງຄຣິສຕຽນ ແລະ ການນະມັດສະການ</string>
+    <string name="set_genre_christian_desc">ສະແດງ ເພງຄຣິສຕຽນ ແລະ ການນະມັດສະການ ໃນໝວດໝູ່ການສຳຫຼວດຄົ້ນຫາ</string>
+    <string name="set_genre_kpop">ໝວດໝູ່ K-Pop</string>
+    <string name="set_genre_kpop_desc">ສະແດງ K-Pop ໃນໝວດໝູ່ການສຳຫຼວດຄົ້ນຫາ</string>
+    <string name="btn_view_grid">ຕາຕະລາງ</string>
+    <string name="btn_view_carousel">ຄາຣູເຊລ</string>
+    <string name="btn_show_more">ສະແດງເພີ່ມເຕີມ</string>
+    <string name="lbl_go_to_online_album">ໄປທີ່ອະລະບ້ຳອອນລາຍ</string>
+    <string name="set_privacy_insights_category">ຄວາມເປັນສ່ວນຕົວ ແລະ ສະຖິຕິໃນເຄື່ອງ</string>
+    <string name="set_local_listening_insights">ເປີດໃຊ້ສະຖິຕິໃນເຄື່ອງ ແລະ ການປັບແຕ່ງສ່ວນບຸກຄົນ</string>
+    <string name="set_local_listening_insights_desc">ວິເຄາະການຟັງເພງໃນອຸປະກອນຂອງທ່ານເທົ່ານັ້ນ ໂດຍບໍ່ໃຊ້ໂປຣໄຟລ໌ພາຍນອກ</string>
+    <string name="set_clear_listening_history">ລຶບປະຫວັດການຟັງໃນເຄື່ອງ</string>
+    <string name="set_clear_listening_history_desc">ລຶບບັນທຶກການຫຼິ້ນທັງໝົດໃນເຄື່ອງ ແລະ ຣີເຊັດຄຳແນະນຳ</string>
+    <string name="msg_confirm_clear_listening_history">ລຶບສະຖິຕິການຟັງທັງໝົດໃນເຄື່ອງ ແລະ ຣີເຊັດຄຳແນະນຳບໍ່?</string>
+    <string name="msg_listening_history_cleared">ລຶບປະຫວັດການຟັງໃນເຄື່ອງແລ້ວ</string>
+    <string name="fmt_because_you_listen_to">ເພາະທ່ານຟັງ %1$s</string>
+    <string name="header_because_you_listen_sub">ມິກທີ່ບໍ່ລະບຸຕົວຕົນຈາກການຟັງໃນເຄື່ອງຂອງທ່ານ</string>
+    <string name="fmt_monthly_listening_hours">ທ່ານຟັງເພງ %1$d ຊມ %2$d ນທ ໃນເດືອນນີ້</string>
+    <string name="fmt_monthly_listening_minutes">ທ່ານຟັງເພງ %1$d ນທ ໃນເດືອນນີ້</string>
+    <string name="header_favorite_artists">ສິລະປິນຂອງທ່ານ</string>
+    <string name="header_trending_albums_for_you">ອັນລະບັ້ມມາແຮງສຳລັບທ່ານ</string>
+    <string name="set_show_monthly_listening_banner">ສະແດງແບນເນີການຟັງປະຈຳເດືອນ</string>
+    <string name="set_show_monthly_listening_banner_desc">ສະແດງເວລາການຟັງເພງລວມປະຈຳເດືອນຂອງທ່ານຢູ່ເທິງສຸດຂອງຫ້ອງສະໝຸດ</string>
+    <string name="msg_download_deleted">ລຶບການດາວໂຫຼດອອກຈາກອຸປະກອນແລ້ວ</string>
+    <string name="dialog_download_cellular_title">ດາວໂຫຼດດ້ວຍອິນເຕີເນັດມືຖືບໍ?</string>
+    <string name="dialog_download_cellular_message">ການດາວໂຫຼດສະເພາະ Wi-Fi ເປີດໃຊ້ງານຢູ່. ທ່ານຕ້ອງການດາວໂຫຼດເພງນີ້ຕອນນີ້ໂດຍໃຊ້ອິນເຕີເນັດມືຖື ຫຼື ລໍຖ້າການເຊື່ອມຕໍ່ Wi-Fi ບໍ?</string>
+    <string name="btn_download_now">ດາວໂຫຼດດຽວນີ້</string>
+    <string name="btn_wait_for_wifi">ລໍຖ້າ Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">ຄິວການດາວໂຫຼດ (ກຳລັງລໍຖ້າ Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">ການດາວໂຫຼດຢູ່ໃນຄິວ</string>
+    <string name="dialog_download_waiting_message">ເພງນີ້ກຳລັງລໍຖ້າດາວໂຫຼດ. ທ່ານສາມາດດາວໂຫຼດດຽວນີ້ດ້ວຍອິນເຕີເນັດມືຖື ຫຼື ລຶບອອກຈາກຄິວໄດ້.</string>
+    <string name="genre_christian_worship">ເພງຄຣິສຕຽນ ແລະ ການນະມັດສະການ</string>
 </resources>

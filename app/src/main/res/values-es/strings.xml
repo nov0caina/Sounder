@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Un reproductor de música simple y racional para Android.</string>
+    <string name="info_app_desc">Es tu música.</string>
     <string name="lng_widget">Ver y controlar la reproducción musical</string>
     <string name="lbl_retry">Reintentar</string>
     <string name="lbl_genres">Géneros</string>
@@ -121,7 +121,7 @@
     <string name="lbl_duration">Duración</string>
     <string name="lbl_track">Pista</string>
     <string name="lbl_disc">Disco</string>
-    <string name="lbl_song_detail">Ver propiedades</string>
+    <string name="lbl_song_detail">Ver Detalles</string>
     <string name="lbl_shuffle_shortcut_short">Mezclar</string>
     <string name="lbl_shuffle_shortcut_long">Mezclar todo</string>
     <string name="lbl_ok">Aceptar</string>
@@ -145,7 +145,7 @@
     <string name="cdc_ogg">Audio Ogg</string>
     <string name="set_play_in_parent_with">Cuando se reproduce desde los detalles</string>
     <string name="lbl_date_added">Fecha de adición</string>
-    <string name="lbl_props">Propiedades de la canción</string>
+    <string name="lbl_props">Detalles de la canción</string>
     <string name="lbl_sample_rate">Tasa de muestreo</string>
     <string name="lbl_cancel">Cancelar</string>
     <string name="set_headset_autoplay">Reproducción automática con auriculares</string>
@@ -327,6 +327,7 @@ ADVERTENCIA: Ten cuidado al controlar este servicio, si lo cierras y luego inten
     <string name="set_task_exit">Salir siempre al cerrar</string>
     <string name="set_task_exit_desc">Detiene la reproducción cuando se elimina de los recientes, incluso si reproduce</string>
     <string name="lbl_go_to_online_profile">Ir al perfil en línea</string>
+    <string name="lbl_go_to_online_album">Ir al álbum online</string>
     <string name="err_artist_not_found_online">Perfil del artista no encontrado en línea</string>
 
     <!-- Sounder Feature Localization -->
@@ -542,4 +543,37 @@ ADVERTENCIA: Ten cuidado al controlar este servicio, si lo cierras y luego inten
     <string name="header_more_songs">Más canciones</string>
     <string name="desc_navigate_back">Volver</string>
     <string name="desc_song_options">Opciones de la canción</string>
+    <string name="set_genre_christian">Categoría Música Cristiana y Alabanzas</string>
+    <string name="set_genre_christian_desc">Mostrar Música Cristiana y Alabanzas en las categorías de búsqueda</string>
+    <string name="set_genre_kpop">Categoría K-Pop</string>
+    <string name="set_genre_kpop_desc">Mostrar K-Pop en las categorías de búsqueda</string>
+    <string name="btn_view_grid">Cuadrícula</string>
+    <string name="btn_view_carousel">Carrusel</string>
+    <string name="btn_show_more">Mostrar más</string>
+
+    <!-- Estadísticas y personalización local -->
+    <string name="set_privacy_insights_category">Privacidad y estadísticas locales</string>
+    <string name="set_local_listening_insights">Habilitar estadísticas locales y personalización</string>
+    <string name="set_local_listening_insights_desc">Analiza tus hábitos exclusivamente en tu dispositivo para personalizar los accesos rápidos y recomendaciones sin perfiles externos</string>
+    <string name="set_clear_listening_history">Borrar historial de estadísticas locales</string>
+    <string name="set_clear_listening_history_desc">Elimina todos los registros locales de reproducción y restablece las sugerencias</string>
+    <string name="msg_confirm_clear_listening_history">¿Eliminar todo tu historial de estadísticas locales y restablecer tus recomendaciones personalizadas?</string>
+    <string name="msg_listening_history_cleared">Historial de estadísticas locales eliminado</string>
+    <string name="fmt_because_you_listen_to">Porque escuchas a %1$s</string>
+    <string name="header_because_you_listen_sub">Mezclas anónimas basadas en tu actividad local</string>
+    <string name="fmt_monthly_listening_hours">Has escuchado %1$d h %2$d min de música este mes</string>
+    <string name="fmt_monthly_listening_minutes">Has escuchado %1$d min de música este mes</string>
+    <string name="header_favorite_artists">Tus artistas</string>
+    <string name="header_trending_albums_for_you">Álbumes en Tendencia para Ti</string>
+    <string name="set_show_monthly_listening_banner">Mostrar banner de minutos escuchados</string>
+    <string name="set_show_monthly_listening_banner_desc">Muestra el resumen mensual de tiempo escuchado en la parte superior de Tu Biblioteca</string>
+    <string name="msg_download_deleted">Descarga eliminada del dispositivo</string>
+    <string name="dialog_download_cellular_title">¿Descargar con datos móviles?</string>
+    <string name="dialog_download_cellular_message">Tienes activada la descarga solo por Wi-Fi. ¿Quieres descargar esta canción ahora usando datos móviles o esperar a una conexión Wi-Fi?</string>
+    <string name="btn_download_now">Descargar ahora</string>
+    <string name="btn_wait_for_wifi">Esperar a Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Descarga en cola (esperando Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Descarga en cola</string>
+    <string name="dialog_download_waiting_message">Esta canción está esperando para descargarse. Puedes descargarla ahora con datos móviles o quitarla de la cola.</string>
+    <string name="genre_christian_worship">Música Cristiana y Alabanzas</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Info namespace | App labels -->
-    <string name="info_app_desc">Un lettore musicale semplice ed intuitivo per Android.</string>
+    <string name="info_app_desc">È la tua musica.</string>
     <string name="lng_widget">Visualizza e gestisci la riproduzione musicale</string>
     <string name="lbl_retry">Riprova</string>
     <string name="lbl_genres">Generi</string>
@@ -153,8 +153,8 @@
     <string name="lbl_track">Traccia</string>
     <string name="lbl_ok">OK</string>
     <string name="lbl_sample_rate">Frequenza di campionamento</string>
-    <string name="lbl_song_detail">Visualizza proprietà</string>
-    <string name="lbl_props">Proprietà brano</string>
+    <string name="lbl_song_detail">Visualizza dettagli</string>
+    <string name="lbl_props">Dettagli brano</string>
     <string name="lbl_format">Formato</string>
     <string name="lbl_size">Dimensione</string>
     <string name="lbl_bitrate">Velocità in bit</string>
@@ -540,4 +540,36 @@ Attenzione: fai attenzione a controllare questa impostazione; se lo chiudi e poi
     <string name="header_more_songs">Altri brani</string>
     <string name="desc_navigate_back">Torna indietro</string>
     <string name="desc_song_options">Opzioni brano</string>
+    <string name="set_genre_christian">Categoria Musica Cristiana e Lode</string>
+    <string name="set_genre_christian_desc">Mostra Musica Cristiana e Lode nelle categorie di ricerca</string>
+    <string name="set_genre_kpop">Categoria K-Pop</string>
+    <string name="set_genre_kpop_desc">Mostra K-Pop nelle categorie di ricerca</string>
+    <string name="btn_view_grid">Griglia</string>
+    <string name="btn_view_carousel">Carosello</string>
+    <string name="btn_show_more">Mostra altro</string>
+    <string name="lbl_go_to_online_album">Vai all\'album online</string>
+    <string name="set_privacy_insights_category">Privacy e statistiche locali</string>
+    <string name="set_local_listening_insights">Abilita statistiche locali e personalizzazione</string>
+    <string name="set_local_listening_insights_desc">Analizza le abitudini di ascolto solo sul tuo dispositivo senza profili esterni</string>
+    <string name="set_clear_listening_history">Cancella cronologia ascolti locali</string>
+    <string name="set_clear_listening_history_desc">Elimina tutti i record locali di riproduzione e reimposta i suggerimenti</string>
+    <string name="msg_confirm_clear_listening_history">Eliminare tutte le statistiche di ascolto locali e reimpostare i consigli?</string>
+    <string name="msg_listening_history_cleared">Cronologia ascolti locali cancellata</string>
+    <string name="fmt_because_you_listen_to">Perché ascolti %1$s</string>
+    <string name="header_because_you_listen_sub">Mix anonimi basati sulle tue abitudini locali</string>
+    <string name="fmt_monthly_listening_hours">Hai ascoltato %1$d h %2$d min di musica questo mese</string>
+    <string name="fmt_monthly_listening_minutes">Hai ascoltato %1$d min di musica questo mese</string>
+    <string name="header_favorite_artists">I tuoi artisti</string>
+    <string name="header_trending_albums_for_you">Album di Tendenza per Te</string>
+    <string name="set_show_monthly_listening_banner">Mostra banner di ascolto mensile</string>
+    <string name="set_show_monthly_listening_banner_desc">Mostra il tempo totale di ascolto mensile nella parte superiore della tua libreria</string>
+    <string name="msg_download_deleted">Download rimosso dal dispositivo</string>
+    <string name="dialog_download_cellular_title">Scaricare con i dati mobili?</string>
+    <string name="dialog_download_cellular_message">Il download solo tramite Wi-Fi è attivo. Vuoi scaricare questo brano ora utilizzando i dati mobili o attendere una connessione Wi-Fi?</string>
+    <string name="btn_download_now">Scarica ora</string>
+    <string name="btn_wait_for_wifi">Attendi Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Download in coda (in attesa del Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Download in coda</string>
+    <string name="dialog_download_waiting_message">Questo brano è in attesa di essere scaricato. Puoi scaricarlo ora usando i dati mobili o rimuoverlo dalla coda.</string>
+    <string name="genre_christian_worship">Musica Cristiana e Lode</string>
 </resources>

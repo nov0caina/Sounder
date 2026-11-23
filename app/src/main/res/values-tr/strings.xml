@@ -50,8 +50,8 @@
         <item quantity="one">%d albüm</item>
         <item quantity="other">%d albüm</item>
     </plurals>
-    <string name="lbl_song_detail">Özellikleri görüntüle</string>
-    <string name="lbl_props">Şarkı özellikleri</string>
+    <string name="lbl_song_detail">Detayları görüntüle</string>
+    <string name="lbl_props">Şarkı detayları</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_shuffle_shortcut_short">Karıştır</string>
     <string name="lbl_shuffle_shortcut_long">Hepsini karıştır</string>
@@ -66,7 +66,7 @@
     <string name="lbl_bitrate">Bit hızı</string>
     <string name="lbl_sample_rate">Örnek hızı</string>
     <string name="lng_widget">Müzik çalmayı görüntüle ve kontrol et</string>
-    <string name="info_app_desc">Android için basit, akıllı bir müzik çalar.</string>
+    <string name="info_app_desc">Bu senin müziğin.</string>
     <string name="lbl_indexer">Müzik yükleniyor</string>
     <string name="lng_indexing">Müzik kitaplığınız yükleniyor…</string>
     <string name="lbl_name">Ad</string>
@@ -544,4 +544,36 @@ UYARI: Bu servisi kullanırken dikkatli olun. Kapatırsanız ve sonra tekrar kul
     <string name="header_more_songs">Daha fazla şarkı</string>
     <string name="desc_navigate_back">Geri dön</string>
     <string name="desc_song_options">Şarkı seçenekleri</string>
+    <string name="set_genre_christian">Hristiyan Müziği ve İbadet kategorisi</string>
+    <string name="set_genre_christian_desc">Arama keşif kategorilerinde Hristiyan Müziği ve İbadet kategorisini göster</string>
+    <string name="set_genre_kpop">K-Pop kategorisi</string>
+    <string name="set_genre_kpop_desc">Arama keşif kategorilerinde K-Pop kategorisini göster</string>
+    <string name="btn_view_grid">Izgara</string>
+    <string name="btn_view_carousel">Karusel</string>
+    <string name="btn_show_more">Daha fazla göster</string>
+    <string name="lbl_go_to_online_album">Çevrimiçi albüme git</string>
+    <string name="set_privacy_insights_category">Yerel Gizlilik ve İstatistikler</string>
+    <string name="set_local_listening_insights">Yerel istatistikleri ve kişiselleştirmeyi etkinleştir</string>
+    <string name="set_local_listening_insights_desc">Harici profiller olmadan dinleme alışkanlıklarını yalnızca cihazınızda analiz eder</string>
+    <string name="set_clear_listening_history">Yerel dinleme geçmişini temizle</string>
+    <string name="set_clear_listening_history_desc">Yerel olarak kaydedilen tüm oynatma kayıtlarını sil ve önerileri sıfırla</string>
+    <string name="msg_confirm_clear_listening_history">Tüm yerel dinleme istatistikleri silinsin ve kişiselleştirilmiş öneriler sıfırlansın mı?</string>
+    <string name="msg_listening_history_cleared">Yerel dinleme geçmişi temizlendi</string>
+    <string name="fmt_because_you_listen_to">%1$s dinlediğiniz için</string>
+    <string name="header_because_you_listen_sub">Yerel dinleme alışkanlıklarınıza dayalı anonim karışımlar</string>
+    <string name="fmt_monthly_listening_hours">Bu ay %1$d sa %2$d dk müzik dinlediniz</string>
+    <string name="fmt_monthly_listening_minutes">Bu ay %1$d dk müzik dinlediniz</string>
+    <string name="header_favorite_artists">Sanatçılarınız</string>
+    <string name="header_trending_albums_for_you">Senin İçin Trend Albümler</string>
+    <string name="set_show_monthly_listening_banner">Aylık dinleme başlığını göster</string>
+    <string name="set_show_monthly_listening_banner_desc">Kitaplığınızın en üstünde aylık toplam dinleme sürenizi gösterir</string>
+    <string name="msg_download_deleted">İndirme cihazdan silindi</string>
+    <string name="dialog_download_cellular_title">Mobil veri ile indirilsin mi?</string>
+    <string name="dialog_download_cellular_message">Yalnızca Wi-Fi üzerinden indirme etkin. Bu şarkıyı şimdi mobil veri kullanarak indirmek mi yoksa Wi-Fi bağlantısı beklemek mi istersiniz?</string>
+    <string name="btn_download_now">Şimdi indir</string>
+    <string name="btn_wait_for_wifi">Wi-Fi bekle</string>
+    <string name="msg_download_waiting_wifi">İndirme kuyrukta (Wi-Fi bekleniyor): %1$s</string>
+    <string name="dialog_download_waiting_title">İndirme kuyrukta</string>
+    <string name="dialog_download_waiting_message">Bu şarkı indirilmeyi bekliyor. Şimdi mobil veri ile indirebilir veya kuyruktan kaldırabilirsiniz.</string>
+    <string name="genre_christian_worship">Hristiyan Müziği ve İbadet</string>
 </resources>

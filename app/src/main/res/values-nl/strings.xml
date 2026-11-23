@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Info namespace | App labels -->
-    <string name="info_app_desc">Een eenvoudige, rationele muziekspeler voor Android.</string>
+    <string name="info_app_desc">Het is jouw muziek.</string>
     <!-- Label Namespace | Static Labels -->
     <string name="lbl_retry">Probeer opnieuw</string>
     <string name="lbl_genres">Genres</string>
@@ -106,13 +106,13 @@
     <string name="fmt_db_pos">+%.1f dB</string>
     <string name="lng_widget">Bekijk en regel muziekweergave</string>
     <string name="fmt_sample_rate">%d Hz</string>
-    <string name="lbl_song_detail">Bekijk eigenschappen</string>
+    <string name="lbl_song_detail">Bekijk details</string>
     <string name="lbl_name">Naam</string>
     <string name="lbl_artist">Artiest</string>
     <string name="lbl_cancel">Annuleer</string>
     <string name="set_lib_tabs">Bibliotheek tabbladen</string>
     <string name="lbl_date">Datum</string>
-    <string name="lbl_props">Nummer eigenschappen</string>
+    <string name="lbl_props">Nummerdetails</string>
     <string name="set_replay_gain_mode_dynamic">Voorkeur album als er een speelt</string>
     <string name="set_replay_gain_mode_track">Voorkeur track</string>
     <string name="set_replay_gain_mode_album">Voorkeur album</string>
@@ -534,4 +534,36 @@ Wees voorzichtig met het controleren van deze dienst, als je het sluit en het we
     <string name="header_more_songs">Meer nummers</string>
     <string name="desc_navigate_back">Ga terug</string>
     <string name="desc_song_options">Nummeropties</string>
+    <string name="set_genre_christian">Categorie Christelijke muziek &amp; Aanbidding</string>
+    <string name="set_genre_christian_desc">Toon Christelijke muziek &amp; Aanbidding in de zoekcategorieën</string>
+    <string name="set_genre_kpop">Categorie K-Pop</string>
+    <string name="set_genre_kpop_desc">Toon K-Pop in de zoekcategorieën</string>
+    <string name="btn_view_grid">Raster</string>
+    <string name="btn_view_carousel">Carrousel</string>
+    <string name="btn_show_more">Meer weergeven</string>
+    <string name="lbl_go_to_online_album">Ga naar online album</string>
+    <string name="set_privacy_insights_category">Lokale privacy en statistieken</string>
+    <string name="set_local_listening_insights">Lokale statistieken en personalisatie inschakelen</string>
+    <string name="set_local_listening_insights_desc">Analyseert luistergewoonten uitsluitend op je apparaat zonder externe profielen</string>
+    <string name="set_clear_listening_history">Lokale luistergeschiedenis wissen</string>
+    <string name="set_clear_listening_history_desc">Verwijder alle lokaal opgeslagen afspeelgegevens en reset aanbevelingen</string>
+    <string name="msg_confirm_clear_listening_history">Alle lokaal opgeslagen luisterstatistieken verwijderen en aanbevelingen resetten?</string>
+    <string name="msg_listening_history_cleared">Lokale luistergeschiedenis gewist</string>
+    <string name="fmt_because_you_listen_to">Omdat je luistert naar %1$s</string>
+    <string name="header_because_you_listen_sub">Anonieme mixen op basis van je lokale activiteit</string>
+    <string name="fmt_monthly_listening_hours">Je hebt deze maand %1$d u %2$d m muziek geluisterd</string>
+    <string name="fmt_monthly_listening_minutes">Je hebt deze maand %1$d min muziek geluisterd</string>
+    <string name="header_favorite_artists">Je artiesten</string>
+    <string name="header_trending_albums_for_you">Trending albums voor jou</string>
+    <string name="set_show_monthly_listening_banner">Maandelijkse luisterbanner weergeven</string>
+    <string name="set_show_monthly_listening_banner_desc">Toont je totale maandelijkse luistertijd bovenaan Je Bibliotheek</string>
+    <string name="msg_download_deleted">Download verwijderd van apparaat</string>
+    <string name="dialog_download_cellular_title">Downloaden met mobiele data?</string>
+    <string name="dialog_download_cellular_message">Alleen downloaden via Wi-Fi is ingeschakeld. Wil je dit nummer nu downloaden via mobiele data of wachten op een Wi-Fi-verbinding?</string>
+    <string name="btn_download_now">Nu downloaden</string>
+    <string name="btn_wait_for_wifi">Wachten op Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Download in wachtrij (wachten op Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Download in wachtrij</string>
+    <string name="dialog_download_waiting_message">Dit nummer wacht om te worden gedownload. Je kunt het nu downloaden via mobiele data of uit de wachtrij verwijderen.</string>
+    <string name="genre_christian_worship">Christelijke muziek &amp; Aanbidding</string>
 </resources>

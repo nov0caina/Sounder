@@ -96,7 +96,7 @@
         <item quantity="one">%d Album</item>
         <item quantity="other">%d Alben</item>
     </plurals>
-    <string name="info_app_desc">Ein einfacher, rationaler Musikplayer für Android.</string>
+    <string name="info_app_desc">Es ist deine Musik.</string>
     <string name="lng_widget">Musikwiedergabe anzeigen und kontrollieren</string>
     <string name="lbl_artist">Künstler</string>
     <string name="lbl_album">Album</string>
@@ -151,8 +151,8 @@
     <string name="lbl_indexer">Musikwiedergabe</string>
     <string name="lng_indexing">Deine Musikbibliothek wird geladen…</string>
     <string name="lbl_sample_rate">Abtastrate</string>
-    <string name="lbl_song_detail">Eigenschaften ansehen</string>
-    <string name="lbl_props">Lied-Eigenschaften</string>
+    <string name="lbl_song_detail">Details ansehen</string>
+    <string name="lbl_props">Lied-Details</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_size">Größe</string>
     <string name="lbl_bitrate">Bitrate</string>
@@ -538,4 +538,36 @@ ACHTUNG: Sei vorsichtig bei der Steuerung dieses Dienstes. Wenn du ihn schließt
     <string name="header_more_songs">Weitere Titel</string>
     <string name="desc_navigate_back">Zurück</string>
     <string name="desc_song_options">Titeloptionen</string>
+    <string name="set_genre_christian">Kategorie „Christliche Musik &amp; Lobpreis“</string>
+    <string name="set_genre_christian_desc">Christliche Musik &amp; Lobpreis in den Suchkategorien anzeigen</string>
+    <string name="set_genre_kpop">Kategorie „K-Pop“</string>
+    <string name="set_genre_kpop_desc">K-Pop in den Suchkategorien anzeigen</string>
+    <string name="btn_view_grid">Raster</string>
+    <string name="btn_view_carousel">Karussell</string>
+    <string name="btn_show_more">Mehr anzeigen</string>
+    <string name="lbl_go_to_online_album">Zum Online-Album</string>
+    <string name="set_privacy_insights_category">Lokaler Datenschutz &amp; Statistiken</string>
+    <string name="set_local_listening_insights">Lokale Statistiken und Personalisierung aktivieren</string>
+    <string name="set_local_listening_insights_desc">Analysiert Hörgewohnheiten ausschließlich auf dem Gerät ohne externe Profile</string>
+    <string name="set_clear_listening_history">Lokalen Hörverlauf löschen</string>
+    <string name="set_clear_listening_history_desc">Alle lokal gespeicherten Wiedergaben löschen und Empfehlungen zurücksetzen</string>
+    <string name="msg_confirm_clear_listening_history">Alle lokal gespeicherten Hörstatistiken löschen und personalisierte Empfehlungen zurücksetzen?</string>
+    <string name="msg_listening_history_cleared">Lokaler Hörverlauf gelöscht</string>
+    <string name="fmt_because_you_listen_to">Weil du %1$s hörst</string>
+    <string name="header_because_you_listen_sub">Anonyme Mixe basierend auf deinen lokalen Gewohnheiten</string>
+    <string name="fmt_monthly_listening_hours">Diesen Monat %1$d Std. %2$d Min. Musik gehört</string>
+    <string name="fmt_monthly_listening_minutes">Diesen Monat %1$d Min. Musik gehört</string>
+    <string name="header_favorite_artists">Deine Künstler</string>
+    <string name="header_trending_albums_for_you">Trend-Alben für Dich</string>
+    <string name="set_show_monthly_listening_banner">Monatliches Hörzeit-Banner anzeigen</string>
+    <string name="set_show_monthly_listening_banner_desc">Zeigt deine gesamte monatliche Hörzeit oben in deiner Bibliothek an</string>
+    <string name="msg_download_deleted">Download vom Gerät entfernt</string>
+    <string name="dialog_download_cellular_title">Über mobile Daten herunterladen?</string>
+    <string name="dialog_download_cellular_message">Downloads nur über WLAN sind aktiviert. Möchtest du diesen Titel jetzt über mobile Daten herunterladen oder auf eine WLAN-Verbindung warten?</string>
+    <string name="btn_download_now">Jetzt herunterladen</string>
+    <string name="btn_wait_for_wifi">Auf WLAN warten</string>
+    <string name="msg_download_waiting_wifi">Download in Warteschlange (wartet auf WLAN): %1$s</string>
+    <string name="dialog_download_waiting_title">Download in Warteschlange</string>
+    <string name="dialog_download_waiting_message">Dieser Titel wartet auf den Download. Du kannst ihn jetzt über mobile Daten herunterladen oder aus der Warteschlange entfernen.</string>
+    <string name="genre_christian_worship">Christliche Musik &amp; Lobpreis</string>
 </resources>

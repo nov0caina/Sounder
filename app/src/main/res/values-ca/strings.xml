@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Un reproductor de música simple i racional per a Android.</string>
+    <string name="info_app_desc">És la teva música.</string>
     <string name="lbl_indexer">Càrrega de música</string>
     <string name="lbl_indexing">S\'està carregant la música</string>
     <string name="lbl_observing">S\'està supervisant la fonoteca</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">Afegeix a la llista de reproducció</string>
     <string name="lbl_artist_details">Vés a l\'artista</string>
     <string name="lbl_album_details">Vés a l\'àlbum</string>
-    <string name="lbl_song_detail">Mostra les propietats</string>
+    <string name="lbl_song_detail">Mostra els detalls</string>
     <string name="lbl_parent_detail">Mostra</string>
     <string name="lbl_share">Comparteix</string>
-    <string name="lbl_props">Propietats de la cançó</string>
+    <string name="lbl_props">Detalls de la cançó</string>
     <string name="lbl_path">Camí</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_size">Mida</string>
@@ -542,4 +542,36 @@ AVÍS: Aneu amb compte en controlar aquest servei; si el tanqueu i després prov
     <string name="header_more_songs">Més cançons</string>
     <string name="desc_navigate_back">Torna enrere</string>
     <string name="desc_song_options">Opcions de la cançó</string>
+    <string name="set_genre_christian">Categoria Música Cristiana i Lloança</string>
+    <string name="set_genre_christian_desc">Mostra Música Cristiana i Lloança a les categories d\'exploració de cerca</string>
+    <string name="set_genre_kpop">Categoria K-Pop</string>
+    <string name="set_genre_kpop_desc">Mostra K-Pop a les categories d\'exploració de cerca</string>
+    <string name="btn_view_grid">Graella</string>
+    <string name="btn_view_carousel">Carrusel</string>
+    <string name="btn_show_more">Mostra\'n més</string>
+    <string name="lbl_go_to_online_album">Vés a l\'àlbum en línia</string>
+    <string name="set_privacy_insights_category">Privacitat i estadístiques locals</string>
+    <string name="set_local_listening_insights">Activa les estadístiques locals i personalització</string>
+    <string name="set_local_listening_insights_desc">Analitza els hàbits només al dispositiu per personalitzar l\'accés ràpid i recomanacions sense perfils externs</string>
+    <string name="set_clear_listening_history">Esborra l\'historial d\'estadístiques locals</string>
+    <string name="set_clear_listening_history_desc">Suprimeix tots els registres de reproducció locals i restableix els suggeriments</string>
+    <string name="msg_confirm_clear_listening_history">Vols suprimir totes les estadístiques locals i restablir les recomanacions?</string>
+    <string name="msg_listening_history_cleared">Historial d\'estadístiques locals esborrat</string>
+    <string name="fmt_because_you_listen_to">Perquè escoltes %1$s</string>
+    <string name="header_because_you_listen_sub">Mescles anònimes basades en la teva activitat local</string>
+    <string name="fmt_monthly_listening_hours">Has escoltat %1$d h %2$d min de música aquest mes</string>
+    <string name="fmt_monthly_listening_minutes">Has escoltat %1$d min de música aquest mes</string>
+    <string name="header_favorite_artists">Els teus artistes</string>
+    <string name="header_trending_albums_for_you">Àlbums en tendència per a tu</string>
+    <string name="set_show_monthly_listening_banner">Mostra el bàner de minuts escoltats</string>
+    <string name="set_show_monthly_listening_banner_desc">Mostra el resum mensual de temps escoltat a la part superior de La teva biblioteca</string>
+    <string name="msg_download_deleted">Descàrrega eliminada del dispositiu</string>
+    <string name="dialog_download_cellular_title">Vols baixar amb dades mòbils?</string>
+    <string name="dialog_download_cellular_message">Les baixades només per Wi-Fi estan activades. Vols baixar aquesta cançó ara amb dades mòbils o esperar una connexió Wi-Fi?</string>
+    <string name="btn_download_now">Baixa ara</string>
+    <string name="btn_wait_for_wifi">Espera Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Baixada en cua (esperant Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Baixada en cua</string>
+    <string name="dialog_download_waiting_message">Aquesta cançó està esperant per baixar-se. Pots baixar-la ara amb dades mòbils o treure-la de la cua.</string>
+    <string name="genre_christian_worship">Música Cristiana i Lloança</string>
 </resources>

@@ -68,7 +68,7 @@
         <item quantity="other">%d de albume</item>
     </plurals>
     <string name="fmt_lib_total_duration">Durată totală: %s</string>
-    <string name="info_app_desc">Un player muzical simplu și rațional pentru Android.</string>
+    <string name="info_app_desc">Este muzica ta.</string>
     <string name="lbl_album_live">Album live</string>
     <string name="lbl_album_remix">Album cu remixuri</string>
     <string name="lbl_single_live">Single live</string>
@@ -91,7 +91,7 @@
     <string name="lbl_ok">OK</string>
     <string name="lbl_cancel">Anulează</string>
     <string name="lbl_disc">Disc</string>
-    <string name="lbl_song_detail">Afișează proprietățile</string>
+    <string name="lbl_song_detail">Vezi detalii</string>
     <string name="lbl_date">Dată</string>
     <string name="lbl_mix">Mix</string>
     <string name="lbl_mixes">Mixuri</string>
@@ -102,7 +102,7 @@
     <string name="lbl_bitrate">Bit rate</string>
     <string name="lbl_date_added">Data adăugării</string>
     <string name="lbl_format">Format</string>
-    <string name="lbl_props">Proprietățile cântecului</string>
+    <string name="lbl_props">Detalii melodie</string>
     <string name="lbl_shuffle_shortcut_short">Aleator</string>
     <string name="lbl_sample_rate">Frecvența de eșantionare</string>
     <string name="lbl_save">Salvează</string>
@@ -472,4 +472,36 @@
     <string name="header_more_songs">Mai multe melodii</string>
     <string name="desc_navigate_back">Înapoi</string>
     <string name="desc_song_options">Opțiuni melodie</string>
+    <string name="set_genre_christian">Categoria Muzică Creștină și Închinare</string>
+    <string name="set_genre_christian_desc">Afișează Muzică Creștină și Închinare în categoriile de explorare ale căutării</string>
+    <string name="set_genre_kpop">Categoria K-Pop</string>
+    <string name="set_genre_kpop_desc">Afișează K-Pop în categoriile de explorare ale căutării</string>
+    <string name="btn_view_grid">Grilă</string>
+    <string name="btn_view_carousel">Carusel</string>
+    <string name="btn_show_more">Afișează mai mult</string>
+    <string name="lbl_go_to_online_album">Accesează albumul online</string>
+    <string name="set_privacy_insights_category">Confidențialitate și statistici locale</string>
+    <string name="set_local_listening_insights">Activează statisticile locale și personalizarea</string>
+    <string name="set_local_listening_insights_desc">Analizează obiceiurile de ascultare exclusiv pe dispozitiv fără profiluri externe</string>
+    <string name="set_clear_listening_history">Șterge istoricul local de ascultare</string>
+    <string name="set_clear_listening_history_desc">Șterge toate înregistrările locale și resetează recomandările</string>
+    <string name="msg_confirm_clear_listening_history">Ștergi toate statisticile locale și resetezi recomandările personalizate?</string>
+    <string name="msg_listening_history_cleared">Istoricul local de ascultare a fost șters</string>
+    <string name="fmt_because_you_listen_to">Pentru că asculți %1$s</string>
+    <string name="header_because_you_listen_sub">Mixuri anonime bazate pe activitatea ta locală</string>
+    <string name="fmt_monthly_listening_hours">Ai ascultat %1$d h %2$d min de muzică luna aceasta</string>
+    <string name="fmt_monthly_listening_minutes">Ai ascultat %1$d min de muzică luna aceasta</string>
+    <string name="header_favorite_artists">Artiștii tăi</string>
+    <string name="header_trending_albums_for_you">Albume în tendințe pentru tine</string>
+    <string name="set_show_monthly_listening_banner">Afișează bannerul de ascultare lunară</string>
+    <string name="set_show_monthly_listening_banner_desc">Afișează timpul total de ascultare din această lună în partea de sus a bibliotecii tale</string>
+    <string name="msg_download_deleted">Descărcare ștearsă de pe dispozitiv</string>
+    <string name="dialog_download_cellular_title">Descărcați cu datele mobile?</string>
+    <string name="dialog_download_cellular_message">Descărcarea doar prin Wi-Fi este activată. Doriți să descărcați această melodie acum folosind datele mobile sau să așteptați o conexiune Wi-Fi?</string>
+    <string name="btn_download_now">Descarcă acum</string>
+    <string name="btn_wait_for_wifi">Așteaptă Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Descărcare în coadă (se așteaptă Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Descărcare în coadă</string>
+    <string name="dialog_download_waiting_message">Această melodie așteaptă descărcarea. O puteți descărca acum folosind datele mobile sau o puteți elimina din coadă.</string>
+    <string name="genre_christian_worship">Muzică Creștină și Închinare</string>
 </resources>

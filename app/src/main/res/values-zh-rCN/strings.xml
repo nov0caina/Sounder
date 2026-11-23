@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns0="http://schemas.android.com/tools" ns0:ignore="MissingTranslation">
-    <string name="info_app_desc">一款简洁、克制的 Android 音乐播放器。</string>
+    <string name="info_app_desc">这是你的音乐。</string>
     <string name="lng_widget">查看并控制音乐播放</string>
     <string name="lbl_retry">重试</string>
     <string name="lbl_genres">流派</string>
@@ -147,8 +147,8 @@
     <string name="lbl_duration">时长</string>
     <string name="lbl_song_count">歌曲计数</string>
     <string name="lbl_track">音轨</string>
-    <string name="lbl_song_detail">查看属性</string>
-    <string name="lbl_props">曲目属性</string>
+    <string name="lbl_song_detail">查看详情</string>
+    <string name="lbl_props">曲目详情</string>
     <string name="lbl_format">格式</string>
     <string name="lbl_size">大小</string>
     <string name="lbl_bitrate">比特率</string>
@@ -534,4 +534,36 @@
     <string name="header_more_songs">更多歌曲</string>
     <string name="desc_navigate_back">返回</string>
     <string name="desc_song_options">歌曲选项</string>
+    <string name="set_genre_christian">基督教与敬拜音乐 分类</string>
+    <string name="set_genre_christian_desc">在搜索探索分类中显示 基督教与敬拜音乐</string>
+    <string name="set_genre_kpop">K-Pop 分类</string>
+    <string name="set_genre_kpop_desc">在搜索探索分类中显示 K-Pop</string>
+    <string name="btn_view_grid">网格</string>
+    <string name="btn_view_carousel">轮播</string>
+    <string name="btn_show_more">显示更多</string>
+    <string name="lbl_go_to_online_album">前往在线专辑</string>
+    <string name="set_privacy_insights_category">本地隐私与统计</string>
+    <string name="set_local_listening_insights">启用本地统计与个性化</string>
+    <string name="set_local_listening_insights_desc">仅在您的设备上分析播放习惯，无需外部账号或配置文件即可优化推荐</string>
+    <string name="set_clear_listening_history">清除本地收听记录</string>
+    <string name="set_clear_listening_history_desc">删除所有本地播放记录并重置个性化推荐</string>
+    <string name="msg_confirm_clear_listening_history">删除所有本地存储的收听统计并重置个性化推荐吗？</string>
+    <string name="msg_listening_history_cleared">已清除本地收听记录</string>
+    <string name="fmt_because_you_listen_to">因为您常听 %1$s</string>
+    <string name="header_because_you_listen_sub">根据您的本地收听习惯生成的匿名混音</string>
+    <string name="fmt_monthly_listening_hours">本月已收听音乐 %1$d 小时 %2$d 分钟</string>
+    <string name="fmt_monthly_listening_minutes">本月已收听音乐 %1$d 分钟</string>
+    <string name="header_favorite_artists">你的艺人</string>
+    <string name="header_trending_albums_for_you">为您推荐的热门专辑</string>
+    <string name="set_show_monthly_listening_banner">显示每月收听横幅</string>
+    <string name="set_show_monthly_listening_banner_desc">在“您的媒体库”顶部显示本月的收听总时长</string>
+    <string name="msg_download_deleted">已从设备中移除下载内容</string>
+    <string name="dialog_download_cellular_title">使用移动数据下载？</string>
+    <string name="dialog_download_cellular_message">已启用仅通过 Wi-Fi 下载。您想立即使用移动数据下载此歌曲，还是等待 Wi-Fi 连接？</string>
+    <string name="btn_download_now">立即下载</string>
+    <string name="btn_wait_for_wifi">等待 Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">下载已加入队列（等待 Wi-Fi）：%1$s</string>
+    <string name="dialog_download_waiting_title">下载队列中</string>
+    <string name="dialog_download_waiting_message">此歌曲正在等待下载。您可以立即使用移动数据下载或将其从队列中移除。</string>
+    <string name="genre_christian_worship">基督教与敬拜音乐</string>
 </resources>

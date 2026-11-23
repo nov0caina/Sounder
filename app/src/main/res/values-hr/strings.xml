@@ -39,7 +39,7 @@
     <string name="lbl_shuffle">Promiješaj</string>
     <string name="lbl_queue">Redoslijed</string>
     <string name="lbl_play_next">Reproduciraj sljedeću</string>
-    <string name="lbl_props">Svojstva pjesme</string>
+    <string name="lbl_props">Detalji pjesme</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_size">Veličina</string>
     <string name="lbl_bitrate">Brzina prijenosa</string>
@@ -147,7 +147,7 @@
         <item quantity="few">%d albuma</item>
         <item quantity="other">%d albuma</item>
     </plurals>
-    <string name="info_app_desc">Jednostavan i racionalan izvođač glazbe za Android.</string>
+    <string name="info_app_desc">To je tvoja glazba.</string>
     <string name="lbl_retry">Pokušaj ponovo</string>
     <string name="lbl_indexer">Učitavanje glazbe</string>
     <string name="lng_widget">Prikaži i upravljaj reprodukcijom glazbe</string>
@@ -160,7 +160,7 @@
     <string name="lbl_filter_all">Sve</string>
     <string name="lbl_queue_add">Dodaj u redoslijed</string>
     <string name="lng_queue_added">Dodano u redoslijed izvođenja</string>
-    <string name="lbl_song_detail">Pogledaj svojstva</string>
+    <string name="lbl_song_detail">Pogledaj detalje</string>
     <string name="lbl_artist_details">Idi na izvođača</string>
     <string name="lbl_album_details">Idi na album</string>
     <string name="set_keep_shuffle_desc">Ostavi miješanje omogućeno kada se druga pjesma reproducira</string>
@@ -542,4 +542,36 @@ UPOZORENJE: Oprez pri upravljanju ovom uslugom. Ako je zatvoriš i zatim je poku
     <string name="header_more_songs">Više pjesama</string>
     <string name="desc_navigate_back">Natrag</string>
     <string name="desc_song_options">Opcije pjesme</string>
+    <string name="set_genre_christian">Kategorija Kršćanska glazba i slavljenje</string>
+    <string name="set_genre_christian_desc">Prikaži Kršćanska glazba i slavljenje u kategorijama pretraživanja</string>
+    <string name="set_genre_kpop">Kategorija K-Pop</string>
+    <string name="set_genre_kpop_desc">Prikaži K-Pop u kategorijama pretraživanja</string>
+    <string name="btn_view_grid">Rešetka</string>
+    <string name="btn_view_carousel">Vrtuljak</string>
+    <string name="btn_show_more">Prikaži više</string>
+    <string name="lbl_go_to_online_album">Idi na online album</string>
+    <string name="set_privacy_insights_category">Lokalna privatnost i statistika</string>
+    <string name="set_local_listening_insights">Omogući lokalnu statistiku i personalizaciju</string>
+    <string name="set_local_listening_insights_desc">Analizira navike slušanja isključivo na uređaju bez udaljenih profila</string>
+    <string name="set_clear_listening_history">Obriši lokalnu povijest slušanja</string>
+    <string name="set_clear_listening_history_desc">Izbriši sve lokalno spremljene zapise reprodukcije i poništi preporuke</string>
+    <string name="msg_confirm_clear_listening_history">Izbrisati svu lokalnu statistiku slušanja i poništiti personalizirane preporuke?</string>
+    <string name="msg_listening_history_cleared">Lokalna povijest slušanja obrisana</string>
+    <string name="fmt_because_you_listen_to">Jer slušate %1$s</string>
+    <string name="header_because_you_listen_sub">Anonimni miksevi temeljeni na vašoj lokalnoj aktivnosti</string>
+    <string name="fmt_monthly_listening_hours">Ovaj mjesec slušali ste glazbu %1$d h %2$d min</string>
+    <string name="fmt_monthly_listening_minutes">Ovaj mjesec slušali ste glazbu %1$d min</string>
+    <string name="header_favorite_artists">Vaši izvođači</string>
+    <string name="header_trending_albums_for_you">Popularni albumi za vas</string>
+    <string name="set_show_monthly_listening_banner">Prikaži mjesečni natpis slušanja</string>
+    <string name="set_show_monthly_listening_banner_desc">Prikazuje ukupno mjesečno vrijeme slušanja na vrhu vaše knjižnice</string>
+    <string name="msg_download_deleted">Preuzimanje uklonjeno s uređaja</string>
+    <string name="dialog_download_cellular_title">Preuzeti putem mobilnih podataka?</string>
+    <string name="dialog_download_cellular_message">Omogućeno je preuzimanje samo putem Wi-Fi mreže. Želite li preuzeti ovu pjesmu sada putem mobilnih podataka ili pričekati Wi-Fi vezu?</string>
+    <string name="btn_download_now">Preuzmi sada</string>
+    <string name="btn_wait_for_wifi">Čekaj Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Preuzimanje na čekanju (čeka se Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Preuzimanje na čekanju</string>
+    <string name="dialog_download_waiting_message">Ova pjesma čeka na preuzimanje. Možete je preuzeti sada putem mobilnih podataka ili ukloniti iz reda čekanja.</string>
+    <string name="genre_christian_worship">Kršćanska glazba i slavljenje</string>
 </resources>

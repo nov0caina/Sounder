@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="info_app_desc">Tā ir tava mūzika.</string>
     <string name="lbl_go_to_online_profile">Pāriet uz tiešsaistes profilu</string>
     <string name="err_artist_not_found_online">Izpildītāja tiešsaistes profils nav atrasts</string>
 
@@ -233,4 +234,38 @@
     <string name="header_more_songs">Vairāk dziesmu</string>
     <string name="desc_navigate_back">Atpakaļ</string>
     <string name="desc_song_options">Dziesmas opcijas</string>
+    <string name="set_genre_christian">Kategorija Kristīgā mūzika un pielūgsme</string>
+    <string name="set_genre_christian_desc">Rādīt Kristīgā mūzika un pielūgsme meklēšanas izpētes kategorijās</string>
+    <string name="set_genre_kpop">Kategorija K-Pop</string>
+    <string name="set_genre_kpop_desc">Rādīt K-Pop meklēšanas izpētes kategorijās</string>
+    <string name="lbl_song_detail">Skatīt informāciju</string>
+    <string name="lbl_props">Dziesmas informācija</string>
+    <string name="btn_view_grid">Režģis</string>
+    <string name="btn_view_carousel">Karuselis</string>
+    <string name="btn_show_more">Rādīt vairāk</string>
+    <string name="lbl_go_to_online_album">Pāriet uz tiešsaistes albumu</string>
+    <string name="set_privacy_insights_category">Lokālā privātums un statistika</string>
+    <string name="set_local_listening_insights">Iespējot lokālo statistiku un personalizāciju</string>
+    <string name="set_local_listening_insights_desc">Analizē klausīšanās paradumus tikai ierīcē bez ārējiem profiliem</string>
+    <string name="set_clear_listening_history">Notīrīt lokālo klausīšanās vēsturi</string>
+    <string name="set_clear_listening_history_desc">Dzēst visus lokālos atskaņošanas ierakstus un atiestatīt ieteikumus</string>
+    <string name="msg_confirm_clear_listening_history">Dzēst visu lokālo klausīšanās statistiku un atiestatīt ieteikumus?</string>
+    <string name="msg_listening_history_cleared">Lokālā klausīšanās vēsture notīrīta</string>
+    <string name="fmt_because_you_listen_to">Tāpēc ka klausāties %1$s</string>
+    <string name="header_because_you_listen_sub">Anonīmi miksi pēc jūsu lokālās aktivitātes</string>
+    <string name="fmt_monthly_listening_hours">Šomēnes klausījāties mūziku %1$d st. %2$d min.</string>
+    <string name="fmt_monthly_listening_minutes">Šomēnes klausījāties mūziku %1$d min.</string>
+    <string name="header_favorite_artists">Jūsu izpildītāji</string>
+    <string name="header_trending_albums_for_you">Populāri albumi jums</string>
+    <string name="set_show_monthly_listening_banner">Rādīt ikmēneša klausīšanās joslu</string>
+    <string name="set_show_monthly_listening_banner_desc">Parāda jūsu kopējo mēneša klausīšanās laiku bibliotēkas augšdaļā</string>
+    <string name="msg_download_deleted">Lejupielāde noņemta no ierīces</string>
+    <string name="dialog_download_cellular_title">Lejupielādēt ar mobilajiem datiem?</string>
+    <string name="dialog_download_cellular_message">Ir iespējota lejupielāde tikai Wi-Fi tīklā. Vai vēlaties lejupielādēt šo dziesmu tūlīt ar mobilajiem datiem vai gaidīt Wi-Fi savienojumu?</string>
+    <string name="btn_download_now">Lejupielādēt tūlīt</string>
+    <string name="btn_wait_for_wifi">Gaidīt Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Lejupielāde rindā (gaida Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Lejupielāde rindā</string>
+    <string name="dialog_download_waiting_message">Šī dziesma gaida lejupielādi. Varat to lejupielādēt tūlīt ar mobilajiem datiem vai noņemt no rindas.</string>
+    <string name="genre_christian_worship">Kristīgā mūzika un pielūgsme</string>
 </resources>

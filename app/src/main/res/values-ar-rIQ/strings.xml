@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!-- Info namespace | App labels -->
-    <string name="info_app_desc">مشغل موسيقى بسيط ومعقول للأندرويد.</string>
+    <string name="info_app_desc">إنها موسيقاك.</string>
     <string name="lng_widget">عرض وتحكم بشتغيل الموسيقى</string>
     <!-- Label Namespace | Static Labels -->
     <string name="lbl_retry">إعادة المحاولة</string>
@@ -137,13 +137,13 @@
     <string name="lbl_bitrate">معدل البت</string>
     <string name="lbl_compilation_live">تجميع مباشر</string>
     <string name="lbl_compilation_remix">تجميعات ريمكس</string>
-    <string name="lbl_props">خصائص الاغنية</string>
+    <string name="lbl_props">تفاصيل الأغنية</string>
     <string name="lbl_sample_rate">معدل العينة</string>
     <string name="lbl_shuffle_shortcut_short">عشوائي</string>
     <string name="lbl_shuffle_shortcut_long">تشغيل عشوائي للكل</string>
     <string name="lbl_ok">حسنا</string>
     <string name="lbl_sort_dsc">تنازلي</string>
-    <string name="lbl_song_detail">عرض الخصائص</string>
+    <string name="lbl_song_detail">عرض التفاصيل</string>
     <string name="lbl_live_group">مباشر</string>
     <string name="lbl_reset">اعادة ضبط</string>
     <string name="lng_indexing">يتم تحمل مكتبتك الموسيقية …</string>
@@ -510,4 +510,36 @@
     <string name="header_more_songs">المزيد من الأغاني</string>
     <string name="desc_navigate_back">الرجوع للخلف</string>
     <string name="desc_song_options">خيارات الأغنية</string>
+    <string name="set_genre_christian">فئة الموسيقى المسيحية والعبادة</string>
+    <string name="set_genre_christian_desc">عرض فئة الموسيقى المسيحية والعبادة في استكشاف البحث</string>
+    <string name="set_genre_kpop">فئة K-Pop</string>
+    <string name="set_genre_kpop_desc">عرض فئة K-Pop في استكشاف البحث</string>
+    <string name="btn_view_grid">شبكة</string>
+    <string name="btn_view_carousel">شريط</string>
+    <string name="btn_show_more">عرض المزيد</string>
+    <string name="lbl_go_to_online_album">الانتقال إلى الألبوم عبر الإنترنت</string>
+    <string name="set_privacy_insights_category">الخصوصية والإحصائيات المحلية</string>
+    <string name="set_local_listening_insights">تفعيل الإحصائيات المحلية والتخصيص</string>
+    <string name="set_local_listening_insights_desc">تحليل عادات الاستماع محلياً على جهازك لتخصيص الوصول السريع والتوصيات بدون ملفات تعريف خارجية</string>
+    <string name="set_clear_listening_history">مسح سجل الاستماع المحلي</string>
+    <string name="set_clear_listening_history_desc">حذف جميع أحداث التشغيل المسجلة محلياً وإعادة ضبط الاقتراحات</string>
+    <string name="msg_confirm_clear_listening_history">هل تريد حذف جميع إحصائيات الاستماع المحلية وإعادة تعيين التوصيات المخصصة؟</string>
+    <string name="msg_listening_history_cleared">تم مسح سجل الاستماع المحلي</string>
+    <string name="fmt_because_you_listen_to">لأنك تستمع إلى %1$s</string>
+    <string name="header_because_you_listen_sub">مختارات مجهولة بناءً على نشاطك المحلي</string>
+    <string name="fmt_monthly_listening_hours">استمعت إلى %1$d س %2$d د من الموسيقى هذا الشهر</string>
+    <string name="fmt_monthly_listening_minutes">استمعت إلى %1$d دقيقة من الموسيقى هذا الشهر</string>
+    <string name="header_favorite_artists">فنانوك</string>
+    <string name="header_trending_albums_for_you">الألبومات الرائجة لك</string>
+    <string name="set_show_monthly_listening_banner">إظهار بانر وقت الاستماع الشهري</string>
+    <string name="set_show_monthly_listening_banner_desc">يعرض إجمالي وقت الاستماع الشهري أعلى مكتبتك</string>
+    <string name="msg_download_deleted">تمت إزالة التنزيل من الجهاز</string>
+    <string name="dialog_download_cellular_title">التنزيل باستخدام بيانات الجوال؟</string>
+    <string name="dialog_download_cellular_message">تم تفعيل التنزيل عبر Wi-Fi فقط. هل تريد تنزيل هذه الأغنية الآن باستخدام بيانات الجوال أم الانتظار للاتصال بشبكة Wi-Fi؟</string>
+    <string name="btn_download_now">تنزيل الآن</string>
+    <string name="btn_wait_for_wifi">انتظار Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">التنزيل في قائمة الانتظار (بانتظار Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">التنزيل في قائمة الانتظار</string>
+    <string name="dialog_download_waiting_message">هذه الأغنية بانتظار التنزيل. يمكنك تنزيلها الآن باستخدام بيانات الجوال أو إزالتها من قائمة الانتظار.</string>
+    <string name="genre_christian_worship">الموسيقى المسيحية والعبادة</string>
 </resources>

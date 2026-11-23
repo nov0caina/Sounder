@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns0="http://schemas.android.com/tools" ns0:ignore="MissingTranslation">
-    <string name="info_app_desc">Простой и рациональный музыкальный проигрыватель.</string>
+    <string name="info_app_desc">Это твоя музыка.</string>
     <string name="lng_widget">Настройки воспроизведения</string>
     <string name="lbl_retry">Повторить попытку</string>
     <string name="lbl_genres">Жанры</string>
@@ -133,8 +133,8 @@
     <string name="lbl_track">Трек</string>
     <string name="lbl_cancel">Отмена</string>
     <string name="set_pre_amp_warning">Внимание: Изменение предусиления на большое положительное значение может привести к появлению искажений на некоторых звуковых дорожках.</string>
-    <string name="lbl_song_detail">Сведения</string>
-    <string name="lbl_props">Свойства трека</string>
+    <string name="lbl_song_detail">Посмотреть детали</string>
+    <string name="lbl_props">Детали трека</string>
     <string name="lbl_format">Формат</string>
     <string name="lbl_size">Размер</string>
     <string name="lbl_sample_rate">Частота дискретизации</string>
@@ -546,4 +546,36 @@
     <string name="header_more_songs">Ещё треки</string>
     <string name="desc_navigate_back">Назад</string>
     <string name="desc_song_options">Параметры трека</string>
+    <string name="set_genre_christian">Категория Христианская музыка и прославление</string>
+    <string name="set_genre_christian_desc">Показывать Христианская музыка и прославление в категориях поиска</string>
+    <string name="set_genre_kpop">Категория K-Pop</string>
+    <string name="set_genre_kpop_desc">Показывать K-Pop в категориях поиска</string>
+    <string name="btn_view_grid">Сетка</string>
+    <string name="btn_view_carousel">Карусель</string>
+    <string name="btn_show_more">Показать больше</string>
+    <string name="lbl_go_to_online_album">Перейти к онлайн-альбому</string>
+    <string name="set_privacy_insights_category">Локальная приватность и статистика</string>
+    <string name="set_local_listening_insights">Включить локальную статистику и персонализацию</string>
+    <string name="set_local_listening_insights_desc">Анализирует предпочтения только на устройстве без облачных профилей</string>
+    <string name="set_clear_listening_history">Очистить локальную историю прослушивания</string>
+    <string name="set_clear_listening_history_desc">Удалить все локальные записи воспроизведения и сбросить рекомендации</string>
+    <string name="msg_confirm_clear_listening_history">Удалить всю локальную статистику прослушивания и сбросить рекомендации?</string>
+    <string name="msg_listening_history_cleared">Локальная история прослушивания очищена</string>
+    <string name="fmt_because_you_listen_to">Потому что вы слушаете %1$s</string>
+    <string name="header_because_you_listen_sub">Анонимные миксы на основе вашей локальной активности</string>
+    <string name="fmt_monthly_listening_hours">Вы слушали музыку %1$d ч %2$d мин в этом месяце</string>
+    <string name="fmt_monthly_listening_minutes">Вы слушали музыку %1$d мин в этом месяце</string>
+    <string name="header_favorite_artists">Ваши исполнители</string>
+    <string name="header_trending_albums_for_you">Популярные альбомы для вас</string>
+    <string name="set_show_monthly_listening_banner">Показывать баннер времени прослушивания</string>
+    <string name="set_show_monthly_listening_banner_desc">Отображает общее время прослушивания за месяц в верхней части вашей медиатеки</string>
+    <string name="msg_download_deleted">Загрузка удалена с устройства</string>
+    <string name="dialog_download_cellular_title">Скачать через мобильную сеть?</string>
+    <string name="dialog_download_cellular_message">Включено скачивание только по Wi-Fi. Скачать этот трек сейчас через мобильную сеть или дождаться подключения к Wi-Fi?</string>
+    <string name="btn_download_now">Скачать сейчас</string>
+    <string name="btn_wait_for_wifi">Ждать Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Загрузка в очереди (ожидание Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Загрузка в очереди</string>
+    <string name="dialog_download_waiting_message">Этот трек ожидает загрузки. Вы можете скачать его сейчас через мобильную сеть или удалить из очереди.</string>
+    <string name="genre_christian_worship">Христианская музыка и прославление</string>
 </resources>

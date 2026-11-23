@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="info_app_desc">Pemain muzik yang mudah dan praktikal untuk Android.</string>
+    <string name="info_app_desc">Ini muzik anda.</string>
     <string name="lbl_indexer">Muzik sedang dimuatkan</string>
     <string name="lbl_indexing">Memuatkan muzik</string>
     <string name="lbl_observing">Memantau pustaka muzik</string>
@@ -78,10 +78,10 @@
     <string name="lbl_playlist_add">Tambah ke senarai main</string>
     <string name="lbl_artist_details">Pergi ke artis</string>
     <string name="lbl_album_details">Pergi ke album</string>
-    <string name="lbl_song_detail">Lihat maklumat</string>
+    <string name="lbl_song_detail">Lihat butiran</string>
     <string name="lbl_parent_detail">Lihat</string>
     <string name="lbl_share">Kongsi</string>
-    <string name="lbl_props">Maklumat lagu</string>
+    <string name="lbl_props">Butiran lagu</string>
     <string name="lbl_path">Laluan</string>
     <string name="lbl_format">Format</string>
     <string name="lbl_size">Saiz</string>
@@ -534,4 +534,36 @@ AMARAN: Berhati-hati mengawal perkhidmatan ini, jika anda menutupnya dan cuba me
     <string name="header_more_songs">Lagi lagu</string>
     <string name="desc_navigate_back">Kembali</string>
     <string name="desc_song_options">Pilihan lagu</string>
+    <string name="set_genre_christian">Kategori Muzik Kristian &amp; Penyembahan</string>
+    <string name="set_genre_christian_desc">Paparkan Muzik Kristian &amp; Penyembahan dalam kategori teroka carian</string>
+    <string name="set_genre_kpop">Kategori K-Pop</string>
+    <string name="set_genre_kpop_desc">Paparkan K-Pop dalam kategori teroka carian</string>
+    <string name="btn_view_grid">Grid</string>
+    <string name="btn_view_carousel">Karusel</string>
+    <string name="btn_show_more">Tunjukkan lagi</string>
+    <string name="lbl_go_to_online_album">Pergi ke album dalam talian</string>
+    <string name="set_privacy_insights_category">Privasi &amp; Statistik Setempat</string>
+    <string name="set_local_listening_insights">Dayakan statistik setempat dan pemperibadian</string>
+    <string name="set_local_listening_insights_desc">Menganalisis tabiat mendengar hanya pada peranti anda tanpa profil luaran</string>
+    <string name="set_clear_listening_history">Kosongkan sejarah mendengar setempat</string>
+    <string name="set_clear_listening_history_desc">Padam semua rekod main balik setempat dan tetapkan semula cadangan</string>
+    <string name="msg_confirm_clear_listening_history">Padam semua statistik mendengar setempat dan tetapkan semula cadangan?</string>
+    <string name="msg_listening_history_cleared">Sejarah mendengar setempat telah dikosongkan</string>
+    <string name="fmt_because_you_listen_to">Kerana anda mendengar %1$s</string>
+    <string name="header_because_you_listen_sub">Campuran tanpa nama berdasarkan aktiviti setempat anda</string>
+    <string name="fmt_monthly_listening_hours">Anda telah mendengar muzik %1$d j %2$d m bulan ini</string>
+    <string name="fmt_monthly_listening_minutes">Anda telah mendengar muzik %1$d min bulan ini</string>
+    <string name="header_favorite_artists">Artis anda</string>
+    <string name="header_trending_albums_for_you">Album Sohor Kini untuk Anda</string>
+    <string name="set_show_monthly_listening_banner">Tunjukkan sepanduk masa mendengar bulanan</string>
+    <string name="set_show_monthly_listening_banner_desc">Memaparkan jumlah masa mendengar bulanan anda di bahagian atas Pustaka Anda</string>
+    <string name="msg_download_deleted">Muat turun dialih keluar daripada peranti</string>
+    <string name="dialog_download_cellular_title">Muat turun menggunakan data mudah alih?</string>
+    <string name="dialog_download_cellular_message">Muat turun Wi-Fi sahaja didayakan. Adakah anda mahu memuat turun lagu ini sekarang menggunakan data mudah alih atau menunggu sambungan Wi-Fi?</string>
+    <string name="btn_download_now">Muat turun sekarang</string>
+    <string name="btn_wait_for_wifi">Tunggu Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Muat turun dalam giliran (menunggu Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Muat turun dalam giliran</string>
+    <string name="dialog_download_waiting_message">Lagu ini sedang menunggu untuk dimuat turun. Anda boleh memuat turunnya sekarang menggunakan data mudah alih atau membuangnya daripada giliran.</string>
+    <string name="genre_christian_worship">Muzik Kristian &amp; Penyembahan</string>
 </resources>

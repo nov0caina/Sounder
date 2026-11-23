@@ -3,7 +3,7 @@
     <!-- Info namespace | App labels -->
     <eat-comment />
 
-    <string name="info_app_desc">A simple, rational music player for android.</string>
+    <string name="info_app_desc">It\'s your music.</string>
 
     <!-- Label Namespace | Static Labels -->
     <eat-comment />
@@ -135,11 +135,12 @@
     <string name="lbl_artist_details">Go to artist</string>
     <string name="lbl_go_to_online_profile">Go to online profile</string>
     <string name="lbl_album_details">Go to album</string>
-    <string name="lbl_song_detail">View properties</string>
+    <string name="lbl_go_to_online_album">Go to online album</string>
+    <string name="lbl_song_detail">View details</string>
     <string name="lbl_parent_detail">View</string>
     <string name="lbl_share">Share</string>
 
-    <string name="lbl_props">Song properties</string>
+    <string name="lbl_props">Song details</string>
     <string name="lbl_path">Path</string>
     <!-- As in audio format -->
     <string name="lbl_format">Format</string>
@@ -289,6 +290,10 @@
     <string name="set_intelligent_sorting_desc">Correctly sort names that begin with numbers or words like \"the\" (works best with english-language music)</string>
     <string name="set_hide_collaborators">Hide collaborators</string>
     <string name="set_hide_collaborators_desc">Only show artists that are directly credited on an album (works best on well-tagged libraries)</string>
+    <string name="set_genre_christian">Christian &amp; Worship category</string>
+    <string name="set_genre_christian_desc">Show Christian &amp; Worship in search explore categories</string>
+    <string name="set_genre_kpop">K-Pop category</string>
+    <string name="set_genre_kpop_desc">Show K-Pop in search explore categories</string>
     <string name="set_images">Images</string>
     <string name="set_cover_mode">Album covers</string>
     <string name="set_cover_mode_off">Off</string>
@@ -595,6 +600,7 @@
     <string name="header_trending_tracks">Trending Tracks</string>
     <string name="header_trending_tracks_sub">The most played hits right now</string>
     <string name="header_trending_albums">Trending Albums</string>
+    <string name="header_trending_albums_for_you">Trending Albums for You</string>
     <string name="header_trending_albums_sub">Featured releases and popular records</string>
     <string name="header_popular_artists">Trending Artists</string>
     <string name="header_popular_artists_sub">Today\'s top played musicians</string>
@@ -693,4 +699,32 @@
     <string name="header_more_songs">More songs</string>
     <string name="desc_navigate_back">Navigate back</string>
     <string name="desc_song_options">Song options</string>
+    <string name="btn_view_grid">Grid</string>
+    <string name="btn_view_carousel">Carousel</string>
+    <string name="btn_show_more">Show more</string>
+
+    <!-- On-Device Listening Insights & Personalization -->
+    <string name="set_privacy_insights_category">Local Privacy &amp; Insights</string>
+    <string name="set_local_listening_insights">Enable local statistics and personalization</string>
+    <string name="set_local_listening_insights_desc">Analyze playback habits strictly on your device to personalize Quick Access and recommendations without remote profiles</string>
+    <string name="set_show_monthly_listening_banner">Show monthly listening banner</string>
+    <string name="set_show_monthly_listening_banner_desc">Display your total monthly listening time at the top of Your Library</string>
+    <string name="set_clear_listening_history">Clear local listening history</string>
+    <string name="set_clear_listening_history_desc">Delete all locally recorded playback events and reset personalized suggestions</string>
+    <string name="msg_confirm_clear_listening_history">Delete all locally stored listening statistics and reset your personalized home recommendations?</string>
+    <string name="msg_listening_history_cleared">Local listening history cleared</string>
+    <string name="fmt_because_you_listen_to">Because you listen to %1$s</string>
+    <string name="header_because_you_listen_sub">Anonymous mixes curated from your local playback habits</string>
+    <string name="fmt_monthly_listening_hours">You\'ve listened to %1$d h %2$d m of music this month</string>
+    <string name="fmt_monthly_listening_minutes">You\'ve listened to %1$d min of music this month</string>
+    <string name="header_favorite_artists">Your artists</string>
+    <string name="msg_download_deleted">Download removed from device</string>
+    <string name="dialog_download_cellular_title">Download with mobile data?</string>
+    <string name="dialog_download_cellular_message">Wi-Fi-only downloads are enabled. Do you want to download this song now using mobile data or wait for a Wi-Fi connection?</string>
+    <string name="btn_download_now">Download now</string>
+    <string name="btn_wait_for_wifi">Wait for Wi-Fi</string>
+    <string name="msg_download_waiting_wifi">Download queued (waiting for Wi-Fi): %1$s</string>
+    <string name="dialog_download_waiting_title">Download in queue</string>
+    <string name="dialog_download_waiting_message">This song is waiting to download. You can download it now using mobile data or remove it from the queue.</string>
+    <string name="genre_christian_worship">Christian &amp; Worship</string>
 </resources>

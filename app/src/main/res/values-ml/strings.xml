@@ -17,7 +17,7 @@
     <string name="lbl_sort">അടുക്കുക</string>
     <string name="lbl_name">പേര്</string>
     <string name="lbl_duration">ദൈർഘ്യം</string>
-    <string name="lbl_props">പാട്ടിന്റെ സവിശേഷതകൾ</string>
+    <string name="lbl_props">പാട്ടിന്റെ വിശദാംശങ്ങൾ</string>
     <string name="lbl_filter_all">എല്ലാം</string>
     <string name="lbl_play_next">അടുത്തത് കളിക്കുക</string>
     <string name="lbl_format">രൂപകല്പന</string>
@@ -64,7 +64,7 @@
     <string name="lbl_reset">പുനഃസജ്ജമാക്കുക</string>
     <string name="clr_brown">തവിട്ട്</string>
     <string name="fmt_list">%1$s, %2$s</string>
-    <string name="info_app_desc">ആൻഡ്രോയിഡിനുള്ള ലളിതവും യുക്തിസഹവുമായ സംഗീത കളിക്കാരൻ.</string>
+    <string name="info_app_desc">ഇത് നിങ്ങളുടെ സംഗീതമാണ്.</string>
     <string name="lbl_indexer">സംഗീതം ലോഡ് ചെയ്യുന്നു</string>
     <string name="lbl_indexing">സംഗീതം ലോഡ് ചെയ്യുന്നു</string>
     <string name="lbl_observing">സംഗീത ഗ്രന്ഥശാല നിരീക്ഷിക്കുന്നു</string>
@@ -81,7 +81,7 @@
         <item quantity="other">%d പാട്ടുകൾ</item>
     </plurals>
     <string name="lbl_artist_details">കലാകാരനിലേക്ക് പോകുക</string>
-    <string name="lbl_song_detail">സവിശേഷതകൾ കാണുക</string>
+    <string name="lbl_song_detail">വിശദാംശങ്ങൾ കാണുക</string>
     <string name="lbl_sort_dsc">അവരോഹണം</string>
     <string name="lbl_wiki">വിക്കി</string>
     <string name="lbl_live_group">തത്സമയം</string>
@@ -323,4 +323,36 @@
     <string name="header_more_songs">കൂടുതൽ ഗാനങ്ങൾ</string>
     <string name="desc_navigate_back">തിരികെ പോകുക</string>
     <string name="desc_song_options">ഗാന ഓപ്ഷനുകൾ</string>
+    <string name="set_genre_christian">ക്രിസ്ത്യൻ &amp; ആരാധനാ സംഗീതം വിഭാഗം</string>
+    <string name="set_genre_christian_desc">തിരയൽ പര്യവേക്ഷണ വിഭാഗങ്ങളിൽ ക്രിസ്ത്യൻ &amp; ആരാധനാ സംഗീതം കാണിക്കുക</string>
+    <string name="set_genre_kpop">K-Pop വിഭാഗം</string>
+    <string name="set_genre_kpop_desc">തിരയൽ പര്യവേക്ഷണ വിഭാഗങ്ങളിൽ K-Pop കാണിക്കുക</string>
+    <string name="btn_view_grid">ഗ്രിഡ്</string>
+    <string name="btn_view_carousel">കറൗസൽ</string>
+    <string name="btn_show_more">കൂടുതൽ കാണിക്കുക</string>
+    <string name="lbl_go_to_online_album">ഓൺലൈൻ ആൽബത്തിലേക്ക് പോകുക</string>
+    <string name="set_privacy_insights_category">ലോക്കൽ സ്വകാര്യതയും സ്ഥിതിവിവരക്കണക്കുകളും</string>
+    <string name="set_local_listening_insights">ലോക്കൽ സ്ഥിതിവിവരക്കണക്കുകളും വ്യക്തിഗതമാക്കലും പ്രവർത്തനക്ഷമമാക്കുക</string>
+    <string name="set_local_listening_insights_desc">ബാഹ്യ പ്രൊഫൈലുകളില്ലാതെ ഉപകരണത്തിൽ മാത്രം കേൾക്കുന്ന ശീലങ്ങൾ വിശകലനം ചെയ്യുന്നു</string>
+    <string name="set_clear_listening_history">ലോക്കൽ കേൾക്കൽ ചരിത്രം മായ്ക്കുക</string>
+    <string name="set_clear_listening_history_desc">ലോക്കൽ പ്ലേബാക്ക് രേഖകളെല്ലാം മായ്ച്ച് നിർദ്ദേശങ്ങൾ പുനഃസജ്ജമാക്കുക</string>
+    <string name="msg_confirm_clear_listening_history">ലോക്കൽ സ്ഥിതിവിവരക്കണക്കുകൾ പൂർണ്ണമായി മായ്ച്ച് നിർദ്ദേശങ്ങൾ പുനഃസജ്ജമാക്കട്ടെ?</string>
+    <string name="msg_listening_history_cleared">ലോക്കൽ കേൾക്കൽ ചരിത്രം മായ്ച്ചു</string>
+    <string name="fmt_because_you_listen_to">നിങ്ങൾ %1$s കേൾക്കുന്നതിനാൽ</string>
+    <string name="header_because_you_listen_sub">നിങ്ങളുടെ ലോക്കൽ ശീലങ്ങളെ അടിസ്ഥാനമാക്കിയുള്ള അജ്ഞാത മിക്സുകൾ</string>
+    <string name="fmt_monthly_listening_hours">ഈ മാസം %1$d മ. %2$d മി. സംഗീതം കേട്ടു</string>
+    <string name="fmt_monthly_listening_minutes">ഈ മാസം %1$d മിനിറ്റ് സംഗീതം കേട്ടു</string>
+    <string name="header_favorite_artists">നിങ്ങളുടെ ആർട്ടിസ്റ്റുകൾ</string>
+    <string name="header_trending_albums_for_you">നിങ്ങൾക്കായുള്ള ട്രെൻഡിംഗ് ആൽബങ്ങൾ</string>
+    <string name="set_show_monthly_listening_banner">പ്രതിമാസ ശ്രവണ ബാനർ കാണിക്കുക</string>
+    <string name="set_show_monthly_listening_banner_desc">നിങ്ങളുടെ ലൈബ്രറിയുടെ മുകളിൽ ഈ മാസത്തെ ആകെ കേട്ട സമയം കാണിക്കുന്നു</string>
+    <string name="msg_download_deleted">ഉപകരണത്തിൽ നിന്ന് ഡൗൺലോഡ് നീക്കംചെയ്‌തു</string>
+    <string name="dialog_download_cellular_title">മൊബൈൽ ഡാറ്റ ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യണോ?</string>
+    <string name="dialog_download_cellular_message">Wi-Fi മാത്രമുള്ള ഡൗൺലോഡുകൾ പ്രവർത്തനക്ഷമമാക്കിയിരിക്കുന്നു. മൊബൈൽ ഡാറ്റ ഉപയോഗിച്ച് ഈ ഗാനം ഇപ്പോൾ ഡൗൺലോഡ് ചെയ്യണോ അതോ Wi-Fi കണക്ഷനായി കാത്തിരിക്കണോ?</string>
+    <string name="btn_download_now">ഇപ്പോൾ ഡൗൺലോഡ് ചെയ്യുക</string>
+    <string name="btn_wait_for_wifi">Wi-Fi-യ്ക്കായി കാത്തിരിക്കുക</string>
+    <string name="msg_download_waiting_wifi">ഡൗൺലോഡ് ക്യൂവിലാണ് (Wi-Fi-യ്ക്കായി കാത്തിരിക്കുന്നു): %1$s</string>
+    <string name="dialog_download_waiting_title">ഡൗൺലോഡ് ക്യൂവിലാണ്</string>
+    <string name="dialog_download_waiting_message">ഈ ഗാനം ഡൗൺലോഡ് ചെയ്യാൻ കാത്തിരിക്കുകയാണ്. നിങ്ങൾക്ക് ഇത് ഇപ്പോൾ മൊബൈൽ ഡാറ്റ ഉപയോഗിച്ച് ഡൗൺലോഡ് ചെയ്യാം അല്ലെങ്കിൽ ക്യൂവിൽ നിന്ന് നീക്കം ചെയ്യാം.</string>
+    <string name="genre_christian_worship">ക്രിസ്ത്യൻ &amp; ആരാധനാ സംഗീതം</string>
 </resources>
